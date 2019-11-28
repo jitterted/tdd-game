@@ -1,0 +1,34 @@
+# Tasks
+
+## Vue-ify
+* [X] Create Playing card component
+    * [X] Templatize existing HTML/CSS
+    * [X] Parameterize the card type to color & title background color:
+          **Predict** card maps to `background = yellow` + `title = light-yellow`
+* [X] Scoring (left-side) component
+
+## Display
+~~* [ ] Center the cards within their row~~
+
+## User Actions (Vue)
+* [X] Highlight card for action: (D)iscard or (P)lay
+* [X] Run Test: Display modal Test Results
+* [X] Increment/decrement Risk Level
+* [X] Increment Passing Tests (Score)
+* [X] Roll die
+
+## Game (Spring Boot)
+* [ ] Run Tests: card is select from Test Results pile
+    * [ ] Shuffle Test Results cards
+* [ ] Draw to full hand
+* [ ] Shuffle Draw Pile
+* [ ] Discard and Play actions (per card)
+    * Click on a card
+    * Display choices available: Discard or Play 
+    * Process the action
+
+# Deferred
+
+## Display
+* [ ] Highlight which player's turn
+

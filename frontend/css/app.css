@@ -1,0 +1,31 @@
+.smallcaps {
+  font-variant: small-caps;
+}
+
+.score-info {
+  display: grid;
+  grid-template-rows: 41% 39% 20%;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 10rem auto;
+}
+
+.card-area {
+  display: grid;
+  grid-template-rows: auto;
+}
+
+.opponent-in-play {
+  background-color: gainsboro;
+  padding: 8px 6px;
+}
+
+.messy-code {
+  background-color: #ff99ff;
+}
+
+.bg-semi-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
