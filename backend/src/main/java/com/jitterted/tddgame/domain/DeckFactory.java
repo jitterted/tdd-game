@@ -1,5 +1,8 @@
 package com.jitterted.tddgame.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DeckFactory {
 
   private final CardFactory cardFactory;
@@ -9,24 +12,26 @@ public class DeckFactory {
   }
 
   public Deck createStandardDeck() {
-    Deck deck = new Deck();
-    addCardsTo(deck);
+    Deck deck = new Deck(new RandomCardShuffler());
+    addCardsToDiscardPileOf(deck);
     return deck;
   }
 
-  private void addCardsTo(Deck deck) {
-    addCards(deck, "write code", 18);
-    addCards(deck, "code smaller", 18);
-    addCards(deck, "predict", 18);
-    addCards(deck, "can't assert", 2);
-    addCards(deck, "code bloat", 3);
-    addCards(deck, "refactor", 4);
+  private void addCardsToDiscardPileOf(Deck deck) {
+    deck.addToDiscardPile(generateCards("write code", 18));
+    deck.addToDiscardPile(generateCards("code smaller", 18));
+    deck.addToDiscardPile(generateCards("predict", 18));
+    deck.addToDiscardPile(generateCards("can't assert", 2));
+    deck.addToDiscardPile(generateCards("code bloat", 3));
+    deck.addToDiscardPile(generateCards("refactor", 4));
   }
 
-  private void addCards(Deck deck, String title, int count) {
+  private List<Card> generateCards(String title, int count) {
+    List<Card> cards = new ArrayList<>();
     for (int i = 0; i < count; i++) {
-      deck.addToDrawPile(cardFactory.card(title));
+      cards.add(cardFactory.card(title));
     }
+    return cards;
   }
 
 }

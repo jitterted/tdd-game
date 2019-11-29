@@ -8,8 +8,10 @@ import java.util.Queue;
 public class Deck {
   private Queue<Card> drawPile = new LinkedList<>();
   private List<Card> discardPile = new ArrayList<>();
+  private final CardShuffler shuffler;
 
-  Deck() {
+  Deck(CardShuffler shuffler) {
+    this.shuffler = shuffler;
   }
 
   public Card draw() {
@@ -20,7 +22,7 @@ public class Deck {
   }
 
   private void replenishFromDiscard() {
-    drawPile.addAll(discardPile);
+    drawPile.addAll(shuffler.shuffle(discardPile));
     discardPile.clear();
   }
 

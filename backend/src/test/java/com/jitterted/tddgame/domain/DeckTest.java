@@ -11,7 +11,7 @@ public class DeckTest {
   @Test
   public void drawOneCardFromDeckOfOneCardReturnsGivenCard() throws Exception {
     Card card = new Card(0, "Write Code");
-    Deck deck = new Deck();
+    Deck deck = new Deck(null);
     deck.addToDrawPile(card);
 
     assertThat(deck.draw())
@@ -20,7 +20,7 @@ public class DeckTest {
 
   @Test
   public void drawTwoCardsReturnsTwoCardsFromDeck() throws Exception {
-    Deck deck = new Deck();
+    Deck deck = new Deck(null);
     Card card1 = new Card(1, "One");
     Card card2 = new Card(2, "Two");
     deck.addToDrawPile(card1);
@@ -34,7 +34,7 @@ public class DeckTest {
 
   @Test
   public void drawOneCardFromDeckOfThreeLeavesDeckWithTwoCards() throws Exception {
-    Deck deck = new Deck();
+    Deck deck = new Deck(null);
     deck.addToDrawPile(new Card(1, "One"));
     deck.addToDrawPile(new Card(2, "Two"));
     deck.addToDrawPile(new Card(3, "Three"));
