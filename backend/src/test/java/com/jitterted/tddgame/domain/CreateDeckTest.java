@@ -8,7 +8,7 @@ public class CreateDeckTest {
 
   @Test
   public void newDeckHasFullSetOfCards() throws Exception {
-    Deck deck = new DeckFactory().createStandardDeck();
+    Deck deck = new DeckFactory(new CardFactory()).createStandardDeck();
 
     assertThat(deck.size())
       .isEqualTo(63);

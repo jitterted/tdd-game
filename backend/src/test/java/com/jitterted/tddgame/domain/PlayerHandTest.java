@@ -18,7 +18,7 @@ public class PlayerHandTest {
   public void newPlayerDrawsOneCardFromDeckTransfersToHand() throws Exception {
     Player player = new Player();
     Deck deck = new Deck();
-    Card theCard = new Card("The Card");
+    Card theCard = new Card(1, "The Card");
     deck.add(theCard);
 
     player.drawFrom(deck);
@@ -44,8 +44,8 @@ public class PlayerHandTest {
   @Test
   public void playerWithTwoCardsFillsHandResultsInThreeCardsDrawnFromDeck() throws Exception {
     Player brainw4ashed = new Player();
-    brainw4ashed.hand().add(new Card("one"));
-    brainw4ashed.hand().add(new Card("two"));
+    brainw4ashed.hand().add(new Card(2, "one"));
+    brainw4ashed.hand().add(new Card(3, "two"));
     Deck deck = new Deck();
     fillDeck(deck, 7);
 
@@ -72,7 +72,7 @@ public class PlayerHandTest {
 
   private void fillDeck(Deck deck, int count) {
     for (int i = 0; i < count; i++) {
-      deck.add(new Card(String.valueOf(i)));
+      deck.add(new Card(i, String.valueOf(i)));
     }
   }
 }

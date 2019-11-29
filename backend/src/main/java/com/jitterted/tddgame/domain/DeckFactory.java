@@ -2,6 +2,12 @@ package com.jitterted.tddgame.domain;
 
 public class DeckFactory {
 
+  private final CardFactory cardFactory;
+
+  public DeckFactory(CardFactory cardFactory) {
+    this.cardFactory = cardFactory;
+  }
+
   public Deck createStandardDeck() {
     Deck deck = new Deck();
     addCardsTo(deck);
@@ -19,7 +25,7 @@ public class DeckFactory {
 
   private void addCards(Deck deck, String title, int count) {
     for (int i = 0; i < count; i++) {
-      deck.add(new Card(title));
+      deck.add(cardFactory.card(title));
     }
   }
 

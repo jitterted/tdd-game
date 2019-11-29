@@ -10,7 +10,7 @@ public class DeckTest {
 
   @Test
   public void drawOneCardFromDeckOfOneCardReturnsGivenCard() throws Exception {
-    Card card = new Card("Write Code");
+    Card card = new Card(0, "Write Code");
     Deck deck = new Deck();
     deck.add(card);
 
@@ -21,8 +21,8 @@ public class DeckTest {
   @Test
   public void drawTwoCardsReturnsTwoCardsFromDeck() throws Exception {
     Deck deck = new Deck();
-    Card card1 = new Card("One");
-    Card card2 = new Card("Two");
+    Card card1 = new Card(1, "One");
+    Card card2 = new Card(2, "Two");
     deck.add(card1);
     deck.add(card2);
 
@@ -35,9 +35,9 @@ public class DeckTest {
   @Test
   public void drawOneCardFromDeckOfThreeLeavesDeckWithTwoCards() throws Exception {
     Deck deck = new Deck();
-    deck.add(new Card("One"));
-    deck.add(new Card("Two"));
-    deck.add(new Card("Three"));
+    deck.add(new Card(1, "One"));
+    deck.add(new Card(2, "Two"));
+    deck.add(new Card(3, "Three"));
 
     deck.draw();
 
