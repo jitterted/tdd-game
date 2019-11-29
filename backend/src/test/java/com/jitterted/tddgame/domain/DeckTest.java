@@ -12,7 +12,7 @@ public class DeckTest {
   public void drawOneCardFromDeckOfOneCardReturnsGivenCard() throws Exception {
     Card card = new Card(0, "Write Code");
     Deck deck = new Deck();
-    deck.add(card);
+    deck.addToDrawPile(card);
 
     assertThat(deck.draw())
       .isEqualTo(card);
@@ -23,8 +23,8 @@ public class DeckTest {
     Deck deck = new Deck();
     Card card1 = new Card(1, "One");
     Card card2 = new Card(2, "Two");
-    deck.add(card1);
-    deck.add(card2);
+    deck.addToDrawPile(card1);
+    deck.addToDrawPile(card2);
 
     List<Card> drawnCards = List.of(deck.draw(), deck.draw());
 
@@ -35,13 +35,13 @@ public class DeckTest {
   @Test
   public void drawOneCardFromDeckOfThreeLeavesDeckWithTwoCards() throws Exception {
     Deck deck = new Deck();
-    deck.add(new Card(1, "One"));
-    deck.add(new Card(2, "Two"));
-    deck.add(new Card(3, "Three"));
+    deck.addToDrawPile(new Card(1, "One"));
+    deck.addToDrawPile(new Card(2, "Two"));
+    deck.addToDrawPile(new Card(3, "Three"));
 
     deck.draw();
 
-    assertThat(deck.size())
+    assertThat(deck.drawPileSize())
       .isEqualTo(2);
   }
 

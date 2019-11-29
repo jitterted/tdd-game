@@ -25,7 +25,7 @@ public class DeckFactory {
 
   private void addCards(Deck deck, String title, int count) {
     for (int i = 0; i < count; i++) {
-      deck.add(cardFactory.card(title));
+      deck.addToDrawPile(cardFactory.card(title));
     }
   }
 

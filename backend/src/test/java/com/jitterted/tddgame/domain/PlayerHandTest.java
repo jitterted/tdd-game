@@ -19,13 +19,13 @@ public class PlayerHandTest {
     Player player = new Player();
     Deck deck = new Deck();
     Card theCard = new Card(1, "The Card");
-    deck.add(theCard);
+    deck.addToDrawPile(theCard);
 
     player.drawFrom(deck);
 
     assertThat(player.hand().contains(theCard))
       .isTrue();
-    assertThat(deck.size())
+    assertThat(deck.drawPileSize())
       .isEqualTo(0);
   }
 
@@ -51,7 +51,7 @@ public class PlayerHandTest {
 
     brainw4ashed.fillHandFrom(deck);
 
-    assertThat(deck.size())
+    assertThat(deck.drawPileSize())
       .isEqualTo(4);
   }
 
@@ -64,7 +64,7 @@ public class PlayerHandTest {
 
     sheppo162.fillHandFrom(deck);
 
-    assertThat(deck.size())
+    assertThat(deck.drawPileSize())
       .isEqualTo(4);
     assertThat(sheppo162.hand().count())
       .isEqualTo(5);
@@ -72,7 +72,7 @@ public class PlayerHandTest {
 
   private void fillDeck(Deck deck, int count) {
     for (int i = 0; i < count; i++) {
-      deck.add(new Card(i, String.valueOf(i)));
+      deck.addToDrawPile(new Card(i, String.valueOf(i)));
     }
   }
 }

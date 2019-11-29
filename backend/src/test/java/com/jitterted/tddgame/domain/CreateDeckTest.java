@@ -10,7 +10,7 @@ public class CreateDeckTest {
   public void newDeckHasFullSetOfCards() throws Exception {
     Deck deck = new DeckFactory(new CardFactory()).createStandardDeck();
 
-    assertThat(deck.size())
+    assertThat(deck.drawPileSize())
       .isEqualTo(63);
   }
 }
