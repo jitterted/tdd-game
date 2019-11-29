@@ -1,4 +1,4 @@
-/build/
+build/
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
 
@@ -15,9 +15,9 @@
 .idea
 *.iws
 *.iml
-/out/
+out/
 
-/target/
+target/
 .DS_Store
 
-/bin/
+bin/
