@@ -18,10 +18,10 @@
 * [X] Roll die
 
 ## Game (Spring Boot)
-* [ ] Run Tests: card is select from Test Results pile
-    * [ ] Shuffle Test Results cards
-* [ ] Draw to full hand
-* [ ] Shuffle Draw Pile
+* [X] Run Tests: card is select from Test Results pile
+    * [X] Shuffle Test Results cards
+* [X] Draw to full hand
+* [X] Shuffle Draw Pile
 * [ ] Discard and Play actions (per card)
     * Click on a card
     * Display choices available: Discard or Play 

@@ -2,14 +2,14 @@
   font-variant: small-caps;
 }
 
+.card-title {
+  font-variant: small-caps;
+  font-weight: 700;
+}
+
 .score-info {
   display: grid;
   grid-template-rows: 41% 39% 20%;
-}
-
-.main {
-  display: grid;
-  grid-template-columns: 10rem auto;
 }
 
 .card-area {
