@@ -9,13 +9,13 @@
                 {"title": "predict", "id": 10}
               ]
             },
-    "in_play": {"cards": []},
-    "opponent_in_play": {"cards": []},
+    "inPlay": {"cards": []},
+    "opponentInPlay": {"cards": []},
     "score": { "name": "Ted", 
-               "passing_tests": 0,
-               "risk_level": 0
+               "passingTests": 0,
+               "riskLevel": 0
              },
-    "opponent_score": {"passing_tests": 0, "risk_level": 0}
+    "opponentScore": {"passingTests": 0, "riskLevel": 0}
 }
 
 ## Game:

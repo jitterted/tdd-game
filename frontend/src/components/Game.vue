@@ -23,54 +23,22 @@
 
       <div class="opponent-in-play inline-flex flex">
 
-        <playing-card title="write code">
-        </playing-card>
-
-        <playing-card title="code smaller">
-        </playing-card>
-
-        <playing-card title="predict">
+        <playing-card v-for="card in game.opponentInPlay.cards" :key="card.id" :title="card.title">
         </playing-card>
 
       </div>
 
       <div class="player-in-play flex inline-flex">
-        <playing-card title="write code">
-        </playing-card>
 
-        <playing-card title="code smaller">
-        </playing-card>
-
-        <playing-card title="code smaller">
-        </playing-card>
-
-        <playing-card title="predict">
-        </playing-card>
-
-        <playing-card title="code bloat">
-        </playing-card>
-
-        <playing-card title="can't assert">
+        <playing-card v-for="card in game.inPlay.cards" :title="card.title" :key="card.id">
         </playing-card>
 
       </div>
 
       <div class="player-hand flex inline-flex">
-        <playing-card title="write code">
-        </playing-card>
 
-        <playing-card title="write code">
+        <playing-card v-for="card in game.hand.cards" :title="card.title" :key="card.id">
         </playing-card>
-
-        <playing-card title="code bloat">
-        </playing-card>
-
-        <playing-card title="predict">
-        </playing-card>
-
-        <playing-card title="refactor">
-        </playing-card>
-
 
       </div>
 
@@ -152,9 +120,16 @@
       Modal,
       Die
     },
+    mounted() {
+      fetch('./dummycards.json')
+        .then((response) => response.json())
+        .then((data) => this.game = data.game)
+        .catch((error) => console.log(error));
+    },
     data() {
       return {
-        showTestResultsModal: false
+        showTestResultsModal: false,
+        game: null
       }
     }
   };
