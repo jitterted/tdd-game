@@ -23,116 +23,52 @@
 
       <div class="opponent-in-play inline-flex flex">
 
-        <playing-card title="write code" category="code">
-          <card-rule>
-            This card is required to be <em>In Play</em> before you can <span class="card-title">predict</span>.
-          </card-rule>
+        <playing-card title="write code">
         </playing-card>
 
-        <playing-card title="code smaller" category="code">
-          <card-rule>
-            Combine with <span class="card-title">write code</span> to make it more likely that
-            <strong>Run Results</strong> matches your <strong>Prediction</strong>.
-          </card-rule>
+        <playing-card title="code smaller">
         </playing-card>
 
-        <playing-card title="predict" category="predict">
-          <card-rule>
-            You predict that running the tests will <strong>NOT COMPILE</strong>,
-            <strong>FAIL</strong> (in a specific way), or <strong>PASS</strong>.
-          </card-rule>
-          <card-rule>
-            You can now <strong>RUN TESTS</strong> and see if the results match your prediction.
-          </card-rule>
+        <playing-card title="predict">
         </playing-card>
 
       </div>
 
       <div class="player-in-play flex inline-flex">
-        <playing-card title="write code" category="code">
-          <card-rule>
-            This card is required to be <em>In Play</em> before you can <span class="card-title">predict</span>.
-          </card-rule>
+        <playing-card title="write code">
         </playing-card>
 
-        <playing-card title="code smaller" category="code">
-          <card-rule>
-            Combine with <span class="card-title">write code</span> to make it more likely that
-            <strong>Run Results</strong> matches your <strong>Prediction</strong>.
-          </card-rule>
+        <playing-card title="code smaller">
         </playing-card>
 
-        <playing-card title="code smaller" category="code">
-          <card-rule>
-            Combine with <span class="card-title">write code</span> to make it more likely that
-            <strong>Run Results</strong> matches your <strong>Prediction</strong>.
-          </card-rule>
+        <playing-card title="code smaller">
         </playing-card>
 
-        <playing-card title="predict" category="predict">
-          <card-rule>
-            You predict that running the tests will <strong>NOT COMPILE</strong>,
-            <strong>FAIL</strong> (in a specific way), or <strong>PASS</strong>.
-          </card-rule>
-          <card-rule>
-            You can now <strong>RUN TESTS</strong> and see if the results match your prediction.
-          </card-rule>
+        <playing-card title="predict">
         </playing-card>
 
-        <playing-card title="code bloat" category="negative">
-          <card-rule>
-            Deletes 1 <span class="card-title">code smaller</span> card.
-          </card-rule>
+        <playing-card title="code bloat">
         </playing-card>
 
-        <playing-card title="can't assert" category="negative">
-          <card-rule>
-            When in <em>How Do You Know It Does It?</em>, you must stay an extra turn,
-            or use a <span class="card-title">refactor</span> to cancel out this impediment.
-          </card-rule>
+        <playing-card title="can't assert">
         </playing-card>
 
       </div>
 
       <div class="player-hand flex inline-flex">
-        <playing-card title="write code" category="code">
-          <card-rule>
-            This card is required to be <em>In Play</em> before you can <span class="card-title">predict</span>.
-          </card-rule>
+        <playing-card title="write code">
         </playing-card>
 
-        <playing-card title="write code" category="code">
-          <card-rule>
-            This card is required to be <em>In Play</em> before you can <span class="card-title">predict</span>.
-          </card-rule>
+        <playing-card title="write code">
         </playing-card>
 
-        <playing-card title="code bloat" category="negative">
-          <card-rule>
-            Deletes 1 <span class="card-title">code smaller</span> card.
-          </card-rule>
+        <playing-card title="code bloat">
         </playing-card>
 
-        <playing-card title="predict" category="predict">
-          <card-rule>
-            You predict that running the tests will <strong>NOT COMPILE</strong>,
-            <strong>FAIL</strong> (in a specific way), or <strong>PASS</strong>.
-          </card-rule>
-          <card-rule>
-            You can now <strong>RUN TESTS</strong> and see if the results match your prediction.
-          </card-rule>
+        <playing-card title="predict">
         </playing-card>
 
-        <playing-card title="refactor" category="refactor">
-          <card-rule>
-            Reduces Risk Level up to 2
-          </card-rule>
-          <card-rule>
-            <span class="card-title"><div class="text-center">OR</div></span>
-          </card-rule>
-          <card-rule>
-            Deletes 1 <span class="card-title">can't assert</span> card.
-          </card-rule>
+        <playing-card title="refactor">
         </playing-card>
 
 
@@ -142,7 +78,7 @@
         <div class="md:w-56 px-2 py-3 rounded overflow-hidden border shadow-md my-2" style="background-color: #ffa866">
           <div class="font-bold text-xl smallcaps mb-2">test results</div>
           <p class="text-black font-bold text-base mb-2">
-            <code>&gt;= 2</code>
+            <code>&gt;= 2 </code>
             <span class="card-title">code smaller</span>
             cards<br/>As Predicted
           </p>
@@ -150,7 +86,7 @@
             The tests ran and matched your prediction.
           </p>
           <p class="text-black font-bold text-base my-2">
-            <code>&lt;= 1</code>
+            <code>&lt;= 1 </code>
             <span class="card-title">code smaller</span>
             cards<br/>Unexpected
           </p>
@@ -207,7 +143,6 @@
   import PlayingCard from "./PlayingCard";
   import Modal from "./Modal";
   import Die from "./Die";
-  import CardRule from "./CardRule";
 
   export default {
     name: "Game",
@@ -215,8 +150,7 @@
       PlayerScore,
       PlayingCard,
       Modal,
-      Die,
-      CardRule
+      Die
     },
     data() {
       return {

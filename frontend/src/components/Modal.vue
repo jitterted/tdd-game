@@ -70,4 +70,8 @@
 
 <style scoped>
 
+.bg-semi-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 </style>

@@ -5,7 +5,8 @@
 "game": {
     "hand": {"cards": 
               [
-                {"title": "refactor", "id": 9}
+                {"title": "refactor", "id": 9},
+                {"title": "predict", "id": 10}
               ]
             },
     "in_play": {"cards": []},
