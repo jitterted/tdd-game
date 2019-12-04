@@ -123,7 +123,7 @@
     mounted() {
       fetch('./dummycards.json')
         .then((response) => response.json())
-        .then((data) => this.game = data.game)
+        .then((jsonData) => this.game = jsonData)
         .catch((error) => console.log(error));
     },
     data() {

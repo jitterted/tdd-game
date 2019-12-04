@@ -2,7 +2,7 @@
 
 /api/game?player=1
 
-"game": {
+{
     "hand": {"cards": 
               [
                 {"title": "refactor", "id": 9},

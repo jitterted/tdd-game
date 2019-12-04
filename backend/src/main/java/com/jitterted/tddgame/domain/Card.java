@@ -11,6 +11,14 @@ public class Card {
     this.id = id;
   }
 
+  public String title() {
+    return title;
+  }
+
+  public int id() {
+    return id;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

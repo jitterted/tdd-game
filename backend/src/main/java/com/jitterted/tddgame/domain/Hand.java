@@ -1,6 +1,7 @@
 package com.jitterted.tddgame.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Hand {
@@ -20,5 +21,9 @@ public class Hand {
 
   public int count() {
     return cards.size();
+  }
+
+  public List<Card> cards() {
+    return Collections.unmodifiableList(cards);
   }
 }

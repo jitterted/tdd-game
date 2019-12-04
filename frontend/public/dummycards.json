@@ -1,53 +1,51 @@
 {
-  "game": {
-    "hand": {
-      "cards": [
-        {
-          "title": "refactor",
-          "id": 9
-        },
-        {
-          "title": "can't assert",
-          "id": 11
-        },
-        {
-          "title": "predict",
-          "id": 10
-        },
-        {
-          "title": "write code",
-          "id": 12
-        }
-      ]
-    },
-    "inPlay": {
-      "cards": [
-        {
-          "title": "write code",
-          "id": 15
-        }
-      ]
-    },
-    "opponentInPlay": {
-      "cards": [
-        {
-          "title": "write code",
-          "id": 16
-        },
-        {
-          "title": "code smaller",
-          "id": 20
-        }
-      ]
-    },
-    "score": {
-      "name": "Ted",
-      "passingTests": 0,
-      "riskLevel": 0
-    },
-    "opponentScore": {
-      "passingTests": 0,
-      "riskLevel": 0
-    }
+  "hand": {
+    "cards": [
+      {
+        "title": "refactor",
+        "id": 9
+      },
+      {
+        "title": "can't assert",
+        "id": 11
+      },
+      {
+        "title": "predict",
+        "id": 10
+      },
+      {
+        "title": "write code",
+        "id": 12
+      }
+    ]
+  },
+  "inPlay": {
+    "cards": [
+      {
+        "title": "write code",
+        "id": 15
+      }
+    ]
+  },
+  "opponentInPlay": {
+    "cards": [
+      {
+        "title": "write code",
+        "id": 16
+      },
+      {
+        "title": "code smaller",
+        "id": 20
+      }
+    ]
+  },
+  "score": {
+    "name": "Ted",
+    "passingTests": 0,
+    "riskLevel": 0
+  },
+  "opponentScore": {
+    "passingTests": 0,
+    "riskLevel": 0
   }
 }
