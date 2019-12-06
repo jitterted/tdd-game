@@ -9,6 +9,7 @@
 
 ## Display
 ~~* [ ] Center the cards within their row~~
+* [ ] Nice-to-have: show deck status with # of cards in discard pile and in draw pile
 
 ## User Actions (Vue)
 * [X] Highlight card for action: (D)iscard or (P)lay
@@ -16,6 +17,7 @@
 * [X] Increment/decrement Risk Level
 * [X] Increment Passing Tests (Score)
 * [X] Roll die
+* [ ] Draw card ** IN PROGRESS
 
 ## Game (Spring Boot)
 * [X] Run Tests: card is select from Test Results pile
@@ -28,6 +30,17 @@
     * [X] Handle Discard (only from Hand)
     * [ ] Handle Play
 
+# Game Master View
+
+This could also be used as a "watch the game" view either as "god" (view everything),
+or only see cards in-play. 
+
+* [ ] View Deck: draw and discard piles in detail
+* [ ] View Test Results Deck
+* [ ] View All Players' Hands
+
+----
+
 # Deferred
 
 ## Display
@@ -35,11 +48,3 @@
 * [ ] Show empty outlines of where cards will be displayed 
       (this will help keep the display evenly divided even when no cards are in play)
 
-## Game Master View
-
-This could also be used as a "watch the game" view either as "god" (view everything),
-or only see cards in-play. 
-
-* [ ] View Deck: draw and discard piles
-* [ ] View Test Results Deck
-* [ ] View All Players' Hands

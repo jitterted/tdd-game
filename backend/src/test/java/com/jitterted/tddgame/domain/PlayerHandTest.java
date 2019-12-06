@@ -11,14 +11,6 @@ public class PlayerHandTest {
   private final CardFactory cardFactory = new CardFactory();
 
   @Test
-  public void newPlayerHasEmptyHand() throws Exception {
-    Player player = new Player(PlayerId.of(0));
-
-    assertThat(player.hand().isEmpty())
-      .isTrue();
-  }
-
-  @Test
   public void newPlayerDrawsOneCardFromDeckTransfersToHand() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Deck deck = new Deck(shuffler);

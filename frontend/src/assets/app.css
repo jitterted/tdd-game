@@ -7,11 +7,6 @@
   font-weight: 700;
 }
 
-.score-info {
-  display: grid;
-  grid-template-rows: 41% 39% 20%;
-}
-
 .card-area {
   display: grid;
   grid-template-rows: auto;

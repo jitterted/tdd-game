@@ -1,9 +1,11 @@
 package com.jitterted.tddgame.adapter.vue;
 
 import com.jitterted.tddgame.domain.Card;
+import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.Deck;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
+import com.jitterted.tddgame.domain.Hand;
 import com.jitterted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
 
@@ -31,11 +33,31 @@ class GameControllerTest {
     Player player = game.players().get(0);
     Card cardFromHand = player.hand().cards().get(0);
 
-    gameController.discardFromHand(String.valueOf(player.id().getId()),
+    gameController.discardFromHand(playerIdStringFrom(player),
                                    new CardIdDto(cardFromHand.id().getId()));
 
     assertThat(deck.discardPile())
       .contains(cardFromHand);
+  }
+
+  @Test
+  public void playerCardDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
+    GameService gameService = new TwoPlayerGameService();
+    GameController gameController = new GameController(gameService);
+    Game game = gameService.currentGame();
+    Player player = game.players().get(0);
+    Hand hand = player.hand();
+    CardId cardId = hand.cards().get(0).id();
+    hand.remove(cardId); // make room in hand for draw from deck
+
+    gameController.handleAction(playerIdStringFrom(player), new PlayerCommand("DRAW"));
+
+    assertThat(player.hand().isFull())
+      .isTrue();
+  }
+
+  private String playerIdStringFrom(Player player) {
+    return String.valueOf(player.id().getId());
   }
 
 }

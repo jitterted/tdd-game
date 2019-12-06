@@ -3,7 +3,7 @@
     <div class="xl:block uppercase font-bold text-gray-200 mb-4">
       {{ name }}'s Score
     </div>
-    <div class="text-white mb-2">
+    <div class="text-white mb-1">
       Passing Tests: {{ passingTests }}
     </div>
     <div class="mb-6">
@@ -11,7 +11,7 @@
       <button class="bg-white hover:bg-gray-300 text-black font-bold py-1 px-3 rounded mr-1" @click="incrementTests">+</button>
     </div>
 
-    <div class="text-white">
+    <div class="text-white mb-1">
       Risk Level: {{ riskLevel }}
     </div>
     <div>
@@ -19,7 +19,7 @@
       <button class="bg-white hover:bg-gray-300 text-black font-bold py-1 px-3 rounded mr-1" @click="incrementRisk">+</button>
     </div>
 
-    <div class="mt-6">
+    <div class="mt-4">
       <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-1 px-2 rounded border"
               @click="resetAll">Reset Scores</button>
     </div>

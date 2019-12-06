@@ -1,16 +1,22 @@
 <template>
   <div class="game main h-screen">
 
-    <div class="score-info h-full bg-gray-800">
-      <div class="opponent mb-10 bg-green-700">
+    <div class="score-info h-full">
+      <div class="bg-green-700">
         <player-score name="Opponent"/>
       </div>
-      <div class="player">
+      <div class="bg-gray-800">
         <player-score name="Ted"/>
       </div>
       <div class="text-center bg-black py-3">
         <button
-          class="bg-green-300 rounded border-green-100 px-4 py-2 font-bold mb-4"
+          class="bg-blue-300 rounded border-blue-100 font-bold px-4 py-2 mb-4"
+          @click="drawCard"
+        >
+          Draw Card
+        </button>
+        <button
+          class="bg-green-300 rounded border-green-100 font-bold px-4 py-2 mb-4"
           @click="showTestResultsModal = true"
         >
           Run Tests
@@ -128,12 +134,20 @@
             this.game = jsonData;
           })
           .catch((error) => console.log(error));
+      },
+      drawCard() {
+        // send a POST of { action: "DRAW" }
+        // to the /api/game/player/0/actions endpoint
+        this.refresh();
+      },
+      drawTestResultsCard() {
+        // send a POST of { action: "TEST_RESULTS" }
       }
     },
     created() {
       this.refresh();
 
-      // set refresh to happen every 1 seconds
+      // set refresh to happen every 1 second
       this.interval = setInterval(function () {
         this.refresh();
       }.bind(this),
@@ -157,5 +171,9 @@
   .main {
     display: grid;
     grid-template-columns: 10rem auto;
+  }
+  .score-info {
+    display: grid;
+    grid-template-rows: 37% 33% 30%;
   }
 </style>
