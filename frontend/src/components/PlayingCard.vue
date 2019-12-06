@@ -1,14 +1,28 @@
 <template>
-  <div
-    class="md:w-48 rounded overflow-hidden mr-3 my-2 pb-2"
-    :class="[categoryColor.background, selectedClasses]"
-    @click.prevent="toggleSelect"
+  <div style="position: relative"
+       @click.prevent="toggleSelect"
   >
-    <div class="font-bold text-xl smallcaps mb-2 p-2" :class="categoryColor.title">{{ title }}</div>
-    <div class="px-2 py-1">
-      <card-rule v-for="(rule, index) in card.rules" :key="index">
-        <span v-html="rule"></span>
-      </card-rule>
+    <div v-if="selected" class="card-overlay font-extrabold">
+      <div class="mr-5 ml-2 mt-2">
+        <h1 class="text-right">{{ id }}</h1>
+        <br/>
+        <br/>
+        <div class="bg-white border border-gray-300 p-2">
+          <h3>Press D to Discard</h3>
+          <br/>
+          <h3>Press P to Play</h3></div>
+      </div>
+    </div>
+    <div
+      class="md:w-48 rounded overflow-hidden mr-3 my-2 pb-2"
+      :class="[categoryColor.background, selectedClasses]"
+    >
+      <div class="font-bold text-xl smallcaps mb-2 p-2" :class="categoryColor.title">{{ title }}</div>
+      <div class="px-2 py-1">
+        <card-rule v-for="(rule, index) in card.rules" :key="index">
+          <span v-html="rule"></span>
+        </card-rule>
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +38,10 @@
     props: {
       title: {
         type: String,
+        required: true
+      },
+      id: {
+        type: Number,
         required: true
       }
     },
@@ -50,6 +68,10 @@
     methods: {
       toggleSelect() {
         this.selected = !this.selected;
+      },
+      discardSelected() {
+        // POST of "id" to: /api/game/player/0/discards
+        // trigger the game to refresh the page
       }
     },
     data() {
@@ -120,5 +142,15 @@
 <style scoped>
 .messy-code {
   background-color: #ff99ff;
+}
+
+.card-overlay {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, .8);
 }
 </style>

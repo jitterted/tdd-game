@@ -9,7 +9,7 @@ public class CardDto {
   private final int id;
 
   public static CardDto from(Card card) {
-    return new CardDto(card.title(), card.id());
+    return new CardDto(card.title(), card.id().getId());
   }
 
 }

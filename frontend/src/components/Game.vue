@@ -23,21 +23,21 @@
 
       <div class="opponent-in-play inline-flex flex">
 
-        <playing-card v-for="card in game.opponentInPlay.cards" :key="card.id" :title="card.title">
+        <playing-card v-for="card in game.opponentInPlay.cards" :key="card.id" v-bind="card">
         </playing-card>
 
       </div>
 
       <div class="player-in-play flex inline-flex">
 
-        <playing-card v-for="card in game.inPlay.cards" :title="card.title" :key="card.id">
+        <playing-card v-for="card in game.inPlay.cards" :key="card.id" v-bind="card">
         </playing-card>
 
       </div>
 
       <div class="player-hand flex inline-flex">
 
-        <playing-card v-for="card in game.hand.cards" :title="card.title" :key="card.id">
+        <playing-card v-for="card in game.hand.cards" :key="card.id" v-bind="card">
         </playing-card>
 
       </div>
@@ -120,16 +120,16 @@
       Modal,
       Die
     },
-    mounted() {
-      fetch('./dummycards.json')
+    created() {
+      fetch('/api/game')
         .then((response) => response.json())
-        .then((jsonData) => this.game = jsonData)
+        .then((jsonData) => {this.game = jsonData; console.log(jsonData);})
         .catch((error) => console.log(error));
     },
     data() {
       return {
         showTestResultsModal: false,
-        game: null
+        game: {"hand":{"cards":[]},"inPlay":{"cards":[]},"opponentInPlay":{"cards":[]}}
       }
     }
   };

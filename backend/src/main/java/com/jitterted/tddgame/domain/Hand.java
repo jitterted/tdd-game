@@ -1,22 +1,28 @@
 package com.jitterted.tddgame.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Hand {
-  private final List<Card> cards = new ArrayList<>();
+  private final Map<CardId, Card> cards = new HashMap<>();
+  private final PlayerId owningPlayerId;
+
+  public Hand(PlayerId playerId) {
+    owningPlayerId = playerId;
+  }
 
   public boolean isEmpty() {
     return cards.isEmpty();
   }
 
   public boolean contains(Card card) {
-    return cards.contains(card);
+    return cards.containsKey(card.id());
   }
 
   public void add(Card card) {
-    cards.add(card);
+    cards.put(card.id(), card);
   }
 
   public int count() {
@@ -24,6 +30,18 @@ public class Hand {
   }
 
   public List<Card> cards() {
-    return Collections.unmodifiableList(cards);
+    return new ArrayList<>(cards.values());
+  }
+
+  public Card remove(CardId cardId) {
+    if (cards.containsKey(cardId)) {
+      return cards.remove(cardId);
+    }
+    throw new CardNotInHandException("Could not remove card " + cardId + ": not in hand (" + this + ")");
+  }
+
+  @Override
+  public String toString() {
+    return "Hand: " + cards.values() + ", owner = " + owningPlayerId;
   }
 }

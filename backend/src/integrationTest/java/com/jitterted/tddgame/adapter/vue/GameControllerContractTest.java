@@ -1,12 +1,16 @@
 package com.jitterted.tddgame.adapter.vue;
 
+import com.jitterted.tddgame.domain.GameService;
+import com.jitterted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,6 +22,9 @@ class GameControllerContractTest {
   @Autowired
   MockMvc mockMvc;
 
+  @Autowired
+  GameService gameService;
+
   @Test
   public void getAgainstApiGameIs200Ok() throws Exception {
     mockMvc.perform(get("/api/game"))
@@ -25,6 +32,19 @@ class GameControllerContractTest {
            .andExpect(jsonPath("$.hand").exists())
            .andExpect(jsonPath("$.inPlay").exists())
            .andExpect(jsonPath("$.opponentInPlay").exists())
+    ;
+  }
+
+  @Test
+  public void postOfCardToDiscardsIs200Ok() throws Exception {
+    Player player = gameService.currentGame().players().get(0);
+    int cardId = player.hand().cards().get(0).id().getId();
+    mockMvc.perform(
+      post("/api/game/player/" + player.id().getId() + "/discards")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"id\": " + cardId + "}")
+    )
+           .andExpect(status().isOk())
     ;
   }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DeckPileTest {
+public class DeckDrawPileReplenishTest {
 
   @Test
   public void whenDrawFromEmptyDrawPileDiscardPileIsMovedIntoDrawPile() throws Exception {
@@ -60,13 +60,6 @@ public class DeckPileTest {
     return drawnCards;
   }
 
-
-  private static class CopyCardShuffler implements CardShuffler {
-    @Override
-    public List<Card> shuffle(List<Card> cards) {
-      return cards;
-    }
-  }
 
   private static class ReverseCardShuffler implements CardShuffler {
     @Override

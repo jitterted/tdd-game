@@ -1,18 +1,21 @@
 package com.jitterted.tddgame.domain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
-  private final List<Player> playerList;
+  private final Map<PlayerId, Player> playerMap = new HashMap<>();
   private final Deck deck;
 
   public Game(List<Player> playerList, Deck deck) {
-    this.playerList = playerList;
+    playerList.forEach(player -> playerMap.put(player.id(), player));
     this.deck = deck;
   }
 
   public List<Player> players() {
-    return playerList;
+    return new ArrayList<>(playerMap.values());
   }
 
   public Deck deck() {
@@ -20,6 +23,11 @@ public class Game {
   }
 
   public void start() {
-    playerList.forEach(player -> player.fillHandFrom(deck));
+    players().forEach(player -> player.fillHandFrom(deck));
+  }
+
+  public void discard(PlayerId playerId, CardId cardId) {
+    Player player = playerMap.get(playerId);
+    player.discard(cardId, deck);
   }
 }

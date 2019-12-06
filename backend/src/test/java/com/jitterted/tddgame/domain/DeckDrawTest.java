@@ -6,11 +6,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DeckTest {
+public class DeckDrawTest {
+
+  private final CardFactory cardFactory = new CardFactory();
 
   @Test
   public void drawOneCardFromDeckOfOneCardReturnsGivenCard() throws Exception {
-    Card card = new Card(0, "Write Code");
+    Card card = cardFactory.card("Write Code");
     Deck deck = new Deck(null);
     deck.addToDrawPile(card);
 
@@ -21,8 +23,8 @@ public class DeckTest {
   @Test
   public void drawTwoCardsReturnsTwoCardsFromDeck() throws Exception {
     Deck deck = new Deck(null);
-    Card card1 = new Card(1, "One");
-    Card card2 = new Card(2, "Two");
+    Card card1 = cardFactory.card("One");
+    Card card2 = cardFactory.card("Two");
     deck.addToDrawPile(card1);
     deck.addToDrawPile(card2);
 
@@ -35,9 +37,9 @@ public class DeckTest {
   @Test
   public void drawOneCardFromDeckOfThreeLeavesDeckWithTwoCards() throws Exception {
     Deck deck = new Deck(null);
-    deck.addToDrawPile(new Card(1, "One"));
-    deck.addToDrawPile(new Card(2, "Two"));
-    deck.addToDrawPile(new Card(3, "Three"));
+    deck.addToDrawPile(cardFactory.card("One"));
+    deck.addToDrawPile(cardFactory.card("Two"));
+    deck.addToDrawPile(cardFactory.card("Three"));
 
     deck.draw();
 

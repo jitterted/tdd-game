@@ -31,4 +31,6 @@
 
 ## Display
 * [ ] Highlight which player's turn
+* [ ] Show empty outlines of where cards will be displayed 
+      (this will help keep the display evenly divided even when no cards are in play)
 

@@ -4,9 +4,9 @@ import org.springframework.lang.NonNull;
 
 public class Card {
   private final String title;
-  private final int id;
+  private final CardId id;
 
-  public Card(int id, @NonNull String title) {
+  public Card(@NonNull CardId id, @NonNull String title) {
     this.title = title;
     this.id = id;
   }
@@ -15,7 +15,7 @@ public class Card {
     return title;
   }
 
-  public int id() {
+  public CardId id() {
     return id;
   }
 
@@ -26,16 +26,16 @@ public class Card {
 
     Card card = (Card) o;
 
-    return id == card.id;
+    return id.equals(card.id);
   }
 
   @Override
   public int hashCode() {
-    return id;
+    return id.hashCode();
   }
 
   @Override
   public String toString() {
-    return "CARD(" + id + "): " + title;
+    return "CARD(" + id.getId() + "): \"" + title + "\"";
   }
 }

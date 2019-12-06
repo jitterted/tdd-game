@@ -1,6 +1,7 @@
 package com.jitterted.tddgame.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -34,7 +35,15 @@ public class Deck {
     return drawPile.size();
   }
 
+  public void addToDiscardPile(Card card) {
+    discardPile.add(card);
+  }
+
   public void addToDiscardPile(List<Card> cards) {
     discardPile.addAll(cards);
+  }
+
+  public List<Card> discardPile() {
+    return Collections.unmodifiableList(discardPile);
   }
 }
