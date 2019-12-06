@@ -23,9 +23,10 @@
 * [X] Draw to full hand
 * [X] Shuffle Draw Pile
 * [ ] Discard and Play actions (per card)
-    * Click on a card
-    * Display choices available: Discard or Play 
-    * Process the action
+    * [X] Click on a card
+    * [X] Display choices available: Discard or Play 
+    * [X] Handle Discard (only from Hand)
+    * [ ] Handle Play
 
 # Deferred
 
@@ -34,3 +35,11 @@
 * [ ] Show empty outlines of where cards will be displayed 
       (this will help keep the display evenly divided even when no cards are in play)
 
+## Game Master View
+
+This could also be used as a "watch the game" view either as "god" (view everything),
+or only see cards in-play. 
+
+* [ ] View Deck: draw and discard piles
+* [ ] View Test Results Deck
+* [ ] View All Players' Hands

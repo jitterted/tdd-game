@@ -8,9 +8,18 @@
         <br/>
         <br/>
         <div class="bg-white border border-gray-300 p-2">
-          <h3>Press D to Discard</h3>
+          <h3>D to
+            <button
+              class="border bg-blue-100 border-blue-900 rounded mx-1 px-2"
+              @click.prevent="discardSelected"
+            >Discard
+            </button>
+          </h3>
           <br/>
-          <h3>Press P to Play</h3></div>
+          <h3>P to
+            <button class="border bg-green-100 border-green-900 rounded mx-1 px-2">Play</button>
+          </h3>
+        </div>
       </div>
     </div>
     <div
@@ -72,6 +81,17 @@
       discardSelected() {
         // POST of "id" to: /api/game/player/0/discards
         // trigger the game to refresh the page
+        console.log("Discard: " + JSON.stringify({id: this.id}));
+        fetch('/api/game/player/0/discards', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: this.id})
+          }
+        );
+
+        this.selected = false;
       }
     },
     data() {
@@ -102,7 +122,7 @@
                       You predict that running the tests will <strong>NOT COMPILE</strong>,
                       <strong>FAIL</strong> (in a specific way), or <strong>PASS</strong>.
                       `,
-                      `You can now <strong>RUN TESTS</strong> and see if the results match your prediction.`
+              `You can now <strong>RUN TESTS</strong> and see if the results match your prediction.`
             ]
           },
           'code bloat': {
@@ -121,16 +141,16 @@
           'refactor': {
             category: 'refactor',
             rules: [
-                      `
+              `
                         Reduces Risk Level up to 2
                       `,
-                      `
+              `
                         <span class="card-title"><div class="text-center">OR</div></span>
                       `,
-                      `
+              `
                         Deletes 1 <span class="card-title">can't assert</span> card.
                       `
-                      ]
+            ]
           }
         },
         selected: false
@@ -140,17 +160,17 @@
 </script>
 
 <style scoped>
-.messy-code {
-  background-color: #ff99ff;
-}
+  .messy-code {
+    background-color: #ff99ff;
+  }
 
-.card-overlay {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(255, 255, 255, .8);
-}
+  .card-overlay {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .8);
+  }
 </style>
