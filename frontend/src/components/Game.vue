@@ -120,14 +120,31 @@
       Modal,
       Die
     },
+    methods: {
+      refresh() {
+        fetch('/api/game')
+          .then((response) => response.json())
+          .then((jsonData) => {
+            this.game = jsonData;
+          })
+          .catch((error) => console.log(error));
+      }
+    },
     created() {
-      fetch('/api/game')
-        .then((response) => response.json())
-        .then((jsonData) => {this.game = jsonData; console.log(jsonData);})
-        .catch((error) => console.log(error));
+      this.refresh();
+
+      // set refresh to happen every 1 seconds
+      this.interval = setInterval(function () {
+        this.refresh();
+      }.bind(this),
+        1000);
+    },
+    beforeDestroy(){
+      clearInterval(this.interval);
     },
     data() {
       return {
+        interval: undefined,
         showTestResultsModal: false,
         game: {"hand":{"cards":[]},"inPlay":{"cards":[]},"opponentInPlay":{"cards":[]}}
       }
