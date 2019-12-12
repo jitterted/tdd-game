@@ -36,7 +36,8 @@ public class GameController {
 
   @PostMapping("game/player/{playerId}/actions")
   public void handleAction(@PathVariable("playerId") String playerIdString,
-                           @RequestBody PlayerCommand playerCommand) {
+                           @RequestBody PlayerAction playerAction) {
+    PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
 
   }
 

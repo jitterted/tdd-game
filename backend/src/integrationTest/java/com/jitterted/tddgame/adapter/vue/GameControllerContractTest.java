@@ -60,7 +60,7 @@ class GameControllerContractTest {
     mockMvc.perform(
       post("/api/game/player/" + player.id().getId() + "/actions")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"action\": \"DRAW_CARD\"}")
+        .content("{\"action\": \"" + PlayerAction.DRAW_CARD + "\"}")
     )
            .andExpect(status().isOk())
     ;

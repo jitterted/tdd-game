@@ -1,5 +1,8 @@
 # Tasks
 
+## Refactoring
+* [ ] Move PlayerHandTest tests to HandTests and refactor ("object envy" code smell)
+
 ## Vue-ify
 * [X] Create Playing card component
     * [X] Templatize existing HTML/CSS

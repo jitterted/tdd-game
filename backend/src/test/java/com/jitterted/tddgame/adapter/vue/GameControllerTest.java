@@ -41,7 +41,7 @@ class GameControllerTest {
   }
 
   @Test
-  public void playerCardDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
+  public void playerDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
     GameService gameService = new TwoPlayerGameService();
     GameController gameController = new GameController(gameService);
     Game game = gameService.currentGame();
@@ -50,7 +50,7 @@ class GameControllerTest {
     CardId cardId = hand.cards().get(0).id();
     hand.remove(cardId); // make room in hand for draw from deck
 
-    gameController.handleAction(playerIdStringFrom(player), new PlayerCommand("DRAW"));
+    gameController.handleAction(playerIdStringFrom(player), new PlayerAction(PlayerAction.DRAW_CARD));
 
     assertThat(player.hand().isFull())
       .isTrue();
