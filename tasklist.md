@@ -12,7 +12,12 @@
 
 ## Display
 ~~* [ ] Center the cards within their row~~
+* [ ] Animate new card appearing anywhere (esp. in hand)
+* [ ] Preserve order of display of cards: in hand, in-play, etc.
+    * [ ] Drag-n-drop reordering of display of cards
+
 * [ ] Nice-to-have: show deck status with # of cards in discard pile and in draw pile
+* [ ] Nice-to-have: Animate card being moved from Hand to In-Play
 
 ## User Actions (Vue)
 * [X] Highlight card for action: (D)iscard or (P)lay
@@ -26,6 +31,7 @@
 * [X] Run Tests: card is select from Test Results pile
     * [X] Shuffle Test Results cards
 * [X] Draw to full hand
+* [X] Draw a single new card into hand
 * [X] Shuffle Draw Pile
 * [ ] Discard and Play actions (per card)
     * [X] Click on a card

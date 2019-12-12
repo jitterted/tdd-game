@@ -136,8 +136,15 @@
           .catch((error) => console.log(error));
       },
       drawCard() {
-        // send a POST of { action: "DRAW" }
-        // to the /api/game/player/0/actions endpoint
+        fetch('/api/game/player/0/actions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({action: 'DRAW_CARD'})
+          }
+        );
+
         this.refresh();
       },
       drawTestResultsCard() {
