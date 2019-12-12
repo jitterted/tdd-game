@@ -12,6 +12,8 @@
         <button
           class="bg-blue-300 rounded border-blue-100 font-bold px-4 py-2 mb-4"
           @click="drawCard"
+          :disabled="handIsFull"
+          :class="{ 'opacity-50 cursor-not-allowed' : handIsFull }"
         >
           Draw Card
         </button>
@@ -125,6 +127,11 @@
       PlayingCard,
       Modal,
       Die
+    },
+    computed: {
+      handIsFull() {
+        return this.game.hand.cards.length === 5;
+      }
     },
     methods: {
       refresh() {
