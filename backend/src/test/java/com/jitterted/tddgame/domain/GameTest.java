@@ -2,6 +2,8 @@ package com.jitterted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GameTest {
@@ -39,4 +41,20 @@ class GameTest {
       .isFalse();
   }
 
+  @Test
+  public void playerWithRoomInHandDrawsCardThenCardFromDrawPileInHand() throws Exception {
+    Deck deck = new Deck(null);
+    Card card = new Card(CardId.of(1), "card1");
+    deck.addToDrawPile(card);
+    List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
+    Player player0 = twoPlayers.get(0);
+    Game game = new Game(twoPlayers, deck);
+
+    game.drawCardFor(player0.id());
+
+    assertThat(deck.drawPileSize())
+      .isZero();
+    assertThat(player0.hand().cards())
+      .containsExactly(card);
+  }
 }

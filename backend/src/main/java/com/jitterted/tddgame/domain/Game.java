@@ -27,7 +27,16 @@ public class Game {
   }
 
   public void discard(PlayerId playerId, CardId cardId) {
-    Player player = playerMap.get(playerId);
+    Player player = playerFor(playerId);
     player.discard(cardId, deck);
+  }
+
+  public void drawCardFor(PlayerId playerId) {
+    Player player = playerFor(playerId);
+    player.drawFrom(deck);
+  }
+
+  private Player playerFor(PlayerId playerId) {
+    return playerMap.get(playerId);
   }
 }

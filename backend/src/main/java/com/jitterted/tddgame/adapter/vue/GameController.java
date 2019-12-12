@@ -38,7 +38,7 @@ public class GameController {
   public void handleAction(@PathVariable("playerId") String playerIdString,
                            @RequestBody PlayerAction playerAction) {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
-
+    playerAction.executeFor(playerId, gameService);
   }
 
 }

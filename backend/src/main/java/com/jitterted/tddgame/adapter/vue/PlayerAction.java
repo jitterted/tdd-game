@@ -14,6 +14,6 @@ public class PlayerAction {
   private String action;
 
   public void executeFor(PlayerId playerId, GameService gameService) {
-
+    gameService.currentGame().drawCardFor(playerId);
   }
 }
