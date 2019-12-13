@@ -36,6 +36,11 @@ public class Game {
     player.drawFrom(deck);
   }
 
+  public void playCardFor(PlayerId playerId, CardId cardId) {
+    Player player = playerFor(playerId);
+    player.play(cardId);
+  }
+
   private Player playerFor(PlayerId playerId) {
     return playerMap.get(playerId);
   }

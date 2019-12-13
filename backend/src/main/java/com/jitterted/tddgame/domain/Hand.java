@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Hand {
   private final Map<CardId, Card> cards = new HashMap<>();
-  private final PlayerId owningPlayerId;
+  private final PlayerId owningPlayerId; // only used by toString()
 
   public Hand(PlayerId playerId) {
     owningPlayerId = playerId;

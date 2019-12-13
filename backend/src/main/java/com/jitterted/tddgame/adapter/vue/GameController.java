@@ -35,8 +35,10 @@ public class GameController {
   }
 
   @PostMapping("game/player/{playerId}/plays")
-  public void playCard(String playerIdString, CardIdDto cardId) {
-
+  public void playCard(@PathVariable("playerId") String playerIdString,
+                       @RequestBody CardIdDto cardId) {
+    int playerId = Integer.parseInt(playerIdString);
+    gameService.currentGame().playCardFor(PlayerId.of(playerId), CardId.of(cardId.getId()));
   }
 
   @PostMapping("game/player/{playerId}/actions")

@@ -53,7 +53,6 @@ class GameControllerTest {
 
     assertThat(player.inPlay().cards())
       .contains(cardFromHand);
-
   }
 
 
