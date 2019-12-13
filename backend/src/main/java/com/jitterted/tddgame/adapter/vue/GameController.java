@@ -34,11 +34,15 @@ public class GameController {
     gameService.currentGame().discard(PlayerId.of(playerId), CardId.of(cardId.getId()));
   }
 
+  @PostMapping("game/player/{playerId}/plays")
+  public void playCard(String playerIdString, CardIdDto cardId) {
+
+  }
+
   @PostMapping("game/player/{playerId}/actions")
   public void handleAction(@PathVariable("playerId") String playerIdString,
                            @RequestBody PlayerAction playerAction) {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
     playerAction.executeFor(playerId, gameService);
   }
-
 }

@@ -15,6 +15,8 @@
 * [ ] Animate new card appearing anywhere (esp. in hand)
 * [ ] Preserve order of display of cards: in hand, in-play, etc.
     * [ ] Drag-n-drop reordering of display of cards
+* [ ] Prevent card selection for opponent-in-play cards
+* [ ] No "Play" option for card in "In-Play" area
 
 * [ ] Nice-to-have: show deck status with # of cards in discard pile and in draw pile
 * [ ] Nice-to-have: Animate card being moved from Hand to In-Play
@@ -25,7 +27,7 @@
 * [X] Increment/decrement Risk Level
 * [X] Increment Passing Tests (Score)
 * [X] Roll die
-* [ ] Draw card ** IN PROGRESS
+* [X] Draw card
 
 ## Game (Spring Boot)
 * [X] Run Tests: card is select from Test Results pile

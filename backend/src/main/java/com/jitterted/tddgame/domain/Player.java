@@ -47,4 +47,8 @@ public class Player {
   public int hashCode() {
     return playerId.hashCode();
   }
+
+  public InPlay inPlay() {
+    return null;
+  }
 }

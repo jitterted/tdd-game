@@ -12,12 +12,18 @@
             <button
               class="border bg-blue-100 border-blue-900 rounded mx-1 px-2"
               @click.prevent="discardSelected"
-            >Discard
+            >
+              Discard
             </button>
           </h3>
           <br/>
           <h3>P to
-            <button class="border bg-green-100 border-green-900 rounded mx-1 px-2">Play</button>
+            <button
+              class="border bg-green-100 border-green-900 rounded mx-1 px-2"
+              @click.prevent="playSelected"
+            >
+              Play
+            </button>
           </h3>
         </div>
       </div>
@@ -79,8 +85,6 @@
         this.selected = !this.selected;
       },
       discardSelected() {
-        // POST of "id" to: /api/game/player/0/discards
-        // trigger the game to refresh the page
         console.log("Discard: " + JSON.stringify({id: this.id}));
         fetch('/api/game/player/0/discards', {
             method: 'POST',
@@ -92,6 +96,16 @@
         );
 
         this.selected = false;
+      },
+      playSelected() {
+        console.log("Play: " + JSON.stringify({id: this.id}));
+        fetch('/api/game/player/0/plays', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id: this.id})
+        });
       }
     },
     data() {

@@ -41,6 +41,23 @@ class GameControllerTest {
   }
 
   @Test
+  public void playedCardIsTransferredFromHandToInPlay() throws Exception {
+    GameService gameService = new TwoPlayerGameService();
+    GameController gameController = new GameController(gameService);
+    Game game = gameService.currentGame();
+    Player player = game.players().get(0);
+    Card cardFromHand = player.hand().cards().get(0);
+
+    gameController.playCard(playerIdStringFrom(player),
+                            new CardIdDto(cardFromHand.id().getId()));
+
+    assertThat(player.inPlay().cards())
+      .contains(cardFromHand);
+
+  }
+
+
+  @Test
   public void playerDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
     GameService gameService = new TwoPlayerGameService();
     GameController gameController = new GameController(gameService);

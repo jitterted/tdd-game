@@ -51,6 +51,20 @@ class GameControllerContractTest {
   }
 
   @Test
+  public void postPlayCardActionIs200Ok() throws Exception {
+    Player player = gameService.currentGame().players().get(0);
+    int cardId = player.hand().cards().get(0).id().getId();
+
+    mockMvc.perform(
+      post("/api/game/player/" + player.id().getId() + "/plays")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"id\": " + cardId + "}")
+    )
+           .andExpect(status().isOk())
+    ;
+  }
+
+  @Test
   public void postDrawCardActionIs200Ok() throws Exception {
     Player player = gameService.currentGame().players().get(0);
     Hand hand = player.hand();
@@ -65,5 +79,4 @@ class GameControllerContractTest {
            .andExpect(status().isOk())
     ;
   }
-
 }
