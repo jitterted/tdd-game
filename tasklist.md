@@ -3,21 +3,15 @@
 ## Refactoring
 * [ ] Move PlayerHandTest tests to HandTests and refactor ("object envy" code smell)
 
-## Vue-ify
-* [X] Create Playing card component
-    * [X] Templatize existing HTML/CSS
-    * [X] Parameterize the card type to color & title background color:
-          **Predict** card maps to `background = yellow` + `title = light-yellow`
-* [X] Scoring (left-side) component
-
 ## Display
 ~~* [ ] Center the cards within their row~~
-* [ ] Animate new card appearing anywhere (esp. in hand)
-* [ ] Preserve order of display of cards: in hand, in-play, etc.
-    * [ ] Drag-n-drop reordering of display of cards
+* [ ] Prevent multiple selection: only single select of cards
 * [ ] Prevent card selection for opponent-in-play cards
 * [ ] No "Play" option for card in "In-Play" area
 
+* [ ] Animate new card appearing anywhere (esp. in hand)
+* [ ] Preserve order of display of cards: in hand, in-play, etc.
+    * [ ] Drag-n-drop reordering of display of cards
 * [ ] Nice-to-have: show deck status with # of cards in discard pile and in draw pile
 * [ ] Nice-to-have: Animate card being moved from Hand to In-Play
 
@@ -35,11 +29,11 @@
 * [X] Draw to full hand
 * [X] Draw a single new card into hand
 * [X] Shuffle Draw Pile
-* [ ] Discard and Play actions (per card)
+* [X] Discard and Play actions (per card)
     * [X] Click on a card
     * [X] Display choices available: Discard or Play 
     * [X] Handle Discard (only from Hand)
-    * [ ] Handle Play
+    * [X] Handle Play
 
 # Game Master View
 
@@ -58,4 +52,14 @@ or only see cards in-play.
 * [ ] Highlight which player's turn
 * [ ] Show empty outlines of where cards will be displayed 
       (this will help keep the display evenly divided even when no cards are in play)
+
+
+# Completed
+
+## Vue-ify
+* [X] Create Playing card component
+    * [X] Templatize existing HTML/CSS
+    * [X] Parameterize the card type to color & title background color:
+          **Predict** card maps to `background = yellow` + `title = light-yellow`
+* [X] Scoring (left-side) component
 

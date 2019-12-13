@@ -1,5 +1,19 @@
 # Stories
 
+* [ ] Discard from Play area: cards go to Deck Discard Pile
+* [ ] Move to RSocket for more real-time interaction
+* [ ] Run Tests Results card: show modal of card from Results deck
+    * [ ] Test Results Deck is just another deck
+* [ ] Multiple players can play
+    * [ ] Identify myself with my Name (get a player ID)
+    * [ ] Display game from player's POV
+        * [ ] My cards AND Opponent's In-Play
+    * [ ] Actions happen with player's ID
+    * [ ] Playing adversary card goes to OPPONENT'S In-Play area
+
+
+# Completed
+
 * Playing deck consists of (total = 63):
     * Write Code (18)
     * Code Smaller (18)
