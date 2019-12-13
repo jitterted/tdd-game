@@ -140,7 +140,7 @@
           .then((jsonData) => {
             this.game = jsonData;
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.log(' Refresh error: ' + error));
       },
       drawCard() {
         fetch('/api/game/player/0/actions', {
@@ -186,8 +186,19 @@
     display: grid;
     grid-template-columns: 10rem auto;
   }
+
   .score-info {
     display: grid;
     grid-template-rows: 37% 33% 30%;
+  }
+
+  .card-area {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  .opponent-in-play {
+    background-color: gainsboro;
+    padding: 4px 6px;
   }
 </style>

@@ -29,7 +29,8 @@
       </div>
     </div>
     <div
-      class="md:w-48 rounded overflow-hidden mr-3 my-2 pb-2"
+      class="md:w-48 rounded overflow-hidden mr-3 mt-1 pb-2"
+      style="height: 90%;"
       :class="[categoryColor.background, selectedClasses]"
     >
       <div class="font-bold text-xl smallcaps mb-2 p-2" :class="categoryColor.title">{{ title }}</div>
