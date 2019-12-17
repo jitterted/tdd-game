@@ -25,8 +25,13 @@ public class Player {
     }
   }
 
-  public void discard(CardId cardId, Deck deck) {
+  public void discardFromHand(CardId cardId, Deck deck) {
     Card card = hand.remove(cardId);
+    deck.addToDiscardPile(card);
+  }
+
+  public void discardFromInPlay(CardId cardId, Deck deck) {
+    Card card = inPlay.remove(cardId);
     deck.addToDiscardPile(card);
   }
 

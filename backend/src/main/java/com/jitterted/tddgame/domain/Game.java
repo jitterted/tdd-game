@@ -26,9 +26,14 @@ public class Game {
     players().forEach(player -> player.fillHandFrom(deck));
   }
 
-  public void discard(PlayerId playerId, CardId cardId) {
+  public void discardFromHand(PlayerId playerId, CardId cardId) {
     Player player = playerFor(playerId);
-    player.discard(cardId, deck);
+    player.discardFromHand(cardId, deck);
+  }
+
+  public void discardFromInPlay(PlayerId playerId, CardId cardId) {
+    Player player = playerFor(playerId);
+    player.discardFromInPlay(cardId, deck);
   }
 
   public void drawCardFor(PlayerId playerId) {

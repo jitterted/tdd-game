@@ -28,17 +28,17 @@ public class GameController {
   }
 
   @PostMapping("game/player/{playerId}/discards")
-  public void discardFromHand(@PathVariable("playerId") String playerIdString,
-                              @RequestBody CardIdDto cardId) {
+  public void discard(@PathVariable("playerId") String playerIdString,
+                      @RequestBody DiscardAction discardAction) {
     int playerId = Integer.parseInt(playerIdString);
-    gameService.currentGame().discard(PlayerId.of(playerId), CardId.of(cardId.getId()));
+    discardAction.executeFor(playerId, gameService);
   }
 
   @PostMapping("game/player/{playerId}/plays")
   public void playCard(@PathVariable("playerId") String playerIdString,
-                       @RequestBody CardIdDto cardId) {
+                       @RequestBody PlayCardAction playCardAction) {
     int playerId = Integer.parseInt(playerIdString);
-    gameService.currentGame().playCardFor(PlayerId.of(playerId), CardId.of(cardId.getId()));
+    gameService.currentGame().playCardFor(PlayerId.of(playerId), CardId.of(playCardAction.getId()));
   }
 
   @PostMapping("game/player/{playerId}/actions")

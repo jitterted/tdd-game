@@ -2,7 +2,6 @@ package com.jitterted.tddgame.adapter.vue;
 
 import com.jitterted.tddgame.domain.Card;
 import com.jitterted.tddgame.domain.CardId;
-import com.jitterted.tddgame.domain.Deck;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Hand;
@@ -25,22 +24,6 @@ class GameControllerTest {
   }
 
   @Test
-  public void playerDiscardIsTransferredToDeckDiscardPile() throws Exception {
-    GameService gameService = new TwoPlayerGameService();
-    GameController gameController = new GameController(gameService);
-    Game game = gameService.currentGame();
-    Deck deck = game.deck();
-    Player player = game.players().get(0);
-    Card cardFromHand = player.hand().cards().get(0);
-
-    gameController.discardFromHand(playerIdStringFrom(player),
-                                   new CardIdDto(cardFromHand.id().getId()));
-
-    assertThat(deck.discardPile())
-      .contains(cardFromHand);
-  }
-
-  @Test
   public void playedCardIsTransferredFromHandToInPlay() throws Exception {
     GameService gameService = new TwoPlayerGameService();
     GameController gameController = new GameController(gameService);
@@ -48,13 +31,12 @@ class GameControllerTest {
     Player player = game.players().get(0);
     Card cardFromHand = player.hand().cards().get(0);
 
-    gameController.playCard(playerIdStringFrom(player),
-                            new CardIdDto(cardFromHand.id().getId()));
+    gameController.playCard(String.valueOf(player.id().getId()),
+                            new PlayCardAction(cardFromHand.id().getId()));
 
     assertThat(player.inPlay().cards())
       .contains(cardFromHand);
   }
-
 
   @Test
   public void playerDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {

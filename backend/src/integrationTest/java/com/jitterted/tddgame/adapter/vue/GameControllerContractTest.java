@@ -44,7 +44,7 @@ class GameControllerContractTest {
     mockMvc.perform(
       post("/api/game/player/" + player.id().getId() + "/discards")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"id\": " + cardId + "}")
+        .content("{\"id\": " + cardId + ",  \"source\": \"hand\"" + "}")
     )
            .andExpect(status().isOk())
     ;
@@ -79,4 +79,6 @@ class GameControllerContractTest {
            .andExpect(status().isOk())
     ;
   }
+
+  // { "id": 29, "source": "in-play" }
 }

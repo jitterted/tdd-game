@@ -33,7 +33,7 @@ class GameTest {
     Player player = game.players().get(0);
     Card cardFromHand = player.hand().cards().get(0);
 
-    game.discard(player.id(), cardFromHand.id());
+    game.discardFromHand(player.id(), cardFromHand.id());
 
     assertThat(game.deck().discardPile())
       .containsExactly(cardFromHand);

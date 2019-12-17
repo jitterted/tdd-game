@@ -36,19 +36,9 @@
 
       </div>
 
-      <div class="player-in-play flex inline-flex">
+      <card-table :cards="game.inPlay.cards" source="in-play"/>
 
-        <playing-card v-for="card in game.inPlay.cards" :key="card.id" v-bind="card">
-        </playing-card>
-
-      </div>
-
-      <div class="player-hand flex inline-flex">
-
-        <playing-card v-for="card in game.hand.cards" :key="card.id" v-bind="card">
-        </playing-card>
-
-      </div>
+      <card-table :cards="game.hand.cards" source="hand"/>
 
       <modal :showing="showTestResultsModal" @close="showTestResultsModal = false">
         <div class="md:w-56 px-2 py-3 rounded overflow-hidden border shadow-md my-2" style="background-color: #ffa866">
@@ -119,10 +109,12 @@
   import PlayingCard from "./PlayingCard";
   import Modal from "./Modal";
   import Die from "./Die";
+  import CardTable from "./CardTable";
 
   export default {
     name: "Game",
     components: {
+      CardTable,
       PlayerScore,
       PlayingCard,
       Modal,
@@ -174,7 +166,11 @@
       return {
         interval: undefined,
         showTestResultsModal: false,
-        game: {"hand":{"cards":[]},"inPlay":{"cards":[]},"opponentInPlay":{"cards":[]}}
+        game: {
+          "hand": {"cards": []},
+          "inPlay": {"cards": []},
+          "opponentInPlay": {"cards": []}
+        }
       }
     }
   };

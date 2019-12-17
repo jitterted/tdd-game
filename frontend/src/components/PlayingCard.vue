@@ -86,16 +86,8 @@
         this.selected = !this.selected;
       },
       discardSelected() {
-        console.log("Discard: " + JSON.stringify({id: this.id}));
-        fetch('/api/game/player/0/discards', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: this.id})
-          }
-        );
-
+        console.log('Emitting "discard" event for id=' + this.id);
+        this.$emit('discard', this.id);
         this.selected = false;
       },
       playSelected() {
