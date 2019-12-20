@@ -1,14 +1,19 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Game from "@/components/Game.vue";
+import Connect from "../views/Connect.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: Home
+    component: Connect
+  },
+  {
+    path: "/game/player/:playerId",
+    component: Game,
+    props: true
   },
   {
     path: "/about",

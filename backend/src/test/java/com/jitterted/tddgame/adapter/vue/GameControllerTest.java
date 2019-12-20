@@ -13,11 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class GameControllerTest {
 
   @Test
-  public void newGameIsNoCardsDealt() throws Exception {
+  public void newGameIsFullHandDealtToAllPlayers() throws Exception {
     GameService gameService = new TwoPlayerGameService();
+    Game game = gameService.currentGame();
+    Player player = game.players().get(0);
+
     GameController gameController = new GameController(gameService);
 
-    PlayerGameView playerGameView = gameController.playerGameView();
+    PlayerGameView playerGameView = gameController.playerGameView(String.valueOf(player.id().getId()));
 
     assertThat(playerGameView.getHand().getCards())
       .hasSize(5);
@@ -26,10 +29,11 @@ class GameControllerTest {
   @Test
   public void playedCardIsTransferredFromHandToInPlay() throws Exception {
     GameService gameService = new TwoPlayerGameService();
-    GameController gameController = new GameController(gameService);
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
     Card cardFromHand = player.hand().cards().get(0);
+
+    GameController gameController = new GameController(gameService);
 
     gameController.playCard(String.valueOf(player.id().getId()),
                             new PlayCardAction(cardFromHand.id().getId()));

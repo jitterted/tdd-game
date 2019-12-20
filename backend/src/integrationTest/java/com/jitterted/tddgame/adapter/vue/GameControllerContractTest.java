@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // thanks to LiveCodingWithSch3lp for the "Contract" name (instead of "Integration")
 class GameControllerContractTest {
 
+  private static final String API_PLAYERS_BASE_URL = "/api/game/players/";
   @Autowired
   MockMvc mockMvc;
 
@@ -29,7 +30,8 @@ class GameControllerContractTest {
 
   @Test
   public void getAgainstApiGameIs200Ok() throws Exception {
-    mockMvc.perform(get("/api/game"))
+    int playerId = gameService.currentGame().players().get(0).id().getId();
+    mockMvc.perform(get(API_PLAYERS_BASE_URL + playerId))
            .andExpect(status().isOk())
            .andExpect(jsonPath("$.hand").exists())
            .andExpect(jsonPath("$.inPlay").exists())
@@ -42,7 +44,7 @@ class GameControllerContractTest {
     Player player = gameService.currentGame().players().get(0);
     int cardId = player.hand().cards().get(0).id().getId();
     mockMvc.perform(
-      post("/api/game/player/" + player.id().getId() + "/discards")
+      post(API_PLAYERS_BASE_URL + player.id().getId() + "/discards")
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"id\": " + cardId + ",  \"source\": \"hand\"" + "}")
     )
@@ -56,7 +58,7 @@ class GameControllerContractTest {
     int cardId = player.hand().cards().get(0).id().getId();
 
     mockMvc.perform(
-      post("/api/game/player/" + player.id().getId() + "/plays")
+      post(API_PLAYERS_BASE_URL + player.id().getId() + "/plays")
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"id\": " + cardId + "}")
     )
@@ -72,7 +74,7 @@ class GameControllerContractTest {
     hand.remove(cardId); // make room in hand for draw from deck
 
     mockMvc.perform(
-      post("/api/game/player/" + player.id().getId() + "/actions")
+      post(API_PLAYERS_BASE_URL + player.id().getId() + "/actions")
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"action\": \"" + PlayerAction.DRAW_CARD + "\"}")
     )

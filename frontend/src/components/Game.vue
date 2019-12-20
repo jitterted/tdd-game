@@ -127,6 +127,7 @@
     },
     methods: {
       refresh() {
+        console.log('Getting game for player: ' + this.playerId);
         fetch('/api/game')
           .then((response) => response.json())
           .then((jsonData) => {
@@ -148,10 +149,14 @@
       },
       drawTestResultsCard() {
         // send a POST of { action: "TEST_RESULTS" }
+      },
+      playerChanged() {
+        this.playerId = this.$route.params.playerId;
+        this.refresh();
       }
     },
     created() {
-      this.refresh();
+      this.playerChanged();
 
       // set refresh to happen every 1 second
       this.interval = setInterval(function () {
@@ -166,6 +171,7 @@
       return {
         interval: undefined,
         showTestResultsModal: false,
+        playerId: 'no player',
         game: {
           "hand": {"cards": []},
           "inPlay": {"cards": []},

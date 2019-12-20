@@ -1,6 +1,8 @@
 # Tasks
 
 ## Refactoring
+* [ ] Combine Hand and InPlay into a single Class (called ??? CardSet?) with two instances
+    * [ ] Change ".count() < 5" to ".canAdd()" (or "hasRoom") when looping to add cards
 * [ ] Move PlayerHandTest tests to HandTests and refactor ("object envy" code smell)
 
 ## Display
@@ -34,6 +36,11 @@
     * [X] Display choices available: Discard or Play 
     * [X] Handle Discard (only from Hand)
     * [X] Handle Play
+
+## Add Player Support
+* [ ] "log in" to Game system: takes a player name, returns player number and a base url (e.g., /api/game/player/0)
+    * [ ] If no game exists, starts new game -- become 1st player
+    * [ ] If game exists, connect to existing game -- become 2nd player
 
 # Game Master View
 
