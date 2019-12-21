@@ -82,5 +82,4 @@ class GameControllerContractTest {
     ;
   }
 
-  // { "id": 29, "source": "in-play" }
 }

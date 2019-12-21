@@ -46,7 +46,15 @@ public class Game {
     player.play(cardId);
   }
 
-  private Player playerFor(PlayerId playerId) {
+  public Player playerFor(PlayerId playerId) {
     return playerMap.get(playerId);
+  }
+
+  public Player opponentFor(Player player) {
+    return playerMap.values()
+                    .stream()
+                    .filter(p -> !p.equals(player))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("No opponent found for " + player));
   }
 }

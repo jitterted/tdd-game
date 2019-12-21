@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class GameTest {
 
@@ -22,6 +22,20 @@ class GameTest {
       .isEqualTo(5);
     assertThat(game.deck())
       .isNotNull();
+  }
+
+  @Test
+  public void opponentForPlayerIsOtherPlayer() throws Exception {
+    DeckFactory deckFactory = new DeckFactory(new CardFactory());
+    Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
+
+    Player player1 = game.players().get(0);
+    Player player2 = game.players().get(1);
+
+    assertThat(game.opponentFor(player1))
+      .isEqualTo(player2);
+    assertThat(game.opponentFor(player2))
+      .isEqualTo(player1);
   }
 
   @Test

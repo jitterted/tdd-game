@@ -2,7 +2,9 @@ package com.jitterted.tddgame.adapter.vue;
 
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.GameService;
+import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerId;
+import com.jitterted.tddgame.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,17 +24,17 @@ public class GameController {
     this.gameService = gameService;
   }
 
-  @GetMapping("players/{playerId}")
-  public PlayerGameView playerGameView(@PathVariable("playerId") String playerIdString) {
-    return PlayerGameView.from(gameService.currentGame());
+  @PostMapping("players")
+  public PlayerIdDto connectUserToPlayerInGame(@RequestBody UserDto user) {
+    System.out.println("Received connect for user: " + user.getUserName());
+    Player assignedPlayer = gameService.assignNextAvailablePlayerToUser(new User(user.getUserName()));
+    return PlayerIdDto.from(assignedPlayer.id());
   }
 
-  @PostMapping("players")
-  public PlayerIdDto connectPlayerToGame(@RequestBody PlayerNameDto playerName) {
-    System.out.println("Received connect for player: " + playerName.getPlayerName());
-    PlayerIdDto playerIdDto = new PlayerIdDto();
-    playerIdDto.setPlayerId("79");
-    return playerIdDto;
+  @GetMapping("players/{playerId}")
+  public PlayerGameView playerGameView(@PathVariable("playerId") String playerIdString) {
+    int playerId = Integer.parseInt(playerIdString);
+    return PlayerGameView.from(gameService.currentGame(), PlayerId.of(playerId));
   }
 
   @PostMapping("players/{playerId}/discards")

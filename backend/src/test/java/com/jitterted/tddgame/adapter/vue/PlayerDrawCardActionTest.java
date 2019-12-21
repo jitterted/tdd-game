@@ -5,16 +5,18 @@ import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Hand;
 import com.jitterted.tddgame.domain.Player;
+import com.jitterted.tddgame.domain.PlayerFactory;
+import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class PlayerDrawCardActionTest {
 
   @Test
   public void newCardFromDeckPlacedIntoHand() throws Exception {
     PlayerAction drawAction = new PlayerAction(PlayerAction.DRAW_CARD);
-    GameService gameService = new TwoPlayerGameService();
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
     Player player0 = game.players().get(0);
     Hand hand = player0.hand();

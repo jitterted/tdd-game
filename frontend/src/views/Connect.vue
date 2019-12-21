@@ -2,12 +2,12 @@
   <div class="m-2 p-4 rounded border border-gray-300 bg-gray-200">
     <form>
       <p>
-        <label for="playerName" class="mr-1">Your Name: </label>
+        <label for="userNameInput" class="mr-1">Your Name: </label>
         <input
-          id="playerName"
-          v-model="playerName"
+          id="userNameInput"
+          v-model="userName"
           type="text"
-          name="playerName"
+          name="userName"
           class="border border-green-900 mb-2"
         >
       </p>
@@ -25,19 +25,19 @@
 export default {
   data() {
     return {
-      playerName: ''
+      userName: ''
     }
   },
   methods: {
     connect(event) {
       event.preventDefault();
-      console.log("Connecting to fetch player number...");
+      console.log("Connecting user to fetch player number: " + JSON.stringify({userName: this.userName}));
       fetch('/api/game/players', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({playerName: this.playerName})
+          body: JSON.stringify({userName: this.userName})
         }
       )
         .then((response) => {

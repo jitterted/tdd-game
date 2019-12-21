@@ -5,15 +5,17 @@ import com.jitterted.tddgame.domain.Deck;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Player;
+import com.jitterted.tddgame.domain.PlayerFactory;
+import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class GameControllerDiscardsTest {
 
   @Test
   public void discardFromHandIsTransferredToDeckDiscardPile() throws Exception {
-    GameService gameService = new TwoPlayerGameService();
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     GameController gameController = new GameController(gameService);
     Game game = gameService.currentGame();
     Deck deck = game.deck();
@@ -29,7 +31,7 @@ public class GameControllerDiscardsTest {
 
   @Test
   public void discardFromInPlayIsTransferredToDeckDiscardPile() throws Exception {
-    GameService gameService = new TwoPlayerGameService();
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     GameController gameController = new GameController(gameService);
     Game game = gameService.currentGame();
     Deck deck = game.deck();

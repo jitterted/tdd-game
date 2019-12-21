@@ -7,15 +7,17 @@
 
 ## Display
 ~~* [ ] Center the cards within their row~~
-* [ ] Prevent multiple selection: only single select of cards
+* [ ] Display user's name coming from back-end
 * [ ] Prevent card selection for opponent-in-play cards
 * [ ] No "Play" option for card in "In-Play" area
-
-* [ ] Animate new card appearing anywhere (esp. in hand)
 * [ ] Preserve order of display of cards: in hand, in-play, etc.
     * [ ] Drag-n-drop reordering of display of cards
-* [ ] Nice-to-have: show deck status with # of cards in discard pile and in draw pile
-* [ ] Nice-to-have: Animate card being moved from Hand to In-Play
+
+### Nice to Have
+* [ ] Animate new card appearing anywhere (esp. in hand)
+* [ ] Prevent multiple selection: only single select of cards
+* [ ] show deck status with # of cards in discard pile and in draw pile
+* [ ] Animate card being moved from Hand to In-Play
 
 ## User Actions (Vue)
 * [X] Highlight card for action: (D)iscard or (P)lay
@@ -38,9 +40,9 @@
     * [X] Handle Play
 
 ## Add Player Support
-* [ ] "log in" to Game system: takes a player name, returns player number and a base url (e.g., /api/game/player/0)
-    * [ ] If no game exists, starts new game -- become 1st player
-    * [ ] If game exists, connect to existing game -- become 2nd player
+* [X] "log in" to Game system: takes a player name, returns player number and a base url (e.g., /api/game/player/0)
+* [ ] Handle all player actions and direct to correct API endpoint (player ID parameter)
+
 
 # Game Master View
 

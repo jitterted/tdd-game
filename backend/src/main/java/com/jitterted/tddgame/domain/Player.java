@@ -4,6 +4,7 @@ public class Player {
   private final PlayerId playerId;
   private final Hand hand;
   private final InPlay inPlay;
+  private User user;
 
   public Player(PlayerId playerId) {
     this.playerId = playerId;
@@ -48,6 +49,14 @@ public class Player {
     return playerId;
   }
 
+  public User assignedUser() {
+    return user;
+  }
+
+  public void assignUser(User user) {
+    this.user = user;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -61,5 +70,14 @@ public class Player {
   @Override
   public int hashCode() {
     return playerId.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "Player: " + playerId;
+  }
+
+  public boolean isAssigned() {
+    return user != null;
   }
 }

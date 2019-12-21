@@ -91,8 +91,9 @@
         this.selected = false;
       },
       playSelected() {
-        console.log("Play: " + JSON.stringify({id: this.id}));
-        fetch('/api/game/player/0/plays', {
+        console.log('Play card: ' + JSON.stringify({id: this.id}) + ' for player ' + this.$route.params.playerId);
+        let apiUrl = '/api/game/players/' + this.$route.params.playerId;
+        fetch(apiUrl + '/plays', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

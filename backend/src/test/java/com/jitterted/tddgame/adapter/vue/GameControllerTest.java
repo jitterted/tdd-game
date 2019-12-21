@@ -6,15 +6,18 @@ import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Hand;
 import com.jitterted.tddgame.domain.Player;
+import com.jitterted.tddgame.domain.PlayerFactory;
+import com.jitterted.tddgame.domain.PlayerId;
+import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class GameControllerTest {
 
   @Test
   public void newGameIsFullHandDealtToAllPlayers() throws Exception {
-    GameService gameService = new TwoPlayerGameService();
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
 
@@ -28,7 +31,7 @@ class GameControllerTest {
 
   @Test
   public void playedCardIsTransferredFromHandToInPlay() throws Exception {
-    GameService gameService = new TwoPlayerGameService();
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
     Card cardFromHand = player.hand().cards().get(0);
@@ -44,7 +47,7 @@ class GameControllerTest {
 
   @Test
   public void playerDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
-    GameService gameService = new TwoPlayerGameService();
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     GameController gameController = new GameController(gameService);
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
@@ -56,6 +59,22 @@ class GameControllerTest {
 
     assertThat(player.hand().isFull())
       .isTrue();
+  }
+
+  @Test
+  public void connectUserIsAssignedToPlayer() throws Exception {
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
+    GameController gameController = new GameController(gameService);
+    UserDto userDto = new UserDto("tba");
+
+    PlayerIdDto playerIdDto = gameController.connectUserToPlayerInGame(userDto);
+
+    PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdDto.getPlayerId()));
+    Game game = gameService.currentGame();
+    Player assignedPlayer = game.playerFor(playerId);
+
+    assertThat(assignedPlayer.assignedUser().getName())
+      .isEqualTo("tba");
   }
 
   private String playerIdStringFrom(Player player) {

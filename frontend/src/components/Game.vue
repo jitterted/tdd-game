@@ -127,8 +127,8 @@
     },
     methods: {
       refresh() {
-        console.log('Getting game for player: ' + this.playerId);
-        fetch('/api/game')
+        console.log('Getting game for player: ' + this.playerId + ' at ' + this.apiUrl);
+        fetch(this.apiUrl)
           .then((response) => response.json())
           .then((jsonData) => {
             this.game = jsonData;
@@ -136,7 +136,7 @@
           .catch((error) => console.log(' Refresh error: ' + error));
       },
       drawCard() {
-        fetch('/api/game/player/0/actions', {
+        fetch(this.apiUrl + '/actions', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -152,6 +152,7 @@
       },
       playerChanged() {
         this.playerId = this.$route.params.playerId;
+        this.apiUrl = '/api/game/players/' + this.playerId;
         this.refresh();
       }
     },
@@ -172,6 +173,7 @@
         interval: undefined,
         showTestResultsModal: false,
         playerId: 'no player',
+        apiUrl: '/api/game/players/',
         game: {
           "hand": {"cards": []},
           "inPlay": {"cards": []},

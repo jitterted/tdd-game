@@ -2,14 +2,16 @@
 
 * [X] Discard from Play area: cards go to Deck Discard Pile
 * [ ] Multiple players can play
-    * [ ] Identify myself with my Name (get a player ID)
-    * [ ] Display game from player's POV
-        * [ ] My cards AND Opponent's In-Play
-    * [ ] Actions happen with player's ID
-    * [ ] Playing adversary card goes to OPPONENT'S In-Play area
-* [ ] Move to RSocket for more real-time interaction
+    * [X] Identify myself with my Name (get a player ID)
+    * [X] Display game from player's POV
+        * [X] My cards AND Opponent's In-Play
+    * [!@#] Actions happen with player's ID
+    * [ ] Playing adversary card ("Code Bloat", "Can't Assert That") goes to OPPONENT'S In-Play area
+
 * [ ] Run Tests Results card: show modal of card from Results deck
     * [ ] Test Results Deck is just another deck
+
+* [ ] Move to RSocket for more real-time interaction
 
 
 # Completed
