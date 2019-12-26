@@ -1,13 +1,13 @@
 # Stories
 
 * [X] Discard from Play area: cards go to Deck Discard Pile
-* [ ] Multiple players can play
+* [X] Multiple players can play
     * [X] Identify myself with my Name (get a player ID)
     * [X] Display game from player's POV
         * [X] My cards AND Opponent's In-Play
     * [X] Actions happen with player's ID
     * [X] Playing attack card ("Code Bloat", "Can't Assert That") goes to OPPONENT'S In-Play area
-* [ ] Immediate use card: Refactor
+* [X] Immediate use card: Refactor
 
 * [ ] Run Tests Results card: show modal of card from Results deck
     * [ ] Test Results Deck is just another deck

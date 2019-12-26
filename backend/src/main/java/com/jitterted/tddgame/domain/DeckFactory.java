@@ -23,7 +23,7 @@ public class DeckFactory {
     deck.addToDiscardPile(generateCards("predict", 18, Usage.SELF));
     deck.addToDiscardPile(generateCards("can't assert", 2, Usage.OPPONENT));
     deck.addToDiscardPile(generateCards("code bloat", 3, Usage.OPPONENT));
-    deck.addToDiscardPile(generateCards("refactor", 4, Usage.SELF));
+    deck.addToDiscardPile(generateCards("refactor", 4, Usage.DISCARD));
   }
 
   private List<Card> generateCards(String title, int count, Usage usage) {

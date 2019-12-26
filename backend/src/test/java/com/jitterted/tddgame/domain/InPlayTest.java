@@ -8,6 +8,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class InPlayTest {
 
   @Test
+  public void newPlayerInPlayIsEmpty() throws Exception {
+    Player player = new Player(PlayerId.of(0));
+
+    assertThat(player.inPlay().isEmpty())
+      .isTrue();
+  }
+
+  @Test
   public void inPlayAddTwoCardsAreReturned() throws Exception {
     CardFactory cardFactory = new CardFactory();
     Card card1 = cardFactory.card("one", Usage.SELF);

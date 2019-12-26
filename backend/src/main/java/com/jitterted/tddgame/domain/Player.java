@@ -40,9 +40,9 @@ public class Player {
     return inPlay;
   }
 
-  public void play(Player opponent, CardId cardId) {
+  public void play(Game game, CardId cardId) {
     Card card = hand.remove(cardId);
-    card.usage().play(card, this, opponent);
+    card.usage().play(game, this, card);
   }
 
   public PlayerId id() {
