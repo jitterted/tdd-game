@@ -43,7 +43,7 @@ public class Game {
 
   public void playCardFor(PlayerId playerId, CardId cardId) {
     Player player = playerFor(playerId);
-    player.play(cardId);
+    player.play(opponentFor(player), cardId);
   }
 
   public Player playerFor(PlayerId playerId) {

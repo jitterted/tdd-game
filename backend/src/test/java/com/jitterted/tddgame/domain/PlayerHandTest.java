@@ -14,7 +14,7 @@ public class PlayerHandTest {
   public void newPlayerDrawsOneCardFromDeckTransfersToHand() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Deck deck = new Deck(shuffler);
-    Card theCard = cardFactory.card("The Card");
+    Card theCard = cardFactory.card("The Card", Usage.SELF);
     deck.addToDrawPile(theCard);
 
     player.drawFrom(deck);
@@ -40,8 +40,8 @@ public class PlayerHandTest {
   @Test
   public void playerWithTwoCardsFillsHandResultsInThreeCardsDrawnFromDeck() throws Exception {
     Player brainw4ashed = new Player(PlayerId.of(0));
-    brainw4ashed.hand().add(cardFactory.card("one"));
-    brainw4ashed.hand().add(cardFactory.card("two"));
+    brainw4ashed.hand().add(cardFactory.card("one", Usage.SELF));
+    brainw4ashed.hand().add(cardFactory.card("two", Usage.SELF));
     Deck deck = new Deck(shuffler);
     fillDeck(deck, 7);
 
@@ -70,7 +70,7 @@ public class PlayerHandTest {
   public void removeCardFromHandMeansCardNoLongerInHand() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Hand hand = player.hand();
-    Card theCard = cardFactory.card("The Card");
+    Card theCard = cardFactory.card("The Card", Usage.SELF);
     hand.add(theCard);
 
     Card removedCard = hand.remove(theCard.id());
@@ -85,7 +85,7 @@ public class PlayerHandTest {
   public void removeCardNotInHandThrowsNotInHandException() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Hand hand = player.hand();
-    Card theCard = cardFactory.card("Card Not In Hand");
+    Card theCard = cardFactory.card("Card Not In Hand", Usage.SELF);
 
     assertThatThrownBy(() -> {
       hand.remove(theCard.id());
@@ -95,7 +95,7 @@ public class PlayerHandTest {
 
   private void fillDeck(Deck deck, int count) {
     for (int i = 0; i < count; i++) {
-      deck.addToDrawPile(cardFactory.card(String.valueOf(i)));
+      deck.addToDrawPile(cardFactory.card(String.valueOf(i), Usage.SELF));
     }
   }
 

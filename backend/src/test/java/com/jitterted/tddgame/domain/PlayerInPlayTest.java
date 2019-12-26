@@ -17,10 +17,10 @@ class PlayerInPlayTest {
   @Test
   public void playerPlaysCardThenCardIsInPlay() throws Exception {
     Player player = new Player(PlayerId.of(0));
-    Card card = new CardFactory().card("to play");
+    Card card = new CardFactory().card("to play", Usage.SELF);
     player.hand().add(card);
 
-    player.play(card.id());
+    player.play(null, card.id());
 
     assertThat(player.hand().contains(card))
       .isFalse();
@@ -30,4 +30,19 @@ class PlayerInPlayTest {
       .isTrue();
   }
 
+  @Test
+  public void playerPlaysAttackCardThenCardIsInOpponentInPlay() throws Exception {
+    Player player1 = new Player(PlayerId.of(0));
+    Player player2 = new Player(PlayerId.of(1));
+
+    Card card = new CardFactory().card("attack", Usage.OPPONENT);
+    player1.hand().add(card);
+
+    player1.play(player2, card.id());
+
+    assertThat(player2.inPlay().cards())
+      .containsOnly(card);
+    assertThat(player1.inPlay().isEmpty())
+      .isTrue();
+  }
 }

@@ -5,11 +5,12 @@ import com.jitterted.tddgame.domain.CardFactory;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerId;
+import com.jitterted.tddgame.domain.Usage;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PlayerGameViewTest {
 
@@ -66,10 +67,10 @@ class PlayerGameViewTest {
     player1 = new Player(PlayerId.of(1));
     player2 = new Player(PlayerId.of(2));
     CardFactory cardFactory = new CardFactory();
-    Card cardPlayer1Play = cardFactory.card("player 1 in Play");
-    Card cardPlayer2Play = cardFactory.card("player 2 in Play");
-    Card cardPlayer1Hand = cardFactory.card("player 1 in Hand");
-    Card cardPlayer2Hand = cardFactory.card("player 2 in Hand");
+    Card cardPlayer1Play = cardFactory.card("player 1 in Play", Usage.SELF);
+    Card cardPlayer2Play = cardFactory.card("player 2 in Play", Usage.SELF);
+    Card cardPlayer1Hand = cardFactory.card("player 1 in Hand", Usage.SELF);
+    Card cardPlayer2Hand = cardFactory.card("player 2 in Hand", Usage.SELF);
     player1.inPlay().add(cardPlayer1Play);
     player1.hand().add(cardPlayer1Hand);
     player2.inPlay().add(cardPlayer2Play);

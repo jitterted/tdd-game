@@ -12,7 +12,7 @@ public class DeckDrawTest {
 
   @Test
   public void drawOneCardFromDeckOfOneCardReturnsGivenCard() throws Exception {
-    Card card = cardFactory.card("Write Code");
+    Card card = cardFactory.card("Write Code", Usage.SELF);
     Deck deck = new Deck(null);
     deck.addToDrawPile(card);
 
@@ -23,8 +23,8 @@ public class DeckDrawTest {
   @Test
   public void drawTwoCardsReturnsTwoCardsFromDeck() throws Exception {
     Deck deck = new Deck(null);
-    Card card1 = cardFactory.card("One");
-    Card card2 = cardFactory.card("Two");
+    Card card1 = cardFactory.card("One", Usage.SELF);
+    Card card2 = cardFactory.card("Two", Usage.SELF);
     deck.addToDrawPile(card1);
     deck.addToDrawPile(card2);
 
@@ -37,9 +37,9 @@ public class DeckDrawTest {
   @Test
   public void drawOneCardFromDeckOfThreeLeavesDeckWithTwoCards() throws Exception {
     Deck deck = new Deck(null);
-    deck.addToDrawPile(cardFactory.card("One"));
-    deck.addToDrawPile(cardFactory.card("Two"));
-    deck.addToDrawPile(cardFactory.card("Three"));
+    deck.addToDrawPile(cardFactory.card("One", Usage.SELF));
+    deck.addToDrawPile(cardFactory.card("Two", Usage.SELF));
+    deck.addToDrawPile(cardFactory.card("Three", Usage.SELF));
 
     deck.draw();
 

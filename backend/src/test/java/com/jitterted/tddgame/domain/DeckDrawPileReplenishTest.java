@@ -25,7 +25,7 @@ public class DeckDrawPileReplenishTest {
   public void whenDrawPileIsEmptyAndDiscardPileIsNotEmptyDrawPileSizeIsZero() throws Exception {
     CardFactory cardFactory = new CardFactory();
     Deck deck = new Deck(new CopyCardShuffler());
-    deck.addToDiscardPile(List.of(cardFactory.card("predict")));
+    deck.addToDiscardPile(List.of(cardFactory.card("predict", Usage.SELF)));
 
     assertThat(deck.drawPileSize())
       .isZero();
@@ -45,9 +45,9 @@ public class DeckDrawPileReplenishTest {
 
   private List<Card> discardThreeCardsTo(Deck deck) {
     CardFactory cardFactory = new CardFactory();
-    List<Card> discardCards = List.of(cardFactory.card("refactor"),
-                                      cardFactory.card("predict"),
-                                      cardFactory.card("write code"));
+    List<Card> discardCards = List.of(cardFactory.card("refactor", Usage.SELF),
+                                      cardFactory.card("predict", Usage.SELF),
+                                      cardFactory.card("write code", Usage.SELF));
     deck.addToDiscardPile(discardCards);
     return discardCards;
   }

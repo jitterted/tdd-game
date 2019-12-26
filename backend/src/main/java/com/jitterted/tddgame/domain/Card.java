@@ -5,14 +5,20 @@ import org.springframework.lang.NonNull;
 public class Card {
   private final String title;
   private final CardId id;
+  private final Usage usage;
 
-  public Card(@NonNull CardId id, @NonNull String title) {
+  public Card(@NonNull CardId id, @NonNull String title, @NonNull Usage usage) {
     this.title = title;
     this.id = id;
+    this.usage = usage;
   }
 
   public String title() {
     return title;
+  }
+
+  public Usage usage() {
+    return usage;
   }
 
   public CardId id() {

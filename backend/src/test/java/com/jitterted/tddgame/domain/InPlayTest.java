@@ -10,8 +10,8 @@ class InPlayTest {
   @Test
   public void inPlayAddTwoCardsAreReturned() throws Exception {
     CardFactory cardFactory = new CardFactory();
-    Card card1 = cardFactory.card("one");
-    Card card2 = cardFactory.card("two");
+    Card card1 = cardFactory.card("one", Usage.SELF);
+    Card card2 = cardFactory.card("two", Usage.SELF);
 
     InPlay inPlay = new InPlay();
 
@@ -25,13 +25,13 @@ class InPlayTest {
   @Test
   public void discardFromInPlayThatIsNotInPlayIsAnException() throws Exception {
     CardFactory cardFactory = new CardFactory();
-    Card card1 = cardFactory.card("one");
-    Card card2 = cardFactory.card("two");
+    Card card1 = cardFactory.card("one", Usage.SELF);
+    Card card2 = cardFactory.card("two", Usage.SELF);
     InPlay inPlay = new InPlay();
     inPlay.add(card1);
     inPlay.add(card2);
 
-    Card notInPlay = cardFactory.card("not in play");
+    Card notInPlay = cardFactory.card("not in play", Usage.SELF);
 
     assertThatThrownBy(() -> {inPlay.remove(notInPlay.id());})
       .isInstanceOf(CardNotInPlayException.class);

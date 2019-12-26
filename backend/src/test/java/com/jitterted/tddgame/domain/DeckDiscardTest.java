@@ -18,7 +18,7 @@ public class DeckDiscardTest {
   public void discardCardToDeckResultsInCardInDiscardPile() throws Exception {
     Deck deck = new Deck(null);
 
-    Card someCard = new Card(CardId.of(1), "some card");
+    Card someCard = new CardFactory().card("some card", Usage.SELF);
     deck.addToDiscardPile(someCard);
 
     assertThat(deck.discardPile())

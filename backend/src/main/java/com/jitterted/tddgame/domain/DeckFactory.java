@@ -18,18 +18,18 @@ public class DeckFactory {
   }
 
   private void addCardsToDiscardPileOf(Deck deck) {
-    deck.addToDiscardPile(generateCards("write code", 18));
-    deck.addToDiscardPile(generateCards("code smaller", 18));
-    deck.addToDiscardPile(generateCards("predict", 18));
-    deck.addToDiscardPile(generateCards("can't assert", 2));
-    deck.addToDiscardPile(generateCards("code bloat", 3));
-    deck.addToDiscardPile(generateCards("refactor", 4));
+    deck.addToDiscardPile(generateCards("write code", 18, Usage.SELF));
+    deck.addToDiscardPile(generateCards("code smaller", 18, Usage.SELF));
+    deck.addToDiscardPile(generateCards("predict", 18, Usage.SELF));
+    deck.addToDiscardPile(generateCards("can't assert", 2, Usage.OPPONENT));
+    deck.addToDiscardPile(generateCards("code bloat", 3, Usage.OPPONENT));
+    deck.addToDiscardPile(generateCards("refactor", 4, Usage.SELF));
   }
 
-  private List<Card> generateCards(String title, int count) {
+  private List<Card> generateCards(String title, int count, Usage usage) {
     List<Card> cards = new ArrayList<>();
     for (int i = 0; i < count; i++) {
-      cards.add(cardFactory.card(title));
+      cards.add(cardFactory.card(title, usage));
     }
     return cards;
   }

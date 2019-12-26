@@ -40,9 +40,9 @@ public class Player {
     return inPlay;
   }
 
-  public void play(CardId cardId) {
+  public void play(Player opponent, CardId cardId) {
     Card card = hand.remove(cardId);
-    inPlay.add(card);
+    card.usage().play(card, this, opponent);
   }
 
   public PlayerId id() {
@@ -55,6 +55,10 @@ public class Player {
 
   public void assignUser(User user) {
     this.user = user;
+  }
+
+  public boolean isAssigned() {
+    return user != null;
   }
 
   @Override
@@ -75,9 +79,5 @@ public class Player {
   @Override
   public String toString() {
     return "Player: " + playerId;
-  }
-
-  public boolean isAssigned() {
-    return user != null;
   }
 }

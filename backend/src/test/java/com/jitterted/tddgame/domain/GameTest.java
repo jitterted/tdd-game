@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class GameTest {
 
@@ -14,8 +14,8 @@ class GameTest {
     Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
     game.start();
 
-    assertThat(game.players().size())
-      .isEqualTo(2);
+    assertThat(game.players())
+      .hasSize(2);
     assertThat(game.players().get(0).hand().count())
       .isEqualTo(5);
     assertThat(game.players().get(1).hand().count())
@@ -39,6 +39,22 @@ class GameTest {
   }
 
   @Test
+  public void playedAttackCardIsMovedToOpponentInPlay() throws Exception {
+    Player player = new Player(PlayerId.of(0));
+    Player opponent = new Player(PlayerId.of(1));
+    Game game = new Game(List.of(player, opponent), null);
+    Card attack = new CardFactory().card("attack", Usage.OPPONENT);
+    player.hand().add(attack);
+
+    game.playCardFor(player.id(), attack.id());
+
+    assertThat(player.inPlay().cards())
+      .isEmpty();
+    assertThat(opponent.inPlay().cards())
+      .containsOnly(attack);
+  }
+
+  @Test
   public void playerDiscardOfCardIsTransferredToDeckDiscardPile() throws Exception {
     DeckFactory deckFactory = new DeckFactory(new CardFactory());
     Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
@@ -58,7 +74,7 @@ class GameTest {
   @Test
   public void playerWithRoomInHandDrawsCardThenCardFromDrawPileInHand() throws Exception {
     Deck deck = new Deck(null);
-    Card card = new Card(CardId.of(1), "card1");
+    Card card = new Card(CardId.of(1), "card1", null);
     deck.addToDrawPile(card);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Player player0 = twoPlayers.get(0);
