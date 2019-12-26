@@ -22,7 +22,7 @@
           id: cardId,
           source: this.source
         }));
-        fetch('/api/game/players/0/discards', {
+        fetch('/api/game/players/' + this.$route.params.playerId + '/discards', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
