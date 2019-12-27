@@ -1,5 +1,7 @@
 <template>
+  <!-- need position:relative for the overlay container -->
   <div style="position: relative"
+       :style="{order: order}"
        @click.prevent="toggleSelect"
   >
     <div v-if="selected" class="card-overlay font-extrabold">
@@ -57,6 +59,10 @@
         required: true
       },
       id: {
+        type: Number,
+        required: true
+      },
+      order: {
         type: Number,
         required: true
       }

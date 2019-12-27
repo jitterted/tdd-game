@@ -10,10 +10,10 @@
 * [ ] Display user's name coming from back-end
 * [ ] Prevent card selection for opponent-in-play cards
 * [ ] No "Play" option for card in "In-Play" area
-* [ ] Preserve order of display of cards: in hand, in-play, etc.
-    * [ ] Drag-n-drop reordering of display of cards
+* [ ] Display user's name coming from back-end
 
 ### Nice to Have
+* [ ] Drag-n-drop reordering of display of cards
 * [ ] Animate new card appearing anywhere (esp. in hand)
 * [ ] Prevent multiple selection: only single select of cards
 * [ ] show deck status with # of cards in discard pile and in draw pile
