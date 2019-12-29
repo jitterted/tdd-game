@@ -4,8 +4,10 @@
     <playing-card v-for="card in cards"
                   :key="card.id"
                   v-bind="card"
-                  :order="ordering.indexOf(card.id)"
+                  :order="ordering"
                   @discard="discard"
+                  @moveright="moveRight"
+                  @moveleft="moveLeft"
     >
     </playing-card>
 
@@ -34,6 +36,18 @@
             })
           }
         );
+      },
+      moveRight(cardId) {
+        let cardIndex = this.ordering.indexOf(cardId);
+        let cardToTheRight = this.ordering[cardIndex + 1];
+        this.$set(this.ordering, cardIndex, cardToTheRight);
+        this.$set(this.ordering, cardIndex + 1, cardId);
+      },
+      moveLeft(cardId) {
+        let cardIndex = this.ordering.indexOf(cardId);
+        let cardToTheLeft = this.ordering[cardIndex - 1];
+        this.$set(this.ordering, cardIndex, cardToTheLeft);
+        this.$set(this.ordering, cardIndex - 1, cardId);
       }
     },
     props: {

@@ -1,12 +1,11 @@
 <template>
   <!-- need position:relative for the overlay container -->
   <div style="position: relative"
-       :style="{order: order}"
+       :style="{order: computedOrder}"
        @click.prevent="toggleSelect"
   >
     <div v-if="selected" class="card-overlay font-extrabold">
       <div class="mr-5 ml-2 mt-2">
-        <h1 class="text-right">{{ id }}</h1>
         <br/>
         <br/>
         <div class="bg-white border border-gray-300 p-2">
@@ -27,6 +26,20 @@
               Play
             </button>
           </h3>
+          <div class="mt-8">
+            <button
+              class="border rounded mx-1 px-2 bg-blue-500 text-white font-extrabold"
+              @click.prevent="moveLeft"
+            >
+              &lt;
+            </button>
+            <button
+              class="border rounded mx-1 px-2 bg-blue-500 text-white float-right font-extrabold"
+              @click.prevent="moveRight"
+            >
+              &gt;
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -35,7 +48,13 @@
       style="height: 90%;"
       :class="[categoryColor.background, selectedClasses]"
     >
-      <div class="font-bold text-xl smallcaps mb-2 p-2" :class="categoryColor.title">{{ title }}</div>
+      <div class="font-bold text-xl smallcaps mb-2 p-2" :class="categoryColor.title">
+        {{ title }}
+        <div class="font-light opacity-25 float-right">
+          {{ id }}
+        </div>
+
+      </div>
       <div class="px-2 py-1">
         <card-rule v-for="(rule, index) in card.rules" :key="index">
           <span v-html="rule"></span>
@@ -63,7 +82,7 @@
         required: true
       },
       order: {
-        type: Number,
+        type: Array,
         required: true
       }
     },
@@ -85,6 +104,9 @@
       },
       card() {
         return this.cards[this.title] ? this.cards[this.title] : {content: []};
+      },
+      computedOrder() {
+        return this.order.indexOf(this.id);
       }
     },
     methods: {
@@ -106,6 +128,12 @@
           },
           body: JSON.stringify({id: this.id})
         });
+      },
+      moveRight() {
+        this.$emit('moveright', this.id);
+      },
+      moveLeft() {
+        this.$emit('moveleft', this.id);
       }
     },
     data() {

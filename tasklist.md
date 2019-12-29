@@ -5,6 +5,10 @@
     * [ ] Change ".count() < 5" to ".canAdd()" (or "hasRoom") when looping to add cards
 * [ ] Move PlayerHandTest tests to HandTests and refactor ("object envy" code smell)
 
+## BUGS
+* [X] When cards are moved, the cards don't visibly change order until the data is refreshed
+      Somewhere we're missing the propagation of changes to the ordering array  
+
 ## Display
 ~~* [ ] Center the cards within their row~~
 * [ ] Display user's name coming from back-end
