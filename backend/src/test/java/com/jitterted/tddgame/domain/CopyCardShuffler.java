@@ -2,9 +2,9 @@ package com.jitterted.tddgame.domain;
 
 import java.util.List;
 
-class CopyCardShuffler implements CardShuffler {
+class CopyCardShuffler<C> implements CardShuffler<C> {
   @Override
-  public List<Card> shuffle(List<Card> cards) {
+  public List<C> shuffle(List<C> cards) {
     return cards;
   }
 }

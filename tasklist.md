@@ -11,7 +11,7 @@
 
 ## Display
 ~~* [ ] Center the cards within their row~~
-* [ ] Display user's name coming from back-end
+* [X] Display user's name coming from back-end
 * [ ] Prevent card selection for opponent-in-play cards
 * [ ] No "Play" option for card in "In-Play" area
 
@@ -44,7 +44,7 @@
 
 ## Add Player Support
 * [X] "log in" to Game system: takes a player name, returns player number and a base url (e.g., /api/game/player/0)
-* [ ] Handle all player actions and direct to correct API endpoint (player ID parameter)
+* [X] Handle all player actions and direct to correct API endpoint (player ID parameter)
 
 
 # Game Master View

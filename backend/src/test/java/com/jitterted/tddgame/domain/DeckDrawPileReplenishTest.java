@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class DeckDrawPileReplenishTest {
 
@@ -33,8 +33,8 @@ public class DeckDrawPileReplenishTest {
 
   @Test
   public void drawPileIsReplenishedFromShuffledDiscardPile() throws Exception {
-    CardShuffler shuffler = new ReverseCardShuffler();
-    Deck deck = new Deck(shuffler);
+    CardShuffler<Card> shuffler = new ReverseCardShuffler<>();
+    Deck<Card> deck = new Deck<>(shuffler);
     List<Card> discardedCards = discardThreeCardsTo(deck);
 
     List<Card> drawnCards = drawThreeCardsFrom(deck);
@@ -43,7 +43,7 @@ public class DeckDrawPileReplenishTest {
       .doesNotContainSequence(discardedCards);
   }
 
-  private List<Card> discardThreeCardsTo(Deck deck) {
+  private List<Card> discardThreeCardsTo(Deck<Card> deck) {
     CardFactory cardFactory = new CardFactory();
     List<Card> discardCards = List.of(cardFactory.card("refactor", Usage.SELF),
                                       cardFactory.card("predict", Usage.SELF),
@@ -52,7 +52,7 @@ public class DeckDrawPileReplenishTest {
     return discardCards;
   }
 
-  private List<Card> drawThreeCardsFrom(Deck deck) {
+  private List<Card> drawThreeCardsFrom(Deck<Card> deck) {
     List<Card> drawnCards = new ArrayList<>();
     for (int i = 0; i < 3; i++) {
       drawnCards.add(deck.draw());
@@ -61,9 +61,9 @@ public class DeckDrawPileReplenishTest {
   }
 
 
-  private static class ReverseCardShuffler implements CardShuffler {
+  private static class ReverseCardShuffler<C> implements CardShuffler<C> {
     @Override
-    public List<Card> shuffle(List<Card> cards) {
+    public List<C> shuffle(List<C> cards) {
       Collections.reverse(cards);
       return cards;
     }

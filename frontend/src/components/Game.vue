@@ -141,7 +141,18 @@
         this.refresh();
       },
       drawTestResultsCard() {
-        // send a POST of { action: "TEST_RESULTS" }
+        fetch(this.apiUrl + '/actions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({action: 'TEST_RESULTS'})
+          }
+        )
+          .then(response => response.json())
+          .then(jsonData => this.testResultsCard = jsonData)
+          .catch();
+        // TODO: show the test result card in the modal
       },
       playerChanged() {
         this.playerId = this.$route.params.playerId;

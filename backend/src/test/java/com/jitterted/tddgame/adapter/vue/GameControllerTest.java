@@ -9,6 +9,7 @@ import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
+import com.jitterted.tddgame.domain.Usage;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -30,11 +31,12 @@ class GameControllerTest {
   }
 
   @Test
-  public void playedCardIsTransferredFromHandToInPlay() throws Exception {
+  public void selfPlayedCardIsTransferredFromHandToInPlay() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
-    Card cardFromHand = player.hand().cards().get(0);
+    Card cardFromHand = new Card(CardId.of(999), "played card", Usage.SELF);
+    player.hand().add(cardFromHand);
 
     GameController gameController = new GameController(gameService);
 

@@ -6,16 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class Deck {
-  private Queue<Card> drawPile = new LinkedList<>();
-  private List<Card> discardPile = new ArrayList<>();
-  private final CardShuffler shuffler;
+public class Deck<C> {
+  private Queue<C> drawPile = new LinkedList<>();
+  private List<C> discardPile = new ArrayList<>();
+  private final CardShuffler<C> shuffler;
 
-  Deck(CardShuffler shuffler) {
+  Deck(CardShuffler<C> shuffler) {
     this.shuffler = shuffler;
   }
 
-  public Card draw() {
+  public C draw() {
     if (drawPile.isEmpty()) {
       replenishFromDiscard();
     }
@@ -27,7 +27,7 @@ public class Deck {
     discardPile.clear();
   }
 
-  public void addToDrawPile(Card card) {
+  public void addToDrawPile(C card) {
     drawPile.add(card);
   }
 
@@ -35,15 +35,15 @@ public class Deck {
     return drawPile.size();
   }
 
-  public void addToDiscardPile(Card card) {
+  public void addToDiscardPile(C card) {
     discardPile.add(card);
   }
 
-  public void addToDiscardPile(List<Card> cards) {
+  public void addToDiscardPile(List<C> cards) {
     discardPile.addAll(cards);
   }
 
-  public List<Card> discardPile() {
+  public List<C> discardPile() {
     return Collections.unmodifiableList(discardPile);
   }
 }
