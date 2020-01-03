@@ -2,7 +2,7 @@ package com.jitterted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class DeckDiscardTest {
 
@@ -18,10 +18,10 @@ public class DeckDiscardTest {
   public void discardCardToDeckResultsInCardInDiscardPile() throws Exception {
     Deck deck = new Deck(null);
 
-    Card someCard = new CardFactory().card("some card", Usage.SELF);
-    deck.addToDiscardPile(someCard);
+    PlayingCard somePlayingCard = new CardFactory().playingCard("some card", Usage.SELF);
+    deck.addToDiscardPile(somePlayingCard);
 
     assertThat(deck.discardPile())
-      .containsExactly(someCard);
+      .containsExactly(somePlayingCard);
   }
 }

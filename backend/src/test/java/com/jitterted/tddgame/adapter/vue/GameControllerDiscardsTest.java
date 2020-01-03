@@ -1,11 +1,11 @@
 package com.jitterted.tddgame.adapter.vue;
 
-import com.jitterted.tddgame.domain.Card;
 import com.jitterted.tddgame.domain.Deck;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
+import com.jitterted.tddgame.domain.PlayingCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
 
@@ -20,13 +20,13 @@ public class GameControllerDiscardsTest {
     Game game = gameService.currentGame();
     Deck deck = game.deck();
     Player player = game.players().get(0);
-    Card cardFromHand = player.hand().cards().get(0);
+    PlayingCard playingCardFromHand = player.hand().cards().get(0);
 
     gameController.discard(String.valueOf(player.id().getId()),
-                           new DiscardAction(cardFromHand.id().getId(), DiscardAction.SOURCE_HAND));
+                           new DiscardAction(playingCardFromHand.id().getId(), DiscardAction.SOURCE_HAND));
 
     assertThat(deck.discardPile())
-      .containsExactly(cardFromHand);
+      .containsExactly(playingCardFromHand);
   }
 
   @Test
@@ -36,14 +36,14 @@ public class GameControllerDiscardsTest {
     Game game = gameService.currentGame();
     Deck deck = game.deck();
     Player player = game.players().get(0);
-    Card cardFromInPlay = player.hand().cards().get(0);
-    game.playCardFor(player.id(), cardFromInPlay.id());
+    PlayingCard playingCardFromInPlay = player.hand().cards().get(0);
+    game.playCardFor(player.id(), playingCardFromInPlay.id());
 
     gameController.discard(String.valueOf(player.id().getId()),
-                           new DiscardAction(cardFromInPlay.id().getId(), DiscardAction.SOURCE_IN_PLAY));
+                           new DiscardAction(playingCardFromInPlay.id().getId(), DiscardAction.SOURCE_IN_PLAY));
 
     assertThat(deck.discardPile())
-      .containsExactly(cardFromInPlay);
+      .containsExactly(playingCardFromInPlay);
   }
 
 }

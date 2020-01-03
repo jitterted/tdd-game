@@ -4,14 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 public class CreateDeckTest {
 
   @Test
   public void newDeckHasFullSetOfCardsAfterShuffleTriggeredByDraw() throws Exception {
-    Deck deck = new DeckFactory(new CardFactory()).createStandardDeck();
+    Deck deck = new DeckFactory(new CardFactory()).createPlayingCardDeck();
 
     deck.draw(); // trigger shuffle from discard over to draw pile and draw 1
 
@@ -21,7 +20,7 @@ public class CreateDeckTest {
 
   @Test
   public void newDeckAllowsDrawUpToOnlyFullSetOfCards() throws Exception {
-    Deck deck = new DeckFactory(new CardFactory()).createStandardDeck();
+    Deck deck = new DeckFactory(new CardFactory()).createPlayingCardDeck();
 
     for (int i = 0; i < 63; i++) {
       deck.draw();

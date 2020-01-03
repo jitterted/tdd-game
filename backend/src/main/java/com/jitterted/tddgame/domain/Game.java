@@ -7,38 +7,38 @@ import java.util.Map;
 
 public class Game {
   private final Map<PlayerId, Player> playerMap = new HashMap<>();
-  private final Deck deck;
+  private final Deck<PlayingCard> playingCardDeck;
 
-  public Game(List<Player> playerList, Deck deck) {
+  public Game(List<Player> playerList, Deck<PlayingCard> playingCardDeck) {
     playerList.forEach(player -> playerMap.put(player.id(), player));
-    this.deck = deck;
+    this.playingCardDeck = playingCardDeck;
   }
 
   public List<Player> players() {
     return new ArrayList<>(playerMap.values());
   }
 
-  public Deck deck() {
-    return deck;
+  public Deck<PlayingCard> deck() {
+    return playingCardDeck;
   }
 
   public void start() {
-    players().forEach(player -> player.fillHandFrom(deck));
+    players().forEach(player -> player.fillHandFrom(playingCardDeck));
   }
 
   public void discardFromHand(PlayerId playerId, CardId cardId) {
     Player player = playerFor(playerId);
-    player.discardFromHand(cardId, deck);
+    player.discardFromHand(cardId, playingCardDeck);
   }
 
   public void discardFromInPlay(PlayerId playerId, CardId cardId) {
     Player player = playerFor(playerId);
-    player.discardFromInPlay(cardId, deck);
+    player.discardFromInPlay(cardId, playingCardDeck);
   }
 
   public void drawCardFor(PlayerId playerId) {
     Player player = playerFor(playerId);
-    player.drawFrom(deck);
+    player.drawFrom(playingCardDeck);
   }
 
   public void playCardFor(PlayerId playerId, CardId cardId) {

@@ -1,6 +1,5 @@
 package com.jitterted.tddgame.adapter.vue;
 
-import com.jitterted.tddgame.domain.Card;
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
@@ -8,6 +7,7 @@ import com.jitterted.tddgame.domain.Hand;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayerId;
+import com.jitterted.tddgame.domain.PlayingCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import com.jitterted.tddgame.domain.Usage;
 import org.junit.jupiter.api.Test;
@@ -35,16 +35,16 @@ class GameControllerTest {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
-    Card cardFromHand = new Card(CardId.of(999), "played card", Usage.SELF);
-    player.hand().add(cardFromHand);
+    PlayingCard playingCardFromHand = new PlayingCard(CardId.of(999), "played card", Usage.SELF);
+    player.hand().add(playingCardFromHand);
 
     GameController gameController = new GameController(gameService);
 
     gameController.playCard(String.valueOf(player.id().getId()),
-                            new PlayCardAction(cardFromHand.id().getId()));
+                            new PlayCardAction(playingCardFromHand.id().getId()));
 
     assertThat(player.inPlay().cards())
-      .contains(cardFromHand);
+      .contains(playingCardFromHand);
   }
 
   @Test

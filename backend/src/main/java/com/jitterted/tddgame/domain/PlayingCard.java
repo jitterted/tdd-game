@@ -2,12 +2,12 @@ package com.jitterted.tddgame.domain;
 
 import org.springframework.lang.NonNull;
 
-public class Card {
+public class PlayingCard {
   private final String title;
   private final CardId id;
   private final Usage usage;
 
-  public Card(@NonNull CardId id, @NonNull String title, @NonNull Usage usage) {
+  public PlayingCard(@NonNull CardId id, @NonNull String title, @NonNull Usage usage) {
     this.title = title;
     this.id = id;
     this.usage = usage;
@@ -30,9 +30,9 @@ public class Card {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    Card card = (Card) o;
+    PlayingCard playingCard = (PlayingCard) o;
 
-    return id.equals(card.id);
+    return id.equals(playingCard.id);
   }
 
   @Override

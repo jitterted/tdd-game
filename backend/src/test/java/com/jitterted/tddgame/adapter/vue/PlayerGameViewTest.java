@@ -1,10 +1,10 @@
 package com.jitterted.tddgame.adapter.vue;
 
-import com.jitterted.tddgame.domain.Card;
 import com.jitterted.tddgame.domain.CardFactory;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerId;
+import com.jitterted.tddgame.domain.PlayingCard;
 import com.jitterted.tddgame.domain.Usage;
 import com.jitterted.tddgame.domain.User;
 import org.junit.jupiter.api.Test;
@@ -116,14 +116,14 @@ class PlayerGameViewTest {
     player1 = new Player(PlayerId.of(1));
     player2 = new Player(PlayerId.of(2));
     CardFactory cardFactory = new CardFactory();
-    Card cardPlayer1Play = cardFactory.card("player 1 in Play", Usage.SELF);
-    Card cardPlayer2Play = cardFactory.card("player 2 in Play", Usage.SELF);
-    Card cardPlayer1Hand = cardFactory.card("player 1 in Hand", Usage.SELF);
-    Card cardPlayer2Hand = cardFactory.card("player 2 in Hand", Usage.SELF);
-    player1.inPlay().add(cardPlayer1Play);
-    player1.hand().add(cardPlayer1Hand);
-    player2.inPlay().add(cardPlayer2Play);
-    player2.hand().add(cardPlayer2Hand);
+    PlayingCard playingCardPlayer1Play = cardFactory.playingCard("player 1 in Play", Usage.SELF);
+    PlayingCard playingCardPlayer2Play = cardFactory.playingCard("player 2 in Play", Usage.SELF);
+    PlayingCard playingCardPlayer1Hand = cardFactory.playingCard("player 1 in Hand", Usage.SELF);
+    PlayingCard playingCardPlayer2Hand = cardFactory.playingCard("player 2 in Hand", Usage.SELF);
+    player1.inPlay().add(playingCardPlayer1Play);
+    player1.hand().add(playingCardPlayer1Hand);
+    player2.inPlay().add(playingCardPlayer2Play);
+    player2.hand().add(playingCardPlayer2Hand);
     game = new Game(List.of(player1, player2), null);
   }
 }

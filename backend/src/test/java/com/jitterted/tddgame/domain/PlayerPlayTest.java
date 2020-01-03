@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 class PlayerPlayTest {
@@ -12,16 +12,16 @@ class PlayerPlayTest {
   @Test
   public void playerPlaysCardThenCardIsInPlay() throws Exception {
     Player player = new Player(PlayerId.of(0));
-    Card card = new CardFactory().card("to play", Usage.SELF);
-    player.hand().add(card);
+    PlayingCard playingCard = new CardFactory().playingCard("to play", Usage.SELF);
+    player.hand().add(playingCard);
 
-    player.play(null, card.id());
+    player.play(null, playingCard.id());
 
-    assertThat(player.hand().contains(card))
+    assertThat(player.hand().contains(playingCard))
       .isFalse();
     assertThat(player.inPlay().isEmpty())
       .isFalse();
-    assertThat(player.inPlay().contains(card))
+    assertThat(player.inPlay().contains(playingCard))
       .isTrue();
   }
 
@@ -31,13 +31,13 @@ class PlayerPlayTest {
     Player opponent = new Player(PlayerId.of(1));
     Game game = new Game(List.of(player, opponent), null);
 
-    Card card = new CardFactory().card("attack", Usage.OPPONENT);
-    player.hand().add(card);
+    PlayingCard playingCard = new CardFactory().playingCard("attack", Usage.OPPONENT);
+    player.hand().add(playingCard);
 
-    player.play(game, card.id());
+    player.play(game, playingCard.id());
 
     assertThat(opponent.inPlay().cards())
-      .containsOnly(card);
+      .containsOnly(playingCard);
     assertThat(player.inPlay().isEmpty())
       .isTrue();
   }
@@ -45,17 +45,17 @@ class PlayerPlayTest {
   @Test
   public void playedRefactorCardIsDiscarded() throws Exception {
     Player player = new Player(PlayerId.of(0));
-    Card card = new CardFactory().card("refactor", Usage.DISCARD);
-    player.hand().add(card);
+    PlayingCard playingCard = new CardFactory().playingCard("refactor", Usage.DISCARD);
+    player.hand().add(playingCard);
     Deck deck = new Deck(null);
     Game game = new Game(List.of(player), deck);
 
     assumeThat(player.hand().cards())
-      .contains(card);
+      .contains(playingCard);
 
-    player.play(game, card.id());
+    player.play(game, playingCard.id());
 
     assertThat(game.deck().discardPile())
-      .containsOnly(card);
+      .containsOnly(playingCard);
   }
 }

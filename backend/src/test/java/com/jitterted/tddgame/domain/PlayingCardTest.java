@@ -2,14 +2,14 @@ package com.jitterted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
-public class CardTest {
+public class PlayingCardTest {
   @Test
   public void twoCardInstancesWithSameTitleAreNotEqual() throws Exception {
     CardFactory cardFactory = new CardFactory();
-    Card refactor1 = cardFactory.card("Refactor", Usage.SELF);
-    Card refactor2 = cardFactory.card("Refactor", Usage.SELF);
+    PlayingCard refactor1 = cardFactory.playingCard("Refactor", Usage.SELF);
+    PlayingCard refactor2 = cardFactory.playingCard("Refactor", Usage.SELF);
 
     assertThat(refactor1)
       .isNotEqualTo(refactor2);

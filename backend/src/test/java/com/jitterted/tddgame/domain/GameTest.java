@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class GameTest {
 
@@ -43,7 +43,7 @@ class GameTest {
     Player player = new Player(PlayerId.of(0));
     Player opponent = new Player(PlayerId.of(1));
     Game game = new Game(List.of(player, opponent), null);
-    Card attack = new CardFactory().card("attack", Usage.OPPONENT);
+    PlayingCard attack = new CardFactory().playingCard("attack", Usage.OPPONENT);
     player.hand().add(attack);
 
     game.playCardFor(player.id(), attack.id());
@@ -61,21 +61,21 @@ class GameTest {
     game.start();
 
     Player player = game.players().get(0);
-    Card cardFromHand = player.hand().cards().get(0);
+    PlayingCard playingCardFromHand = player.hand().cards().get(0);
 
-    game.discardFromHand(player.id(), cardFromHand.id());
+    game.discardFromHand(player.id(), playingCardFromHand.id());
 
     assertThat(game.deck().discardPile())
-      .containsExactly(cardFromHand);
-    assertThat(player.hand().contains(cardFromHand))
+      .containsExactly(playingCardFromHand);
+    assertThat(player.hand().contains(playingCardFromHand))
       .isFalse();
   }
 
   @Test
   public void playerWithRoomInHandDrawsCardThenCardFromDrawPileInHand() throws Exception {
     Deck deck = new Deck(null);
-    Card card = new Card(CardId.of(1), "card1", null);
-    deck.addToDrawPile(card);
+    PlayingCard playingCard = new PlayingCard(CardId.of(1), "card1", null);
+    deck.addToDrawPile(playingCard);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Player player0 = twoPlayers.get(0);
     Game game = new Game(twoPlayers, deck);
@@ -85,6 +85,6 @@ class GameTest {
     assertThat(deck.drawPileSize())
       .isZero();
     assertThat(player0.hand().cards())
-      .containsExactly(card);
+      .containsExactly(playingCard);
   }
 }

@@ -12,34 +12,34 @@ public class DeckDrawTest {
 
   @Test
   public void drawOneCardFromDeckOfOneCardReturnsGivenCard() throws Exception {
-    Card card = cardFactory.card("Write Code", Usage.SELF);
-    Deck<Card> deck = new Deck<>(null);
-    deck.addToDrawPile(card);
+    PlayingCard playingCard = cardFactory.playingCard("Write Code", Usage.SELF);
+    Deck<PlayingCard> deck = new Deck<>(null);
+    deck.addToDrawPile(playingCard);
 
     assertThat(deck.draw())
-      .isEqualTo(card);
+      .isEqualTo(playingCard);
   }
 
   @Test
   public void drawTwoCardsReturnsTwoCardsFromDeck() throws Exception {
-    Deck<Card> deck = new Deck<>(null);
-    Card card1 = cardFactory.card("One", Usage.SELF);
-    Card card2 = cardFactory.card("Two", Usage.SELF);
-    deck.addToDrawPile(card1);
-    deck.addToDrawPile(card2);
+    Deck<PlayingCard> deck = new Deck<>(null);
+    PlayingCard playingCard1 = cardFactory.playingCard("One", Usage.SELF);
+    PlayingCard playingCard2 = cardFactory.playingCard("Two", Usage.SELF);
+    deck.addToDrawPile(playingCard1);
+    deck.addToDrawPile(playingCard2);
 
-    List<Card> drawnCards = List.of(deck.draw(), deck.draw());
+    List<PlayingCard> drawnPlayingCards = List.of(deck.draw(), deck.draw());
 
-    assertThat(drawnCards)
-      .containsExactlyInAnyOrder(card1, card2);
+    assertThat(drawnPlayingCards)
+      .containsExactlyInAnyOrder(playingCard1, playingCard2);
   }
 
   @Test
   public void drawOneCardFromDeckOfThreeLeavesDeckWithTwoCards() throws Exception {
-    Deck<Card> deck = new Deck<>(null);
-    deck.addToDrawPile(cardFactory.card("One", Usage.SELF));
-    deck.addToDrawPile(cardFactory.card("Two", Usage.SELF));
-    deck.addToDrawPile(cardFactory.card("Three", Usage.SELF));
+    Deck<PlayingCard> deck = new Deck<>(null);
+    deck.addToDrawPile(cardFactory.playingCard("One", Usage.SELF));
+    deck.addToDrawPile(cardFactory.playingCard("Two", Usage.SELF));
+    deck.addToDrawPile(cardFactory.playingCard("Three", Usage.SELF));
 
     deck.draw();
 

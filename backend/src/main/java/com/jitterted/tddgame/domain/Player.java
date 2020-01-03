@@ -16,24 +16,24 @@ public class Player {
     return hand;
   }
 
-  public void drawFrom(Deck<Card> deck) {
+  public void drawFrom(Deck<PlayingCard> deck) {
     hand.add(deck.draw());
   }
 
-  public void fillHandFrom(Deck<Card> deck) {
+  public void fillHandFrom(Deck<PlayingCard> deck) {
     while (hand.count() < 5) {
       drawFrom(deck);
     }
   }
 
-  public void discardFromHand(CardId cardId, Deck<Card> deck) {
-    Card card = hand.remove(cardId);
-    deck.addToDiscardPile(card);
+  public void discardFromHand(CardId cardId, Deck<PlayingCard> deck) {
+    PlayingCard playingCard = hand.remove(cardId);
+    deck.addToDiscardPile(playingCard);
   }
 
-  public void discardFromInPlay(CardId cardId, Deck<Card> deck) {
-    Card card = inPlay.remove(cardId);
-    deck.addToDiscardPile(card);
+  public void discardFromInPlay(CardId cardId, Deck<PlayingCard> deck) {
+    PlayingCard playingCard = inPlay.remove(cardId);
+    deck.addToDiscardPile(playingCard);
   }
 
   public InPlay inPlay() {
@@ -41,8 +41,8 @@ public class Player {
   }
 
   public void play(Game game, CardId cardId) {
-    Card card = hand.remove(cardId);
-    card.usage().play(game, this, card);
+    PlayingCard playingCard = hand.remove(cardId);
+    playingCard.usage().play(game, this, playingCard);
   }
 
   public PlayerId id() {

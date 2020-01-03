@@ -2,7 +2,7 @@ package com.jitterted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class HandTest {
 
@@ -20,10 +20,10 @@ public class HandTest {
   public void handIsNotFullWhenHoldingFourCards() throws Exception {
     Hand hand = new Hand(PlayerId.of(0));
 
-    hand.add(cardFactory.card("one", Usage.SELF));
-    hand.add(cardFactory.card("two", Usage.SELF));
-    hand.add(cardFactory.card("three", Usage.SELF));
-    hand.add(cardFactory.card("four", Usage.SELF));
+    hand.add(cardFactory.playingCard("one", Usage.SELF));
+    hand.add(cardFactory.playingCard("two", Usage.SELF));
+    hand.add(cardFactory.playingCard("three", Usage.SELF));
+    hand.add(cardFactory.playingCard("four", Usage.SELF));
 
     assertThat(hand.isFull())
       .isFalse();
@@ -33,11 +33,11 @@ public class HandTest {
   public void handIsFullWhenHoldingFiveCards() throws Exception {
     Hand hand = new Hand(PlayerId.of(0));
 
-    hand.add(cardFactory.card("one", Usage.SELF));
-    hand.add(cardFactory.card("two", Usage.SELF));
-    hand.add(cardFactory.card("three", Usage.SELF));
-    hand.add(cardFactory.card("four", Usage.SELF));
-    hand.add(cardFactory.card("five", Usage.SELF));
+    hand.add(cardFactory.playingCard("one", Usage.SELF));
+    hand.add(cardFactory.playingCard("two", Usage.SELF));
+    hand.add(cardFactory.playingCard("three", Usage.SELF));
+    hand.add(cardFactory.playingCard("four", Usage.SELF));
+    hand.add(cardFactory.playingCard("five", Usage.SELF));
 
     assertThat(hand.isFull())
       .isTrue();

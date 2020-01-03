@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Hand {
-  private final Map<CardId, Card> cards = new HashMap<>();
+  private final Map<CardId, PlayingCard> cards = new HashMap<>();
   private final PlayerId owningPlayerId; // only used by toString()
 
   public Hand(PlayerId playerId) {
@@ -17,23 +17,23 @@ public class Hand {
     return cards.isEmpty();
   }
 
-  public boolean contains(Card card) {
-    return cards.containsKey(card.id());
+  public boolean contains(PlayingCard playingCard) {
+    return cards.containsKey(playingCard.id());
   }
 
-  public void add(Card card) {
-    cards.put(card.id(), card);
+  public void add(PlayingCard playingCard) {
+    cards.put(playingCard.id(), playingCard);
   }
 
   public int count() {
     return cards.size();
   }
 
-  public List<Card> cards() {
+  public List<PlayingCard> cards() {
     return new ArrayList<>(cards.values());
   }
 
-  public Card remove(CardId cardId) {
+  public PlayingCard remove(CardId cardId) {
     if (cards.containsKey(cardId)) {
       return cards.remove(cardId);
     }

@@ -11,27 +11,27 @@ public class DeckFactory {
     this.cardFactory = cardFactory;
   }
 
-  public Deck createStandardDeck() {
-    Deck deck = new Deck(new RandomCardShuffler());
-    addCardsToDiscardPileOf(deck);
+  public Deck<PlayingCard> createPlayingCardDeck() {
+    Deck<PlayingCard> deck = new Deck<>(new RandomCardShuffler<>());
+    addPlayingCardsToDiscardPileOf(deck);
     return deck;
   }
 
-  private void addCardsToDiscardPileOf(Deck deck) {
-    deck.addToDiscardPile(generateCards("write code", 18, Usage.SELF));
-    deck.addToDiscardPile(generateCards("code smaller", 18, Usage.SELF));
-    deck.addToDiscardPile(generateCards("predict", 18, Usage.SELF));
-    deck.addToDiscardPile(generateCards("can't assert", 2, Usage.OPPONENT));
-    deck.addToDiscardPile(generateCards("code bloat", 3, Usage.OPPONENT));
-    deck.addToDiscardPile(generateCards("refactor", 4, Usage.DISCARD));
+  private void addPlayingCardsToDiscardPileOf(Deck<PlayingCard> deck) {
+    deck.addToDiscardPile(generatePlayingCards("write code", 18, Usage.SELF));
+    deck.addToDiscardPile(generatePlayingCards("code smaller", 18, Usage.SELF));
+    deck.addToDiscardPile(generatePlayingCards("predict", 18, Usage.SELF));
+    deck.addToDiscardPile(generatePlayingCards("can't assert", 2, Usage.OPPONENT));
+    deck.addToDiscardPile(generatePlayingCards("code bloat", 3, Usage.OPPONENT));
+    deck.addToDiscardPile(generatePlayingCards("refactor", 4, Usage.DISCARD));
   }
 
-  private List<Card> generateCards(String title, int count, Usage usage) {
-    List<Card> cards = new ArrayList<>();
+  private List<PlayingCard> generatePlayingCards(String title, int count, Usage usage) {
+    List<PlayingCard> playingCards = new ArrayList<>();
     for (int i = 0; i < count; i++) {
-      cards.add(cardFactory.card(title, usage));
+      playingCards.add(cardFactory.playingCard(title, usage));
     }
-    return cards;
+    return playingCards;
   }
 
 }

@@ -1,6 +1,6 @@
 package com.jitterted.tddgame.adapter.vue;
 
-import com.jitterted.tddgame.domain.Card;
+import com.jitterted.tddgame.domain.PlayingCard;
 import lombok.Data;
 
 import java.util.List;
@@ -11,15 +11,15 @@ import java.util.stream.Stream;
 public class CardsView {
   private final List<CardDto> cards;
 
-  public static CardsView from(List<Card> cards) {
-    List<CardDto> cardDtos = cards.stream()
-                                 .map(CardDto::from)
-                                 .collect(Collectors.toList());
+  public static CardsView from(List<PlayingCard> playingCards) {
+    List<CardDto> cardDtos = playingCards.stream()
+                                         .map(CardDto::from)
+                                         .collect(Collectors.toList());
     return new CardsView(cardDtos);
   }
 
-  public static CardsView of(Card... cards) {
-    List<CardDto> cardDtos = Stream.of(cards)
+  public static CardsView of(PlayingCard... playingCards) {
+    List<CardDto> cardDtos = Stream.of(playingCards)
                                    .map(CardDto::from)
                                    .collect(Collectors.toList());
     return new CardsView(cardDtos);

@@ -2,8 +2,7 @@ package com.jitterted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 public class PlayerHandTest {
 
@@ -14,12 +13,12 @@ public class PlayerHandTest {
   public void newPlayerDrawsOneCardFromDeckTransfersToHand() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Deck deck = new Deck(shuffler);
-    Card theCard = cardFactory.card("The Card", Usage.SELF);
-    deck.addToDrawPile(theCard);
+    PlayingCard thePlayingCard = cardFactory.playingCard("The Card", Usage.SELF);
+    deck.addToDrawPile(thePlayingCard);
 
     player.drawFrom(deck);
 
-    assertThat(player.hand().contains(theCard))
+    assertThat(player.hand().contains(thePlayingCard))
       .isTrue();
     assertThat(deck.drawPileSize())
       .isEqualTo(0);
@@ -40,8 +39,8 @@ public class PlayerHandTest {
   @Test
   public void playerWithTwoCardsFillsHandResultsInThreeCardsDrawnFromDeck() throws Exception {
     Player brainw4ashed = new Player(PlayerId.of(0));
-    brainw4ashed.hand().add(cardFactory.card("one", Usage.SELF));
-    brainw4ashed.hand().add(cardFactory.card("two", Usage.SELF));
+    brainw4ashed.hand().add(cardFactory.playingCard("one", Usage.SELF));
+    brainw4ashed.hand().add(cardFactory.playingCard("two", Usage.SELF));
     Deck deck = new Deck(shuffler);
     fillDeck(deck, 7);
 
@@ -70,32 +69,32 @@ public class PlayerHandTest {
   public void removeCardFromHandMeansCardNoLongerInHand() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Hand hand = player.hand();
-    Card theCard = cardFactory.card("The Card", Usage.SELF);
-    hand.add(theCard);
+    PlayingCard thePlayingCard = cardFactory.playingCard("The Card", Usage.SELF);
+    hand.add(thePlayingCard);
 
-    Card removedCard = hand.remove(theCard.id());
+    PlayingCard removedPlayingCard = hand.remove(thePlayingCard.id());
 
     assertThat(hand.isEmpty())
       .isTrue();
-    assertThat(removedCard)
-      .isEqualTo(theCard);
+    assertThat(removedPlayingCard)
+      .isEqualTo(thePlayingCard);
   }
 
   @Test
   public void removeCardNotInHandThrowsNotInHandException() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Hand hand = player.hand();
-    Card theCard = cardFactory.card("Card Not In Hand", Usage.SELF);
+    PlayingCard thePlayingCard = cardFactory.playingCard("Card Not In Hand", Usage.SELF);
 
     assertThatThrownBy(() -> {
-      hand.remove(theCard.id());
+      hand.remove(thePlayingCard.id());
     })
       .isInstanceOf(CardNotInHandException.class);
   }
 
   private void fillDeck(Deck deck, int count) {
     for (int i = 0; i < count; i++) {
-      deck.addToDrawPile(cardFactory.card(String.valueOf(i), Usage.SELF));
+      deck.addToDrawPile(cardFactory.playingCard(String.valueOf(i), Usage.SELF));
     }
   }
 

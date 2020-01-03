@@ -2,8 +2,7 @@ package com.jitterted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class InPlayTest {
 
@@ -18,28 +17,28 @@ class InPlayTest {
   @Test
   public void inPlayAddTwoCardsAreReturned() throws Exception {
     CardFactory cardFactory = new CardFactory();
-    Card card1 = cardFactory.card("one", Usage.SELF);
-    Card card2 = cardFactory.card("two", Usage.SELF);
+    PlayingCard playingCard1 = cardFactory.playingCard("one", Usage.SELF);
+    PlayingCard playingCard2 = cardFactory.playingCard("two", Usage.SELF);
 
     InPlay inPlay = new InPlay();
 
-    inPlay.add(card1);
-    inPlay.add(card2);
+    inPlay.add(playingCard1);
+    inPlay.add(playingCard2);
 
     assertThat(inPlay.cards())
-      .containsExactly(card1, card2);
+      .containsExactly(playingCard1, playingCard2);
   }
 
   @Test
   public void discardFromInPlayThatIsNotInPlayIsAnException() throws Exception {
     CardFactory cardFactory = new CardFactory();
-    Card card1 = cardFactory.card("one", Usage.SELF);
-    Card card2 = cardFactory.card("two", Usage.SELF);
+    PlayingCard playingCard1 = cardFactory.playingCard("one", Usage.SELF);
+    PlayingCard playingCard2 = cardFactory.playingCard("two", Usage.SELF);
     InPlay inPlay = new InPlay();
-    inPlay.add(card1);
-    inPlay.add(card2);
+    inPlay.add(playingCard1);
+    inPlay.add(playingCard2);
 
-    Card notInPlay = cardFactory.card("not in play", Usage.SELF);
+    PlayingCard notInPlay = cardFactory.playingCard("not in play", Usage.SELF);
 
     assertThatThrownBy(() -> {inPlay.remove(notInPlay.id());})
       .isInstanceOf(CardNotInPlayException.class);
