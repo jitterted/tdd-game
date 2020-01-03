@@ -3,10 +3,10 @@
 
     <div class="score-info h-full">
       <div class="bg-green-700">
-        <player-score name="Opponent"/>
+        <player-score :name="game.opponentName"/>
       </div>
       <div class="bg-gray-800">
-        <player-score name="Ted"/>
+        <player-score :name="game.name"/>
       </div>
       <div class="text-center bg-black py-3">
         <button
@@ -168,6 +168,8 @@
         playerId: 'no player',
         apiUrl: '/api/game/players/',
         game: {
+          "name": "",
+          "opponentName": "",
           "hand": {"cards": []},
           "inPlay": {"cards": []},
           "opponentInPlay": {"cards": []}
