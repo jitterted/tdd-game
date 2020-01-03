@@ -29,12 +29,7 @@
 
     <div class="card-area h-full px-2 pt-2">
 
-      <div class="opponent-in-play inline-flex flex">
-
-        <playing-card v-for="card in game.opponentInPlay.cards" :key="card.id" v-bind="card">
-        </playing-card>
-
-      </div>
+      <card-table class="opponent-in-play" :cards="game.opponentInPlay.cards" source="opponent"/>
 
       <card-table :cards="game.inPlay.cards" source="in-play"/>
 
@@ -106,7 +101,6 @@
 
 <script>
   import PlayerScore from "./PlayerScore";
-  import PlayingCard from "./PlayingCard";
   import Modal from "./Modal";
   import Die from "./Die";
   import CardTable from "./CardTable";
@@ -116,7 +110,6 @@
     components: {
       CardTable,
       PlayerScore,
-      PlayingCard,
       Modal,
       Die
     },

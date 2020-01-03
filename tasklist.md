@@ -14,7 +14,6 @@
 * [ ] Display user's name coming from back-end
 * [ ] Prevent card selection for opponent-in-play cards
 * [ ] No "Play" option for card in "In-Play" area
-* [ ] Display user's name coming from back-end
 
 ### Nice to Have
 * [ ] Drag-n-drop reordering of display of cards

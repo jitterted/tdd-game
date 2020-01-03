@@ -6,11 +6,12 @@ import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.Usage;
+import com.jitterted.tddgame.domain.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class PlayerGameViewTest {
 
@@ -61,6 +62,54 @@ class PlayerGameViewTest {
     assertThat(playerGameView2.getOpponentInPlay().getCards())
       .extracting("title")
       .containsExactly("player 1 in Play");
+  }
+
+  @Test
+  public void playersWithAssignedUsersAreReturned() throws Exception {
+    player1 = new Player(PlayerId.of(1));
+    player1.assignUser(new User("first"));
+    player2 = new Player(PlayerId.of(2));
+    player2.assignUser(new User("opponent"));
+    Game game = new Game(List.of(player1, player2), null);
+
+    PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
+    assertThat(playerGameView1.getName())
+      .isEqualTo("first");
+    assertThat(playerGameView1.getOpponentName())
+      .isEqualTo("opponent");
+
+    PlayerGameView playerGameView2 = PlayerGameView.from(game, player2.id());
+    assertThat(playerGameView2.getName())
+      .isEqualTo("opponent");
+    assertThat(playerGameView2.getOpponentName())
+      .isEqualTo("first");
+  }
+
+  @Test
+  public void noPlayersHaveAssignedUsersReturnsNobodyForAllPlayers() throws Exception {
+    player1 = new Player(PlayerId.of(1));
+    player2 = new Player(PlayerId.of(2));
+    Game game = new Game(List.of(player1, player2), null);
+
+    PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
+    assertThat(playerGameView1.getName())
+      .isEqualTo("nobody");
+
+    PlayerGameView playerGameView2 = PlayerGameView.from(game, player2.id());
+    assertThat(playerGameView2.getName())
+      .isEqualTo("nobody");
+  }
+
+  @Test
+  public void onlyPlayer1AssignedReturnsNobodyForPlayer2() throws Exception {
+    player1 = new Player(PlayerId.of(1));
+    player1.assignUser(new User("first"));
+    player2 = new Player(PlayerId.of(2));
+    Game game = new Game(List.of(player1, player2), null);
+
+    PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
+    assertThat(playerGameView1.getOpponentName())
+      .isEqualTo("nobody");
   }
 
   private void setupGameWithTwoPlayersHavingCardsInPlayAndHand() {

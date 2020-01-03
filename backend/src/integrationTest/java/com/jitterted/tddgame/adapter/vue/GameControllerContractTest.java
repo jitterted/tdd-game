@@ -4,6 +4,7 @@ import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Hand;
 import com.jitterted.tddgame.domain.Player;
+import com.jitterted.tddgame.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,12 +31,19 @@ class GameControllerContractTest {
 
   @Test
   public void getAgainstApiGameIs200Ok() throws Exception {
-    int playerId = gameService.currentGame().players().get(0).id().getId();
+    Player player1 = gameService.currentGame().players().get(0);
+    player1.assignUser(new User("player1"));
+    Player player2 = gameService.currentGame().players().get(1);
+    player2.assignUser(new User("player2"));
+
+    int playerId = player1.id().getId();
     mockMvc.perform(get(API_PLAYERS_BASE_URL + playerId))
            .andExpect(status().isOk())
            .andExpect(jsonPath("$.hand").exists())
            .andExpect(jsonPath("$.inPlay").exists())
            .andExpect(jsonPath("$.opponentInPlay").exists())
+           .andExpect(jsonPath("$.opponentName").exists())
+           .andExpect(jsonPath("$.name").exists())
     ;
   }
 
