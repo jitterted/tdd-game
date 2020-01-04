@@ -9,19 +9,19 @@ import java.util.stream.Stream;
 
 @Data
 public class CardsView {
-  private final List<CardDto> cards;
+  private final List<PlayingCardView> cards;
 
   public static CardsView from(List<PlayingCard> playingCards) {
-    List<CardDto> cardDtos = playingCards.stream()
-                                         .map(CardDto::from)
-                                         .collect(Collectors.toList());
-    return new CardsView(cardDtos);
+    List<PlayingCardView> playingCardViews = playingCards.stream()
+                                                         .map(PlayingCardView::from)
+                                                         .collect(Collectors.toList());
+    return new CardsView(playingCardViews);
   }
 
   public static CardsView of(PlayingCard... playingCards) {
-    List<CardDto> cardDtos = Stream.of(playingCards)
-                                   .map(CardDto::from)
-                                   .collect(Collectors.toList());
-    return new CardsView(cardDtos);
+    List<PlayingCardView> playingCardViews = Stream.of(playingCards)
+                                                   .map(PlayingCardView::from)
+                                                   .collect(Collectors.toList());
+    return new CardsView(playingCardViews);
   }
 }

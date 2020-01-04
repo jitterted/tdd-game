@@ -19,11 +19,11 @@
         </button>
         <button
           class="bg-green-300 rounded border-green-100 font-bold px-4 py-2 mb-4"
-          @click="showTestResultsModal = true"
+          @click="drawTestResultsCard"
         >
           Run Tests
         </button>
-        <die></die>
+        <die/>
       </div>
     </div>
 
@@ -36,28 +36,9 @@
       <card-table :cards="game.hand.cards" source="hand"/>
 
       <modal :showing="showTestResultsModal" @close="showTestResultsModal = false">
-        <div class="md:w-56 px-2 py-3 rounded overflow-hidden border shadow-md my-2" style="background-color: #ffa866">
-          <div class="font-bold text-xl smallcaps mb-2">test results</div>
-          <p class="text-black font-bold text-base mb-2">
-            <code>&gt;= 2 </code>
-            <span class="card-title">code smaller</span>
-            cards<br/>As Predicted
-          </p>
-          <p class="text-gray-800 text-sm px-1">
-            The tests ran and matched your prediction.
-          </p>
-          <p class="text-black font-bold text-base my-2">
-            <code>&lt;= 1 </code>
-            <span class="card-title">code smaller</span>
-            cards<br/>Unexpected
-          </p>
-          <p class="text-gray-800 text-sm px-1">
-            The tests did <strong>not</strong> match your prediction. Try again.
-          </p>
-        </div>
+        <test-results-card :title="testResultsCard.title"/>
 
         <!--      <div class="md:w-56 p-1 rounded overflow-hidden border shadow-md mr-3 mb-4" style="background-color: #ffa866">-->
-        <!--        <img class="w-full" src="https://placedog.net/300/100?random&5">-->
         <!--        <div class="px-2 py-2">-->
         <!--          <div class="font-bold text-lg smallcaps mb-2">Test Results</div>-->
         <!--          <p class="text-black text-sm mb-2">-->
@@ -68,34 +49,27 @@
         <!--          </p>-->
         <!--        </div>-->
         <!--      </div>-->
+        <!--        <div class="md:w-56 p-1 rounded overflow-hidden border shadow-md mr-3 mb-4" style="background-color: #ffa866">-->
+        <!--          <div class="px-2 py-2">-->
+        <!--            <div class="font-bold text-lg smallcaps mb-2">Test Results</div>-->
+        <!--            <p class="text-black text-base mb-2">-->
+        <!--              1 or more Code Smaller cards: As Predicted-->
+        <!--            </p>-->
+        <!--            <p class="text-gray-800 text-sm">-->
+        <!--              The tests ran and matched your prediction.-->
+        <!--            </p>-->
+        <!--            <hr/>-->
+        <!--            <p class="text-black text-base mb-2">-->
+        <!--              0 Code Smaller cards: Unexpected-->
+        <!--            </p>-->
+        <!--            <p class="text-gray-800 text-sm">-->
+        <!--              The tests did <strong>not</strong> match your prediction.-->
+        <!--            </p>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </modal>
 
-      <div class="hidden">
-
-        <div class="md:w-56 p-1 rounded overflow-hidden border shadow-md mr-3 mb-4" style="background-color: #ffa866">
-          <!--        <img class="w-full" src="https://placedog.net/300/100?random&6">-->
-          <div class="px-2 py-2">
-            <div class="font-bold text-lg smallcaps mb-2">Test Results</div>
-            <p class="text-black text-base mb-2">
-              1 or more Code Smaller cards: As Predicted
-            </p>
-            <p class="text-gray-800 text-sm">
-              The tests ran and matched your prediction.
-            </p>
-            <hr/>
-            <p class="text-black text-base mb-2">
-              0 Code Smaller cards: Unexpected
-            </p>
-            <p class="text-gray-800 text-sm">
-              The tests did <strong>not</strong> match your prediction.
-            </p>
-          </div>
-        </div>
-
-      </div>
-
     </div>
-
   </div>
 </template>
 
@@ -104,10 +78,12 @@
   import Modal from "./Modal";
   import Die from "./Die";
   import CardTable from "./CardTable";
+  import TestResultsCard from "./TestResultsCard";
 
   export default {
     name: "Game",
     components: {
+      TestResultsCard,
       CardTable,
       PlayerScore,
       Modal,
@@ -120,13 +96,10 @@
     },
     methods: {
       refresh() {
-        console.log('Getting game for player: ' + this.playerId + ' at ' + this.apiUrl);
         fetch(this.apiUrl)
-          .then((response) => response.json())
-          .then((jsonData) => {
-            this.game = jsonData;
-          })
-          .catch((error) => console.log(' Refresh error: ' + error));
+          .then(response => response.json())
+          .then(jsonData => this.game = jsonData)
+          .catch(error => console.log('Refresh error: ' + error));
       },
       drawCard() {
         fetch(this.apiUrl + '/actions', {
@@ -141,18 +114,14 @@
         this.refresh();
       },
       drawTestResultsCard() {
-        fetch(this.apiUrl + '/actions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({action: 'TEST_RESULTS'})
+        fetch(this.apiUrl + '/test-result-card-draws', {
+            method: 'POST'
           }
         )
           .then(response => response.json())
           .then(jsonData => this.testResultsCard = jsonData)
-          .catch();
-        // TODO: show the test result card in the modal
+          .catch(error => console.log('Draw Test Results Card error: ' + error));
+        this.showTestResultsModal = true;
       },
       playerChanged() {
         this.playerId = this.$route.params.playerId;
@@ -176,6 +145,7 @@
       return {
         interval: undefined,
         showTestResultsModal: false,
+        testResultsCard: {id: -1, title: "none"},
         playerId: 'no player',
         apiUrl: '/api/game/players/',
         game: {

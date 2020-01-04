@@ -10,7 +10,10 @@
 * [X] Immediate use card: Refactor
 
 * [ ] Run Tests Results card: show modal of card from Results deck
-    * [ ] Test Results Deck is just another deck
+    * [ ] TestResultsCard
+    * [ ] TestResultsCardFactory
+    * [ ] TestResultsDeck
+    * [ ] Controller draws card from TestResultsDeck, returns it, then discards it to the TestResultsDeck
     
     
 

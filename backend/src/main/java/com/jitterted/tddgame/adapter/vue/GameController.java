@@ -57,4 +57,9 @@ public class GameController {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
     playerAction.executeFor(playerId, gameService);
   }
+
+  @PostMapping("players/{playerId}/test-result-card-draws")
+  public TestResultCardView handleDrawTestResultCard(@PathVariable("playerId") String playerIdString) {
+    return new TestResultCardView("A Test Result Card", 1759);
+  }
 }
