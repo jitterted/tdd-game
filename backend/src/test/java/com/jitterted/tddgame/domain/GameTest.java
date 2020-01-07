@@ -2,6 +2,7 @@ package com.jitterted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -42,7 +43,7 @@ class GameTest {
   public void playedAttackCardIsMovedToOpponentInPlay() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Player opponent = new Player(PlayerId.of(1));
-    Game game = new Game(List.of(player, opponent), null);
+    Game game = new Game(List.of(player, opponent), null, null);
     PlayingCard attack = new CardFactory().playingCard("attack", Usage.OPPONENT);
     player.hand().add(attack);
 
@@ -73,12 +74,12 @@ class GameTest {
 
   @Test
   public void playerWithRoomInHandDrawsCardThenCardFromDrawPileInHand() throws Exception {
-    Deck deck = new Deck(null);
-    PlayingCard playingCard = new PlayingCard(CardId.of(1), "card1", null);
+    Deck<PlayingCard> deck = new Deck<>(null);
+    PlayingCard playingCard = new PlayingCard(CardId.of(1), "card1", Usage.SELF);
     deck.addToDrawPile(playingCard);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Player player0 = twoPlayers.get(0);
-    Game game = new Game(twoPlayers, deck);
+    Game game = new Game(twoPlayers, deck, null);
 
     game.drawCardFor(player0.id());
 
@@ -86,5 +87,22 @@ class GameTest {
       .isZero();
     assertThat(player0.hand().cards())
       .containsExactly(playingCard);
+  }
+
+  @Test
+  public void drawingCardFromTestResultDeckPutsCardInDiscardPile() throws Exception {
+    Deck<TestResultCard> testResultCardDeck = new Deck<>(new DummyCardShuffler<>());
+    TestResultCard testResultCard = new TestResultCard(CardId.of(3), "As Predicted");
+    testResultCardDeck.addToDrawPile(testResultCard);
+    Game game = new Game(Collections.emptyList(), null, testResultCardDeck);
+
+    TestResultCard drawnCard = game.drawTestResultCardFor(PlayerId.of(7));
+
+    assertThat(testResultCardDeck.drawPileSize())
+      .isZero();
+    assertThat(drawnCard)
+      .isEqualTo(testResultCard);
+    assertThat(testResultCardDeck.discardPile())
+      .containsOnly(testResultCard);
   }
 }

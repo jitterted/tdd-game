@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class PlayingCardTest {
+public class CardFactoryTest {
   @Test
-  public void twoCardInstancesWithSameTitleAreNotEqual() throws Exception {
+  public void twoPlayingCardInstancesWithSameTitleAreNotEqual() throws Exception {
     CardFactory cardFactory = new CardFactory();
     PlayingCard refactor1 = cardFactory.playingCard("Refactor", Usage.SELF);
     PlayingCard refactor2 = cardFactory.playingCard("Refactor", Usage.SELF);

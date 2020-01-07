@@ -42,6 +42,6 @@ public class PlayingCard {
 
   @Override
   public String toString() {
-    return "CARD(" + id.getId() + "): \"" + title + "\"";
+    return "PlayingCard (" + id.getId() + "): \"" + title + "\"";
   }
 }

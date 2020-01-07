@@ -9,12 +9,12 @@
     * [X] Playing attack card ("Code Bloat", "Can't Assert That") goes to OPPONENT'S In-Play area
 * [X] Immediate use card: Refactor
 
-* [ ] Run Tests Results card: show modal of card from Results deck
-    * [ ] TestResultsCard
-    * [ ] TestResultsCardFactory
-    * [ ] TestResultsDeck
-    * [ ] Controller draws card from TestResultsDeck, returns it, then discards it to the TestResultsDeck
-    
+* [X] Run Tests Results card: show modal of card from Results deck
+    * [X] TestResultsCard
+    * [X] TestResultsCardFactory
+    * [X] TestResultsDeck
+    * [X] Controller draws card from TestResultsDeck, returns it, then discards it to the TestResultsDeck
+    * [ ] Test Result Card Vue component to display the card based on its title
     
 
 * [ ] Move to RSocket for more real-time interaction

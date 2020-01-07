@@ -14,6 +14,10 @@ public class GameFactory {
 
   public Game createTwoPlayerGame() {
     List<Player> playerList = playerFactory.createTwoPlayers();
-    return new Game(playerList, deckFactory.createPlayingCardDeck());
+    return new Game(
+      playerList,
+      deckFactory.createPlayingCardDeck(),
+      deckFactory.createTestResultCardDeck()
+    );
   }
 }

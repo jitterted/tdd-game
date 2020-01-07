@@ -29,7 +29,7 @@ class PlayerPlayTest {
   public void playerPlaysAttackCardThenCardIsInOpponentInPlay() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Player opponent = new Player(PlayerId.of(1));
-    Game game = new Game(List.of(player, opponent), null);
+    Game game = new Game(List.of(player, opponent), null, null);
 
     PlayingCard playingCard = new CardFactory().playingCard("attack", Usage.OPPONENT);
     player.hand().add(playingCard);
@@ -47,8 +47,8 @@ class PlayerPlayTest {
     Player player = new Player(PlayerId.of(0));
     PlayingCard playingCard = new CardFactory().playingCard("refactor", Usage.DISCARD);
     player.hand().add(playingCard);
-    Deck deck = new Deck(null);
-    Game game = new Game(List.of(player), deck);
+    Deck<PlayingCard> deck = new Deck<>(null);
+    Game game = new Game(List.of(player), deck, null);
 
     assumeThat(player.hand().cards())
       .contains(playingCard);

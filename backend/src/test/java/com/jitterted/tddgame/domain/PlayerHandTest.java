@@ -6,13 +6,12 @@ import static org.assertj.core.api.Assertions.*;
 
 public class PlayerHandTest {
 
-  private final CardShuffler shuffler = null;
   private final CardFactory cardFactory = new CardFactory();
 
   @Test
   public void newPlayerDrawsOneCardFromDeckTransfersToHand() throws Exception {
     Player player = new Player(PlayerId.of(0));
-    Deck deck = new Deck(shuffler);
+    Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
     PlayingCard thePlayingCard = cardFactory.playingCard("The Card", Usage.SELF);
     deck.addToDrawPile(thePlayingCard);
 
@@ -27,7 +26,7 @@ public class PlayerHandTest {
   @Test
   public void playerWithNoCardsFillsHandResultsInFiveCardsInHand() throws Exception {
     Player wietlol = new Player(PlayerId.of(0));
-    Deck deck = new Deck(shuffler);
+    Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
     fillDeck(deck, 5);
 
     wietlol.fillHandFrom(deck);
@@ -41,7 +40,7 @@ public class PlayerHandTest {
     Player brainw4ashed = new Player(PlayerId.of(0));
     brainw4ashed.hand().add(cardFactory.playingCard("one", Usage.SELF));
     brainw4ashed.hand().add(cardFactory.playingCard("two", Usage.SELF));
-    Deck deck = new Deck(shuffler);
+    Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
     fillDeck(deck, 7);
 
     brainw4ashed.fillHandFrom(deck);
@@ -53,7 +52,7 @@ public class PlayerHandTest {
   @Test
   public void playerWithFullHandWhenFillsHandResultsInNoChangeToDeck() throws Exception {
     Player sheppo162 = new Player(PlayerId.of(0));
-    Deck deck = new Deck(shuffler);
+    Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
     fillDeck(deck, 9);
     sheppo162.fillHandFrom(deck);
 
@@ -92,7 +91,7 @@ public class PlayerHandTest {
       .isInstanceOf(CardNotInHandException.class);
   }
 
-  private void fillDeck(Deck deck, int count) {
+  private void fillDeck(Deck<PlayingCard> deck, int count) {
     for (int i = 0; i < count; i++) {
       deck.addToDrawPile(cardFactory.playingCard(String.valueOf(i), Usage.SELF));
     }

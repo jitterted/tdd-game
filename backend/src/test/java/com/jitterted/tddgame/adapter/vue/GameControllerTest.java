@@ -3,7 +3,6 @@ package com.jitterted.tddgame.adapter.vue;
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
-import com.jitterted.tddgame.domain.Hand;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayerId;
@@ -48,22 +47,6 @@ class GameControllerTest {
   }
 
   @Test
-  public void playerDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
-    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameController gameController = new GameController(gameService);
-    Game game = gameService.currentGame();
-    Player player = game.players().get(0);
-    Hand hand = player.hand();
-    CardId cardId = hand.cards().get(0).id();
-    hand.remove(cardId); // make room in hand for draw from deck
-
-    gameController.handleAction(playerIdStringFrom(player), new PlayerAction(PlayerAction.DRAW_CARD));
-
-    assertThat(player.hand().isFull())
-      .isTrue();
-  }
-
-  @Test
   public void connectUserIsAssignedToPlayer() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     GameController gameController = new GameController(gameService);
@@ -77,10 +60,6 @@ class GameControllerTest {
 
     assertThat(assignedPlayer.assignedUser().getName())
       .isEqualTo("tba");
-  }
-
-  private String playerIdStringFrom(Player player) {
-    return String.valueOf(player.id().getId());
   }
 
 }

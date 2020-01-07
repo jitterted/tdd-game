@@ -11,7 +11,7 @@ public class Deck<C> {
   private List<C> discardPile = new ArrayList<>();
   private final CardShuffler<C> shuffler;
 
-  Deck(CardShuffler<C> shuffler) {
+  public Deck(CardShuffler<C> shuffler) {
     this.shuffler = shuffler;
   }
 

@@ -10,7 +10,7 @@ public class CreateDeckTest {
 
   @Test
   public void newDeckHasFullSetOfCardsAfterShuffleTriggeredByDraw() throws Exception {
-    Deck deck = new DeckFactory(new CardFactory()).createPlayingCardDeck();
+    Deck<PlayingCard> deck = new DeckFactory(new CardFactory()).createPlayingCardDeck();
 
     deck.draw(); // trigger shuffle from discard over to draw pile and draw 1
 
@@ -20,7 +20,7 @@ public class CreateDeckTest {
 
   @Test
   public void newDeckAllowsDrawUpToOnlyFullSetOfCards() throws Exception {
-    Deck deck = new DeckFactory(new CardFactory()).createPlayingCardDeck();
+    Deck<PlayingCard> deck = new DeckFactory(new CardFactory()).createPlayingCardDeck();
 
     for (int i = 0; i < 63; i++) {
       deck.draw();
@@ -28,5 +28,15 @@ public class CreateDeckTest {
 
     assertThatThrownBy(deck::draw)
       .isInstanceOf(NoSuchElementException.class);
+  }
+
+  @Test
+  public void testResultCardDeckHas3ofEachTypeOfCard() throws Exception {
+    Deck<TestResultCard> testResultCardDeck = new DeckFactory(new CardFactory()).createTestResultCardDeck();
+
+    testResultCardDeck.draw(); // trigger shuffle from discard over to draw pile and draw 1
+
+    assertThat(testResultCardDeck.drawPileSize()) // should be 8 remaining
+      .isEqualTo(8);
   }
 }

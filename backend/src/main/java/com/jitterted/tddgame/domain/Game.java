@@ -8,10 +8,12 @@ import java.util.Map;
 public class Game {
   private final Map<PlayerId, Player> playerMap = new HashMap<>();
   private final Deck<PlayingCard> playingCardDeck;
+  private final Deck<TestResultCard> testResultCardDeck;
 
-  public Game(List<Player> playerList, Deck<PlayingCard> playingCardDeck) {
+  public Game(List<Player> playerList, Deck<PlayingCard> playingCardDeck, Deck<TestResultCard> testResultCardDeck) {
     playerList.forEach(player -> playerMap.put(player.id(), player));
     this.playingCardDeck = playingCardDeck;
+    this.testResultCardDeck = testResultCardDeck;
   }
 
   public List<Player> players() {
@@ -44,6 +46,12 @@ public class Game {
   public void playCardFor(PlayerId playerId, CardId cardId) {
     Player player = playerFor(playerId);
     player.play(this, cardId);
+  }
+
+  public TestResultCard drawTestResultCardFor(PlayerId playerId) {
+    TestResultCard drawnCard = testResultCardDeck.draw();
+    testResultCardDeck.addToDiscardPile(drawnCard);
+    return drawnCard;
   }
 
   public Player playerFor(PlayerId playerId) {

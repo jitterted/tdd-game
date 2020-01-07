@@ -70,7 +70,7 @@ class PlayerGameViewTest {
     player1.assignUser(new User("first"));
     player2 = new Player(PlayerId.of(2));
     player2.assignUser(new User("opponent"));
-    Game game = new Game(List.of(player1, player2), null);
+    Game game = new Game(List.of(player1, player2), null, null);
 
     PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
     assertThat(playerGameView1.getName())
@@ -89,7 +89,7 @@ class PlayerGameViewTest {
   public void noPlayersHaveAssignedUsersReturnsNobodyForAllPlayers() throws Exception {
     player1 = new Player(PlayerId.of(1));
     player2 = new Player(PlayerId.of(2));
-    Game game = new Game(List.of(player1, player2), null);
+    Game game = new Game(List.of(player1, player2), null, null);
 
     PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
     assertThat(playerGameView1.getName())
@@ -105,7 +105,7 @@ class PlayerGameViewTest {
     player1 = new Player(PlayerId.of(1));
     player1.assignUser(new User("first"));
     player2 = new Player(PlayerId.of(2));
-    Game game = new Game(List.of(player1, player2), null);
+    Game game = new Game(List.of(player1, player2), null, null);
 
     PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
     assertThat(playerGameView1.getOpponentName())
@@ -124,6 +124,6 @@ class PlayerGameViewTest {
     player1.hand().add(playingCardPlayer1Hand);
     player2.inPlay().add(playingCardPlayer2Play);
     player2.hand().add(playingCardPlayer2Hand);
-    game = new Game(List.of(player1, player2), null);
+    game = new Game(List.of(player1, player2), null, null);
   }
 }

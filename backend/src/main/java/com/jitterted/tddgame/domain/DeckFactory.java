@@ -17,6 +17,23 @@ public class DeckFactory {
     return deck;
   }
 
+  public Deck<TestResultCard> createTestResultCardDeck() {
+    Deck<TestResultCard> testResultCardDeck = new Deck<>(new RandomCardShuffler<>());
+    testResultCardDeck.addToDiscardPile(generateTestResultCards("as predicted", 3));
+    testResultCardDeck.addToDiscardPile(generateTestResultCards("require 1", 3));
+    testResultCardDeck.addToDiscardPile(generateTestResultCards("require 2", 3));
+    return testResultCardDeck;
+  }
+
+  private List<TestResultCard> generateTestResultCards(String title, int count) {
+    List<TestResultCard> cards = new ArrayList<>();
+    for (int i = 0; i < count; i++) {
+      cards.add(cardFactory.testResultCard(title));
+    }
+    return cards;
+  }
+
+
   private void addPlayingCardsToDiscardPileOf(Deck<PlayingCard> deck) {
     deck.addToDiscardPile(generatePlayingCards("write code", 18, Usage.SELF));
     deck.addToDiscardPile(generatePlayingCards("code smaller", 18, Usage.SELF));
@@ -33,5 +50,4 @@ public class DeckFactory {
     }
     return playingCards;
   }
-
 }
