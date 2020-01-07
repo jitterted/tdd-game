@@ -12,10 +12,11 @@
 ## Display
 ~~* [ ] Center the cards within their row~~
 * [X] Display user's name coming from back-end
-* [ ] Prevent card selection for opponent-in-play cards
 * [ ] No "Play" option for card in "In-Play" area
+* [ ] Prevent card selection for opponent-in-play cards
 
 ### Nice to Have
+* [ ] Keyboard actions for (D)iscard and (P)lay
 * [ ] Drag-n-drop reordering of display of cards
 * [ ] Animate new card appearing anywhere (esp. in hand)
 * [ ] Prevent multiple selection: only single select of cards

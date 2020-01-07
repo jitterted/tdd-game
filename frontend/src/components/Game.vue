@@ -29,11 +29,11 @@
 
     <div class="card-area h-full px-2 pt-2">
 
-      <card-table class="opponent-in-play" :cards="game.opponentInPlay.cards" source="opponent"/>
+      <cards-row class="opponent-in-play" :cards="game.opponentInPlay.cards" source="opponent"/>
 
-      <card-table :cards="game.inPlay.cards" source="in-play"/>
+      <cards-row :cards="game.inPlay.cards" source="in-play"/>
 
-      <card-table :cards="game.hand.cards" source="hand"/>
+      <cards-row :cards="game.hand.cards" source="hand"/>
 
       <modal :showing="showTestResultsModal" @close="showTestResultsModal = false">
         <test-results-card :title="testResultsCard.title"/>
@@ -47,14 +47,14 @@
   import PlayerScore from "./PlayerScore";
   import Modal from "./Modal";
   import Die from "./Die";
-  import CardTable from "./CardTable";
   import TestResultsCard from "./TestResultsCard";
+  import CardsRow from "./CardsRow";
 
   export default {
     name: "Game",
     components: {
+      CardsRow,
       TestResultsCard,
-      CardTable,
       PlayerScore,
       Modal,
       Die

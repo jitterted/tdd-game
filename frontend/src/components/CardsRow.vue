@@ -17,7 +17,7 @@
   import PlayingCard from "./PlayingCard"
 
   export default {
-    name: 'card-table',
+    name: 'cards-row',
     components: {PlayingCard},
     methods: {
       discard(cardId) {
