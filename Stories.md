@@ -14,7 +14,7 @@
     * [X] TestResultsCardFactory
     * [X] TestResultsDeck
     * [X] Controller draws card from TestResultsDeck, returns it, then discards it to the TestResultsDeck
-    * [ ] Test Result Card Vue component to display the card based on its title
+    * [X] Test Result Card Vue component to display the card based on its title
     
 
 * [ ] Move to RSocket for more real-time interaction

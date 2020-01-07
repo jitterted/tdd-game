@@ -53,7 +53,6 @@
         <div class="font-light opacity-25 float-right">
           {{ id }}
         </div>
-
       </div>
       <div class="px-2 py-1">
         <card-rule v-for="(rule, index) in card.rules" :key="index">
@@ -114,12 +113,10 @@
         this.selected = !this.selected;
       },
       discardSelected() {
-        console.log('Emitting "discard" event for id=' + this.id);
         this.$emit('discard', this.id);
         this.selected = false;
       },
       playSelected() {
-        console.log('Play card: ' + JSON.stringify({id: this.id}) + ' for player ' + this.$route.params.playerId);
         let apiUrl = '/api/game/players/' + this.$route.params.playerId;
         fetch(apiUrl + '/plays', {
           method: 'POST',

@@ -21,10 +21,6 @@
     components: {PlayingCard},
     methods: {
       discard(cardId) {
-        console.log("CardTable.discard, source=" + this.source + ": \n" + JSON.stringify({
-          id: cardId,
-          source: this.source
-        }));
         fetch('/api/game/players/' + this.$route.params.playerId + '/discards', {
             method: 'POST',
             headers: {

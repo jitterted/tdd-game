@@ -37,36 +37,6 @@
 
       <modal :showing="showTestResultsModal" @close="showTestResultsModal = false">
         <test-results-card :title="testResultsCard.title"/>
-
-        <!--      <div class="md:w-56 p-1 rounded overflow-hidden border shadow-md mr-3 mb-4" style="background-color: #ffa866">-->
-        <!--        <div class="px-2 py-2">-->
-        <!--          <div class="font-bold text-lg smallcaps mb-2">Test Results</div>-->
-        <!--          <p class="text-black text-sm mb-2">-->
-        <!--            As Predicted.-->
-        <!--          </p>-->
-        <!--          <p class="text-gray-700 text-sm">-->
-        <!--            The tests ran and matched your prediction.-->
-        <!--          </p>-->
-        <!--        </div>-->
-        <!--      </div>-->
-        <!--        <div class="md:w-56 p-1 rounded overflow-hidden border shadow-md mr-3 mb-4" style="background-color: #ffa866">-->
-        <!--          <div class="px-2 py-2">-->
-        <!--            <div class="font-bold text-lg smallcaps mb-2">Test Results</div>-->
-        <!--            <p class="text-black text-base mb-2">-->
-        <!--              1 or more Code Smaller cards: As Predicted-->
-        <!--            </p>-->
-        <!--            <p class="text-gray-800 text-sm">-->
-        <!--              The tests ran and matched your prediction.-->
-        <!--            </p>-->
-        <!--            <hr/>-->
-        <!--            <p class="text-black text-base mb-2">-->
-        <!--              0 Code Smaller cards: Unexpected-->
-        <!--            </p>-->
-        <!--            <p class="text-gray-800 text-sm">-->
-        <!--              The tests did <strong>not</strong> match your prediction.-->
-        <!--            </p>-->
-        <!--          </div>-->
-        <!--        </div>-->
       </modal>
 
     </div>
