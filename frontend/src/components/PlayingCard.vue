@@ -18,7 +18,7 @@
             </button>
           </h3>
           <br/>
-          <h3>P to
+          <h3 v-if="showPlayAction">P to
             <button
               class="border bg-green-100 border-green-900 rounded mx-1 px-2"
               @click.prevent="playSelected"
@@ -56,7 +56,7 @@
       </div>
       <div class="px-2 py-1">
         <card-rule v-for="(rule, index) in card.rules" :key="index">
-          <span v-html="rule"></span>
+          <span v-html="rule"/>
         </card-rule>
       </div>
     </div>
@@ -83,6 +83,10 @@
       order: {
         type: Array,
         required: true
+      },
+      rowName: {
+        type: String,
+        required: true
       }
     },
     computed: {
@@ -106,6 +110,9 @@
       },
       computedOrder() {
         return this.order.indexOf(this.id);
+      },
+      showPlayAction() {
+        return this.rowName === 'hand';
       }
     },
     methods: {

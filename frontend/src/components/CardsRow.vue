@@ -5,6 +5,7 @@
                   :key="card.id"
                   v-bind="card"
                   :order="ordering"
+                  :rowName="source"
                   @discard="discard"
                   @moveright="moveRight"
                   @moveleft="moveLeft"

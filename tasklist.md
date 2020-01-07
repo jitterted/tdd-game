@@ -12,7 +12,7 @@
 ## Display
 ~~* [ ] Center the cards within their row~~
 * [X] Display user's name coming from back-end
-* [ ] No "Play" option for card in "In-Play" area
+* [X] No "Play" option for card in "In-Play" area
 * [ ] Prevent card selection for opponent-in-play cards
 
 ### Nice to Have
