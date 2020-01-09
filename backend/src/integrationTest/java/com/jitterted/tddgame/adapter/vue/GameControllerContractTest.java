@@ -30,6 +30,22 @@ class GameControllerContractTest {
   GameService gameService;
 
   @Test
+  public void getAgainstGameWorldViewIs200Ok() throws Exception {
+    mockMvc.perform(get("/api/game"))
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.players[0].name").isString())
+           .andExpect(jsonPath("$.players[0].hand.cards").isArray())
+           .andExpect(jsonPath("$.players[1].inPlay.cards").isArray())
+           .andExpect(jsonPath("$.showingTestResultCard.id").isNumber())
+           .andExpect(jsonPath("$.showingTestResultCard.title").isString())
+           .andExpect(jsonPath("$.playingCardDeck").isMap())
+           .andExpect(jsonPath("$.playingCardDeck.drawPile").isNumber())
+           .andExpect(jsonPath("$.testResultCardDeck").exists())
+           .andExpect(jsonPath("$.testResultCardDeck.discardPile").isNumber())
+    ;
+  }
+
+  @Test
   public void getAgainstApiGameIs200Ok() throws Exception {
     Player player1 = gameService.currentGame().players().get(0);
     player1.assignUser(new User("player1"));

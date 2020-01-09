@@ -65,4 +65,8 @@ public class Game {
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("No opponent found for " + player));
   }
+
+  public Deck<TestResultCard> testResultCardDeck() {
+    return testResultCardDeck;
+  }
 }

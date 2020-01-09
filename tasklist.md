@@ -53,9 +53,17 @@
 This could also be used as a "watch the game" view either as "god" (view everything),
 or only see cards in-play. 
 
-* [ ] View Deck: draw and discard piles in detail
-* [ ] View Test Results Deck
-* [ ] View All Players' Hands
+## Required
+
+* [ ] View All Players cards: in-hand & in-play
+* [ ] Current (if any) Test Results Drawn Card
+* [ ] For both Playing Card and Test Results Decks
+    * [ ] Summary/Size of draw and discard piles
+
+## Nice to Have
+
+* [ ] For both Playing Card and Test Results Decks
+    * [ ] Draw and discard piles in detail
 
 ----
 

@@ -13,7 +13,12 @@ const routes = [
   {
     path: "/game/player/:playerId",
     component: Game,
+    // props means the parameters in the route (from the URL) are passed into the component as props
     props: true
+  },
+  {
+    path: "/game",
+    component: GameMaster,
   },
   {
     path: "/about",
