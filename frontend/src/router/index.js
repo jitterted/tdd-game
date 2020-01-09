@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Game from "@/components/Game.vue";
 import Connect from "../views/Connect.vue";
+import GameMaster from "../components/GameMaster";
 
 Vue.use(VueRouter);
 
