@@ -12,21 +12,14 @@
         </div>
         <div class="flex w-11/12 mx-auto flex-wrap">
           <div class="w-1/3 border-t-2 border-gray-500">IN PLAY</div>
-          <div class="w-2/3 mb-4">
-            <div v-for="(card, index) in game.players[0].inPlay.cards"
-                 :key="index"
-                 class="border-l-8 border-yellow-400 bg-yellow-200 py-2 pl-2 pr-4 mb-1">
-              <p>{{ card.title }} ({{card.id}})</p>
-            </div>
-          </div>
+          <PlayingCardsMiniView
+            :cards="game.players[0].inPlay.cards"
+            class="mb-4"
+          />
           <div class="w-1/3 border-t-2 border-gray-500">HAND</div>
-          <div class="w-2/3">
-            <div v-for="(card, index) in game.players[0].hand.cards"
-                 :key="index"
-                 class="border-l-8 border-yellow-400 bg-yellow-200 py-2 pl-2 pr-4 mb-1">
-              <p>{{ card.title }} ({{card.id}})</p>
-            </div>
-          </div>
+          <PlayingCardsMiniView
+            :cards="game.players[0].hand.cards"
+          />
         </div>
       </div>
       <div class="w-1/2 border shadow-lg">
@@ -36,35 +29,14 @@
         </div>
         <div class="flex w-11/12 mx-auto flex-wrap">
           <div class="w-1/3 border-t-2 border-gray-500">IN PLAY</div>
-          <div class="w-2/3 mb-4">
-            <div class="border-l-8 border-yellow-400 bg-yellow-200 py-2 pl-2 pr-4 mb-1">
-              <p>Predict</p>
-            </div>
-            <div class="border-l-8 border-blue-400 bg-blue-200 py-2 pl-2 pr-4 mb-1">
-              <p>Write Code</p>
-            </div>
-            <div class="border-l-8 border-red-400 bg-red-200 py-2 pl-2 pr-4 mb-1">
-              <p>Can't Assert</p>
-            </div>
-          </div>
+          <PlayingCardsMiniView
+            :cards="game.players[1].inPlay.cards"
+            class="mb-4"
+          />
           <div class="w-1/3 border-t-2 border-gray-500">HAND</div>
-          <div class="w-2/3">
-            <div class="border-l-8 border-yellow-400 bg-yellow-200 py-2 pl-2 pr-4 mb-1">
-              <p>Predict</p>
-            </div>
-            <div class="border-l-8 border-blue-400 bg-blue-200 py-2 pl-2 pr-4 mb-1">
-              <p>Code Smaller</p>
-            </div>
-            <div class="border-l-8 border-blue-400 bg-blue-200 py-2 pl-2 pr-4 mb-1">
-              <p>Code Smaller</p>
-            </div>
-            <div class="border-l-8 border-teal-400 bg-teal-200 py-2 pl-2 pr-4 mb-1">
-              <p>Refactor</p>
-            </div>
-            <div class="border-l-8 border-yellow-400 bg-yellow-200 py-2 pl-2 pr-4 mb-1">
-              <p>Predict</p>
-            </div>
-          </div>
+          <PlayingCardsMiniView
+            :cards="game.players[1].hand.cards"
+          />
         </div>
       </div>
     </div>
@@ -90,8 +62,11 @@
 </template>
 
 <script>
+  import PlayingCardsMiniView from "./PlayingCardsMiniView";
+
   export default {
     name: "GameMaster",
+    components: {PlayingCardsMiniView},
     methods: {
       refresh() {
         fetch(this.apiUrl)
@@ -135,6 +110,3 @@
 
 </script>
 
-<style scoped>
-
-</style>
