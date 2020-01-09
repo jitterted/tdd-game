@@ -11,7 +11,10 @@
   export default {
     name: 'PlayingCardsMiniView',
     props: {
-      cards: []
+      cards: {
+        type: Array,
+        required: true
+      }
     }
   }
 </script>

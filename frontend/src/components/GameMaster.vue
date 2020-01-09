@@ -10,34 +10,14 @@
           <span class="block tracking-widest text-sm">Player One</span>
           <span class="block tracking-wider text-2xl">{{ game.players[0].name }}</span>
         </div>
-        <div class="flex w-11/12 mx-auto flex-wrap">
-          <div class="w-1/3 border-t-2 border-gray-500">IN PLAY</div>
-          <PlayingCardsMiniView
-            :cards="game.players[0].inPlay.cards"
-            class="mb-4"
-          />
-          <div class="w-1/3 border-t-2 border-gray-500">HAND</div>
-          <PlayingCardsMiniView
-            :cards="game.players[0].hand.cards"
-          />
-        </div>
+        <PlayerView :player="game.players[0]"/>
       </div>
       <div class="w-1/2 border shadow-lg">
         <div class="bg-green-700 text-white uppercase font-bold p-2 px-12 text-center mb-2">
           <span class="block tracking-widest text-sm">Player Two</span>
           <span class="block tracking-wider text-2xl">{{ game.players[1].name }}</span>
         </div>
-        <div class="flex w-11/12 mx-auto flex-wrap">
-          <div class="w-1/3 border-t-2 border-gray-500">IN PLAY</div>
-          <PlayingCardsMiniView
-            :cards="game.players[1].inPlay.cards"
-            class="mb-4"
-          />
-          <div class="w-1/3 border-t-2 border-gray-500">HAND</div>
-          <PlayingCardsMiniView
-            :cards="game.players[1].hand.cards"
-          />
-        </div>
+        <PlayerView :player="game.players[1]"/>
       </div>
     </div>
 
@@ -62,11 +42,11 @@
 </template>
 
 <script>
-  import PlayingCardsMiniView from "./PlayingCardsMiniView";
+  import PlayerView from "./PlayerView";
 
   export default {
     name: "GameMaster",
-    components: {PlayingCardsMiniView},
+    components: {PlayerView},
     methods: {
       refresh() {
         fetch(this.apiUrl)
