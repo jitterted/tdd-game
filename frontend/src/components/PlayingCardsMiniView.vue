@@ -23,18 +23,19 @@
     },
     methods: {
       cardColors(card) {
-        return this.titleToColor[card.title];
+        let colorName = this.titleToColorName[card.title];
+        return 'border-' + colorName + '-400 bg-' + colorName + '-200';
       }
     },
     data() {
       return {
-        titleToColor: {
-          'write code': 'border-teal-400 bg-teal-200',
-          'code smaller': 'border-teal-400 bg-teal-200',
-          'predict': 'border-yellow-400 bg-yellow-200',
-          'code bloat': 'border-red-400 bg-red-200',
-          "can't assert": 'border-red-400 bg-red-200',
-          'refactor': 'border-indigo-400 bg-indigo-200'
+        titleToColorName: {
+          'write code':   'teal',
+          'code smaller': 'teal',
+          'predict':      'yellow',
+          'code bloat':   'red',
+          "can't assert": 'red',
+          'refactor':     'indigo'
         }
       }
     }
