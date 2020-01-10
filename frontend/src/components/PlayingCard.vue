@@ -174,7 +174,7 @@
           'code bloat': {
             category: 'negative',
             rules: [`
-                        Deletes 1 <span class="card-title">code smaller</span> card.
+                        Cancels out 1 <span class="card-title">code smaller</span> card.
                       `]
           },
           "can't assert": {
@@ -194,7 +194,7 @@
                         <span class="card-title"><div class="text-center">OR</div></span>
                       `,
               `
-                        Deletes 1 <span class="card-title">can't assert</span> card.
+                        Cancels out 1 <span class="card-title">can't assert</span> card.
                       `
             ]
           }

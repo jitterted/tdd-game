@@ -3,6 +3,7 @@
 }
 
 .card-title {
+  white-space: nowrap;
   font-variant: small-caps;
   font-weight: 700;
 }

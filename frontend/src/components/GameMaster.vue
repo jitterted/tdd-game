@@ -24,18 +24,20 @@
     <div class="flex text-lg">
       <div class="shadow-lg bg-green-100 border p-4 w-1/3">
         <div>
-          <p>Test Result Card</p>
+          <p class="uppercase font-bold text-xs">Test Result Card</p>
+          <div
+            class="border-l-8 py-2 pl-2 pr-4 mb-1"
+            style="background: #ffc499; border-color: #ffa866;"
+          >
+            {{ game.showingTestResultCard.title }}
+          </div>
         </div>
       </div>
       <div class="shadow-lg bg-green-100 border p-4 w-1/3">
-        <div>
-          <p>Test Result Deck</p>
-        </div>
+        <DeckInfo :card-deck="game.testResultCardDeck" title="Test Result Deck"/>
       </div>
       <div class="shadow-lg bg-green-100 border p-4 w-1/3">
-        <div>
-          <p>Playing Card Deck</p>
-        </div>
+        <DeckInfo :card-deck="game.playingCardDeck" title="Playing Deck"/>
       </div>
     </div>
   </div>
@@ -43,10 +45,11 @@
 
 <script>
   import PlayerView from "./PlayerView";
+  import DeckInfo from "./DeckInfo";
 
   export default {
     name: "GameMaster",
-    components: {PlayerView},
+    components: {DeckInfo, PlayerView},
     methods: {
       refresh() {
         fetch(this.apiUrl)
@@ -62,7 +65,7 @@
         }.bind(this),
         1000);
     },
-    beforeDestroy(){
+    beforeDestroy() {
       clearInterval(this.interval);
     },
     data() {
