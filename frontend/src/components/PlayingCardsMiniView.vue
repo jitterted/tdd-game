@@ -11,7 +11,6 @@
         <div class="font-light opacity-25 float-right">
           {{ card.id }}
         </div>
-
       </div>
     </div>
   </div>

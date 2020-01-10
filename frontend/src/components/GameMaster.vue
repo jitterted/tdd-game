@@ -1,19 +1,19 @@
 <template>
   <div class="w-screen min-h-screen py-8 items-stretch justify-center bg-gray-100">
 
-    <h1 class="p-2 text-4xl text-center bg-black text-white">
+    <h1 class="p-2 text-4xl text-center bg-gray-800 text-white">
       GAME MASTER VIEW
     </h1>
     <div class="flex">
       <div class="w-1/2 border shadow-lg">
-        <div class="bg-blue-700 text-white uppercase font-bold p-2 px-12 text-center mb-2">
+        <div class="bg-purple-700 text-white uppercase font-bold p-2 px-12 text-center mb-2">
           <span class="block tracking-widest text-sm">Player One</span>
           <span class="block tracking-wider text-2xl">{{ game.players[0].name }}</span>
         </div>
         <PlayerView :player="game.players[0]"/>
       </div>
       <div class="w-1/2 border shadow-lg">
-        <div class="bg-green-700 text-white uppercase font-bold p-2 px-12 text-center mb-2">
+        <div class="bg-indigo-700 text-white uppercase font-bold p-2 px-12 text-center mb-2">
           <span class="block tracking-widest text-sm">Player Two</span>
           <span class="block tracking-wider text-2xl">{{ game.players[1].name }}</span>
         </div>

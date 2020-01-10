@@ -5,9 +5,13 @@
     * [ ] Change ".count() < 5" to ".canAdd()" (or "hasRoom") when looping to add cards
 * [ ] Move PlayerHandTest tests to HandTests and refactor ("object envy" code smell)
 
-## BUGS
-* [X] When cards are moved, the cards don't visibly change order until the data is refreshed
-      Somewhere we're missing the propagation of changes to the ordering array  
+
+## Deployment
+
+* [ ] Properly build with Maven that combines front- and back-end code into single deployable JAR
+* [ ] Deploy onto Heroku
+* [ ] Use CloudFlare to point tdd.cards to Heroku
+* [ ] Login page with an access code?
 
 ## Display
 ~~* [ ] Center the cards within their row~~
@@ -55,15 +59,17 @@ or only see cards in-play.
 
 ## Required
 
-* [ ] View All Players cards: in-hand & in-play
-* [ ] Current (if any) Test Results Drawn Card
-* [ ] For both Playing Card and Test Results Decks
-    * [ ] Summary/Size of draw and discard piles
+* [X] View All Players cards: in-hand & in-play
+* [X] Current (if any) Test Results Drawn Card
+* [X] For both Playing Card and Test Results Decks
+    * [X] Summary/Size of draw and discard piles
+* [ ] Able to reset game back to starting point -- from Game Master View
 
 ## Nice to Have
 
 * [ ] For both Playing Card and Test Results Decks
     * [ ] Draw and discard piles in detail
+* [ ] Ability to arbitrarily move cards around between players and play areas
 
 ----
 
@@ -71,8 +77,7 @@ or only see cards in-play.
 
 ## Display
 * [ ] Highlight which player's turn
-* [ ] Show empty outlines of where cards will be displayed 
-      (this will help keep the display evenly divided even when no cards are in play)
+* [ ] Show empty outlines of where cards will be displayed
 
 
 # Completed
