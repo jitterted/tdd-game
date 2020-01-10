@@ -139,7 +139,7 @@
 
   .score-info {
     display: grid;
-    grid-template-rows: 37% 33% 30%;
+    grid-template-rows: 35% 35% 30%;
   }
 
   .card-area {

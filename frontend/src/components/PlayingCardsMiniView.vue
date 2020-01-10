@@ -4,10 +4,14 @@
          :key="index"
     >
       <div
-        class="border-l-8 py-2 pl-2 pr-4 mb-1"
+        class="border-l-8 py-2 pl-2 pr-3 mb-1"
         :class="cardColors(card)"
       >
-        {{ card.title }} ({{card.id}})
+        {{ card.title }}
+        <div class="font-light opacity-25 float-right">
+          {{ card.id }}
+        </div>
+
       </div>
     </div>
   </div>
