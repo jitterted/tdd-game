@@ -117,7 +117,9 @@
     },
     methods: {
       toggleSelect() {
-        this.selected = !this.selected;
+        if (this.rowName !== 'opponent') {
+          this.selected = !this.selected;
+        }
       },
       discardSelected() {
         this.$emit('discard', this.id);
