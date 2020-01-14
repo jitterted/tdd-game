@@ -19,13 +19,14 @@
 * [X] No "Play" option for card in "In-Play" area
 * [X] Prevent card selection for opponent-in-play cards
 * [X] Keyboard actions for (D)iscard and (P)lay
+* [ ] When "Run Test" card is drawn, show on both player's screen
 * [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
 * [ ] Propagate card view order to server 
-* [ ] Single click discard of In-Play area
 * [ ] Turn off Playing Card IDs
 * [ ] Score & Risk tracking - propagate to other players via server
-* [ ] When "Run Test" card is drawn, show on both player's screen
 * [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
+* [ ] Single click discard of In-Play area
+* [ ] Remove (or move to the right side?) the Close button from Run Test modal
 
 ### Nice to Have
 * [ ] Track player action count

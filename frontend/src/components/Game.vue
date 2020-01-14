@@ -21,7 +21,7 @@
           class="bg-green-300 rounded border-green-100 font-bold px-4 py-2 mb-4"
           @click="drawTestResultsCard"
         >
-          Run Tests
+          Draw <span class="card-title">run tests</span> Card
         </button>
         <die/>
       </div>
