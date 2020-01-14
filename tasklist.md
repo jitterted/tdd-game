@@ -17,15 +17,23 @@
 ~~* [ ] Center the cards within their row~~
 * [X] Display user's name coming from back-end
 * [X] No "Play" option for card in "In-Play" area
-* [ ] Prevent card selection for opponent-in-play cards
+* [X] Prevent card selection for opponent-in-play cards
+* [ ] Keyboard actions for (D)iscard and (P)lay
+* [ ] Propagate card view order to server 
+* [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
+* [ ] Single click discard of In-Play area
+* [ ] Turn off Playing Card IDs
+* [ ] Score & Risk tracking - propagate to other players via server
+* [ ] When "Run Test" card is drawn, show on both player's screen
+* [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
 
 ### Nice to Have
-* [ ] Keyboard actions for (D)iscard and (P)lay
+* [ ] Track player action count
 * [ ] Drag-n-drop reordering of display of cards
 * [ ] Animate new card appearing anywhere (esp. in hand)
+* [ ] Animate card being moved from Hand to In-Play
 * [ ] Prevent multiple selection: only single select of cards
 * [ ] show deck status with # of cards in discard pile and in draw pile
-* [ ] Animate card being moved from Hand to In-Play
 
 ## User Actions (Vue)
 * [X] Highlight card for action: (D)iscard or (P)lay
@@ -63,13 +71,14 @@ or only see cards in-play.
 * [X] Current (if any) Test Results Drawn Card
 * [X] For both Playing Card and Test Results Decks
     * [X] Summary/Size of draw and discard piles
-* [ ] Able to reset game back to starting point -- from Game Master View
+
 
 ## Nice to Have
-
+* [ ] Able to reset game back to starting point -- from Game Master View
 * [ ] For both Playing Card and Test Results Decks
     * [ ] Draw and discard piles in detail
 * [ ] Ability to arbitrarily move cards around between players and play areas
+* [ ] Undo actions
 
 ----
 

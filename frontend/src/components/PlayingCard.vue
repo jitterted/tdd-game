@@ -55,7 +55,7 @@
         </div>
       </div>
       <div class="px-2 py-1">
-        <card-rule v-for="(rule, index) in card.rules" :key="index">
+        <card-rule v-for="(rule, index) in cardDetails.rules" :key="index">
           <span v-html="rule"/>
         </card-rule>
       </div>
@@ -91,8 +91,8 @@
     },
     computed: {
       categoryColor() {
-        if (this.card.category) {
-          return this.categoryColors[this.card.category];
+        if (this.cardDetails.category) {
+          return this.categoryColors[this.cardDetails.category];
         } else {
           // return a default gray/white color scheme
           return {background: 'bg-white', title: 'bg-gray-100'};
@@ -105,8 +105,8 @@
           return 'border shadow-md';
         }
       },
-      card() {
-        return this.cards[this.title] ? this.cards[this.title] : {content: []};
+      cardDetails() {
+        return this.cardDetailsMap[this.title] ? this.cardDetailsMap[this.title] : {content: []};
       },
       computedOrder() {
         return this.order.indexOf(this.id);
@@ -150,7 +150,7 @@
           'negative': {background: 'messy-code', title: 'bg-red-200'},
           'refactor': {background: 'bg-indigo-200', title: 'bg-indigo-100'},
         },
-        cards: {
+        cardDetailsMap: {
           'write code': {
             category: 'code',
             rules: [`
