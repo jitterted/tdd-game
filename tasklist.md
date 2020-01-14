@@ -18,9 +18,9 @@
 * [X] Display user's name coming from back-end
 * [X] No "Play" option for card in "In-Play" area
 * [X] Prevent card selection for opponent-in-play cards
-* [ ] Keyboard actions for (D)iscard and (P)lay
-* [ ] Propagate card view order to server 
+* [X] Keyboard actions for (D)iscard and (P)lay
 * [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
+* [ ] Propagate card view order to server 
 * [ ] Single click discard of In-Play area
 * [ ] Turn off Playing Card IDs
 * [ ] Score & Risk tracking - propagate to other players via server

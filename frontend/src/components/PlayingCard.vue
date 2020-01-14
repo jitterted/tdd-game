@@ -4,6 +4,11 @@
        :style="{order: computedOrder}"
        @click.prevent="toggleSelect"
   >
+    <GlobalEvents
+      v-if="rowName !== 'opponent'"
+      @keydown.d="discardSelected"
+      @keydown.p="playSelected"
+    />
     <div v-if="selected" class="card-overlay font-extrabold">
       <div class="mr-5 ml-2 mt-2">
         <br/>
@@ -65,11 +70,13 @@
 
 <script>
   import CardRule from "./CardRule";
+  import GlobalEvents from 'vue-global-events';
 
   export default {
     name: "playing-card",
     components: {
-      CardRule
+      CardRule,
+      GlobalEvents
     },
     props: {
       title: {
@@ -122,18 +129,23 @@
         }
       },
       discardSelected() {
-        this.$emit('discard', this.id);
-        this.selected = false;
+        if (this.selected) {
+          this.selected = false;
+          this.$emit('discard', this.id);
+        }
       },
       playSelected() {
-        let apiUrl = '/api/game/players/' + this.$route.params.playerId;
-        fetch(apiUrl + '/plays', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({id: this.id})
-        });
+        if (this.selected && this.showPlayAction) {
+          this.selected = false;
+          let apiUrl = '/api/game/players/' + this.$route.params.playerId;
+          fetch(apiUrl + '/plays', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: this.id})
+          });
+        }
       },
       moveRight() {
         this.$emit('moveright', this.id);
