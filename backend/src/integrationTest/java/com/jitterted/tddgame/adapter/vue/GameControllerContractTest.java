@@ -58,8 +58,12 @@ class GameControllerContractTest {
            .andExpect(jsonPath("$.hand").exists())
            .andExpect(jsonPath("$.inPlay").exists())
            .andExpect(jsonPath("$.opponentInPlay").exists())
-           .andExpect(jsonPath("$.opponentName").exists())
-           .andExpect(jsonPath("$.name").exists())
+           .andExpect(jsonPath("$.opponent").exists())
+           .andExpect(jsonPath("$.opponent.name").exists())
+           .andExpect(jsonPath("$.opponent.id").exists())
+           .andExpect(jsonPath("$.player").exists())
+           .andExpect(jsonPath("$.player.name").exists())
+           .andExpect(jsonPath("$.player.id").exists())
     ;
   }
 

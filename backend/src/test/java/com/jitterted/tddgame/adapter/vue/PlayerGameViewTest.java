@@ -73,15 +73,15 @@ class PlayerGameViewTest {
     Game game = new Game(List.of(player1, player2), null, null);
 
     PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
-    assertThat(playerGameView1.getName())
+    assertThat(playerGameView1.getPlayer().getName())
       .isEqualTo("first");
-    assertThat(playerGameView1.getOpponentName())
+    assertThat(playerGameView1.getOpponent().getName())
       .isEqualTo("opponent");
 
     PlayerGameView playerGameView2 = PlayerGameView.from(game, player2.id());
-    assertThat(playerGameView2.getName())
+    assertThat(playerGameView2.getPlayer().getName())
       .isEqualTo("opponent");
-    assertThat(playerGameView2.getOpponentName())
+    assertThat(playerGameView2.getOpponent().getName())
       .isEqualTo("first");
   }
 
@@ -92,11 +92,11 @@ class PlayerGameViewTest {
     Game game = new Game(List.of(player1, player2), null, null);
 
     PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
-    assertThat(playerGameView1.getName())
+    assertThat(playerGameView1.getPlayer().getName())
       .isEqualTo("nobody");
 
     PlayerGameView playerGameView2 = PlayerGameView.from(game, player2.id());
-    assertThat(playerGameView2.getName())
+    assertThat(playerGameView2.getPlayer().getName())
       .isEqualTo("nobody");
   }
 
@@ -108,7 +108,7 @@ class PlayerGameViewTest {
     Game game = new Game(List.of(player1, player2), null, null);
 
     PlayerGameView playerGameView1 = PlayerGameView.from(game, player1.id());
-    assertThat(playerGameView1.getOpponentName())
+    assertThat(playerGameView1.getOpponent().getName())
       .isEqualTo("nobody");
   }
 

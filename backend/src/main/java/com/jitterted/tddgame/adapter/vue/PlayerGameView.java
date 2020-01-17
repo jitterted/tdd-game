@@ -10,8 +10,8 @@ public class PlayerGameView {
   private final CardsView hand;
   private final CardsView inPlay;
   private final CardsView opponentInPlay;
-  private final String name;
-  private final String opponentName;
+  private final PlayerView player;
+  private final PlayerView opponent;
 
   public static PlayerGameView from(Game game, PlayerId playerId) {
     Player player = game.playerFor(playerId);
@@ -21,14 +21,14 @@ public class PlayerGameView {
     Player opponent = game.opponentFor(player);
     CardsView opponentInPlayView = CardsView.from(opponent.inPlay().cards());
 
-    String name = player.assignedUser() == null ? "nobody" : player.assignedUser().getName();
-    String opponentName = opponent.assignedUser() == null ? "nobody" : opponent.assignedUser().getName();
+    PlayerView playerView = PlayerView.from(player);
+    PlayerView opponentPlayerView = PlayerView.from(opponent);
 
     return new PlayerGameView(handView,
                               inPlayView,
                               opponentInPlayView,
-                              name,
-                              opponentName
+                              playerView,
+                              opponentPlayerView
     );
   }
 }

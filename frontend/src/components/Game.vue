@@ -3,10 +3,10 @@
 
     <div class="score-info h-full">
       <div class="bg-green-700">
-        <player-score :name="game.opponentName"/>
+        <player-score :name="game.opponent.name" :playerId="game.opponent.id"/>
       </div>
       <div class="bg-gray-800">
-        <player-score :name="game.name"/>
+        <player-score :name="game.player.name" :playerId="game.player.id"/>
       </div>
       <div class="text-center bg-black py-3">
         <button
@@ -94,8 +94,7 @@
         this.showTestResultsModal = true;
       },
       playerChanged() {
-        this.playerId = this.$route.params.playerId;
-        this.apiUrl = '/api/game/players/' + this.playerId;
+        this.apiUrl = '/api/game/players/' + this.$route.params.playerId;
         this.refresh();
       }
     },
@@ -116,14 +115,19 @@
         interval: undefined,
         showTestResultsModal: false,
         testResultsCard: {id: -1, title: "none"},
-        playerId: 'no player',
         apiUrl: '/api/game/players/',
         game: {
-          "name": "",
-          "opponentName": "",
-          "hand": {"cards": []},
-          "inPlay": {"cards": []},
-          "opponentInPlay": {"cards": []}
+          player: {
+            name: '',
+            id: ''
+          },
+          opponent: {
+            name: '',
+            id: ''
+          },
+          hand: {cards: []},
+          inPlay: {cards: []},
+          opponentInPlay: {cards: []}
         }
       }
     }

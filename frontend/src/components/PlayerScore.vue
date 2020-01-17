@@ -1,27 +1,32 @@
 <template>
   <div class="px-4 pt-2">
     <div class="xl:block uppercase font-bold text-gray-200 mb-4">
-      {{ name }}'s Score
+      {{ name }}
     </div>
     <div class="text-white mb-1">
-      Passing Tests: {{ passingTests }}
+      Stories Done: {{ score }}
     </div>
     <div class="mb-6">
-      <button class="bg-white hover:bg-gray-300 text-black font-bold py-1 px-3 rounded mr-1" @click="decrementTests">-</button>
-      <button class="bg-white hover:bg-gray-300 text-black font-bold py-1 px-3 rounded mr-1" @click="incrementTests">+</button>
+      <button class="bg-white hover:bg-gray-300 text-black font-bold px-3 rounded mr-1" @click="decrementScore">-
+      </button>
+      <button class="bg-white hover:bg-gray-300 text-black font-bold px-3 rounded mr-1" @click="incrementScore">+
+      </button>
     </div>
 
     <div class="text-white mb-1">
       Risk Level: {{ riskLevel }}
     </div>
     <div>
-      <button class="bg-white hover:bg-gray-300 text-black font-bold py-1 px-3 rounded mr-1" @click="decrementRisk">-</button>
-      <button class="bg-white hover:bg-gray-300 text-black font-bold py-1 px-3 rounded mr-1" @click="incrementRisk">+</button>
+      <button class="bg-white hover:bg-gray-300 text-black font-bold px-3 rounded mr-1" @click="decrementRisk">-
+      </button>
+      <button class="bg-white hover:bg-gray-300 text-black font-bold px-3 rounded mr-1" @click="incrementRisk">+
+      </button>
     </div>
 
     <div class="mt-4">
       <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-1 px-2 rounded border"
-              @click="resetAll">Reset Scores</button>
+              @click="resetAll">Reset
+      </button>
     </div>
   </div>
 </template>
@@ -29,16 +34,29 @@
 <script>
   export default {
     name: "player-score",
-    props: ['name'],
+    props: {
+      name: {
+        type: String,
+        required: true
+      },
+      playerId: {
+        type: String,
+        required: true
+      }
+    },
     methods: {
-      decrementTests() {
-        this.passingTests -= 1;
+      decrementScore() {
+        this.score -= 1;
       },
-      incrementTests() {
-        this.passingTests += 1;
+      incrementScore() {
+        this.score += 1;
+        this.send(JSON.stringify({
+          score: this.score,
+          playerId: this.playerId
+        }));
       },
-      resetTests() {
-        this.passingTests = 0;
+      resetScore() {
+        this.score = 0;
       },
       decrementRisk() {
         this.riskLevel -= 1;
@@ -50,7 +68,7 @@
         this.riskLevel = 0;
       },
       resetAll() {
-        this.resetTests();
+        this.resetScore();
         this.resetRisk();
       }
     },
