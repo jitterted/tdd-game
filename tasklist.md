@@ -19,20 +19,25 @@
 * [X] No "Play" option for card in "In-Play" area
 * [X] Prevent card selection for opponent-in-play cards
 * [X] Keyboard actions for (D)iscard and (P)lay
-* [ ] When "Run Test" card is drawn, show on both player's screen
+* [X] No "Play" option for card in "In-Play" area
 * [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
-* [ ] Propagate card view order to server 
 * [ ] Turn off Playing Card IDs
-* [ ] Score & Risk tracking - propagate to other players via server
 * [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
 * [ ] Single click discard of In-Play area
 * [ ] Remove (or move to the right side?) the Close button from Run Test modal
+* [ ] Ensure can't move card past the left/right edge 
+
+### Requires WebSockets
+* [ ] Score & Risk tracking - propagate to other players via server
+* [ ] When "Run Test" card is drawn, show on both player's screen
+* [ ] Propagate card view order to server 
 
 ### Nice to Have
 * [ ] Track player action count
 * [ ] Drag-n-drop reordering of display of cards
 * [ ] Animate new card appearing anywhere (esp. in hand)
 * [ ] Animate card being moved from Hand to In-Play
+* [ ] Animate play of Refactor card, which is discard-on-play
 * [ ] Prevent multiple selection: only single select of cards
 * [ ] show deck status with # of cards in discard pile and in draw pile
 
@@ -87,7 +92,8 @@ or only see cards in-play.
 
 ## Display
 * [ ] Highlight which player's turn
-* [ ] Show empty outlines of where cards will be displayed
+* [ ] Show empty outlines of where cards will be displayed 
+      (this will help keep the display evenly divided even when no cards are in play)
 
 
 # Completed
