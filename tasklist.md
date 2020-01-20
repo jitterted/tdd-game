@@ -23,11 +23,11 @@
 * [ ] When "Run Test" card is drawn, show on both player's screen
     [X] 1. FE: POST to draw the "run test" card -> 204 (no content), with, well, no body content
     [X] 1a. BE: Only return 204
-    2. BE: testResultsCardDeck.draw -> game.drawnTestResultsCard <-- also need the player ID for who drew
-    3. BE: send WS message on /topic/testresultcard: { action = "TestResultsCardDrawn", cardId: 123, PlayerId who drew } 
-    4. FE: (recv msg) show modal with that card
-    5. FE: if PlayerIdWhoDrew == Current Player, then show dismiss modal button
-    6. FE: =button click= POST to discard "run test" card -> 201
+    [X] 2. BE: testResultsCardDeck.draw -> game.drawnTestResultsCard <-- also need the player ID for who drew
+    [X] 3. BE: send WS message on /topic/testresultcard: { action = "TestResultsCardDrawn", cardId: 123, PlayerId who drew } 
+    [X] 4. FE: (recv msg) show modal with that card
+    5. FE: =button click= POST to discard "drawn test results card" -> 204
+    6. FE: if PlayerIdWhoDrew == Current Player, then show dismiss modal button
     7. BE: testResultsCardDeck.discard(the card)
     8. BE: game.drawnTestResultsCard = null
     9. BE: send WS message { action: "TestResultsCardDiscarded", playerId: id }  

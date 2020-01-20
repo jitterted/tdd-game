@@ -20,7 +20,7 @@ public class GameControllerDiscardsTest {
   @Test
   public void discardFromHandIsTransferredToDeckDiscardPile() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameController gameController = new GameController(gameService);
+    GameController gameController = new GameController(gameService, null);
     Game game = gameService.currentGame();
     Deck<PlayingCard> deck = game.deck();
     Player player = game.players().get(0);
@@ -38,7 +38,7 @@ public class GameControllerDiscardsTest {
     Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
     Game game = new Game(new PlayerFactory().createTwoPlayers(), deck, null);
     GameService gameService = new FakeGameService(game);
-    GameController gameController = new GameController(gameService);
+    GameController gameController = new GameController(gameService, null);
 
     PlayingCard playableCard = new CardFactory().playingCard("playable", Usage.SELF);
     Player player = game.players().get(0);

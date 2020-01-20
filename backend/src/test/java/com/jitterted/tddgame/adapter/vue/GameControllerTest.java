@@ -21,7 +21,7 @@ class GameControllerTest {
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
 
-    GameController gameController = new GameController(gameService);
+    GameController gameController = new GameController(gameService, null);
 
     PlayerGameView playerGameView = gameController.playerGameView(String.valueOf(player.id().getId()));
 
@@ -37,7 +37,7 @@ class GameControllerTest {
     PlayingCard playingCardFromHand = new PlayingCard(CardId.of(999), "played card", Usage.SELF);
     player.hand().add(playingCardFromHand);
 
-    GameController gameController = new GameController(gameService);
+    GameController gameController = new GameController(gameService, null);
 
     gameController.playCard(String.valueOf(player.id().getId()),
                             new PlayCardAction(playingCardFromHand.id().getId()));
@@ -49,7 +49,7 @@ class GameControllerTest {
   @Test
   public void connectUserIsAssignedToPlayer() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameController gameController = new GameController(gameService);
+    GameController gameController = new GameController(gameService, null);
     UserDto userDto = new UserDto("tba");
 
     PlayerIdDto playerIdDto = gameController.connectUserToPlayerInGame(userDto);

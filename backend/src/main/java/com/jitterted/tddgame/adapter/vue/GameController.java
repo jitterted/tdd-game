@@ -1,12 +1,14 @@
 package com.jitterted.tddgame.adapter.vue;
 
 import com.jitterted.tddgame.domain.CardId;
+import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/game")
 public class GameController {
 
+  private static final String TOPIC_TESTRESULTCARD = "/topic/testresultcard";
   private final GameService gameService;
+  private final SimpMessagingTemplate simpMessagingTemplate;
 
   @Autowired
-  public GameController(GameService gameService) {
+  public GameController(GameService gameService, SimpMessagingTemplate simpMessagingTemplate) {
     this.gameService = gameService;
+    this.simpMessagingTemplate = simpMessagingTemplate;
   }
 
   @PostMapping("players")
@@ -62,7 +67,9 @@ public class GameController {
   @PostMapping("players/{playerId}/test-result-card-draws")
   public ResponseEntity<Void> handleDrawTestResultCard(@PathVariable("playerId") String playerIdString) {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
-    gameService.currentGame().drawTestResultCardFor(playerId);
+    Game game = gameService.currentGame();
+    game.drawTestResultCardFor(playerId);
+    simpMessagingTemplate.convertAndSend(TOPIC_TESTRESULTCARD, new DrawnTestResultCardEvent(game.drawnTestResultCard()));
     return ResponseEntity.noContent().build();
   }
 }

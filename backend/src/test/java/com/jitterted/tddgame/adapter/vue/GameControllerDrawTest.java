@@ -14,6 +14,8 @@ import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class GameControllerDrawTest {
   @Test
   public void playerDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameController gameController = new GameController(gameService);
+    GameController gameController = new GameController(gameService, null);
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
     Hand hand = player.hand();
@@ -48,7 +50,8 @@ public class GameControllerDrawTest {
     Game game = new Game(List.of(player1), null, testResultCardDeck);
     GameService gameService = new FakeGameService(game);
 
-    GameController gameController = new GameController(gameService);
+    SimpMessagingTemplate dummySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    GameController gameController = new GameController(gameService, dummySimpMessagingTemplate);
 
     gameController.handleDrawTestResultCard(String.valueOf(player1.id().getId()));
 

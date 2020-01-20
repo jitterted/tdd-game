@@ -32,4 +32,12 @@ public class DrawnTestResultCard {
     result = 31 * result + player.hashCode();
     return result;
   }
+
+  public Player player() {
+    return player;
+  }
+
+  public TestResultCard card() {
+    return testResultCard;
+  }
 }

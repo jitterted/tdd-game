@@ -49,6 +49,7 @@
   import Die from "./Die";
   import TestResultsCard from "./TestResultsCard";
   import CardsRow from "./CardsRow";
+  import Stomp from "webstomp-client";
 
   export default {
     name: "Game",
@@ -89,6 +90,20 @@
           }
         )
       },
+      subscribeToTestCardEvents() {
+        this.stompClient = Stomp.client('ws://localhost:8080/api/ws');
+        let that = this;
+        this.stompClient.connect({}, frame => {
+          let subscription = that.stompClient.subscribe('/topic/testresultcard', testResultCardMessage => {
+            let messageBody = testResultCardMessage.body;
+            let testResultCardEvent = JSON.parse(messageBody);
+            that.testResultsCard = testResultCardEvent.testResultCardView;
+            // use the player id for showing button
+            that.showTestResultsModal = true;
+          });
+        });
+
+      },
       playerChanged() {
         this.apiUrl = '/api/game/players/' + this.$route.params.playerId;
         this.refresh();
@@ -102,12 +117,14 @@
         this.refresh();
       }.bind(this),
         1000);
+      this.subscribeToTestCardEvents();
     },
     beforeDestroy(){
       clearInterval(this.interval);
     },
     data() {
       return {
+        stompClient: undefined,
         interval: undefined,
         showTestResultsModal: false,
         testResultsCard: {id: -1, title: "none"},

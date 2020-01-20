@@ -98,13 +98,10 @@
           let messageBody = scoreUpdateMessage.body;
           console.log('Score Update message body: ' + messageBody);
           let scoreUpdate = JSON.parse(messageBody);
-          console.log('This component playerId = ' + that.playerId);
           if (scoreUpdate.playerId === that.playerId) {
-            console.log("Updating score for player " + that.playerId);
             that.score = scoreUpdate.score;
           }
         });
-        console.log('Subscription successful.');
       });
     }
   };
