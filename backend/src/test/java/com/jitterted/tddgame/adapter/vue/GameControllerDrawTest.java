@@ -3,17 +3,19 @@ package com.jitterted.tddgame.adapter.vue;
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.CopyCardShuffler;
 import com.jitterted.tddgame.domain.Deck;
+import com.jitterted.tddgame.domain.DrawnTestResultCard;
 import com.jitterted.tddgame.domain.FakeGameService;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Hand;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
+import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -37,22 +39,22 @@ public class GameControllerDrawTest {
   }
 
   @Test
-  public void testResultDrawReturnsTitleOfTestResultCard() throws Exception {
+  public void testResultCardDrawPutsCardInGameState() throws Exception {
     Deck<TestResultCard> testResultCardDeck = new Deck<>(new CopyCardShuffler<>());
     TestResultCard testResultCard = new TestResultCard(CardId.of(1759), "As Predicted");
     testResultCardDeck.addToDrawPile(testResultCard);
 
-    Game game = new Game(Collections.emptyList(), null, testResultCardDeck);
+    Player player1 = new Player(PlayerId.of(0));
+    Game game = new Game(List.of(player1), null, testResultCardDeck);
     GameService gameService = new FakeGameService(game);
 
     GameController gameController = new GameController(gameService);
 
-    TestResultCardView testResultCardView = gameController.handleDrawTestResultCard("0");
+    gameController.handleDrawTestResultCard(String.valueOf(player1.id().getId()));
 
-    assertThat(testResultCardView.getId())
-      .isEqualTo(testResultCard.id().getId());
-    assertThat(testResultCardDeck.discardPile())
-      .containsOnly(testResultCard);
+    DrawnTestResultCard drawnTestResultCard = new DrawnTestResultCard(testResultCard, player1);
+    assertThat(game.drawnTestResultCard())
+      .isEqualTo(drawnTestResultCard);
   }
 
 }

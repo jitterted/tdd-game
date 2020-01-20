@@ -2,7 +2,6 @@ package com.jitterted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -90,19 +89,34 @@ class GameTest {
   }
 
   @Test
-  public void drawingCardFromTestResultDeckPutsCardInDiscardPile() throws Exception {
+  public void drawingCardFromTestResultDeckPutsCardInDrawnTestCardInGameState() throws Exception {
     Deck<TestResultCard> testResultCardDeck = new Deck<>(new DummyCardShuffler<>());
     TestResultCard testResultCard = new TestResultCard(CardId.of(3), "As Predicted");
     testResultCardDeck.addToDrawPile(testResultCard);
-    Game game = new Game(Collections.emptyList(), null, testResultCardDeck);
+    List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
+    Game game = new Game(twoPlayers, null, testResultCardDeck);
+    Player player1 = twoPlayers.get(0);
 
-    TestResultCard drawnCard = game.drawTestResultCardFor(PlayerId.of(7));
+    game.drawTestResultCardFor(player1.id());
 
+    assertThat(game.drawnTestResultCard())
+      .isEqualTo(new DrawnTestResultCard(testResultCard, player1));
     assertThat(testResultCardDeck.drawPileSize())
       .isZero();
-    assertThat(drawnCard)
-      .isEqualTo(testResultCard);
     assertThat(testResultCardDeck.discardPile())
-      .containsOnly(testResultCard);
+      .isEmpty();
+  }
+
+  @Test
+  public void drawingTestResultCardWhenOneAlreadyDrawnThrowsException() throws Exception {
+    Deck<TestResultCard> testResultCardDeck = new DeckFactory(new CardFactory()).createTestResultCardDeck();
+    List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
+    Game game = new Game(twoPlayers, null, testResultCardDeck);
+    Player player1 = twoPlayers.get(0);
+    game.drawTestResultCardFor(player1.id());
+
+    assertThatThrownBy(() -> {
+      game.drawTestResultCardFor(player1.id());
+    }).isInstanceOf(TestCardAlreadyDrawnException.class);
   }
 }

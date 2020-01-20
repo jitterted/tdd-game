@@ -4,9 +4,9 @@ import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerId;
-import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,9 +60,9 @@ public class GameController {
   }
 
   @PostMapping("players/{playerId}/test-result-card-draws")
-  public TestResultCardView handleDrawTestResultCard(@PathVariable("playerId") String playerIdString) {
+  public ResponseEntity<Void> handleDrawTestResultCard(@PathVariable("playerId") String playerIdString) {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
-    TestResultCard testResultCard = gameService.currentGame().drawTestResultCardFor(playerId);
-    return TestResultCardView.of(testResultCard);
+    gameService.currentGame().drawTestResultCardFor(playerId);
+    return ResponseEntity.noContent().build();
   }
 }

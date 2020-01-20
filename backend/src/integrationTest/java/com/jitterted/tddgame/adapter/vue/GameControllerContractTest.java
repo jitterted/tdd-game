@@ -111,15 +111,13 @@ class GameControllerContractTest {
   }
 
   @Test
-  public void postDrawTestResultsActionIs200Ok() throws Exception {
+  public void postDrawTestResultsActionIs204NoContent() throws Exception {
     Player player = gameService.currentGame().players().get(0);
 
     mockMvc.perform(
       post(API_PLAYERS_BASE_URL + player.id().getId() + "/test-result-card-draws")
     )
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.id").exists())
-           .andExpect(jsonPath("$.title").exists())
+           .andExpect(status().isNoContent())
     ;
 
   }

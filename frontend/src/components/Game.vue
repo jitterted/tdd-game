@@ -88,10 +88,6 @@
             method: 'POST'
           }
         )
-          .then(response => response.json())
-          .then(jsonData => this.testResultsCard = jsonData)
-          .catch(error => console.log('Draw Test Results Card error: ' + error));
-        this.showTestResultsModal = true;
       },
       playerChanged() {
         this.apiUrl = '/api/game/players/' + this.$route.params.playerId;

@@ -9,6 +9,7 @@ public class Game {
   private final Map<PlayerId, Player> playerMap = new HashMap<>();
   private final Deck<PlayingCard> playingCardDeck;
   private final Deck<TestResultCard> testResultCardDeck;
+  private DrawnTestResultCard drawnTestResultCard;
 
   public Game(List<Player> playerList, Deck<PlayingCard> playingCardDeck, Deck<TestResultCard> testResultCardDeck) {
     playerList.forEach(player -> playerMap.put(player.id(), player));
@@ -48,10 +49,12 @@ public class Game {
     player.play(this, cardId);
   }
 
-  public TestResultCard drawTestResultCardFor(PlayerId playerId) {
+  public void drawTestResultCardFor(PlayerId playerId) {
+    if (drawnTestResultCard != null) {
+      throw new TestCardAlreadyDrawnException("Currently drawn card was not discarded: " + drawnTestResultCard);
+    }
     TestResultCard drawnCard = testResultCardDeck.draw();
-    testResultCardDeck.addToDiscardPile(drawnCard);
-    return drawnCard;
+    drawnTestResultCard = new DrawnTestResultCard(drawnCard, playerFor(playerId));
   }
 
   public Player playerFor(PlayerId playerId) {
@@ -68,5 +71,9 @@ public class Game {
 
   public Deck<TestResultCard> testResultCardDeck() {
     return testResultCardDeck;
+  }
+
+  public DrawnTestResultCard drawnTestResultCard() {
+    return drawnTestResultCard;
   }
 }
