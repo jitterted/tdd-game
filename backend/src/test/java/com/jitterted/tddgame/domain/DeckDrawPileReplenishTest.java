@@ -45,7 +45,7 @@ public class DeckDrawPileReplenishTest {
 
   private List<PlayingCard> discardThreeCardsTo(Deck<PlayingCard> deck) {
     CardFactory cardFactory = new CardFactory();
-    List<PlayingCard> discardPlayingCards = List.of(cardFactory.playingCard("refactor", Usage.SELF),
+    List<PlayingCard> discardPlayingCards = List.of(cardFactory.playingCard("design refactor", Usage.SELF),
                                                     cardFactory.playingCard("predict", Usage.SELF),
                                                     cardFactory.playingCard("write code", Usage.SELF));
     deck.addToDiscardPile(discardPlayingCards);

@@ -33,12 +33,12 @@
     data() {
       return {
         titleToColorName: {
-          'write code':   'teal',
-          'code smaller': 'teal',
-          'predict':      'yellow',
-          'code bloat':   'red',
-          "can't assert": 'red',
-          'refactor':     'indigo'
+          'write code':       'teal',
+          'refactor code':    'teal',
+          'predict':          'yellow',
+          'code bloat':       'red',
+          "can't assert":     'red',
+          'design refactor':  'indigo'
         }
       }
     }

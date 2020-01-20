@@ -13,15 +13,29 @@
 * [ ] Use CloudFlare to point tdd.cards to Heroku
 * [ ] Login page with an access code?
 
+
 ## Display
 ~~* [ ] Center the cards within their row~~
 * [X] Display user's name coming from back-end
 * [X] No "Play" option for card in "In-Play" area
 * [X] Prevent card selection for opponent-in-play cards
 * [X] Keyboard actions for (D)iscard and (P)lay
-* [X] No "Play" option for card in "In-Play" area
+* [ ] When "Run Test" card is drawn, show on both player's screen
+    1. FE: POST to draw the "run test" card -> 201 (accepted), with no data
+    2. BE: testResultsCardDeck.draw -> game.drawnTestResultsCard <-- also need the player ID for who drew
+    3. BE: send WS message on /topic/testresultcard: { action = "TestResultsCardDrawn", cardId: 123, PlayerId who drew } 
+    3. FE: show modal with that card
+    4. FE: if PlayerIdWhoDrew == Current Player, then show dismiss modal button
+    5. FE: =button click= POST to discard "run test" card -> 201
+    6. BE: testResultsCardDeck.discard(the card)
+    7. BE: game.drawnTestResultsCard = null
+    8. BE: send WS message { action: "TestResultsCardDiscarded", playerId: id }  
+* [ ] Propagate card view order to server 
 * [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
 * [ ] Turn off Playing Card IDs
+* [ ] Score & Risk tracking - propagate to other players via server
+    * [X] Score
+    * [ ] Risk-level
 * [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
 * [ ] Single click discard of In-Play area
 * [ ] Remove (or move to the right side?) the Close button from Run Test modal
@@ -92,8 +106,7 @@ or only see cards in-play.
 
 ## Display
 * [ ] Highlight which player's turn
-* [ ] Show empty outlines of where cards will be displayed 
-      (this will help keep the display evenly divided even when no cards are in play)
+* [ ] Show empty outlines of where cards will be displayed
 
 
 # Completed

@@ -36,11 +36,11 @@ public class DeckFactory {
 
   private void addPlayingCardsToDiscardPileOf(Deck<PlayingCard> deck) {
     deck.addToDiscardPile(generatePlayingCards("write code", 18, Usage.SELF));
-    deck.addToDiscardPile(generatePlayingCards("code smaller", 18, Usage.SELF));
+    deck.addToDiscardPile(generatePlayingCards("refactor code", 18, Usage.SELF));
     deck.addToDiscardPile(generatePlayingCards("predict", 18, Usage.SELF));
     deck.addToDiscardPile(generatePlayingCards("can't assert", 2, Usage.OPPONENT));
     deck.addToDiscardPile(generatePlayingCards("code bloat", 3, Usage.OPPONENT));
-    deck.addToDiscardPile(generatePlayingCards("refactor", 4, Usage.DISCARD));
+    deck.addToDiscardPile(generatePlayingCards("design refactor", 4, Usage.DISCARD));
   }
 
   private List<PlayingCard> generatePlayingCards(String title, int count, Usage usage) {

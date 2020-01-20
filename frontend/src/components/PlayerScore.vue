@@ -32,6 +32,8 @@
 </template>
 
 <script>
+  import Stomp from "webstomp-client";
+
   export default {
     name: "player-score",
     props: {
@@ -70,13 +72,40 @@
       resetAll() {
         this.resetScore();
         this.resetRisk();
+      },
+      send(message) {
+        this.stompClient.send("/app/score", message);
+      },
+      disconnect() {
+        if (this.stompClient != null) {
+          this.stompClient.disconnect();
+          console.log("Disconnected");
+        }
       }
     },
     data() {
       return {
-        passingTests: 0,
-        riskLevel: 0
+        score: 0,
+        riskLevel: 0,
+        stompClient: null
       }
+    },
+    mounted() {
+      this.stompClient = Stomp.client('ws://localhost:8080/api/ws');
+      let that = this;
+      this.stompClient.connect({}, frame => {
+        let subscription = that.stompClient.subscribe('/topic/score', scoreUpdateMessage => {
+          let messageBody = scoreUpdateMessage.body;
+          console.log('Score Update message body: ' + messageBody);
+          let scoreUpdate = JSON.parse(messageBody);
+          console.log('This component playerId = ' + that.playerId);
+          if (scoreUpdate.playerId === that.playerId) {
+            console.log("Updating score for player " + that.playerId);
+            that.score = scoreUpdate.score;
+          }
+        });
+        console.log('Subscription successful.');
+      });
     }
   };
 </script>

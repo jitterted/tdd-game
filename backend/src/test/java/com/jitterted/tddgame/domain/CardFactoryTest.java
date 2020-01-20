@@ -8,8 +8,8 @@ public class CardFactoryTest {
   @Test
   public void twoPlayingCardInstancesWithSameTitleAreNotEqual() throws Exception {
     CardFactory cardFactory = new CardFactory();
-    PlayingCard refactor1 = cardFactory.playingCard("Refactor", Usage.SELF);
-    PlayingCard refactor2 = cardFactory.playingCard("Refactor", Usage.SELF);
+    PlayingCard refactor1 = cardFactory.playingCard("design refactor", Usage.SELF);
+    PlayingCard refactor2 = cardFactory.playingCard("design refactor", Usage.SELF);
 
     assertThat(refactor1)
       .isNotEqualTo(refactor2);
