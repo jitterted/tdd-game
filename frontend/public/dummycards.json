@@ -2,7 +2,7 @@
   "hand": {
     "cards": [
       {
-        "title": "refactor",
+        "title": "design refactor",
         "id": 9
       },
       {
@@ -34,7 +34,7 @@
         "id": 16
       },
       {
-        "title": "code smaller",
+        "title": "refactor code",
         "id": 20
       }
     ]

@@ -35,7 +35,7 @@
           'require 1': `
               <p class="text-black font-bold text-base mb-2">
                 <code>&gt;= 1 </code>
-                <span class="card-title">code smaller</span>
+                <span class="card-title">refactor code</span>
                 cards<br/>As Predicted
               </p>
               <p class="text-gray-800 text-sm px-1">
@@ -43,7 +43,7 @@
               </p>
               <p class="text-black font-bold text-base my-2">
                 <code>No </code>
-                <span class="card-title">code smaller</span>
+                <span class="card-title">refactor code</span>
                 cards<br/>Unexpected
               </p>
               <p class="text-gray-800 text-sm px-1">
@@ -53,7 +53,7 @@
           'require 2': `
               <p class="text-black font-bold text-base mb-2">
                 <code>&gt;= 2 </code>
-                <span class="card-title">code smaller</span>
+                <span class="card-title">refactor code</span>
                 cards<br/>As Predicted
               </p>
               <p class="text-gray-800 text-sm px-1">
@@ -61,7 +61,7 @@
               </p>
               <p class="text-black font-bold text-base my-2">
                 <code>&lt;= 1 </code>
-                <span class="card-title">code smaller</span>
+                <span class="card-title">refactor code</span>
                 cards<br/>Unexpected
               </p>
               <p class="text-gray-800 text-sm px-1">

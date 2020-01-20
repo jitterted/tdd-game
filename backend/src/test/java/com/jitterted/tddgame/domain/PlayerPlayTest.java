@@ -45,7 +45,7 @@ class PlayerPlayTest {
   @Test
   public void playedRefactorCardIsDiscarded() throws Exception {
     Player player = new Player(PlayerId.of(0));
-    PlayingCard playingCard = new CardFactory().playingCard("refactor", Usage.DISCARD);
+    PlayingCard playingCard = new CardFactory().playingCard("design refactor", Usage.DISCARD);
     player.hand().add(playingCard);
     Deck<PlayingCard> deck = new Deck<>(null);
     Game game = new Game(List.of(player), deck, null);

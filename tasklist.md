@@ -22,6 +22,9 @@
 * [X] No "Play" option for card in "In-Play" area
 * [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
 * [ ] Turn off Playing Card IDs
+* [ ] Score & Risk tracking - propagate to other players via server
+    * [X] Score
+    * [ ] Risk-level
 * [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
 * [ ] Single click discard of In-Play area
 * [ ] Remove (or move to the right side?) the Close button from Run Test modal
@@ -92,8 +95,7 @@ or only see cards in-play.
 
 ## Display
 * [ ] Highlight which player's turn
-* [ ] Show empty outlines of where cards will be displayed 
-      (this will help keep the display evenly divided even when no cards are in play)
+* [ ] Show empty outlines of where cards will be displayed
 
 
 # Completed
