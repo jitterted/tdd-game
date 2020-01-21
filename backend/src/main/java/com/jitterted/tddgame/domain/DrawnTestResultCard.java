@@ -40,4 +40,8 @@ public class DrawnTestResultCard {
   public TestResultCard card() {
     return testResultCard;
   }
+
+  public boolean discardableBy(PlayerId playerId) {
+    return player.id().equals(playerId);
+  }
 }

@@ -51,7 +51,7 @@ public class Game {
 
   public void drawTestResultCardFor(PlayerId playerId) {
     if (drawnTestResultCard != null) {
-      throw new TestCardAlreadyDrawnException("Currently drawn card was not discarded: " + drawnTestResultCard);
+      throw new TestResultCardAlreadyDrawnException("Currently drawn card was not discarded: " + drawnTestResultCard);
     }
     TestResultCard drawnCard = testResultCardDeck.draw();
     drawnTestResultCard = new DrawnTestResultCard(drawnCard, playerFor(playerId));
@@ -78,7 +78,9 @@ public class Game {
   }
 
   public void discardTestResultCardFor(PlayerId playerId) {
-    // TODO: validate player who's discarding matches who drew it
+    if (!drawnTestResultCard.discardableBy(playerId)) {
+      throw new WrongPlayerDiscardingTestResultCardException(playerId, drawnTestResultCard.player());
+    }
     testResultCardDeck.addToDiscardPile(drawnTestResultCard.card());
     drawnTestResultCard = null;
   }

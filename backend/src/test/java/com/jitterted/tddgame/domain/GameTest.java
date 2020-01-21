@@ -117,7 +117,7 @@ class GameTest {
 
     assertThatThrownBy(() -> {
       game.drawTestResultCardFor(player1.id());
-    }).isInstanceOf(TestCardAlreadyDrawnException.class);
+    }).isInstanceOf(TestResultCardAlreadyDrawnException.class);
   }
 
   @Test
@@ -139,7 +139,15 @@ class GameTest {
 
   @Test
   public void discardTestResultCardByWrongPlayerThrowsException() throws Exception {
-    // TODO: validate player who's discarding matches who drew it
-    fail("validate discarder");
+    Deck<TestResultCard> testResultCardDeck = new DeckFactory(new CardFactory()).createTestResultCardDeck();
+    List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
+    Game game = new Game(twoPlayers, null, testResultCardDeck);
+    Player player1 = twoPlayers.get(0);
+    Player player2 = twoPlayers.get(1);
+    game.drawTestResultCardFor(player1.id());
+
+    assertThatThrownBy(() -> {
+      game.discardTestResultCardFor(player2.id());
+    }).isInstanceOf(WrongPlayerDiscardingTestResultCardException.class);
   }
 }
