@@ -76,4 +76,10 @@ public class Game {
   public DrawnTestResultCard drawnTestResultCard() {
     return drawnTestResultCard;
   }
+
+  public void discardTestResultCardFor(PlayerId playerId) {
+    // TODO: validate player who's discarding matches who drew it
+    testResultCardDeck.addToDiscardPile(drawnTestResultCard.card());
+    drawnTestResultCard = null;
+  }
 }

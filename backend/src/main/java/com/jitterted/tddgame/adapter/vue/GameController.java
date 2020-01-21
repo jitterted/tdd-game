@@ -69,7 +69,21 @@ public class GameController {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
     Game game = gameService.currentGame();
     game.drawTestResultCardFor(playerId);
+
     simpMessagingTemplate.convertAndSend(TOPIC_TESTRESULTCARD, new DrawnTestResultCardEvent(game.drawnTestResultCard()));
+
     return ResponseEntity.noContent().build();
   }
+
+  @PostMapping("players/{playerId}/test-result-card-discards")
+  public ResponseEntity<Void> handleDiscardTestResultCard(@PathVariable("playerId") String playerIdString) {
+    PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
+    Game game = gameService.currentGame();
+    game.discardTestResultCardFor(playerId);
+
+    simpMessagingTemplate.convertAndSend(TOPIC_TESTRESULTCARD, new DiscardedTestResultCardEvent(playerId));
+
+    return ResponseEntity.noContent().build();
+  }
+
 }

@@ -35,7 +35,7 @@
 
       <cards-row :cards="game.hand.cards" source="hand"/>
 
-      <modal :showing="showTestResultsModal" @close="showTestResultsModal = false">
+      <modal :showing="showTestResultsModal" @close="discardTestResultsCard">
         <test-results-card :title="testResultsCard.title"/>
       </modal>
 
@@ -89,6 +89,12 @@
             method: 'POST'
           }
         )
+      },
+      discardTestResultsCard() {
+        fetch(this.apiUrl + '/test-result-card-discards', {
+          method: 'POST'
+        });
+        showTestResultsModal = false; // this should be done as response to receiving WS msg
       },
       subscribeToTestCardEvents() {
         this.stompClient = Stomp.client('ws://localhost:8080/api/ws');

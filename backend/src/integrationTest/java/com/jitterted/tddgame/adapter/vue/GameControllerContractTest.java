@@ -121,4 +121,16 @@ class GameControllerContractTest {
     ;
 
   }
+
+  @Test
+  public void postDiscardTestResultsActionIs204NoContent() throws Exception {
+    Player player = gameService.currentGame().players().get(0);
+
+    mockMvc.perform(
+      post(API_PLAYERS_BASE_URL + player.id().getId() + "/test-result-card-discards")
+    )
+           .andExpect(status().isNoContent())
+    ;
+
+  }
 }

@@ -20,6 +20,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 public class GameControllerDrawTest {
 
@@ -60,4 +61,23 @@ public class GameControllerDrawTest {
       .isEqualTo(drawnTestResultCard);
   }
 
+  @Test
+  public void discardTestResultsCardDiscardsToDiscardPileAndRemovedFromGameState() throws Exception {
+    Deck<TestResultCard> testResultCardDeck = new Deck<>(new CopyCardShuffler<>());
+    TestResultCard testResultCard = new TestResultCard(CardId.of(1759), "As Predicted");
+    testResultCardDeck.addToDrawPile(testResultCard);
+
+    Player player1 = new Player(PlayerId.of(0));
+    Game game = new Game(List.of(player1), null, testResultCardDeck);
+    game.drawTestResultCardFor(player1.id());
+    GameService gameService = new FakeGameService(game);
+
+    SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    GameController gameController = new GameController(gameService, spySimpMessagingTemplate);
+
+    gameController.handleDiscardTestResultCard(String.valueOf(player1.id().getId()));
+
+    DiscardedTestResultCardEvent expectedEvent = new DiscardedTestResultCardEvent(player1.id());
+    verify(spySimpMessagingTemplate).convertAndSend("/topic/testresultcard", expectedEvent);
+  }
 }

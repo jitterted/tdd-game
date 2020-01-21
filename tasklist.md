@@ -20,31 +20,29 @@
 * [X] No "Play" option for card in "In-Play" area
 * [X] Prevent card selection for opponent-in-play cards
 * [X] Keyboard actions for (D)iscard and (P)lay
+* [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
+* [ ] Move Playing Card IDs to lower-right and make smaller
+* [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
+* [ ] Single click discard of In-Play area
+* [ ] Auto-draw upon play card or discard card
+* [ ] Ensure can't move card past the left/right edge 
+
+### Requires WebSockets
 * [ ] When "Run Test" card is drawn, show on both player's screen
     [X] 1. FE: POST to draw the "run test" card -> 204 (no content), with, well, no body content
     [X] 1a. BE: Only return 204
     [X] 2. BE: testResultsCardDeck.draw -> game.drawnTestResultsCard <-- also need the player ID for who drew
     [X] 3. BE: send WS message on /topic/testresultcard: { action = "TestResultsCardDrawn", cardId: 123, PlayerId who drew } 
     [X] 4. FE: (recv msg) show modal with that card
-    5. FE: =button click= POST to discard "drawn test results card" -> 204
-    6. FE: if PlayerIdWhoDrew == Current Player, then show dismiss modal button
-    7. BE: testResultsCardDeck.discard(the card)
-    8. BE: game.drawnTestResultsCard = null
-    9. BE: send WS message { action: "TestResultsCardDiscarded", playerId: id }  
-* [ ] Propagate card view order to server 
-* [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
-* [ ] Turn off Playing Card IDs
+    [X] 5. FE: =button click= POST to discard "drawn test results card" -> 204
+    [X] 6. BE: testResultsCardDeck.discard(the card)
+    [X] 7. BE: game.drawnTestResultsCard = null
+    [X] 8. BE: send WS message { action: "TestResultsCardDiscarded", playerId: id }
+    9. FE: Upon receipt of WS discarded message, hide the modal  
+    10. FE: if PlayerIdWhoDrew == Current Player, then show dismiss modal button
 * [ ] Score & Risk tracking - propagate to other players via server
     * [X] Score
     * [ ] Risk-level
-* [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
-* [ ] Single click discard of In-Play area
-* [ ] Remove (or move to the right side?) the Close button from Run Test modal
-* [ ] Ensure can't move card past the left/right edge 
-
-### Requires WebSockets
-* [ ] Score & Risk tracking - propagate to other players via server
-* [ ] When "Run Test" card is drawn, show on both player's screen
 * [ ] Propagate card view order to server 
 
 ### Nice to Have

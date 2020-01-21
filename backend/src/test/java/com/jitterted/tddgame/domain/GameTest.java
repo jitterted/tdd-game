@@ -119,4 +119,27 @@ class GameTest {
       game.drawTestResultCardFor(player1.id());
     }).isInstanceOf(TestCardAlreadyDrawnException.class);
   }
+
+  @Test
+  public void discardTestResultCardMovesToDiscardPileAndClearsGameState() throws Exception {
+    Deck<TestResultCard> testResultCardDeck = new DeckFactory(new CardFactory()).createTestResultCardDeck();
+    List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
+    Game game = new Game(twoPlayers, null, testResultCardDeck);
+    Player player1 = twoPlayers.get(0);
+    game.drawTestResultCardFor(player1.id());
+    TestResultCard drawnTestResultCard = game.drawnTestResultCard().card();
+
+    game.discardTestResultCardFor(player1.id());
+
+    assertThat(testResultCardDeck.discardPile())
+      .containsOnly(drawnTestResultCard);
+    assertThat(game.drawnTestResultCard())
+      .isNull();
+  }
+
+  @Test
+  public void discardTestResultCardByWrongPlayerThrowsException() throws Exception {
+    // TODO: validate player who's discarding matches who drew it
+    fail("validate discarder");
+  }
 }
