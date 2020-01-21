@@ -6,6 +6,7 @@
   >
     <div class="relative max-w-2xl bg-white shadow-lg rounded p-10">
       <button
+        v-if="allowClose"
         aria-label="close"
         class="absolute top-0 right-0 text-2xl text-gray-500 my-2 mx-4"
         @click.prevent="close"
@@ -14,6 +15,7 @@
       </button>
       <slot />
       <button
+        v-if="allowClose"
         tabindex="0"
         class="bg-blue-600 text-white px-4 py-2 text-sm uppercase tracking-wide font-bold rounded"
         @click="close"
@@ -29,6 +31,10 @@
     name: "modal",
     props: {
       showing: {
+        required: true,
+        type: Boolean
+      },
+      allowClose: {
         required: true,
         type: Boolean
       }
@@ -62,7 +68,9 @@
         }
       },
       close() {
-        this.$emit('close');
+        if (this.allowClose) {
+          this.$emit('close');
+        }
       }
     }
   }

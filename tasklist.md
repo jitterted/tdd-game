@@ -28,18 +28,20 @@
 * [ ] Ensure can't move card past the left/right edge 
 
 ### Requires WebSockets
-* [ ] When "Run Test" card is drawn, show on both player's screen
+* [X] When "Run Test" card is drawn, show on both player's screen
     [X] 1. FE: POST to draw the "run test" card -> 204 (no content), with, well, no body content
     [X] 1a. BE: Only return 204
     [X] 2. BE: testResultsCardDeck.draw -> game.drawnTestResultsCard <-- also need the player ID for who drew
-    [X] 3. BE: send WS message on /topic/testresultcard: { action = "TestResultsCardDrawn", cardId: 123, PlayerId who drew } 
+    [X] 3. BE: send WS message on /topic/testresultcard: { action = "TestResultCardDrawn", cardId: 123, PlayerId who drew } 
     [X] 4. FE: (recv msg) show modal with that card
     [X] 5. FE: =button click= POST to discard "drawn test results card" -> 204
     [X] 6. BE: testResultsCardDeck.discard(the card)
     [X] 7. BE: game.drawnTestResultsCard = null
-    [X] 8. BE: send WS message { action: "TestResultsCardDiscarded", playerId: id }
-    9. FE: Upon receipt of WS discarded message, hide the modal  
-    10. FE: if PlayerIdWhoDrew == Current Player, then show dismiss modal button
+    [X] 8. BE: send WS message { action: "TestResultCardDiscarded", playerId: id }
+    [X] 9. FE: Upon receipt of WS discarded message, hide the modal  
+    [X] 10. FE: if PlayerIdWhoDrew == Current Player, then show dismiss modal button
+* [ ] Send current state of drawn Test Result card in PlayerGameView to handle client refresh issue causing
+        TestResultCardAlreadyDrawnException being thrown (drawn card needs to be discarded) 
 * [ ] Score & Risk tracking - propagate to other players via server
     * [X] Score
     * [ ] Risk-level
@@ -94,6 +96,7 @@ or only see cards in-play.
 
 ## Nice to Have
 * [ ] Able to reset game back to starting point -- from Game Master View
+    * [ ] Force discard of Test Result card
 * [ ] For both Playing Card and Test Results Decks
     * [ ] Draw and discard piles in detail
 * [ ] Ability to arbitrarily move cards around between players and play areas

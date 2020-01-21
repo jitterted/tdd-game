@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class DrawnTestResultCardEvent {
-  private final String action = "TestResultsCardDrawn";
+  private final String action = "TestResultCardDrawn";
   private final String playerId;
   private final TestResultCardView testResultCardView;
 

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class DiscardedTestResultCardEvent {
-  private final String action = "TestResultsCardDiscarded";
+  private final String action = "TestResultCardDiscarded";
   private final String playerId;
 
   public DiscardedTestResultCardEvent(PlayerId playerId) {

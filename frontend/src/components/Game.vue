@@ -35,8 +35,12 @@
 
       <cards-row :cards="game.hand.cards" source="hand"/>
 
-      <modal :showing="showTestResultsModal" @close="discardTestResultsCard">
-        <test-results-card :title="testResultsCard.title"/>
+      <modal
+        :showing="showTestResultsModal"
+        :allowClose="testResultCardDrawnEvent.playerId === game.player.id"
+        @close="discardTestResultsCard"
+      >
+        <test-results-card :title="testResultCardDrawnEvent.testResultCardView.title"/>
       </modal>
 
     </div>
@@ -94,7 +98,7 @@
         fetch(this.apiUrl + '/test-result-card-discards', {
           method: 'POST'
         });
-        showTestResultsModal = false; // this should be done as response to receiving WS msg
+        this.showTestResultsModal = false;
       },
       subscribeToTestCardEvents() {
         this.stompClient = Stomp.client('ws://localhost:8080/api/ws');
@@ -103,12 +107,19 @@
           let subscription = that.stompClient.subscribe('/topic/testresultcard', testResultCardMessage => {
             let messageBody = testResultCardMessage.body;
             let testResultCardEvent = JSON.parse(messageBody);
-            that.testResultsCard = testResultCardEvent.testResultCardView;
-            // use the player id for showing button
-            that.showTestResultsModal = true;
+            switch (testResultCardEvent.action) {
+              case 'TestResultCardDrawn':
+                that.testResultCardDrawnEvent = testResultCardEvent;
+                that.showTestResultsModal = true;
+                break;
+              case 'TestResultCardDiscarded':
+                if (testResultCardEvent.playerId !== that.playerId) {
+                  that.showTestResultsModal = false;
+                }
+                break;
+            }
           });
         });
-
       },
       playerChanged() {
         this.apiUrl = '/api/game/players/' + this.$route.params.playerId;
@@ -133,7 +144,10 @@
         stompClient: undefined,
         interval: undefined,
         showTestResultsModal: false,
-        testResultsCard: {id: -1, title: "none"},
+        testResultCardDrawnEvent: {
+          testResultCardView: {id: -1, title: "none"},
+          playerId: -1
+        },
         apiUrl: '/api/game/players/',
         game: {
           player: {
