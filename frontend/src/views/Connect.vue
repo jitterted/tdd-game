@@ -21,15 +21,14 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      userName: ''
-    }
-  },
-  methods: {
-    connect(event) {
+<script lang="ts">
+  import {Component, Vue} from "vue-property-decorator";
+
+  @Component
+  export default class Connect extends Vue {
+    private userName = '';
+
+    connect(event: Event) {
       event.preventDefault();
       console.log("Connecting user to fetch player number: " + JSON.stringify({userName: this.userName}));
       fetch('/api/game/players', {
@@ -53,5 +52,4 @@ export default {
         .catch((error) => console.log('Connect Player error: ' + error));
     }
   }
-}
 </script>

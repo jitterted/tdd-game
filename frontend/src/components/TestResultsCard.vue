@@ -5,24 +5,19 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'test-results-card',
-    props: {
-      title: {
-        type: String,
-        required: true
-      }
-    },
-    computed: {
-      card() {
-        return this.testResultCards[this.title];
-      }
-    },
-    data() {
-      return {
-        testResultCards: {
-          'as predicted': `
+<script lang="ts">
+  import {Component, Prop, Vue} from "vue-property-decorator";
+
+  @Component
+  export default class TestResultsCard extends Vue {
+    @Prop() private readonly title!: string;
+
+    get card() {
+      return this.testResultCards[this.title];
+    }
+
+    private testResultCards: { [key: string]: string; } = {
+      'as predicted': `
             <p class="text-black font-bold text-base mb-2">
               As Predicted
             </p>
@@ -32,7 +27,7 @@
             </p>
             <p/>
             `,
-          'require 1': `
+      'require 1': `
               <p class="text-black font-bold text-base mb-2">
                 <code>&gt;= 1 </code>
                 <span class="card-title">refactor code</span>
@@ -50,7 +45,7 @@
                 The tests did <strong>not</strong> match your prediction. Try again.
               </p>
           `,
-          'require 2': `
+      'require 2': `
               <p class="text-black font-bold text-base mb-2">
                 <code>&gt;= 2 </code>
                 <span class="card-title">refactor code</span>
@@ -68,8 +63,6 @@
                 The tests did <strong>not</strong> match your prediction. Try again.
               </p>
           `
-        }
-      }
     }
   }
 </script>

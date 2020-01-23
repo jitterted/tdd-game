@@ -43,53 +43,52 @@
   </div>
 </template>
 
-<script>
-  import PlayerView from "./PlayerView";
-  import DeckInfo from "./DeckInfo";
+<script lang="ts">
+  import {Component, Vue} from "vue-property-decorator";
+  import PlayerView from "./PlayerView.vue";
+  import DeckInfo from "./DeckInfo.vue";
 
-  export default {
-    name: "GameMaster",
-    components: {DeckInfo, PlayerView},
-    methods: {
-      refresh() {
-        fetch(this.apiUrl)
-          .then(response => response.json())
-          .then(jsonData => this.game = jsonData)
-          .catch(error => console.log('Refresh error: ' + error));
-      }
-    },
-    created() {
-      // set refresh to happen every 1 second
-      this.interval = setInterval(function () {
-          this.refresh();
-        }.bind(this),
-        1000);
-    },
-    beforeDestroy() {
-      clearInterval(this.interval);
-    },
-    data() {
-      return {
-        interval: undefined,
-        apiUrl: '/api/game/',
-        game: {
-          "players": [{
-            "name": "nobody",
-            "hand": {"cards": []},
-            "inPlay": {"cards": []}
-          }, {
-            "name": "nobody",
-            "hand": {"cards": []},
-            "inPlay": {"cards": []}
-          }],
-          "showingTestResultCard": {"id": 0, "title": "none"},
-          "playingCardDeck": {"discardPile": 0, "drawPile": 0},
-          "testResultCardDeck": {"discardPile": 0, "drawPile": 0}
-        }
-      }
+  @Component({
+    components: {
+      DeckInfo, PlayerView
+    }
+  })
+  export default class GameMaster extends Vue {
+
+    private interval = 0;
+    private readonly apiUrl = '/api/game/';
+    private game = {
+      "players": [{
+        "name": "nobody",
+        "hand": {"cards": []},
+        "inPlay": {"cards": []}
+      }, {
+        "name": "nobody",
+        "hand": {"cards": []},
+        "inPlay": {"cards": []}
+      }],
+      "showingTestResultCard": {"id": 0, "title": "none"},
+      "playingCardDeck": {"discardPile": 0, "drawPile": 0},
+      "testResultCardDeck": {"discardPile": 0, "drawPile": 0}
+    };
+
+    refresh() {
+      fetch(this.apiUrl)
+        .then(response => response.json())
+        .then(jsonData => this.game = jsonData)
+        .catch(error => console.log('Refresh error: ' + error));
     }
 
-  }
+    // noinspection JSUnusedGlobalSymbols
+    created() {
+      // set refresh to happen every 1 second
+      this.interval = setInterval(() => this.refresh(), 1000);
+    }
 
+    // noinspection JSUnusedGlobalSymbols
+    beforeDestroy() {
+      clearInterval(this.interval);
+    }
+  }
 </script>
 

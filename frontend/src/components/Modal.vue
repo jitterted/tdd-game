@@ -13,7 +13,7 @@
       >
         ×
       </button>
-      <slot />
+      <slot/>
       <button
         v-if="allowClose"
         tabindex="0"
@@ -26,51 +26,49 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: "modal",
-    props: {
-      showing: {
-        required: true,
-        type: Boolean
-      },
-      allowClose: {
-        required: true,
-        type: Boolean
-      }
-    },
+<script lang="ts">
+  import {Component, Prop, Vue} from "vue-property-decorator";
+
+  @Component
+  export default class Modal extends Vue {
+    @Prop() private showing!: boolean;
+    @Prop() private allowClose!: boolean;
+
+    // noinspection JSUnusedGlobalSymbols
     created() {
       window.addEventListener('keyup', this.doKeyUp);
-    },
+    }
+
+    // noinspection JSUnusedGlobalSymbols
     destroyed() {
       window.removeEventListener('keyup', this.doKeyUp);
-    },
-    methods: {
-      doKeyUp(event) {
-        if (event.defaultPrevented) {
-          return; // Should do nothing if the default action has been cancelled
-        }
+    }
 
-        var escape = false;
-        if (event.key !== undefined) {
-          if (event.key === "Escape") {
-            escape = true;
-          }
-        } else if (event.keyCode !== undefined) {
-          if (event.keyCode === 27) {
-            escape = true;
-          }
-        }
+    doKeyUp(event: KeyboardEvent) {
+      if (event.defaultPrevented) {
+        return; // Should do nothing if the default action has been cancelled
+      }
 
-        if (escape) {
-          event.preventDefault();
-          this.close();
+      let escape = false;
+      if (event.key !== undefined) {
+        if (event.key === "Escape") {
+          escape = true;
         }
-      },
-      close() {
-        if (this.allowClose) {
-          this.$emit('close');
+      } else if (event.keyCode !== undefined) {
+        if (event.keyCode === 27) {
+          escape = true;
         }
+      }
+
+      if (escape) {
+        event.preventDefault();
+        this.close();
+      }
+    }
+
+    close() {
+      if (this.allowClose) {
+        this.$emit('close');
       }
     }
   }
@@ -78,8 +76,8 @@
 
 <style scoped>
 
-.bg-semi-50 {
-  background-color: rgba(0, 0, 0, 0.5);
-}
+  .bg-semi-50 {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 
 </style>

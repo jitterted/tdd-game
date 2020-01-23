@@ -15,18 +15,15 @@
     </div>
   </div>
 </template>
-<script>
-  export default {
-    name: 'DeckInfo',
-    props: {
-      cardDeck: {
-        type: Object,
-        required: true
-      },
-      title: {
-        type: String,
-        required: true
-      }
-    }
+<script lang="ts">
+  import {Component, Prop, Vue} from "vue-property-decorator";
+
+  @Component
+  export default class DeckInfo extends Vue {
+    @Prop() private cardDeck!: {
+      discardPile: number,
+      drawPile: number
+    };
+    @Prop() private title!: string;
   }
 </script>

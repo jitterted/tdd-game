@@ -15,32 +15,25 @@
     </div>
   </div>
 </template>
-<script>
-  export default {
-    name: 'PlayingCardsMiniView',
-    props: {
-      cards: {
-        type: Array,
-        required: true
-      }
-    },
-    methods: {
-      cardColors(card) {
-        let colorName = this.titleToColorName[card.title];
-        return 'border-' + colorName + '-400 bg-' + colorName + '-200';
-      }
-    },
-    data() {
-      return {
-        titleToColorName: {
-          'write code':       'teal',
-          'refactor code':    'teal',
-          'predict':          'yellow',
-          'code bloat':       'red',
-          "can't assert":     'red',
-          'design refactor':  'indigo'
-        }
-      }
+<script lang="ts">
+  import {Component, Prop, Vue} from "vue-property-decorator";
+
+  @Component
+  export default class PlayingCardsMiniView extends Vue {
+    @Prop() private cards!: object[];
+
+    private readonly titleToColorName: { [key: string]: string; } = {
+      'write code': 'teal',
+      'refactor code': 'teal',
+      'predict': 'yellow',
+      'code bloat': 'red',
+      "can't assert": 'red',
+      'design refactor': 'indigo'
+    };
+
+    cardColors(card: {title: string}) {
+      let colorName = this.titleToColorName[card.title];
+      return 'border-' + colorName + '-400 bg-' + colorName + '-200';
     }
   }
 </script>

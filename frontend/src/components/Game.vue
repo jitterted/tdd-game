@@ -47,124 +47,128 @@
   </div>
 </template>
 
-<script>
-  import PlayerScore from "./PlayerScore";
-  import Modal from "./Modal";
-  import Die from "./Die";
-  import TestResultsCard from "./TestResultsCard";
-  import CardsRow from "./CardsRow";
-  import Stomp from "webstomp-client";
+<script lang="ts">
+  import PlayerScore from "./PlayerScore.vue";
+  import Modal from "./Modal.vue";
+  import Die from "./Die.vue";
+  import TestResultsCard from "./TestResultsCard.vue";
+  import CardsRow from "./CardsRow.vue";
+  import Stomp, {Client} from "webstomp-client";
+  import {Component, Vue} from "vue-property-decorator";
 
-  export default {
-    name: "Game",
+  @Component({
     components: {
       CardsRow,
       TestResultsCard,
       PlayerScore,
       Modal,
       Die
-    },
-    computed: {
-      handIsFull() {
-        return this.game.hand.cards.length === 5;
-      }
-    },
-    methods: {
-      refresh() {
-        fetch(this.apiUrl)
-          .then(response => response.json())
-          .then(jsonData => this.game = jsonData)
-          .catch(error => console.log('Refresh error: ' + error));
+    }
+  })
+  export default class Game extends Vue {
+    private stompClient?: Client;
+    private interval = 0;
+    private showTestResultsModal = false;
+    private testResultCardDrawnEvent = {
+      testResultCardView: {id: -1, title: "none"},
+      playerId: -1
+    };
+    private apiUrl = '/api/game/players/';
+    private game = {
+      player: {
+        name: '',
+        id: ''
       },
-      drawCard() {
-        fetch(this.apiUrl + '/actions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({action: 'DRAW_CARD'})
-          }
-        );
+      opponent: {
+        name: '',
+        id: ''
+      },
+      hand: {cards: []},
+      inPlay: {cards: []},
+      opponentInPlay: {cards: []}
+    };
 
-        this.refresh();
-      },
-      drawTestResultsCard() {
-        fetch(this.apiUrl + '/test-result-card-draws', {
-            method: 'POST'
-          }
-        )
-      },
-      discardTestResultsCard() {
-        fetch(this.apiUrl + '/test-result-card-discards', {
+    get handIsFull() {
+      return this.game.hand.cards.length === 5;
+    }
+
+    refresh() {
+      fetch(this.apiUrl)
+        .then(response => response.json())
+        .then(jsonData => this.game = jsonData)
+        .catch(error => console.log('Refresh error: ' + error));
+    }
+
+    drawCard() {
+      fetch(this.apiUrl + '/actions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({action: 'DRAW_CARD'})
+        }
+      );
+
+      this.refresh();
+    }
+
+    drawTestResultsCard() {
+      fetch(this.apiUrl + '/test-result-card-draws', {
           method: 'POST'
+        }
+      )
+    }
+
+    discardTestResultsCard() {
+      fetch(this.apiUrl + '/test-result-card-discards', {
+        method: 'POST'
+      });
+      this.showTestResultsModal = false;
+    }
+
+    subscribeToTestCardEvents() {
+      this.stompClient = Stomp.client('ws://localhost:8080/api/ws');
+      let that = this;
+      this.stompClient.connect({}, _ => {
+        that.stompClient!.subscribe('/topic/testresultcard', testResultCardMessage => {
+          let messageBody = testResultCardMessage.body;
+          let testResultCardEvent = JSON.parse(messageBody);
+          switch (testResultCardEvent.action) {
+            case 'TestResultCardDrawn':
+              that.testResultCardDrawnEvent = testResultCardEvent;
+              that.showTestResultsModal = true;
+              break;
+            case 'TestResultCardDiscarded':
+              if (testResultCardEvent.playerId !== that.game.player.id) {
+                that.showTestResultsModal = false;
+              }
+              break;
+          }
         });
-        this.showTestResultsModal = false;
-      },
-      subscribeToTestCardEvents() {
-        this.stompClient = Stomp.client('ws://localhost:8080/api/ws');
-        let that = this;
-        this.stompClient.connect({}, frame => {
-          let subscription = that.stompClient.subscribe('/topic/testresultcard', testResultCardMessage => {
-            let messageBody = testResultCardMessage.body;
-            let testResultCardEvent = JSON.parse(messageBody);
-            switch (testResultCardEvent.action) {
-              case 'TestResultCardDrawn':
-                that.testResultCardDrawnEvent = testResultCardEvent;
-                that.showTestResultsModal = true;
-                break;
-              case 'TestResultCardDiscarded':
-                if (testResultCardEvent.playerId !== that.playerId) {
-                  that.showTestResultsModal = false;
-                }
-                break;
-            }
-          });
-        });
-      },
-      playerChanged() {
-        this.apiUrl = '/api/game/players/' + this.$route.params.playerId;
-        this.refresh();
-      }
-    },
+      });
+    }
+
+    playerChanged() {
+      this.apiUrl = '/api/game/players/' + this.$route.params.playerId;
+      this.refresh();
+    }
+
+    // noinspection JSUnusedGlobalSymbols
     created() {
       this.playerChanged();
 
       // set refresh to happen every 1 second
-      this.interval = setInterval(function () {
-        this.refresh();
-      }.bind(this),
+      this.interval = setInterval(
+        () => this.refresh(),
         1000);
       this.subscribeToTestCardEvents();
-    },
-    beforeDestroy(){
-      clearInterval(this.interval);
-    },
-    data() {
-      return {
-        stompClient: undefined,
-        interval: undefined,
-        showTestResultsModal: false,
-        testResultCardDrawnEvent: {
-          testResultCardView: {id: -1, title: "none"},
-          playerId: -1
-        },
-        apiUrl: '/api/game/players/',
-        game: {
-          player: {
-            name: '',
-            id: ''
-          },
-          opponent: {
-            name: '',
-            id: ''
-          },
-          hand: {cards: []},
-          inPlay: {cards: []},
-          opponentInPlay: {cards: []}
-        }
-      }
     }
-  };
+
+    // noinspection JSUnusedGlobalSymbols
+    beforeDestroy() {
+      clearInterval(this.interval);
+    }
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

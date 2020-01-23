@@ -31,70 +31,68 @@
   </div>
 </template>
 
-<script>
-  import Stomp from "webstomp-client";
+<script lang="ts">
+  import {Component, Prop, Vue} from "vue-property-decorator";
+  import Stomp, {Client} from "webstomp-client";
 
-  export default {
-    name: "player-score",
-    props: {
-      name: {
-        type: String,
-        required: true
-      },
-      playerId: {
-        type: String,
-        required: true
+  @Component
+  export default class PlayerScore extends Vue {
+    @Prop() private name!: string;
+    @Prop() private playerId!: string;
+
+    private score = 0;
+    private riskLevel = 0;
+    private stompClient?: Client;
+
+    decrementScore() {
+      this.score -= 1;
+    }
+
+    incrementScore() {
+      this.score += 1;
+      this.send(JSON.stringify({
+        score: this.score,
+        playerId: this.playerId
+      }));
+    }
+
+    resetScore() {
+      this.score = 0;
+    }
+
+    decrementRisk() {
+      this.riskLevel -= 1;
+    }
+
+    incrementRisk() {
+      this.riskLevel += 1;
+    }
+
+    resetRisk() {
+      this.riskLevel = 0;
+    }
+
+    resetAll() {
+      this.resetScore();
+      this.resetRisk();
+    }
+
+    send(message: string) {
+      this.stompClient!.send("/app/score", message);
+    }
+
+    disconnect() {
+      if (this.stompClient != null) {
+        this.stompClient.disconnect();
+        console.log("Disconnected");
       }
-    },
-    methods: {
-      decrementScore() {
-        this.score -= 1;
-      },
-      incrementScore() {
-        this.score += 1;
-        this.send(JSON.stringify({
-          score: this.score,
-          playerId: this.playerId
-        }));
-      },
-      resetScore() {
-        this.score = 0;
-      },
-      decrementRisk() {
-        this.riskLevel -= 1;
-      },
-      incrementRisk() {
-        this.riskLevel += 1;
-      },
-      resetRisk() {
-        this.riskLevel = 0;
-      },
-      resetAll() {
-        this.resetScore();
-        this.resetRisk();
-      },
-      send(message) {
-        this.stompClient.send("/app/score", message);
-      },
-      disconnect() {
-        if (this.stompClient != null) {
-          this.stompClient.disconnect();
-          console.log("Disconnected");
-        }
-      }
-    },
-    data() {
-      return {
-        score: 0,
-        riskLevel: 0,
-        stompClient: null
-      }
-    },
+    }
+
     mounted() {
       this.stompClient = Stomp.client('ws://localhost:8080/api/ws');
       let that = this;
       this.stompClient.connect({}, frame => {
-        let subscription = that.stompClient.subscribe('/topic/score', scoreUpdateMessage => {
+        let subscription = that.stompClient!.subscribe('/topic/score', scoreUpdateMessage => {
           let messageBody = scoreUpdateMessage.body;
           console.log('Score Update message body: ' + messageBody);
           let scoreUpdate = JSON.parse(messageBody);
@@ -104,7 +102,7 @@
         });
       });
     }
-  };
+  }
 </script>
 
 <style scoped>

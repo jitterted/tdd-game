@@ -4,9 +4,11 @@
   </p>
 </template>
 
-<script>
-  export default {
-    name: "card-rule"
+<script lang="ts">
+  import {Component, Vue} from "vue-property-decorator";
+
+  @Component
+  export default class CardRule extends Vue {
   }
 </script>
 
