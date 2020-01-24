@@ -213,6 +213,10 @@
 </script>
 
 <style scoped>
+  .messy-code {
+    background-color: #ff99ff;
+  }
+
   .card-overlay {
     content: "";
     position: absolute;
