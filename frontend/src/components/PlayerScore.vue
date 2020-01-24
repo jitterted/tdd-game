@@ -33,7 +33,7 @@
 
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
-  import Stomp, {Client} from "webstomp-client";
+  import {Client} from '@stomp/stompjs';
 
   @Component
   export default class PlayerScore extends Vue {
@@ -78,29 +78,36 @@
     }
 
     send(message: string) {
-      this.stompClient!.send("/app/score", message);
+      this.stompClient!.publish({destination: '/app/score', body: message});
     }
 
-    disconnect() {
-      if (this.stompClient != null) {
-        this.stompClient.disconnect();
-        console.log("Disconnected");
+    // noinspection JSUnusedGlobalSymbols
+    beforeDestroy() {
+      if (this.stompClient != undefined) {
+        this.stompClient.deactivate();
+        console.log("Deactivated STOMP client");
       }
     }
 
+    // noinspection JSUnusedGlobalSymbols
     mounted() {
-      this.stompClient = Stomp.client('ws://localhost:8080/api/ws');
+      this.stompClient = new Client({
+        brokerURL: 'ws://localhost:8080/api/ws',
+        debug: function (str: string) {
+          console.log(str);
+        }
+      });
       let that = this;
-      this.stompClient.connect({}, frame => {
-        let subscription = that.stompClient!.subscribe('/topic/score', scoreUpdateMessage => {
-          let messageBody = scoreUpdateMessage.body;
-          console.log('Score Update message body: ' + messageBody);
-          let scoreUpdate = JSON.parse(messageBody);
+      this.stompClient.onConnect = _ => {
+        that.stompClient!.subscribe('/topic/score', message => {
+          console.log('Score Update message body: ' + message.body);
+          let scoreUpdate = JSON.parse(message.body);
           if (scoreUpdate.playerId === that.playerId) {
             that.score = scoreUpdate.score;
           }
-        });
-      });
+        })
+      };
+      this.stompClient.activate();
     }
   }
 </script>
