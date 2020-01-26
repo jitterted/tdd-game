@@ -22,6 +22,7 @@
 * [X] Keyboard actions for (D)iscard and (P)lay
 * [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
 * [ ] Move Playing Card IDs to lower-right and make smaller
+* [ ] Show empty die, "click to roll"
 * [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
 * [ ] Single click discard of In-Play area
 * [ ] Auto-draw upon play card or discard card
