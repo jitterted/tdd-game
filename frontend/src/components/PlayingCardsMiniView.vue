@@ -24,11 +24,11 @@
 
     private readonly titleToColorName: { [key: string]: string; } = {
       'write code': 'teal',
-      'refactor code': 'teal',
+      'less code': 'teal',
       'predict': 'yellow',
       'code bloat': 'red',
       "can't assert": 'red',
-      'design refactor': 'indigo'
+      'refactor': 'indigo'
     };
 
     cardColors(card: {title: string}) {

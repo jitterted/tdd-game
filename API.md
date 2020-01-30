@@ -5,7 +5,7 @@
 {
     "hand": {"cards": 
               [
-                {"title": "design refactor", "id": 9},
+                {"title": "refactor", "id": 9},
                 {"title": "predict", "id": 10}
               ]
             },

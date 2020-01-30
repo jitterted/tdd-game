@@ -97,53 +97,60 @@
       'write code': {
         category: 'code',
         rules: [`
-                       This card is required to be <em>In Play</em> before you can <span class="card-title">predict</span>.
-                     `]
+                 This card is required to be <em>In Play</em> before you can <span class="card-title">predict</span>.
+                `]
       },
-      'refactor code': {
+      'less code': {
         category: 'code',
         rules: [`
-                        Combine with <span class="card-title">write code</span> to make it more likely that
-                        <span class="card-title">run tests</span> will match your <span class="card-title">prediction</span>.
-                      `]
+                 If you write <strong>less code</strong> at each step of the TDD cycle,
+                 it's more likely that you will write more correct code, and better
+                 understand the code base you're working with.
+
+                 Combines with <span class="card-title">write code</span> to make it more likely that
+                 <span class="card-title">run tests</span> will match your <span class="card-title">prediction</span>.
+
+                 You can combine up to 2 of this card with <span class="card-title">write code</span> card.
+                `]
       },
       'predict': {
         category: 'predict',
         rules: [`
-                      You predict that running the tests will <strong>NOT COMPILE</strong>,
-                      <strong>FAIL</strong> (in a specific way), or <strong>PASS</strong>.
-                      `,
+                 You predict that running the tests will <strong>NOT COMPILE</strong>,
+                 <strong>FAIL</strong> (in a specific way), or <strong>PASS</strong>.
+                `,
           `You can now <span class="card-title">run tests</span> and see if the results match your prediction.`
         ]
       },
       'code bloat': {
         category: 'negative',
         rules: [`
-                        Cancels out 1 <span class="card-title">refactor code</span> card.
-                      `]
+                 Cancels out 1 <span class="card-title">less code</span> card.
+                `]
       },
       "can't assert": {
         category: 'negative',
         rules: [`
-                        When in <em>How Do You Know It Does It?</em>, you must stay an extra turn,
-                        or use a <span class="card-title">design refactor</span> to cancel out this impediment.
-                      `]
+                 When in <em>How Do You Know It Does It?</em>, you must stay an extra turn,
+                 or use a <span class="card-title">refactor</span> to cancel out this impediment.
+                `]
       },
-      'design refactor': {
+      'refactor': {
         category: 'refactor',
         rules: [
           `
-                        Reduces Risk Level by 2 points.
-                      `,
+           Reduces Risk Level by 2 points.
+          `,
           `
-                        <span class="card-title"><div class="text-center">OR</div></span>
-                      `,
+           <span class="card-title"><div class="text-center">OR</div></span>
+          `,
           `
-                        Cancels out 1 <span class="card-title">can't assert</span> card.
-                      `
+           Cancels out 1 <span class="card-title">can't assert</span> card.
+          `
         ]
       }
     };
+
     private selected = false;
 
     get categoryColor() : {background: string, title: string} {

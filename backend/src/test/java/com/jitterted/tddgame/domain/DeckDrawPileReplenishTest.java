@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeckDrawPileReplenishTest {
 
@@ -45,7 +45,7 @@ public class DeckDrawPileReplenishTest {
 
   private List<PlayingCard> discardThreeCardsTo(Deck<PlayingCard> deck) {
     CardFactory cardFactory = new CardFactory();
-    List<PlayingCard> discardPlayingCards = List.of(cardFactory.playingCard("design refactor", Usage.SELF),
+    List<PlayingCard> discardPlayingCards = List.of(cardFactory.playingCard("refactor", Usage.SELF),
                                                     cardFactory.playingCard("predict", Usage.SELF),
                                                     cardFactory.playingCard("write code", Usage.SELF));
     deck.addToDiscardPile(discardPlayingCards);
