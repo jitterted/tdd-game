@@ -33,7 +33,7 @@
 
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
-  import {Client} from '@stomp/stompjs';
+  import StompChannel from "@/StompChannel";
 
   @Component
   export default class PlayerScore extends Vue {
@@ -42,7 +42,7 @@
 
     private score = 0;
     private riskLevel = 0;
-    private stompClient?: Client;
+    private readonly channel = new StompChannel<{score: number, playerId: string}>('/topic/score');
 
     decrementScore() {
       this.score -= 1;
@@ -50,10 +50,10 @@
 
     incrementScore() {
       this.score += 1;
-      this.send(JSON.stringify({
+      this.channel.publish({
         score: this.score,
         playerId: this.playerId
-      }));
+      });
     }
 
     resetScore() {
@@ -77,38 +77,15 @@
       this.resetRisk();
     }
 
-    send(message: string) {
-      this.stompClient!.publish({destination: '/app/score', body: message});
-    }
-
     // noinspection JSUnusedGlobalSymbols
-    beforeDestroy() {
-      if (this.stompClient != undefined) {
-        this.stompClient.deactivate();
-        console.log("Deactivated STOMP client");
-      }
-    }
-
-    // noinspection JSUnusedGlobalSymbols
-    mounted() {
-      this.stompClient = new Client({
-        brokerURL: 'ws://localhost:8080/api/ws',
-        debug: function (str: string) {
-          console.log(str);
+    created() {
+      this.channel.onMessage(scoreUpdate => {
+        if (scoreUpdate.playerId === this.playerId) {
+          this.score = scoreUpdate.score;
         }
       });
-      let that = this;
-      this.stompClient.onConnect = _ => {
-        that.stompClient!.subscribe('/topic/score', message => {
-          console.log('Score Update message body: ' + message.body);
-          let scoreUpdate = JSON.parse(message.body);
-          if (scoreUpdate.playerId === that.playerId) {
-            that.score = scoreUpdate.score;
-          }
-        })
-      };
-      this.stompClient.activate();
     }
+
   }
 </script>
 

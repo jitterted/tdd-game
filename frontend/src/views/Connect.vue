@@ -2,14 +2,16 @@
   <div class="m-2 p-4 rounded border border-gray-300 bg-gray-200">
     <form>
       <p>
-        <label for="userNameInput" class="mr-1">Your Name: </label>
-        <input
-          id="userNameInput"
-          v-model="userName"
-          type="text"
-          name="userName"
-          class="border border-green-900 mb-2"
-        >
+        <label>
+          Your Name:
+          <input
+            v-model="userName"
+            type="text"
+            name="userName"
+            class="border border-green-900 mb-2 ml-1"
+          >
+        </label>
+
       </p>
       <button
         class="bg-blue-600 hover:bg-blue-400 text-white font-bold py-1 px-2 rounded border"
@@ -30,7 +32,7 @@
 
     connect(event: Event) {
       event.preventDefault();
-      console.log("Connecting user to fetch player number: " + JSON.stringify({userName: this.userName}));
+      console.log("Connecting user to fetch player number: ", {userName: this.userName});
       fetch('/api/game/players', {
           method: 'POST',
           headers: {
