@@ -103,14 +103,10 @@
       'less code': {
         category: 'code',
         rules: [`
-                 If you write <strong>less code</strong> at each step of the TDD cycle,
-                 it's more likely that you will write more correct code, and better
-                 understand the code base you're working with.
-
-                 Combines with <span class="card-title">write code</span> to make it more likely that
+                 Play this card after playing <span class="card-title">write code</span> to increase the chance that
                  <span class="card-title">run tests</span> will match your <span class="card-title">prediction</span>.
 
-                 You can combine up to 2 of this card with <span class="card-title">write code</span> card.
+                 You can play up to 3 of this card with <span class="card-title">write code</span> card.
                 `]
       },
       'predict': {

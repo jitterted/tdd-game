@@ -1,5 +1,9 @@
 # Tasks
 
+## Game Start
+* [ ] Join game in progress vs. starting new game - game matching
+
+
 ## Refactoring
 * [ ] Combine Hand and InPlay into a single Class (called ??? CardSet?) with two instances
     * [ ] Change ".count() < 5" to ".canAdd()" (or "hasRoom") when looping to add cards
@@ -7,7 +11,6 @@
 
 
 ## Deployment
-
 * [ ] Properly build with Maven that combines front- and back-end code into single deployable JAR
 * [ ] Deploy onto Heroku
 * [ ] Use CloudFlare to point tdd.cards to Heroku
@@ -46,7 +49,7 @@
 * [ ] Score & Risk tracking - propagate to other players via server
     * [X] Score
     * [ ] Risk-level
-* [ ] Propagate card view order to server 
+* [ ] Propagate card view order to server
 
 ### Nice to Have
 * [ ] Track player action count

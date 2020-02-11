@@ -55,6 +55,8 @@ public class GameController {
                        @RequestBody PlayCardAction playCardAction) {
     int playerId = Integer.parseInt(playerIdString);
     gameService.currentGame().playCardFor(PlayerId.of(playerId), CardId.of(playCardAction.getId()));
+
+    // push new game state out to front-end clients
   }
 
   @PostMapping("players/{playerId}/actions")
@@ -70,7 +72,9 @@ public class GameController {
     Game game = gameService.currentGame();
     game.drawTestResultCardFor(playerId);
 
-    simpMessagingTemplate.convertAndSend(TOPIC_TESTRESULTCARD, new DrawnTestResultCardEvent(game.drawnTestResultCard()));
+    simpMessagingTemplate.convertAndSend(
+      TOPIC_TESTRESULTCARD,
+      new DrawnTestResultCardEvent(game.drawnTestResultCard()));
 
     return ResponseEntity.noContent().build();
   }
@@ -81,7 +85,9 @@ public class GameController {
     Game game = gameService.currentGame();
     game.discardTestResultCardFor(playerId);
 
-    simpMessagingTemplate.convertAndSend(TOPIC_TESTRESULTCARD, new DiscardedTestResultCardEvent(playerId));
+    simpMessagingTemplate.convertAndSend(
+      TOPIC_TESTRESULTCARD,
+      new DiscardedTestResultCardEvent(playerId));
 
     return ResponseEntity.noContent().build();
   }

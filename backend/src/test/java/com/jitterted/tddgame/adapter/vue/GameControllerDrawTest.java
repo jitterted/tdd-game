@@ -3,7 +3,6 @@ package com.jitterted.tddgame.adapter.vue;
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.CopyCardShuffler;
 import com.jitterted.tddgame.domain.Deck;
-import com.jitterted.tddgame.domain.DrawnTestResultCard;
 import com.jitterted.tddgame.domain.FakeGameService;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
@@ -14,12 +13,14 @@ import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 public class GameControllerDrawTest {
@@ -51,14 +52,19 @@ public class GameControllerDrawTest {
     Game game = new Game(List.of(player1), null, testResultCardDeck);
     GameService gameService = new FakeGameService(game);
 
-    SimpMessagingTemplate dummySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-    GameController gameController = new GameController(gameService, dummySimpMessagingTemplate);
+    SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    GameController gameController = new GameController(gameService, spySimpMessagingTemplate);
 
     gameController.handleDrawTestResultCard(String.valueOf(player1.id().getId()));
 
-    DrawnTestResultCard drawnTestResultCard = new DrawnTestResultCard(testResultCard, player1);
-    assertThat(game.drawnTestResultCard())
-      .isEqualTo(drawnTestResultCard);
+    ArgumentCaptor<DrawnTestResultCardEvent> captor = ArgumentCaptor.forClass(DrawnTestResultCardEvent.class);
+    verify(spySimpMessagingTemplate).convertAndSend(any(), captor.capture());
+
+    DrawnTestResultCardEvent cardEvent = captor.getValue();
+    assertThat(cardEvent.getTestResultCardView().getId())
+      .isEqualTo(1759);
+    assertThat(cardEvent.getPlayerId())
+      .isEqualTo("0");
   }
 
   @Test

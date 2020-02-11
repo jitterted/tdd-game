@@ -4,7 +4,7 @@ export default class Stomp<T> {
   private static readonly stompClient = new Client({
     brokerURL: 'ws://localhost:8080/api/ws',
     debug: function (str: string) {
-      console.log(str);
+      console.log('StompChannel.debug:', str);
     }
   });
   private static readonly connectedStompClientPromise = new Promise<Client>(resolve => {

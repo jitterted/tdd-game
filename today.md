@@ -1,4 +1,4 @@
-# Task List for Thursday Jan 23, 2020
+# Task List for Friday Jan 23, 2020
 
 1. Generate the .d.ts for the Vue global events component
     * Not as useful as I thought it would be
