@@ -4,12 +4,12 @@ import com.jitterted.tddgame.domain.DrawnTestResultCard;
 import lombok.Data;
 
 @Data
-public class DrawnTestResultCardEvent {
+public class TestResultCardDrawnEvent {
   private final String action = "TestResultCardDrawn";
   private final String playerId;
   private final TestResultCardView testResultCardView;
 
-  public DrawnTestResultCardEvent(DrawnTestResultCard drawnTestResultCard) {
+  public TestResultCardDrawnEvent(DrawnTestResultCard drawnTestResultCard) {
     playerId = String.valueOf(drawnTestResultCard.player().id().getId());
     testResultCardView = TestResultCardView.of(drawnTestResultCard.card());
   }

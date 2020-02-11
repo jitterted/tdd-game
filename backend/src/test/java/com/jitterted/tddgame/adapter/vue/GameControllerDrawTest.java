@@ -3,9 +3,11 @@ package com.jitterted.tddgame.adapter.vue;
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.CopyCardShuffler;
 import com.jitterted.tddgame.domain.Deck;
+import com.jitterted.tddgame.domain.DrawnTestResultCard;
 import com.jitterted.tddgame.domain.FakeGameService;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
+import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.Hand;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
@@ -13,14 +15,12 @@ import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 public class GameControllerDrawTest {
@@ -52,19 +52,35 @@ public class GameControllerDrawTest {
     Game game = new Game(List.of(player1), null, testResultCardDeck);
     GameService gameService = new FakeGameService(game);
 
-    SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-    GameController gameController = new GameController(gameService, spySimpMessagingTemplate);
+    GameStateChannelSpy gameStateChannelSpy = new GameStateChannelSpy();
+    GameController gameController = new GameController(gameService, gameStateChannelSpy);
 
     gameController.handleDrawTestResultCard(String.valueOf(player1.id().getId()));
 
-    ArgumentCaptor<DrawnTestResultCardEvent> captor = ArgumentCaptor.forClass(DrawnTestResultCardEvent.class);
-    verify(spySimpMessagingTemplate).convertAndSend(any(), captor.capture());
+    assertThat(gameStateChannelSpy.getDrawnCard())
+      .isEqualTo(new DrawnTestResultCard(testResultCard, player1));
+  }
 
-    DrawnTestResultCardEvent cardEvent = captor.getValue();
-    assertThat(cardEvent.getTestResultCardView().getId())
-      .isEqualTo(1759);
-    assertThat(cardEvent.getPlayerId())
-      .isEqualTo("0");
+  @Test
+  public void testResultCardDrawSendsEventThroughMessageChannel() throws Exception {
+    Deck<TestResultCard> testResultCardDeck = new Deck<>(new CopyCardShuffler<>());
+    TestResultCard testResultCard = new TestResultCard(CardId.of(1759), "As Predicted");
+    testResultCardDeck.addToDrawPile(testResultCard);
+
+    Player player1 = new Player(PlayerId.of(0));
+    Game game = new Game(List.of(player1), null, testResultCardDeck);
+    GameService gameService = new FakeGameService(game);
+
+    SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate);
+
+    GameController gameController = new GameController(gameService, gameStateChannel);
+
+    gameController.handleDrawTestResultCard(String.valueOf(player1.id().getId()));
+
+    TestResultCardDrawnEvent expectedEvent = new TestResultCardDrawnEvent(
+      new DrawnTestResultCard(testResultCard, player1));
+    verify(spySimpMessagingTemplate).convertAndSend("/topic/testresultcard", expectedEvent);
   }
 
   @Test
@@ -79,11 +95,12 @@ public class GameControllerDrawTest {
     GameService gameService = new FakeGameService(game);
 
     SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-    GameController gameController = new GameController(gameService, spySimpMessagingTemplate);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate);
+    GameController gameController = new GameController(gameService, gameStateChannel);
 
     gameController.handleDiscardTestResultCard(String.valueOf(player1.id().getId()));
 
-    DiscardedTestResultCardEvent expectedEvent = new DiscardedTestResultCardEvent(player1.id());
+    TestResultCardDiscardedEvent expectedEvent = new TestResultCardDiscardedEvent(player1.id());
     verify(spySimpMessagingTemplate).convertAndSend("/topic/testresultcard", expectedEvent);
   }
 }

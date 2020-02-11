@@ -3,12 +3,12 @@ package com.jitterted.tddgame.adapter.vue;
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
+import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,12 +22,12 @@ public class GameController {
 
   private static final String TOPIC_TESTRESULTCARD = "/topic/testresultcard";
   private final GameService gameService;
-  private final SimpMessagingTemplate simpMessagingTemplate;
+  private final GameStateChannel gameStateChannel;
 
   @Autowired
-  public GameController(GameService gameService, SimpMessagingTemplate simpMessagingTemplate) {
+  public GameController(GameService gameService, GameStateChannel gameStateChannel) {
     this.gameService = gameService;
-    this.simpMessagingTemplate = simpMessagingTemplate;
+    this.gameStateChannel = gameStateChannel;
   }
 
   @PostMapping("players")
@@ -72,9 +72,7 @@ public class GameController {
     Game game = gameService.currentGame();
     game.drawTestResultCardFor(playerId);
 
-    simpMessagingTemplate.convertAndSend(
-      TOPIC_TESTRESULTCARD,
-      new DrawnTestResultCardEvent(game.drawnTestResultCard()));
+    gameStateChannel.testResultCardDrawn(game.drawnTestResultCard());
 
     return ResponseEntity.noContent().build();
   }
@@ -85,9 +83,7 @@ public class GameController {
     Game game = gameService.currentGame();
     game.discardTestResultCardFor(playerId);
 
-    simpMessagingTemplate.convertAndSend(
-      TOPIC_TESTRESULTCARD,
-      new DiscardedTestResultCardEvent(playerId));
+    gameStateChannel.testResultCardDiscarded(playerId);
 
     return ResponseEntity.noContent().build();
   }
