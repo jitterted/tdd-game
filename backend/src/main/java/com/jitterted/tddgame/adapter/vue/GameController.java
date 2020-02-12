@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/game")
+@RequestMapping("/api/game/players")
 public class GameController {
 
-  private static final String TOPIC_TESTRESULTCARD = "/topic/testresultcard";
   private final GameService gameService;
   private final GameStateChannel gameStateChannel;
 
@@ -30,43 +29,43 @@ public class GameController {
     this.gameStateChannel = gameStateChannel;
   }
 
-  @PostMapping("players")
+  @PostMapping
   public PlayerIdDto connectUserToPlayerInGame(@RequestBody UserDto user) {
     System.out.println("Received connect for user: " + user.getUserName());
     Player assignedPlayer = gameService.assignNextAvailablePlayerToUser(new User(user.getUserName()));
     return PlayerIdDto.from(assignedPlayer.id());
   }
 
-  @GetMapping("players/{playerId}")
+  @GetMapping("{playerId}")
   public PlayerGameView playerGameView(@PathVariable("playerId") String playerIdString) {
     int playerId = Integer.parseInt(playerIdString);
     return PlayerGameView.from(gameService.currentGame(), PlayerId.of(playerId));
   }
 
-  @PostMapping("players/{playerId}/discards")
+  @PostMapping("{playerId}/discards")
   public void discard(@PathVariable("playerId") String playerIdString,
                       @RequestBody DiscardAction discardAction) {
     int playerId = Integer.parseInt(playerIdString);
     discardAction.executeFor(playerId, gameService);
   }
 
-  @PostMapping("players/{playerId}/plays")
+  @PostMapping("{playerId}/plays")
   public void playCard(@PathVariable("playerId") String playerIdString,
                        @RequestBody PlayCardAction playCardAction) {
     int playerId = Integer.parseInt(playerIdString);
     gameService.currentGame().playCardFor(PlayerId.of(playerId), CardId.of(playCardAction.getId()));
 
-    // push new game state out to front-end clients
+    // push new "global" game state out to front-end clients
   }
 
-  @PostMapping("players/{playerId}/actions")
+  @PostMapping("{playerId}/actions")
   public void handleAction(@PathVariable("playerId") String playerIdString,
                            @RequestBody PlayerAction playerAction) {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
     playerAction.executeFor(playerId, gameService);
   }
 
-  @PostMapping("players/{playerId}/test-result-card-draws")
+  @PostMapping("{playerId}/test-result-card-draws")
   public ResponseEntity<Void> handleDrawTestResultCard(@PathVariable("playerId") String playerIdString) {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
     Game game = gameService.currentGame();
@@ -77,7 +76,7 @@ public class GameController {
     return ResponseEntity.noContent().build();
   }
 
-  @PostMapping("players/{playerId}/test-result-card-discards")
+  @PostMapping("{playerId}/test-result-card-discards")
   public ResponseEntity<Void> handleDiscardTestResultCard(@PathVariable("playerId") String playerIdString) {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
     Game game = gameService.currentGame();
