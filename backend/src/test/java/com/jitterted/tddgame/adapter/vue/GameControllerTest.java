@@ -3,6 +3,7 @@ package com.jitterted.tddgame.adapter.vue;
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
+import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayerId;
@@ -10,8 +11,12 @@ import com.jitterted.tddgame.domain.PlayingCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import com.jitterted.tddgame.domain.Usage;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class GameControllerTest {
 
@@ -37,13 +42,32 @@ class GameControllerTest {
     PlayingCard playingCardFromHand = new PlayingCard(CardId.of(999), "played card", Usage.SELF);
     player.hand().add(playingCardFromHand);
 
-    GameController gameController = new GameController(gameService, null);
+    GameStateChannel dummyGameStateChannel = mock(GameStateChannel.class);
+    GameController gameController = new GameController(gameService, dummyGameStateChannel);
 
     gameController.playCard(String.valueOf(player.id().getId()),
                             new PlayCardAction(playingCardFromHand.id().getId()));
 
     assertThat(player.inPlay().cards())
       .contains(playingCardFromHand);
+  }
+
+  @Test
+  public void gameViewEventSentWhenCardIsPlayedByPlayer() throws Exception {
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
+    Game game = gameService.currentGame();
+    Player player1 = game.players().get(0);
+    PlayingCard playingCardFromHand = player1.hand().cards().get(0);
+
+    SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate);
+    GameController gameController = new GameController(gameService, gameStateChannel);
+
+    PlayCardAction playCardAction = new PlayCardAction(playingCardFromHand.id().getId());
+    gameController.playCard(String.valueOf(player1.id().getId()), playCardAction);
+
+    GameStateChangedEvent expectedEvent = GameStateChangedEvent.from(game);
+    verify(spySimpMessagingTemplate).convertAndSend("/topic/gamestate", expectedEvent);
   }
 
   @Test

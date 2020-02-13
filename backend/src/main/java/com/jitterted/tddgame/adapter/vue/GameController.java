@@ -55,7 +55,7 @@ public class GameController {
     int playerId = Integer.parseInt(playerIdString);
     gameService.currentGame().playCardFor(PlayerId.of(playerId), CardId.of(playCardAction.getId()));
 
-    // push new "global" game state out to front-end clients
+    gameStateChannel.cardPlayed(gameService.currentGame());
   }
 
   @PostMapping("{playerId}/actions")

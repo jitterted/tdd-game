@@ -55,6 +55,25 @@
   import CardsRow from "./CardsRow.vue";
   import Stomp, {Client} from "webstomp-client";
   import {Component, Vue} from "vue-property-decorator";
+  import StompChannel from "@/StompChannel";
+
+
+  interface Card {
+    id: number;
+    title: string;
+  }
+
+  interface Player {
+    name: string;
+    inPlay: { cards: Card[] };
+    hand: { cards: Card[] };
+  }
+
+  interface GameState {
+    players: {
+      [key: string]: Player
+    }
+  }
 
   @Component({
     components: {
@@ -66,6 +85,9 @@
     }
   })
   export default class Game extends Vue {
+    private readonly gameStateChannel =
+      new StompChannel<GameState>('/topic/gamestate');
+
     private stompClient?: Client;
     private interval = 0;
     private showTestResultsModal = false;
@@ -83,10 +105,12 @@
         name: '',
         id: ''
       },
-      hand: {cards: []},
+      hand: {cards: [{ title : "predict",
+          id : 40}]},
       inPlay: {cards: []},
       opponentInPlay: {cards: []}
     };
+    private playerId!: string;
 
     get handIsFull() {
       return this.game.hand.cards.length === 5;
@@ -149,7 +173,8 @@
     }
 
     playerChanged() {
-      this.apiUrl = '/api/game/players/' + this.$route.params.playerId;
+      this.playerId = this.$route.params.playerId;
+      this.apiUrl = '/api/game/players/' + this.playerId;
       this.refresh();
     }
 
@@ -158,15 +183,23 @@
       this.playerChanged();
 
       // set refresh to happen every 1 second
-      this.interval = setInterval(
-        () => this.refresh(),
-        1000);
+      // this.interval = setInterval(
+      //   () => this.refresh(),
+      //   1000);
+
       this.subscribeToTestCardEvents();
+      this.subscribeToGameChangedEvents();
     }
 
     // noinspection JSUnusedGlobalSymbols
     beforeDestroy() {
       clearInterval(this.interval);
+    }
+
+    subscribeToGameChangedEvents() {
+      this.gameStateChannel.onMessage(gameStateChangeEvent => {
+        this.game.hand = gameStateChangeEvent.players[this.playerId].hand;
+      });
     }
   }
 </script>
