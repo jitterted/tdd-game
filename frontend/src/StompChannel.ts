@@ -3,8 +3,9 @@ import {Client} from "@stomp/stompjs";
 const stompClient = new Client({
   brokerURL: 'ws://localhost:8080/api/ws',
   debug: function (str: string) {
-    console.log('StompChannel.debug:', str);
-  }
+    console.log('StompChannel:', str);
+  },
+  reconnectDelay: 3000
 });
 
 const connectedStompClientPromise = new Promise<Client>(resolve => {

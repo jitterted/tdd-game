@@ -53,10 +53,8 @@
   import Die from "./Die.vue";
   import TestResultsCard from "./TestResultsCard.vue";
   import CardsRow from "./CardsRow.vue";
-  import Stomp, {Client} from "webstomp-client";
   import {Component, Vue} from "vue-property-decorator";
   import StompChannel from "@/StompChannel";
-
 
   interface Card {
     id: number;
@@ -75,6 +73,12 @@
     }
   }
 
+  interface TestResultsCardEvent {
+    action: string;
+    testResultCardView: Card,
+    playerId: string;
+  }
+
   @Component({
     components: {
       CardsRow,
@@ -87,12 +91,14 @@
   export default class Game extends Vue {
     private readonly gameStateChannel =
       new StompChannel<GameState>('/topic/gamestate');
+    private readonly testResultsCardChannel =
+      new StompChannel<TestResultsCardEvent>('/topic/testresultcard');
 
-    private stompClient?: Client;
     private showTestResultsModal = false;
-    private testResultCardDrawnEvent = {
+    private testResultCardDrawnEvent: TestResultsCardEvent = {
+      action: '',
       testResultCardView: {id: -1, title: "none"},
-      playerId: -1
+      playerId: ''
     };
     private apiUrl = '/api/game/players/';
     private game = {
@@ -150,24 +156,27 @@
     }
 
     subscribeToTestCardEvents() {
-      this.stompClient = Stomp.client('ws://localhost:8080/api/ws');
-      let that = this;
-      this.stompClient.connect({}, _ => {
-        that.stompClient!.subscribe('/topic/testresultcard', testResultCardMessage => {
-          let messageBody = testResultCardMessage.body;
-          let testResultCardEvent = JSON.parse(messageBody);
-          switch (testResultCardEvent.action) {
-            case 'TestResultCardDrawn':
-              that.testResultCardDrawnEvent = testResultCardEvent;
-              that.showTestResultsModal = true;
-              break;
-            case 'TestResultCardDiscarded':
-              if (testResultCardEvent.playerId !== that.game.player.id) {
-                that.showTestResultsModal = false;
-              }
-              break;
-          }
-        });
+      this.testResultsCardChannel.onMessage(testResultsCardEvent => {
+        switch (testResultsCardEvent.action) {
+          case 'TestResultCardDrawn':
+            this.testResultCardDrawnEvent = testResultsCardEvent;
+            this.showTestResultsModal = true;
+            break;
+          case 'TestResultCardDiscarded':
+            if (testResultsCardEvent.playerId !== this.game.player.id) {
+              this.showTestResultsModal = false;
+            }
+            break;
+        }
+      });
+    }
+
+    subscribeToGameChangedEvents() {
+      this.gameStateChannel.onMessage(gameStateChangeEvent => {
+        const player = gameStateChangeEvent.players[this.playerId];
+        this.game.hand = player.hand;
+        this.game.inPlay = player.inPlay;
+        this.game.opponentInPlay = gameStateChangeEvent.players[this.game.opponent.id].inPlay;
       });
     }
 
@@ -183,15 +192,6 @@
 
       this.subscribeToTestCardEvents();
       this.subscribeToGameChangedEvents();
-    }
-
-    subscribeToGameChangedEvents() {
-      this.gameStateChannel.onMessage(gameStateChangeEvent => {
-        const player = gameStateChangeEvent.players[this.playerId];
-        this.game.hand = player.hand;
-        this.game.inPlay = player.inPlay;
-        this.game.opponentInPlay = gameStateChangeEvent.players[this.game.opponent.id].inPlay;
-      });
     }
   }
 </script>

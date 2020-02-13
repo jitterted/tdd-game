@@ -21,6 +21,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class GameControllerDrawTest {
@@ -28,7 +29,8 @@ public class GameControllerDrawTest {
   @Test
   public void playerDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameController gameController = new GameController(gameService, null);
+    GameStateChannel dummyGameStateChannel = mock(GameStateChannel.class);
+    GameController gameController = new GameController(gameService, dummyGameStateChannel);
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
     Hand hand = player.hand();
