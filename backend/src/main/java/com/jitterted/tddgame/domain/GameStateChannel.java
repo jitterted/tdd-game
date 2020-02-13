@@ -5,5 +5,5 @@ public interface GameStateChannel {
 
   void testResultCardDiscarded(PlayerId playerId);
 
-  void cardPlayed(Game game);
+  void playerActed(Game game);
 }

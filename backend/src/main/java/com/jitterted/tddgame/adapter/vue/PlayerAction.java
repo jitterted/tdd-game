@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlayerAction {
   public static final String DRAW_CARD = "DRAW_CARD";
-  public static final String TEST_RESULTS = "TEST_RESULTS";
   private String action;
 
   public void executeFor(PlayerId playerId, GameService gameService) {

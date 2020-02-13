@@ -34,7 +34,7 @@ public class StompGameStateChannel implements GameStateChannel {
   }
 
   @Override
-  public void cardPlayed(Game game) {
+  public void playerActed(Game game) {
     GameStateChangedEvent gameStateChangedEvent = GameStateChangedEvent.from(game);
     simpMessagingTemplate.convertAndSend(TOPIC_GAMESTATE,
                                          gameStateChangedEvent);

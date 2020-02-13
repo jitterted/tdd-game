@@ -23,7 +23,7 @@ public class GameStateChannelSpy implements GameStateChannel {
   }
 
   @Override
-  public void cardPlayed(Game game) {
+  public void playerActed(Game game) {
     throw new UnsupportedOperationException();
   }
 }

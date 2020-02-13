@@ -52,17 +52,21 @@ public class GameController {
   @PostMapping("{playerId}/plays")
   public void playCard(@PathVariable("playerId") String playerIdString,
                        @RequestBody PlayCardAction playCardAction) {
-    int playerId = Integer.parseInt(playerIdString);
-    gameService.currentGame().playCardFor(PlayerId.of(playerId), CardId.of(playCardAction.getId()));
+    PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
 
-    gameStateChannel.cardPlayed(gameService.currentGame());
+    gameService.currentGame().playCardFor(playerId, CardId.of(playCardAction.getId()));
+
+    gameStateChannel.playerActed(gameService.currentGame());
   }
 
   @PostMapping("{playerId}/actions")
   public void handleAction(@PathVariable("playerId") String playerIdString,
                            @RequestBody PlayerAction playerAction) {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
+
     playerAction.executeFor(playerId, gameService);
+
+    gameStateChannel.playerActed(gameService.currentGame());
   }
 
   @PostMapping("{playerId}/test-result-card-draws")

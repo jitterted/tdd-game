@@ -89,7 +89,6 @@
       new StompChannel<GameState>('/topic/gamestate');
 
     private stompClient?: Client;
-    private interval = 0;
     private showTestResultsModal = false;
     private testResultCardDrawnEvent = {
       testResultCardView: {id: -1, title: "none"},
@@ -107,8 +106,10 @@
       },
       hand: {cards: [{ title : "predict",
           id : 40}]},
-      inPlay: {cards: []},
-      opponentInPlay: {cards: []}
+      inPlay: {cards: [{ title : "predict",
+          id : 40}]},
+      opponentInPlay: {cards: [{ title : "predict",
+          id : 40}]}
     };
     private playerId!: string;
 
@@ -116,7 +117,7 @@
       return this.game.hand.cards.length === 5;
     }
 
-    refresh() {
+    loadInitialGameState() {
       fetch(this.apiUrl)
         .then(response => response.json())
         .then(jsonData => this.game = jsonData)
@@ -132,8 +133,6 @@
           body: JSON.stringify({action: 'DRAW_CARD'})
         }
       );
-
-      this.refresh();
     }
 
     drawTestResultsCard() {
@@ -175,30 +174,23 @@
     playerChanged() {
       this.playerId = this.$route.params.playerId;
       this.apiUrl = '/api/game/players/' + this.playerId;
-      this.refresh();
+      this.loadInitialGameState();
     }
 
     // noinspection JSUnusedGlobalSymbols
     created() {
       this.playerChanged();
 
-      // set refresh to happen every 1 second
-      // this.interval = setInterval(
-      //   () => this.refresh(),
-      //   1000);
-
       this.subscribeToTestCardEvents();
       this.subscribeToGameChangedEvents();
     }
 
-    // noinspection JSUnusedGlobalSymbols
-    beforeDestroy() {
-      clearInterval(this.interval);
-    }
-
     subscribeToGameChangedEvents() {
       this.gameStateChannel.onMessage(gameStateChangeEvent => {
-        this.game.hand = gameStateChangeEvent.players[this.playerId].hand;
+        const player = gameStateChangeEvent.players[this.playerId];
+        this.game.hand = player.hand;
+        this.game.inPlay = player.inPlay;
+        this.game.opponentInPlay = gameStateChangeEvent.players[this.game.opponent.id].inPlay;
       });
     }
   }
