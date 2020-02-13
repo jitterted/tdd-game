@@ -38,15 +38,18 @@ public class GameController {
 
   @GetMapping("{playerId}")
   public PlayerGameView playerGameView(@PathVariable("playerId") String playerIdString) {
-    int playerId = Integer.parseInt(playerIdString);
-    return PlayerGameView.from(gameService.currentGame(), PlayerId.of(playerId));
+    PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
+    return PlayerGameView.from(gameService.currentGame(), playerId);
   }
 
   @PostMapping("{playerId}/discards")
   public void discard(@PathVariable("playerId") String playerIdString,
                       @RequestBody DiscardAction discardAction) {
-    int playerId = Integer.parseInt(playerIdString);
+    PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
+
     discardAction.executeFor(playerId, gameService);
+
+    gameStateChannel.playerActed(gameService.currentGame());
   }
 
   @PostMapping("{playerId}/plays")

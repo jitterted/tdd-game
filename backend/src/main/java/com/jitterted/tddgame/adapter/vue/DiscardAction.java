@@ -17,11 +17,11 @@ public class DiscardAction {
   private int id;
   private String source;
 
-  public void executeFor(int playerId, GameService gameService) {
+  public void executeFor(PlayerId playerId, GameService gameService) {
     if (source.equals(SOURCE_HAND)) {
-      gameService.currentGame().discardFromHand(PlayerId.of(playerId), CardId.of(id));
+      gameService.currentGame().discardFromHand(playerId, CardId.of(id));
     } else if (source.equals(SOURCE_IN_PLAY)) {
-      gameService.currentGame().discardFromInPlay(PlayerId.of(playerId), CardId.of(id));
+      gameService.currentGame().discardFromInPlay(playerId, CardId.of(id));
     } else {
       throw new UnsupportedOperationException("Unknown source for Discard = \"" + source + "\", id = " + id);
     }

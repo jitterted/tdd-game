@@ -28,7 +28,7 @@
 * [ ] Show empty die, "click to roll"
 * [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
 * [ ] Single click discard of In-Play area
-* [ ] Auto-draw upon play card or discard card
+~~* [ ] Auto-draw upon play card or discard card~~ (rules changed, this isn't applicable)
 * [ ] Ensure can't move card past the left/right edge 
 
 ### Requires WebSockets
