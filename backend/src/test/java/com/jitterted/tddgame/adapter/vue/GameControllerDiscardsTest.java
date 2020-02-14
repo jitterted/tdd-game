@@ -17,6 +17,8 @@ import org.mockito.Mockito;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -54,7 +56,7 @@ public class GameControllerDiscardsTest {
                            new DiscardAction(playingCardFromHand.id().getId(), DiscardAction.SOURCE_HAND));
 
     GameStateChangedEvent expectedEvent = GameStateChangedEvent.from(game);
-    verify(spySimpMessagingTemplate).convertAndSend("/topic/gamestate", expectedEvent);
+    verify(spySimpMessagingTemplate).convertAndSend(eq("/topic/gamestate"), eq(expectedEvent), anyMap());
   }
 
   @Test

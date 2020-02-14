@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Component
 public class StompGameStateChannel implements GameStateChannel {
   private static final String TOPIC_TESTRESULTCARD = "/topic/testresultcard";
   private static final String TOPIC_GAMESTATE = "/topic/gamestate";
 
+  private final AtomicInteger messageNumberSequence = new AtomicInteger(0);
   private final SimpMessagingTemplate simpMessagingTemplate;
 
   @Autowired
@@ -36,7 +40,10 @@ public class StompGameStateChannel implements GameStateChannel {
   @Override
   public void playerActed(Game game) {
     GameStateChangedEvent gameStateChangedEvent = GameStateChangedEvent.from(game);
+    Map<String, Object> messageNumberHeader = Map.of("message-number",
+                                                     messageNumberSequence.getAndIncrement());
     simpMessagingTemplate.convertAndSend(TOPIC_GAMESTATE,
-                                         gameStateChangedEvent);
+                                         gameStateChangedEvent,
+                                         messageNumberHeader);
   }
 }

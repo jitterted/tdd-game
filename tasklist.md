@@ -1,5 +1,11 @@
 # Tasks
 
+## Bugs
+* [ ] When 2nd player joins, 1st player's view of their opponent's name doesn't get updated,
+      because no event is sent upon 2nd player join.
+* [X] Race condition: game state changed event messages can be processed out of order,
+      causing the display to be incorrect (e.g., too many discards at once)
+
 ## Game Start
 * [ ] Join game in progress vs. starting new game - game matching
 

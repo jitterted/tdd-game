@@ -176,7 +176,9 @@
         const player = gameStateChangeEvent.players[this.playerId];
         this.game.hand = player.hand;
         this.game.inPlay = player.inPlay;
-        this.game.opponentInPlay = gameStateChangeEvent.players[this.game.opponent.id].inPlay;
+        const opponent = gameStateChangeEvent.players[this.game.opponent.id];
+        this.game.opponentInPlay = opponent.inPlay;
+        this.game.opponent.name = opponent.name;
       });
     }
 
