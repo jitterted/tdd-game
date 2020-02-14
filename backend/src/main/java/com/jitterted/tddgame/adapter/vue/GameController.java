@@ -33,6 +33,9 @@ public class GameController {
   public PlayerIdDto connectUserToPlayerInGame(@RequestBody UserDto user) {
     System.out.println("Received connect for user: " + user.getUserName());
     Player assignedPlayer = gameService.assignNextAvailablePlayerToUser(new User(user.getUserName()));
+
+    gameStateChannel.playerActed(gameService.currentGame());
+
     return PlayerIdDto.from(assignedPlayer.id());
   }
 

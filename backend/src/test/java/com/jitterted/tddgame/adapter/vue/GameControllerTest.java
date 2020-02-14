@@ -75,8 +75,8 @@ class GameControllerTest {
   @Test
   public void connectUserIsAssignedToPlayer() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameController gameController = new GameController(gameService, null);
-    UserDto userDto = new UserDto("tba");
+    GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
+    UserDto userDto = new UserDto("strager");
 
     PlayerIdDto playerIdDto = gameController.connectUserToPlayerInGame(userDto);
 
@@ -85,7 +85,24 @@ class GameControllerTest {
     Player assignedPlayer = game.playerFor(playerId);
 
     assertThat(assignedPlayer.assignedUser().getName())
-      .isEqualTo("tba");
+      .isEqualTo("strager");
+  }
+
+  @Test
+  public void playerJoinTriggersGameStateEvent() throws Exception {
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
+    SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate);
+    GameController gameController = new GameController(gameService, gameStateChannel);
+    UserDto user1Dto = new UserDto("FlaviusCreations");
+
+    gameController.connectUserToPlayerInGame(user1Dto);
+
+    GameStateChangedEvent expectedEvent = GameStateChangedEvent.from(gameService.currentGame());
+    verify(spySimpMessagingTemplate).convertAndSend(
+      eq("/topic/gamestate"),
+      eq(expectedEvent),
+      anyMap());
   }
 
 }
