@@ -44,6 +44,11 @@ public class Game {
     player.drawFrom(playingCardDeck);
   }
 
+  public void drawToFullHandFor(PlayerId playerId) {
+    Player player = playerFor(playerId);
+    player.fillHandFrom(playingCardDeck);
+  }
+
   public void playCardFor(PlayerId playerId, CardId cardId) {
     Player player = playerFor(playerId);
     player.play(this, cardId);

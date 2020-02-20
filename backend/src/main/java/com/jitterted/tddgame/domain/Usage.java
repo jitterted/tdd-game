@@ -1,13 +1,13 @@
 package com.jitterted.tddgame.domain;
 
 public enum Usage {
-  SELF{
+  SELF {
     @Override
     public void play(Game game, Player player, PlayingCard playingCard) {
       player.inPlay().add(playingCard);
     }
   },
-  OPPONENT{
+  OPPONENT {
     @Override
     public void play(Game game, Player player, PlayingCard playingCard) {
       game.opponentFor(player).inPlay().add(playingCard);

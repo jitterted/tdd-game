@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 class PlayerPlayTest {
@@ -26,18 +26,18 @@ class PlayerPlayTest {
   }
 
   @Test
-  public void playerPlaysAttackCardThenCardIsInOpponentInPlay() throws Exception {
+  public void playerPlaysOpponentUsageCardThenCardIsInOpponentInPlay() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Player opponent = new Player(PlayerId.of(1));
     Game game = new Game(List.of(player, opponent), null, null);
 
-    PlayingCard playingCard = new CardFactory().playingCard("attack", Usage.OPPONENT);
-    player.hand().add(playingCard);
+    PlayingCard techDebtCard = new CardFactory().playingCard("opponent", Usage.OPPONENT);
+    player.hand().add(techDebtCard);
 
-    player.play(game, playingCard.id());
+    player.play(game, techDebtCard.id());
 
     assertThat(opponent.inPlay().cards())
-      .containsOnly(playingCard);
+      .containsOnly(techDebtCard);
     assertThat(player.inPlay().isEmpty())
       .isTrue();
   }

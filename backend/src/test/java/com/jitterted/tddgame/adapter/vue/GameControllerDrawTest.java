@@ -27,10 +27,9 @@ import static org.mockito.Mockito.verify;
 public class GameControllerDrawTest {
 
   @Test
-  public void playerDrawActionResultsInNewCardDrawnToPlayerHand() throws Exception {
+  public void drawCardActionResultsInNewCardDrawnToPlayerHand() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameStateChannel dummyGameStateChannel = mock(GameStateChannel.class);
-    GameController gameController = new GameController(gameService, dummyGameStateChannel);
+    GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
     Hand hand = player.hand();
@@ -39,6 +38,23 @@ public class GameControllerDrawTest {
 
     gameController.handleAction(String.valueOf(player.id().getId()),
                                 new PlayerAction(PlayerAction.DRAW_CARD));
+
+    assertThat(player.hand().isFull())
+      .isTrue();
+  }
+
+  @Test
+  public void drawHandActionResultsInHandFull() throws Exception {
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory());
+    GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
+    Game game = gameService.currentGame();
+    Player player = game.players().get(0);
+    Hand hand = player.hand(); // initial hand is 5 cards
+    hand.remove(hand.cards().get(0).id());
+    hand.remove(hand.cards().get(0).id());
+
+    gameController.handleAction(String.valueOf(player.id().getId()),
+                                new PlayerAction(PlayerAction.DRAW_HAND));
 
     assertThat(player.hand().isFull())
       .isTrue();

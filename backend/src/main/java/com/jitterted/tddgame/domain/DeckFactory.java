@@ -38,8 +38,8 @@ public class DeckFactory {
     deck.addToDiscardPile(generatePlayingCards("write code", 18, Usage.SELF));
     deck.addToDiscardPile(generatePlayingCards("less code", 18, Usage.SELF));
     deck.addToDiscardPile(generatePlayingCards("predict", 18, Usage.SELF));
-    deck.addToDiscardPile(generatePlayingCards("can't assert", 2, Usage.OPPONENT));
-    deck.addToDiscardPile(generatePlayingCards("code bloat", 3, Usage.OPPONENT));
+    deck.addToDiscardPile(generatePlayingCards("can't assert", 2, Usage.SELF));
+    deck.addToDiscardPile(generatePlayingCards("code bloat", 3, Usage.SELF));
     deck.addToDiscardPile(generatePlayingCards("refactor", 4, Usage.DISCARD));
   }
 

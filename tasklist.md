@@ -1,7 +1,13 @@
 # Tasks
 
+## Rule/Play Change
+* [X] Playing a TECH DEBT card is played against yourself instead of opponent
+* [X] Always draw playing cards up to full hand, don't draw individual cards
+      Change from *Draw* drawing a single card to draw to full hand.
+* [ ] TECH DEBT card is auto-played as soon as it's drawn (still need to draw to full hand)
+
 ## Bugs
-* [ ] When 2nd player joins, 1st player's view of their opponent's name doesn't get updated,
+* [X] When 2nd player joins, 1st player's view of their opponent's name doesn't get updated,
       because no event is sent upon 2nd player join.
 * [X] Race condition: game state changed event messages can be processed out of order,
       causing the display to be incorrect (e.g., too many discards at once)
@@ -12,7 +18,7 @@
 
 ## Refactoring
 * [ ] Combine Hand and InPlay into a single Class (called ??? CardSet?) with two instances
-    * [ ] Change ".count() < 5" to ".canAdd()" (or "hasRoom") when looping to add cards
+    * [X] Change ".count() < 5" to ".canAdd()" (or "hasRoom") when looping to add cards
 * [ ] Move PlayerHandTest tests to HandTests and refactor ("object envy" code smell)
 
 
@@ -29,11 +35,11 @@
 * [X] No "Play" option for card in "In-Play" area
 * [X] Prevent card selection for opponent-in-play cards
 * [X] Keyboard actions for (D)iscard and (P)lay
-* [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
-* [ ] Move Playing Card IDs to lower-right and make smaller
-* [ ] Show empty die, "click to roll"
-* [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
 * [ ] Single click discard of In-Play area
+* [ ] Show empty die, "click to roll"
+* [ ] Move Playing Card IDs to lower-right and make smaller
+* [ ] Clean up display of scoring (colors, etc.) and die image (make it look more like a die)
+* [ ] Fix layout problem if player name is too long (e.g., "FlavCreations")
 ~~* [ ] Auto-draw upon play card or discard card~~ (rules changed, this isn't applicable)
 * [ ] Ensure can't move card past the left/right edge 
 

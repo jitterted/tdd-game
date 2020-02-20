@@ -111,6 +111,22 @@ class GameControllerContractTest {
   }
 
   @Test
+  public void postDrawHandActionIs200Ok() throws Exception {
+    Player player = gameService.currentGame().players().get(0);
+    Hand hand = player.hand();
+    hand.remove(hand.cards().get(0).id());
+    hand.remove(hand.cards().get(0).id());
+
+    mockMvc.perform(
+      post(API_PLAYERS_BASE_URL + player.id().getId() + "/actions")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"action\": \"" + PlayerAction.DRAW_HAND + "\"}")
+    )
+           .andExpect(status().isOk())
+    ;
+  }
+
+  @Test
   public void postDrawTestResultsActionIs204NoContent() throws Exception {
     Player player = gameService.currentGame().players().get(0);
 

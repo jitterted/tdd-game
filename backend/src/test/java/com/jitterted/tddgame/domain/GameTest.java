@@ -1,5 +1,6 @@
 package com.jitterted.tddgame.domain;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -39,19 +40,19 @@ class GameTest {
   }
 
   @Test
-  public void playedAttackCardIsMovedToOpponentInPlay() throws Exception {
+  public void playedOpponentCardIsMovedToOpponentInPlay() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Player opponent = new Player(PlayerId.of(1));
     Game game = new Game(List.of(player, opponent), null, null);
-    PlayingCard attack = new CardFactory().playingCard("attack", Usage.OPPONENT);
-    player.hand().add(attack);
+    PlayingCard opponentCard = new CardFactory().playingCard("opponent", Usage.OPPONENT);
+    player.hand().add(opponentCard);
 
-    game.playCardFor(player.id(), attack.id());
+    game.playCardFor(player.id(), opponentCard.id());
 
-    assertThat(player.inPlay().cards())
-      .isEmpty();
+    assertThat(player.inPlay().isEmpty())
+      .isTrue();
     assertThat(opponent.inPlay().cards())
-      .containsOnly(attack);
+      .containsOnly(opponentCard);
   }
 
   @Test
@@ -72,7 +73,7 @@ class GameTest {
   }
 
   @Test
-  public void playerWithRoomInHandDrawsCardThenCardFromDrawPileInHand() throws Exception {
+  public void playerWithNotFullHandDrawsCardThenCardFromDrawPileInHand() throws Exception {
     Deck<PlayingCard> deck = new Deck<>(null);
     PlayingCard playingCard = new PlayingCard(CardId.of(1), "card1", Usage.SELF);
     deck.addToDrawPile(playingCard);
@@ -87,6 +88,32 @@ class GameTest {
     assertThat(player0.hand().cards())
       .containsExactly(playingCard);
   }
+
+  @Test
+  public void playerWithTwoCardsInHandDrawsToFullHandThenHandIsFull() throws Exception {
+    Deck<PlayingCard> deck = createPlayingCardDeckDrawPileFilledWith(Usage.SELF, 10);
+    List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
+    Player player0 = twoPlayers.get(0);
+    player0.drawFrom(deck);
+    player0.drawFrom(deck);
+    Game game = new Game(twoPlayers, deck, null);
+
+    game.drawToFullHandFor(player0.id());
+
+    assertThat(player0.hand().isFull())
+      .isTrue();
+  }
+
+  @NotNull
+  private Deck<PlayingCard> createPlayingCardDeckDrawPileFilledWith(Usage usage, int cardCount) {
+    Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
+    CardFactory cardFactory = new CardFactory();
+    for (int i = 0; i < cardCount; i++) {
+      deck.addToDrawPile(cardFactory.playingCard("card", usage));
+    }
+    return deck;
+  }
+
 
   @Test
   public void drawingCardFromTestResultDeckPutsCardInDrawnTestCardInGameState() throws Exception {

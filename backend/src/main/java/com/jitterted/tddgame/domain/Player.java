@@ -21,7 +21,7 @@ public class Player {
   }
 
   public void fillHandFrom(Deck<PlayingCard> deck) {
-    while (hand.count() < 5) {
+    while (!hand.isFull()) {
       drawFrom(deck);
     }
   }
