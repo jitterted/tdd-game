@@ -10,12 +10,12 @@
       </div>
       <div class="text-center bg-black py-3">
         <button
-          class="bg-blue-300 rounded border-blue-100 font-bold px-4 py-2 mb-4"
-          @click="drawCard"
+          class="bg-blue-300 rounded border-blue-100 font-bold px-2 py-2 mx-2 mb-4"
+          @click="drawToFullHand"
           :disabled="handIsFull"
           :class="{ 'opacity-50 cursor-not-allowed' : handIsFull }"
         >
-          Draw Card
+          Draw To Full Hand
         </button>
         <button
           class="bg-green-300 rounded border-green-100 font-bold px-4 py-2 mb-4"
@@ -130,13 +130,13 @@
         .catch(error => console.log('Refresh error: ' + error));
     }
 
-    drawCard() {
+    drawToFullHand() {
       fetch(this.apiUrl + '/actions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({action: 'DRAW_CARD'})
+          body: JSON.stringify({action: 'DRAW_HAND'})
         }
       );
     }
