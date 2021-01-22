@@ -1,12 +1,11 @@
 package com.jitterted.tddgame.domain;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Hand {
-  private final Map<CardId, PlayingCard> cards = new HashMap<>();
+  private final Map<CardId, PlayingCard> cards = new ConcurrentHashMap<>();
   private final PlayerId owningPlayerId; // only used by toString()
 
   public Hand(PlayerId playerId) {
@@ -30,7 +29,7 @@ public class Hand {
   }
 
   public List<PlayingCard> cards() {
-    return new ArrayList<>(cards.values());
+    return List.copyOf(cards.values());
   }
 
   public PlayingCard remove(CardId cardId) {

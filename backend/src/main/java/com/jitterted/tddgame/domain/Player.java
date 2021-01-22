@@ -17,7 +17,8 @@ public class Player {
   }
 
   public void drawFrom(Deck<PlayingCard> deck) {
-    hand.add(deck.draw());
+    PlayingCard playingCard = deck.draw();
+    playingCard.onDraw(hand, inPlay);
   }
 
   public void fillHandFrom(Deck<PlayingCard> deck) {

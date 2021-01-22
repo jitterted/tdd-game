@@ -21,6 +21,10 @@ public class PlayingCard {
     return usage;
   }
 
+  public void onDraw(Hand hand, InPlay inPlay) {
+    hand.add(this);
+  }
+
   public CardId id() {
     return id;
   }

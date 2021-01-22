@@ -17,7 +17,7 @@
     * [X] Test Result Card Vue component to display the card based on its title
     
 
-* [ ] Move to RSocket for more real-time interaction
+~~* [ ] Move to RSocket for more real-time interaction~~
 
 
 # Completed
@@ -32,7 +32,7 @@
 
 ---
 
-[ ] 1. Shuffle:
+[X] 1. Shuffle:
 
         Two times shuffles happen:
         
@@ -41,6 +41,6 @@
         
         Rule: When Draw Deck is empty, shuffle cards from Discard Pile into Draw Deck 
 
-[ ] 1. Discard pile
+[X] 1. Discard pile
 
-[ ] 1. Re-shuffle deck from discard when deck is empty
+[X] 1. Re-shuffle deck from discard when deck is empty

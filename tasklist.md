@@ -5,15 +5,17 @@
 * [X] Always draw playing cards up to full hand, don't draw individual cards
       Change from *Draw* drawing a single card to draw to full hand.
 * [ ] TECH DEBT card is auto-played as soon as it's drawn (still need to draw to full hand)
+      AutoPlay Card: Upon Draw is Immediately Played
 
 ## Bugs
 * [X] When 2nd player joins, 1st player's view of their opponent's name doesn't get updated,
       because no event is sent upon 2nd player join.
 * [X] Race condition: game state changed event messages can be processed out of order,
       causing the display to be incorrect (e.g., too many discards at once)
+* [ ] If CardNotInHandException occurs, force the front-end to reload entire game state
 
 ## Game Start
-* [ ] Join game in progress vs. starting new game - game matching
+* [ ] Join game in progress vs. starting new game - game matching/multi-game support
 
 
 ## Refactoring

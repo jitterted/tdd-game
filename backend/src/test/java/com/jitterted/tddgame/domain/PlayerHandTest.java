@@ -47,6 +47,8 @@ public class PlayerHandTest {
 
     assertThat(deck.drawPileSize())
       .isEqualTo(4);
+    assertThat(brainw4ashed.hand().isFull())
+      .isTrue();
   }
 
   @Test

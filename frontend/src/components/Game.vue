@@ -48,15 +48,15 @@
 </template>
 
 <script lang="ts">
-  import PlayerScore from "./PlayerScore.vue";
-  import Modal from "./Modal.vue";
-  import Die from "./Die.vue";
-  import TestResultsCard from "./TestResultsCard.vue";
-  import CardsRow from "./CardsRow.vue";
-  import {Component, Vue} from "vue-property-decorator";
-  import StompChannel from "@/StompChannel";
+import PlayerScore from "./PlayerScore.vue";
+import Modal from "./Modal.vue";
+import Die from "./Die.vue";
+import TestResultsCard from "./TestResultsCard.vue";
+import CardsRow from "./CardsRow.vue";
+import {Component, Vue} from "vue-property-decorator";
+import StompChannel from "@/StompChannel";
 
-  interface Card {
+interface Card {
     id: number;
     title: string;
   }
@@ -175,6 +175,7 @@
       this.gameStateChannel.onMessage(gameStateChangeEvent => {
         const player = gameStateChangeEvent.players[this.playerId];
         this.game.hand = player.hand;
+        console.log(this.game.hand.cards);
         this.game.inPlay = player.inPlay;
         const opponent = gameStateChangeEvent.players[this.game.opponent.id];
         this.game.opponentInPlay = opponent.inPlay;

@@ -6,6 +6,7 @@ import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.PlayerId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -19,9 +20,13 @@ public class StompGameStateChannel implements GameStateChannel {
   private final AtomicInteger messageNumberSequence = new AtomicInteger(0);
   private final SimpMessagingTemplate simpMessagingTemplate;
 
+  ThreadPoolTaskExecutor taskExecutor;
+
   @Autowired
   public StompGameStateChannel(SimpMessagingTemplate simpMessagingTemplate) {
     this.simpMessagingTemplate = simpMessagingTemplate;
+    this.taskExecutor = new ThreadPoolTaskExecutor();
+    this.taskExecutor.afterPropertiesSet();
   }
 
   @Override
@@ -39,11 +44,13 @@ public class StompGameStateChannel implements GameStateChannel {
 
   @Override
   public void playerActed(Game game) {
-    GameStateChangedEvent gameStateChangedEvent = GameStateChangedEvent.from(game);
-    Map<String, Object> messageNumberHeader = Map.of("message-number",
-                                                     messageNumberSequence.getAndIncrement());
-    simpMessagingTemplate.convertAndSend(TOPIC_GAMESTATE,
-                                         gameStateChangedEvent,
-                                         messageNumberHeader);
+    taskExecutor.execute(() -> {
+      GameStateChangedEvent gameStateChangedEvent = GameStateChangedEvent.from(game);
+      Map<String, Object> messageNumberHeader = Map.of("message-number",
+                                                       messageNumberSequence.getAndIncrement());
+      simpMessagingTemplate.convertAndSend(TOPIC_GAMESTATE,
+                                           gameStateChangedEvent,
+                                           messageNumberHeader);
+    });
   }
 }
