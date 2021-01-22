@@ -5,8 +5,8 @@ import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.PlayerId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -20,13 +20,12 @@ public class StompGameStateChannel implements GameStateChannel {
   private final AtomicInteger messageNumberSequence = new AtomicInteger(0);
   private final SimpMessagingTemplate simpMessagingTemplate;
 
-  ThreadPoolTaskExecutor taskExecutor;
+  private final TaskExecutor taskExecutor;
 
   @Autowired
-  public StompGameStateChannel(SimpMessagingTemplate simpMessagingTemplate) {
+  public StompGameStateChannel(SimpMessagingTemplate simpMessagingTemplate, TaskExecutor taskExecutor) {
     this.simpMessagingTemplate = simpMessagingTemplate;
-    this.taskExecutor = new ThreadPoolTaskExecutor();
-    this.taskExecutor.afterPropertiesSet();
+    this.taskExecutor = taskExecutor;
   }
 
   @Override

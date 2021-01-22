@@ -6,6 +6,9 @@ import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @SpringBootApplication
 public class TddGameApplication {
@@ -17,6 +20,14 @@ public class TddGameApplication {
 	@Bean
   public GameService defaultTwoPlayerGameService() {
     return new TwoPlayerGameService(new PlayerFactory());
+  }
+
+  @Bean
+  @Primary
+  public TaskExecutor threadPoolTaskExecutor() {
+    ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+    threadPoolTaskExecutor.afterPropertiesSet();
+    return threadPoolTaskExecutor;
   }
 
 }

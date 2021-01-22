@@ -16,6 +16,7 @@ import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.List;
@@ -90,7 +91,7 @@ public class GameControllerDrawTest {
     GameService gameService = new FakeGameService(game);
 
     SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate, new SyncTaskExecutor());
 
     GameController gameController = new GameController(gameService, gameStateChannel);
 
@@ -113,7 +114,7 @@ public class GameControllerDrawTest {
     GameService gameService = new FakeGameService(game);
 
     SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate, new SyncTaskExecutor());
     GameController gameController = new GameController(gameService, gameStateChannel);
 
     gameController.handleDiscardTestResultCard(String.valueOf(player1.id().getId()));

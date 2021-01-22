@@ -40,22 +40,6 @@ class GameTest {
   }
 
   @Test
-  public void playedOpponentCardIsMovedToOpponentInPlay() throws Exception {
-    Player player = new Player(PlayerId.of(0));
-    Player opponent = new Player(PlayerId.of(1));
-    Game game = new Game(List.of(player, opponent), null, null);
-    PlayingCard opponentCard = new CardFactory().playingCard("opponent", Usage.OPPONENT);
-    player.hand().add(opponentCard);
-
-    game.playCardFor(player.id(), opponentCard.id());
-
-    assertThat(player.inPlay().isEmpty())
-      .isTrue();
-    assertThat(opponent.inPlay().cards())
-      .containsOnly(opponentCard);
-  }
-
-  @Test
   public void playerDiscardOfCardIsTransferredToDeckDiscardPile() throws Exception {
     DeckFactory deckFactory = new DeckFactory(new CardFactory());
     Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();

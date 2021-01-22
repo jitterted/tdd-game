@@ -12,6 +12,7 @@ import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import com.jitterted.tddgame.domain.Usage;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.assertj.core.api.Assertions.*;
@@ -62,7 +63,7 @@ class GameControllerTest {
     PlayingCard playingCardFromHand = player1.hand().cards().get(0);
 
     SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate, new SyncTaskExecutor());
     GameController gameController = new GameController(gameService, gameStateChannel);
 
     PlayCardAction playCardAction = new PlayCardAction(playingCardFromHand.id().getId());
@@ -92,7 +93,7 @@ class GameControllerTest {
   public void playerJoinTriggersGameStateEvent() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
-    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate, new SyncTaskExecutor());
     GameController gameController = new GameController(gameService, gameStateChannel);
     UserDto user1Dto = new UserDto("FlaviusCreations");
 

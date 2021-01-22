@@ -7,12 +7,6 @@ public enum Usage {
       player.inPlay().add(playingCard);
     }
   },
-  OPPONENT {
-    @Override
-    public void play(Game game, Player player, PlayingCard playingCard) {
-      game.opponentFor(player).inPlay().add(playingCard);
-    }
-  },
   DISCARD {
     @Override
     public void play(Game game, Player player, PlayingCard playingCard) {

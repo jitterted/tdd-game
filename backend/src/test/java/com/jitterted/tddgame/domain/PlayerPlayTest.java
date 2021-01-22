@@ -26,23 +26,6 @@ class PlayerPlayTest {
   }
 
   @Test
-  public void playerPlaysOpponentUsageCardThenCardIsInOpponentInPlay() throws Exception {
-    Player player = new Player(PlayerId.of(0));
-    Player opponent = new Player(PlayerId.of(1));
-    Game game = new Game(List.of(player, opponent), null, null);
-
-    PlayingCard techDebtCard = new CardFactory().playingCard("opponent", Usage.OPPONENT);
-    player.hand().add(techDebtCard);
-
-    player.play(game, techDebtCard.id());
-
-    assertThat(opponent.inPlay().cards())
-      .containsOnly(techDebtCard);
-    assertThat(player.inPlay().isEmpty())
-      .isTrue();
-  }
-
-  @Test
   public void playedRefactorCardIsDiscarded() throws Exception {
     Player player = new Player(PlayerId.of(0));
     PlayingCard playingCard = new CardFactory().playingCard("refactor", Usage.DISCARD);
