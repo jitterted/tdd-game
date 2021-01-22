@@ -1,5 +1,10 @@
 # Tasks
 
+## Chore
+
+* [ ] Properly fix the TaskExecutor so that we can get it autowired from Spring (in StompGameStateChannel).
+* [ ] Update Spring Boot to 2.4.x
+
 ## Rule/Play Change
 * [X] Playing a TECH DEBT card is played against yourself instead of opponent
 * [X] Always draw playing cards up to full hand, don't draw individual cards
