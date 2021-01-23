@@ -1,6 +1,6 @@
 package com.jitterted.tddgame.domain;
 
-public enum Usage {
+public enum OnPlayGoesTo {
   SELF {
     @Override
     public void play(Game game, Player player, PlayingCard playingCard) {

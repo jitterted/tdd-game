@@ -35,18 +35,18 @@ public class DeckFactory {
 
 
   private void addPlayingCardsToDiscardPileOf(Deck<PlayingCard> deck) {
-    deck.addToDiscardPile(generatePlayingCards("write code", 18, Usage.SELF));
-    deck.addToDiscardPile(generatePlayingCards("less code", 18, Usage.SELF));
-    deck.addToDiscardPile(generatePlayingCards("predict", 18, Usage.SELF));
-    deck.addToDiscardPile(generatePlayingCards("can't assert", 2, Usage.SELF));
-    deck.addToDiscardPile(generatePlayingCards("code bloat", 3, Usage.SELF));
-    deck.addToDiscardPile(generatePlayingCards("refactor", 4, Usage.DISCARD));
+    deck.addToDiscardPile(generatePlayingCards("write code", 18, OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    deck.addToDiscardPile(generatePlayingCards("less code", 18, OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    deck.addToDiscardPile(generatePlayingCards("predict", 18, OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    deck.addToDiscardPile(generatePlayingCards("can't assert", 2, OnDrawGoesTo.IN_PLAY, OnPlayGoesTo.SELF));
+    deck.addToDiscardPile(generatePlayingCards("code bloat", 3, OnDrawGoesTo.IN_PLAY, OnPlayGoesTo.SELF));
+    deck.addToDiscardPile(generatePlayingCards("refactor", 4, OnDrawGoesTo.HAND, OnPlayGoesTo.DISCARD));
   }
 
-  private List<PlayingCard> generatePlayingCards(String title, int count, Usage usage) {
+  private List<PlayingCard> generatePlayingCards(String title, int count, OnDrawGoesTo onDrawGoesTo, OnPlayGoesTo onPlayGoesTo) {
     List<PlayingCard> playingCards = new ArrayList<>();
     for (int i = 0; i < count; i++) {
-      playingCards.add(cardFactory.playingCard(title, usage));
+      playingCards.add(cardFactory.playingCard(title, onPlayGoesTo, onDrawGoesTo));
     }
     return playingCards;
   }

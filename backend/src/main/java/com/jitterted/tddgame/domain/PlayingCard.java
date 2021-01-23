@@ -5,20 +5,22 @@ import org.springframework.lang.NonNull;
 public class PlayingCard {
   private final String title;
   private final CardId id;
-  private final Usage usage;
+  private final OnPlayGoesTo onPlayGoesTo;
+  private final OnDrawGoesTo onDrawGoesTo;
 
-  public PlayingCard(@NonNull CardId id, @NonNull String title, @NonNull Usage usage) {
+  PlayingCard(@NonNull CardId id, @NonNull String title, @NonNull OnPlayGoesTo onPlayGoesTo, OnDrawGoesTo onDrawGoesTo) {
     this.title = title;
     this.id = id;
-    this.usage = usage;
+    this.onPlayGoesTo = onPlayGoesTo;
+    this.onDrawGoesTo = onDrawGoesTo;
   }
 
   public String title() {
     return title;
   }
 
-  public Usage usage() {
-    return usage;
+  public OnPlayGoesTo usage() {
+    return onPlayGoesTo;
   }
 
   public void onDraw(Hand hand, InPlay inPlay) {

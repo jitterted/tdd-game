@@ -1,15 +1,16 @@
 package com.jitterted.tddgame.adapter.vue;
 
-import com.jitterted.tddgame.domain.CardId;
+import com.jitterted.tddgame.domain.CardFactory;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.GameStateChannel;
+import com.jitterted.tddgame.domain.OnDrawGoesTo;
+import com.jitterted.tddgame.domain.OnPlayGoesTo;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.PlayingCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
-import com.jitterted.tddgame.domain.Usage;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.core.task.SyncTaskExecutor;
@@ -42,7 +43,7 @@ class GameControllerTest {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
-    PlayingCard playingCardFromHand = new PlayingCard(CardId.of(999), "played card", Usage.SELF);
+    PlayingCard playingCardFromHand = new CardFactory().playingCard("played card", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
     player.hand().add(playingCardFromHand);
 
     GameStateChannel dummyGameStateChannel = mock(GameStateChannel.class);

@@ -59,7 +59,7 @@ class GameTest {
   @Test
   public void playerWithNotFullHandDrawsCardThenCardFromDrawPileInHand() throws Exception {
     Deck<PlayingCard> deck = new Deck<>(null);
-    PlayingCard playingCard = new PlayingCard(CardId.of(1), "card1", Usage.SELF);
+    PlayingCard playingCard = new CardFactory().playingCard("card1", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
     deck.addToDrawPile(playingCard);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Player player0 = twoPlayers.get(0);
@@ -75,7 +75,7 @@ class GameTest {
 
   @Test
   public void playerWithTwoCardsInHandDrawsToFullHandThenHandIsFull() throws Exception {
-    Deck<PlayingCard> deck = createPlayingCardDeckDrawPileFilledWith(Usage.SELF, 10);
+    Deck<PlayingCard> deck = createPlayingCardDeckDrawPileFilledWith(OnPlayGoesTo.SELF, 10);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Player player0 = twoPlayers.get(0);
     player0.drawFrom(deck);
@@ -89,11 +89,11 @@ class GameTest {
   }
 
   @NotNull
-  private Deck<PlayingCard> createPlayingCardDeckDrawPileFilledWith(Usage usage, int cardCount) {
+  private Deck<PlayingCard> createPlayingCardDeckDrawPileFilledWith(OnPlayGoesTo onPlayGoesTo, int cardCount) {
     Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
     CardFactory cardFactory = new CardFactory();
     for (int i = 0; i < cardCount; i++) {
-      deck.addToDrawPile(cardFactory.playingCard("card", usage));
+      deck.addToDrawPile(cardFactory.playingCard("card", onPlayGoesTo, OnDrawGoesTo.HAND));
     }
     return deck;
   }

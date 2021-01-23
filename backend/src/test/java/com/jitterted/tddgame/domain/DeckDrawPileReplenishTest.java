@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class DeckDrawPileReplenishTest {
 
@@ -25,7 +25,7 @@ public class DeckDrawPileReplenishTest {
   public void whenDrawPileIsEmptyAndDiscardPileIsNotEmptyDrawPileSizeIsZero() throws Exception {
     CardFactory cardFactory = new CardFactory();
     Deck deck = new Deck(new CopyCardShuffler());
-    deck.addToDiscardPile(List.of(cardFactory.playingCard("predict", Usage.SELF)));
+    deck.addToDiscardPile(List.of(cardFactory.playingCard("predict", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND)));
 
     assertThat(deck.drawPileSize())
       .isZero();
@@ -45,9 +45,9 @@ public class DeckDrawPileReplenishTest {
 
   private List<PlayingCard> discardThreeCardsTo(Deck<PlayingCard> deck) {
     CardFactory cardFactory = new CardFactory();
-    List<PlayingCard> discardPlayingCards = List.of(cardFactory.playingCard("refactor", Usage.SELF),
-                                                    cardFactory.playingCard("predict", Usage.SELF),
-                                                    cardFactory.playingCard("write code", Usage.SELF));
+    List<PlayingCard> discardPlayingCards = List.of(cardFactory.playingCard("refactor", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND),
+                                                    cardFactory.playingCard("predict", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND),
+                                                    cardFactory.playingCard("write code", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
     deck.addToDiscardPile(discardPlayingCards);
     return discardPlayingCards;
   }

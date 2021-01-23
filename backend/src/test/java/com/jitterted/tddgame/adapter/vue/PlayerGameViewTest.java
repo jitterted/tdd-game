@@ -2,10 +2,11 @@ package com.jitterted.tddgame.adapter.vue;
 
 import com.jitterted.tddgame.domain.CardFactory;
 import com.jitterted.tddgame.domain.Game;
+import com.jitterted.tddgame.domain.OnDrawGoesTo;
+import com.jitterted.tddgame.domain.OnPlayGoesTo;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.PlayingCard;
-import com.jitterted.tddgame.domain.Usage;
 import com.jitterted.tddgame.domain.User;
 import org.junit.jupiter.api.Test;
 
@@ -116,10 +117,10 @@ class PlayerGameViewTest {
     player1 = new Player(PlayerId.of(1));
     player2 = new Player(PlayerId.of(2));
     CardFactory cardFactory = new CardFactory();
-    PlayingCard playingCardPlayer1Play = cardFactory.playingCard("player 1 in Play", Usage.SELF);
-    PlayingCard playingCardPlayer2Play = cardFactory.playingCard("player 2 in Play", Usage.SELF);
-    PlayingCard playingCardPlayer1Hand = cardFactory.playingCard("player 1 in Hand", Usage.SELF);
-    PlayingCard playingCardPlayer2Hand = cardFactory.playingCard("player 2 in Hand", Usage.SELF);
+    PlayingCard playingCardPlayer1Play = cardFactory.playingCard("player 1 in Play", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCardPlayer2Play = cardFactory.playingCard("player 2 in Play", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCardPlayer1Hand = cardFactory.playingCard("player 1 in Hand", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCardPlayer2Hand = cardFactory.playingCard("player 2 in Hand", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
     player1.inPlay().add(playingCardPlayer1Play);
     player1.hand().add(playingCardPlayer1Hand);
     player2.inPlay().add(playingCardPlayer2Play);

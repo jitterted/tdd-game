@@ -7,11 +7,12 @@ import com.jitterted.tddgame.domain.FakeGameService;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.GameStateChannel;
+import com.jitterted.tddgame.domain.OnDrawGoesTo;
+import com.jitterted.tddgame.domain.OnPlayGoesTo;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayingCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
-import com.jitterted.tddgame.domain.Usage;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.core.task.SyncTaskExecutor;
@@ -67,7 +68,7 @@ public class GameControllerDiscardsTest {
     GameService gameService = new FakeGameService(game);
     GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
 
-    PlayingCard playableCard = new CardFactory().playingCard("playable", Usage.SELF);
+    PlayingCard playableCard = new CardFactory().playingCard("playable", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
     Player player = game.players().get(0);
     player.inPlay().add(playableCard);
 

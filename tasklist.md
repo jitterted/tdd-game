@@ -24,6 +24,7 @@
 
 
 ## Refactoring
+* [ ] Refactor the way test playing cards are created as most are "play goes to self" and "draw into hand" (see PlayingCard constructor)
 * [ ] Combine Hand and InPlay into a single Class (called ??? CardSet?) with two instances
     * [X] Change ".count() < 5" to ".canAdd()" (or "hasRoom") when looping to add cards
 * [ ] Move PlayerHandTest tests to HandTests and refactor ("object envy" code smell)
