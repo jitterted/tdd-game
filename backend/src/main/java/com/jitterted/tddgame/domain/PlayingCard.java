@@ -24,7 +24,10 @@ public class PlayingCard {
   }
 
   public void onDraw(Hand hand, InPlay inPlay) {
-    hand.add(this);
+    switch (onDrawGoesTo) {
+      case HAND -> hand.add(this);
+      case IN_PLAY -> inPlay.add(this);
+    }
   }
 
   public CardId id() {
