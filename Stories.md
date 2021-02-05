@@ -1,5 +1,15 @@
 # Stories
 
+* [ ] Start Hex Board implementation
+    * [ ] Game start: both players are on the first hex, able to query where a player is
+    * [ ] When event for EXIT condition for current hex is received, move player to next hex 
+    * [ ]
+
+* [ ] Turn tracker
+    * [ ] Once THREE (3) cards are PLAYED or DISCARDED, that player's turn is over, except...
+    * [ ] ...except for TECH DEBT card situations
+
+
 * [X] Discard from Play area: cards go to Deck Discard Pile
 * [X] Multiple players can play
     * [X] Identify myself with my Name (get a player ID)

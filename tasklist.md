@@ -9,7 +9,7 @@
 * [X] Playing a TECH DEBT card is played against yourself instead of opponent
 * [X] Always draw playing cards up to full hand, don't draw individual cards
       Change from *Draw* drawing a single card to draw to full hand.
-* [ ] TECH DEBT card is auto-played as soon as it's drawn (still need to draw to full hand)
+* [X] TECH DEBT card is auto-played as soon as it's drawn (still need to draw to full hand)
       AutoPlay Card: Upon Draw is Immediately Played
 
 ## Bugs
