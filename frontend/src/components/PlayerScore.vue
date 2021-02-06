@@ -4,6 +4,9 @@
       {{ name }}
     </div>
     <div class="text-white mb-1">
+      Location: {{ location }}
+    </div>
+    <div class="text-white mb-1">
       Stories Done: {{ score }}
     </div>
     <div class="mb-6">
@@ -32,17 +35,21 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from "vue-property-decorator";
-  import StompChannel from "@/StompChannel";
+import {Component, Prop, Vue} from "vue-property-decorator";
+import StompChannel from "@/StompChannel";
 
-  @Component
+@Component
   export default class PlayerScore extends Vue {
     @Prop() private name!: string;
     @Prop() private playerId!: string;
 
     private score = 0;
     private riskLevel = 0;
-    private readonly channel = new StompChannel<{score: number, playerId: string}>('/topic/score');
+    private location = ''
+
+    private readonly scoreChannel = new StompChannel<{score: number, playerId: string}>('/topic/score');
+    private readonly locationChannel =
+      new StompChannel<{location: string, playerId: string}>('/topic/location');
 
     decrementScore() {
       this.score -= 1;
@@ -50,7 +57,7 @@
 
     incrementScore() {
       this.score += 1;
-      this.channel.publish({
+      this.scoreChannel.publish({
         score: this.score,
         playerId: this.playerId
       });
@@ -79,11 +86,16 @@
 
     // noinspection JSUnusedGlobalSymbols
     created() {
-      this.channel.onMessage(scoreUpdate => {
+      this.scoreChannel.onMessage(scoreUpdate => {
         if (scoreUpdate.playerId === this.playerId) {
           this.score = scoreUpdate.score;
         }
-      });
+      })
+      this.locationChannel.onMessage(locationUpdate => {
+        if (this.playerId === locationUpdate.playerId) {
+          this.location = locationUpdate.location
+        }
+      })
     }
 
   }
