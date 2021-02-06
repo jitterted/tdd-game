@@ -18,6 +18,14 @@
 * [X] Race condition: game state changed event messages can be processed out of order,
       causing the display to be incorrect (e.g., too many discards at once)
 * [ ] If CardNotInHandException occurs, force the front-end to reload entire game state
+* [ ] Figure out cause of NPE in this stack trace (maybe game master view?)
+
+        ```
+        java.lang.NullPointerException: Cannot invoke "com.jitterted.tddgame.domain.DrawnTestResultCard.discardableBy(com.jitterted.tddgame.domain.PlayerId)" because "this.drawnTestResultCard" is null
+            at com.jitterted.tddgame.domain.Game.discardTestResultCardFor(Game.java:86) ~[classes/:na]
+            at com.jitterted.tddgame.adapter.vue.GameController.handleDiscardTestResultCard(GameController.java:93) ~[classes/:na]
+        ```
+
 
 ## Game Start
 * [ ] Join game in progress vs. starting new game - game matching/multi-game support
