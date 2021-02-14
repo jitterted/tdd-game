@@ -17,12 +17,8 @@ public class PlayerAction {
 
   public void executeFor(PlayerId playerId, GameService gameService) {
     switch (action.toUpperCase()) {
-      case DRAW_CARD:
-        gameService.currentGame().drawCardFor(playerId);
-        break;
-      case DRAW_HAND:
-        gameService.currentGame().drawToFullHandFor(playerId);
-        break;
+      case DRAW_CARD -> gameService.currentGame().drawCardFor(playerId);
+      case DRAW_HAND -> gameService.currentGame().drawToFullHandFor(playerId);
     }
   }
 }

@@ -1,11 +1,14 @@
 package com.jitterted.tddgame.adapter.vue;
 
+import com.jitterted.tddgame.domain.CardFactory;
 import com.jitterted.tddgame.domain.CardId;
 import com.jitterted.tddgame.domain.CopyCardShuffler;
 import com.jitterted.tddgame.domain.Deck;
+import com.jitterted.tddgame.domain.DeckFactory;
 import com.jitterted.tddgame.domain.DrawnTestResultCard;
 import com.jitterted.tddgame.domain.FakeGameService;
 import com.jitterted.tddgame.domain.Game;
+import com.jitterted.tddgame.domain.GameFactory;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.Hand;
@@ -14,6 +17,7 @@ import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.core.task.SyncTaskExecutor;
@@ -28,10 +32,26 @@ import static org.mockito.Mockito.verify;
 public class GameControllerDrawTest {
 
   @Test
-  public void drawCardActionResultsInNewCardDrawnToPlayerHand() throws Exception {
+  public void newGameThenPlayerHandIsFullWithFiveCards() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
     Game game = gameService.currentGame();
+    Player player = game.players().get(0);
+    Hand hand = player.hand();
+
+    assertThat(hand.cards())
+      .hasSize(5);
+    assertThat(hand.isFull())
+      .isTrue();
+  }
+
+//  @Test
+  @RepeatedTest(100)
+  public void drawCardActionResultsInNewCardDrawnToPlayerHand() throws Exception {
+    DeckFactory deckFactory = new DeckFactory(new CardFactory());
+    Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
+    game.start();
+    FakeGameService gameService = new FakeGameService(game);
+    GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
     Player player = game.players().get(0);
     Hand hand = player.hand();
     CardId cardId = hand.cards().get(0).id();
@@ -40,6 +60,8 @@ public class GameControllerDrawTest {
     gameController.handleAction(String.valueOf(player.id().getId()),
                                 new PlayerAction(PlayerAction.DRAW_CARD));
 
+    assertThat(hand.cards())
+      .hasSize(5);
     assertThat(player.hand().isFull())
       .isTrue();
   }
@@ -47,7 +69,8 @@ public class GameControllerDrawTest {
   @Test
   public void drawHandActionResultsInHandFull() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
-    GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
+    GameStateChannel dummy = mock(GameStateChannel.class);
+    GameController gameController = new GameController(gameService, dummy);
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
     Hand hand = player.hand(); // initial hand is 5 cards

@@ -89,4 +89,8 @@ public class Game {
     testResultCardDeck.addToDiscardPile(drawnTestResultCard.card());
     drawnTestResultCard = null;
   }
+
+  public Location locationFor(PlayerId playerId) {
+    return null;
+  }
 }
