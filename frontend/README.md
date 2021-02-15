@@ -1,34 +1,20 @@
-# frontendts
+# JitterTed's TDD Game
+
+This is the online version of JitterTed's TDD Game, a possibly fun way to learn the _Predictive Test-Driven Development_ process developed by Ted M. Young (aka JitterTed). If you want a physical copy, go to https://tdd.cards/ and sign up for the email list.
+
+## License
+
+This project is **not** open-source, however, the source is being made available under a **Fair Source 2 (0.9)** license (see the License.md file in this directory).
+This allows you to see the source, which, as an educator, as I feel is important.  
 
 ## Project setup
-```
-yarn install
-```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+This project uses Vue.js (2.6.x) and Spring Boot (2.3.x).
+More details will be filled in below.
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Development Details
 
-### Run your unit tests
+### Compiles and hot-reloads Front-End for development
 ```
-yarn test:unit
+npm run serve
 ```
-
-### Run your end-to-end tests
-```
-yarn test:e2e
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
