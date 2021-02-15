@@ -91,6 +91,6 @@ public class Game {
   }
 
   public Location locationFor(PlayerId playerId) {
-    return null;
+    return Location.ONE;
   }
 }
