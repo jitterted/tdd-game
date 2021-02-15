@@ -12,7 +12,7 @@ public class PlayerHandTest {
   public void newPlayerDrawsOneCardFromDeckTransfersToHand() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
-    PlayingCard thePlayingCard = cardFactory.playingCard("The Card", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard thePlayingCard = cardFactory.playingCard("The Card", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     deck.addToDrawPile(thePlayingCard);
 
     player.drawFrom(deck);
@@ -38,8 +38,8 @@ public class PlayerHandTest {
   @Test
   public void playerWithTwoCardsFillsHandResultsInThreeCardsDrawnFromDeck() throws Exception {
     Player brainw4ashed = new Player(PlayerId.of(0));
-    brainw4ashed.hand().add(cardFactory.playingCard("one", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    brainw4ashed.hand().add(cardFactory.playingCard("two", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
+    brainw4ashed.hand().add(cardFactory.playingCard("one", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    brainw4ashed.hand().add(cardFactory.playingCard("two", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
     Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
     fillDeck(deck, 7);
 
@@ -70,7 +70,7 @@ public class PlayerHandTest {
   public void removeCardFromHandMeansCardNoLongerInHand() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Hand hand = player.hand();
-    PlayingCard thePlayingCard = cardFactory.playingCard("The Card", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard thePlayingCard = cardFactory.playingCard("The Card", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     hand.add(thePlayingCard);
 
     PlayingCard removedPlayingCard = hand.remove(thePlayingCard.id());
@@ -85,7 +85,7 @@ public class PlayerHandTest {
   public void removeCardNotInHandThrowsNotInHandException() throws Exception {
     Player player = new Player(PlayerId.of(0));
     Hand hand = player.hand();
-    PlayingCard thePlayingCard = cardFactory.playingCard("Card Not In Hand", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard thePlayingCard = cardFactory.playingCard("Card Not In Hand", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
 
     assertThatThrownBy(() -> {
       hand.remove(thePlayingCard.id());
@@ -95,7 +95,7 @@ public class PlayerHandTest {
 
   private void fillDeck(Deck<PlayingCard> deck, int count) {
     for (int i = 0; i < count; i++) {
-      deck.addToDrawPile(cardFactory.playingCard(String.valueOf(i), OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
+      deck.addToDrawPile(cardFactory.playingCard(String.valueOf(i), OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
     }
   }
 

@@ -48,7 +48,7 @@ public class DefaultDeckFactory implements DeckFactory {
   private List<PlayingCard> generatePlayingCards(String title, int count, OnDrawGoesTo onDrawGoesTo, OnPlayGoesTo onPlayGoesTo) {
     List<PlayingCard> playingCards = new ArrayList<>();
     for (int i = 0; i < count; i++) {
-      playingCards.add(cardFactory.playingCard(title, onPlayGoesTo, onDrawGoesTo));
+      playingCards.add(cardFactory.playingCard(title, onDrawGoesTo, onPlayGoesTo));
     }
     return playingCards;
   }

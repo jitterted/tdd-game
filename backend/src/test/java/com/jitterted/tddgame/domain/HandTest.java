@@ -20,10 +20,10 @@ public class HandTest {
   public void handIsNotFullWhenHoldingFourCards() throws Exception {
     Hand hand = new Hand(PlayerId.of(0));
 
-    hand.add(cardFactory.playingCard("one", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    hand.add(cardFactory.playingCard("two", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    hand.add(cardFactory.playingCard("three", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    hand.add(cardFactory.playingCard("four", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
+    hand.add(cardFactory.playingCard("one", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    hand.add(cardFactory.playingCard("two", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    hand.add(cardFactory.playingCard("three", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    hand.add(cardFactory.playingCard("four", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
 
     assertThat(hand.isFull())
       .isFalse();
@@ -33,11 +33,11 @@ public class HandTest {
   public void handIsFullWhenHoldingFiveCards() throws Exception {
     Hand hand = new Hand(PlayerId.of(0));
 
-    hand.add(cardFactory.playingCard("one", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    hand.add(cardFactory.playingCard("two", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    hand.add(cardFactory.playingCard("three", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    hand.add(cardFactory.playingCard("four", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    hand.add(cardFactory.playingCard("five", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
+    hand.add(cardFactory.playingCard("one", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    hand.add(cardFactory.playingCard("two", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    hand.add(cardFactory.playingCard("three", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    hand.add(cardFactory.playingCard("four", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    hand.add(cardFactory.playingCard("five", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
 
     assertThat(hand.isFull())
       .isTrue();

@@ -117,10 +117,10 @@ class PlayerGameViewTest {
     player1 = new Player(PlayerId.of(1));
     player2 = new Player(PlayerId.of(2));
     CardFactory cardFactory = new CardFactory();
-    PlayingCard playingCardPlayer1Play = cardFactory.playingCard("player 1 in Play", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
-    PlayingCard playingCardPlayer2Play = cardFactory.playingCard("player 2 in Play", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
-    PlayingCard playingCardPlayer1Hand = cardFactory.playingCard("player 1 in Hand", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
-    PlayingCard playingCardPlayer2Hand = cardFactory.playingCard("player 2 in Hand", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCardPlayer1Play = cardFactory.playingCard("player 1 in Play", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
+    PlayingCard playingCardPlayer2Play = cardFactory.playingCard("player 2 in Play", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
+    PlayingCard playingCardPlayer1Hand = cardFactory.playingCard("player 1 in Hand", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
+    PlayingCard playingCardPlayer2Hand = cardFactory.playingCard("player 2 in Hand", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     player1.inPlay().add(playingCardPlayer1Play);
     player1.hand().add(playingCardPlayer1Hand);
     player2.inPlay().add(playingCardPlayer2Play);

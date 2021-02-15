@@ -12,7 +12,7 @@ class PlayerPlayTest {
   @Test
   public void playerPlaysCardThenCardIsInPlay() throws Exception {
     Player player = new Player(PlayerId.of(0));
-    PlayingCard playingCard = new CardFactory().playingCard("to play", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCard = new CardFactory().playingCard("to play", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     player.hand().add(playingCard);
 
     player.play(null, playingCard.id());
@@ -28,7 +28,7 @@ class PlayerPlayTest {
   @Test
   public void playedRefactorCardIsDiscarded() throws Exception {
     Player player = new Player(PlayerId.of(0));
-    PlayingCard playingCard = new CardFactory().playingCard("refactor", OnPlayGoesTo.DISCARD, OnDrawGoesTo.HAND);
+    PlayingCard playingCard = new CardFactory().playingCard("refactor", OnDrawGoesTo.HAND, OnPlayGoesTo.DISCARD);
     player.hand().add(playingCard);
     Deck<PlayingCard> deck = new Deck<>(null);
     Game game = new Game(List.of(player), deck, null);

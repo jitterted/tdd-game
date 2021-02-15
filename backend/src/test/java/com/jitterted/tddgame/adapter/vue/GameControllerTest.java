@@ -43,7 +43,7 @@ class GameControllerTest {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
     Player player = game.players().get(0);
-    PlayingCard playingCardFromHand = new CardFactory().playingCard("played card", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCardFromHand = new CardFactory().playingCard("played card", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     player.hand().add(playingCardFromHand);
 
     GameStateChannel dummyGameStateChannel = mock(GameStateChannel.class);

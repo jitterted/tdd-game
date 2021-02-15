@@ -12,7 +12,7 @@ public class DeckDrawTest {
 
   @Test
   public void drawOneCardFromDeckOfOneCardReturnsGivenCard() throws Exception {
-    PlayingCard playingCard = cardFactory.playingCard("Write Code", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCard = cardFactory.playingCard("Write Code", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     Deck<PlayingCard> deck = new Deck<>(null);
     deck.addToDrawPile(playingCard);
 
@@ -23,8 +23,8 @@ public class DeckDrawTest {
   @Test
   public void drawTwoCardsReturnsTwoCardsFromDeck() throws Exception {
     Deck<PlayingCard> deck = new Deck<>(null);
-    PlayingCard playingCard1 = cardFactory.playingCard("One", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
-    PlayingCard playingCard2 = cardFactory.playingCard("Two", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCard1 = cardFactory.playingCard("One", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
+    PlayingCard playingCard2 = cardFactory.playingCard("Two", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     deck.addToDrawPile(playingCard1);
     deck.addToDrawPile(playingCard2);
 
@@ -37,9 +37,9 @@ public class DeckDrawTest {
   @Test
   public void drawOneCardFromDeckOfThreeLeavesDeckWithTwoCards() throws Exception {
     Deck<PlayingCard> deck = new Deck<>(null);
-    deck.addToDrawPile(cardFactory.playingCard("One", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    deck.addToDrawPile(cardFactory.playingCard("Two", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-    deck.addToDrawPile(cardFactory.playingCard("Three", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
+    deck.addToDrawPile(cardFactory.playingCard("One", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    deck.addToDrawPile(cardFactory.playingCard("Two", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+    deck.addToDrawPile(cardFactory.playingCard("Three", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
 
     deck.draw();
 

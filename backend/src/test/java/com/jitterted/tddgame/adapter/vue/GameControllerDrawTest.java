@@ -158,8 +158,7 @@ public class GameControllerDrawTest {
     public Deck<PlayingCard> createPlayingCardDeck() {
       Deck<PlayingCard> deck = new Deck<>(new CopyCardShuffler<>());
       for (int i = 0; i < 20; i++) {
-        deck.addToDiscardPile(cardFactory.playingCard("write code", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
-        deck.addToDiscardPile(cardFactory.playingCard("disappearing code", OnPlayGoesTo.DISCARD, OnDrawGoesTo.IN_PLAY));
+        deck.addToDiscardPile(cardFactory.playingCard("write code", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
       }
       return deck;
     }

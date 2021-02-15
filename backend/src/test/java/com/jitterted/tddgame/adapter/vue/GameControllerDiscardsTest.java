@@ -68,7 +68,7 @@ public class GameControllerDiscardsTest {
     GameService gameService = new FakeGameService(game);
     GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
 
-    PlayingCard playableCard = new CardFactory().playingCard("playable", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playableCard = new CardFactory().playingCard("playable", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     Player player = game.players().get(0);
     player.inPlay().add(playableCard);
 

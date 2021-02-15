@@ -59,7 +59,7 @@ class GameTest {
   @Test
   public void playerWithNotFullHandDrawsCardThenCardFromDrawPileInHand() throws Exception {
     Deck<PlayingCard> deck = new Deck<>(null);
-    PlayingCard playingCard = new CardFactory().playingCard("card1", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND);
+    PlayingCard playingCard = new CardFactory().playingCard("card1", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     deck.addToDrawPile(playingCard);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Player player0 = twoPlayers.get(0);
@@ -93,7 +93,7 @@ class GameTest {
     Deck<PlayingCard> deck = new Deck<>(new DummyCardShuffler<>());
     CardFactory cardFactory = new CardFactory();
     for (int i = 0; i < cardCount; i++) {
-      deck.addToDrawPile(cardFactory.playingCard("card", onPlayGoesTo, OnDrawGoesTo.HAND));
+      deck.addToDrawPile(cardFactory.playingCard("card", OnDrawGoesTo.HAND, onPlayGoesTo));
     }
     return deck;
   }

@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CardFactory {
   private final AtomicInteger idSequence = new AtomicInteger(0);
 
-  public PlayingCard playingCard(String title, OnPlayGoesTo onPlayGoesTo, OnDrawGoesTo onDrawGoesTo) {
+  public PlayingCard playingCard(String title, OnDrawGoesTo onDrawGoesTo, OnPlayGoesTo onPlayGoesTo) {
     return new PlayingCard(nextCardId(), title, onPlayGoesTo, onDrawGoesTo);
   }
 
