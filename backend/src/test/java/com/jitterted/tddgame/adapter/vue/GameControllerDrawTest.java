@@ -12,12 +12,14 @@ import com.jitterted.tddgame.domain.GameFactory;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.Hand;
+import com.jitterted.tddgame.domain.OnDrawGoesTo;
+import com.jitterted.tddgame.domain.OnPlayGoesTo;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayerId;
+import com.jitterted.tddgame.domain.PlayingCard;
 import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.core.task.SyncTaskExecutor;
@@ -44,11 +46,10 @@ public class GameControllerDrawTest {
       .isTrue();
   }
 
-//  @Test
-  @RepeatedTest(100)
+  @Test
   public void drawCardActionResultsInNewCardDrawnToPlayerHand() throws Exception {
-    DeckFactory deckFactory = new DeckFactory(new CardFactory());
-    Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
+    DeckFactory stubDeckFactory = new StubWriteCodePlayingCardDeckFactory(new CardFactory());
+    Game game = new GameFactory(stubDeckFactory, new PlayerFactory()).createTwoPlayerGame();
     game.start();
     FakeGameService gameService = new FakeGameService(game);
     GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
@@ -144,5 +145,28 @@ public class GameControllerDrawTest {
 
     TestResultCardDiscardedEvent expectedEvent = new TestResultCardDiscardedEvent(player1.id());
     verify(spySimpMessagingTemplate).convertAndSend("/topic/testresultcard", expectedEvent);
+  }
+
+  private static class StubWriteCodePlayingCardDeckFactory implements DeckFactory {
+    private final CardFactory cardFactory;
+
+    public StubWriteCodePlayingCardDeckFactory(CardFactory cardFactory) {
+      this.cardFactory = cardFactory;
+    }
+
+    @Override
+    public Deck<PlayingCard> createPlayingCardDeck() {
+      Deck<PlayingCard> deck = new Deck<>(new CopyCardShuffler<>());
+      for (int i = 0; i < 20; i++) {
+        deck.addToDiscardPile(cardFactory.playingCard("write code", OnPlayGoesTo.SELF, OnDrawGoesTo.HAND));
+        deck.addToDiscardPile(cardFactory.playingCard("disappearing code", OnPlayGoesTo.DISCARD, OnDrawGoesTo.IN_PLAY));
+      }
+      return deck;
+    }
+
+    @Override
+    public Deck<TestResultCard> createTestResultCardDeck() {
+      return new Deck<>(new CopyCardShuffler<>());
+    }
   }
 }

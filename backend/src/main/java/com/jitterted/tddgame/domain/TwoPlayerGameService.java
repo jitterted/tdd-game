@@ -4,7 +4,7 @@ public class TwoPlayerGameService implements GameService {
   private Game game;
 
   public TwoPlayerGameService(PlayerFactory playerFactory) {
-    DeckFactory deckFactory = new DeckFactory(new CardFactory());
+    DeckFactory deckFactory = new DefaultDeckFactory(new CardFactory());
     game = new GameFactory(deckFactory, playerFactory).createTwoPlayerGame();
     game.start();
   }

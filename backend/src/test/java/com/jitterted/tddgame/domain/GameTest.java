@@ -11,7 +11,7 @@ class GameTest {
 
   @Test
   public void newGameWhenStartsIsInInitialGameState() throws Exception {
-    DeckFactory deckFactory = new DeckFactory(new CardFactory());
+    DeckFactory deckFactory = new DefaultDeckFactory(new CardFactory());
     Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
     game.start();
 
@@ -27,7 +27,7 @@ class GameTest {
 
   @Test
   public void opponentForPlayerIsOtherPlayer() throws Exception {
-    DeckFactory deckFactory = new DeckFactory(new CardFactory());
+    DeckFactory deckFactory = new DefaultDeckFactory(new CardFactory());
     Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
 
     Player player1 = game.players().get(0);
@@ -41,7 +41,7 @@ class GameTest {
 
   @Test
   public void playerDiscardOfCardIsTransferredToDeckDiscardPile() throws Exception {
-    DeckFactory deckFactory = new DeckFactory(new CardFactory());
+    DeckFactory deckFactory = new DefaultDeckFactory(new CardFactory());
     Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
     game.start();
 
@@ -120,7 +120,7 @@ class GameTest {
 
   @Test
   public void drawingTestResultCardWhenOneAlreadyDrawnThrowsException() throws Exception {
-    Deck<TestResultCard> testResultCardDeck = new DeckFactory(new CardFactory()).createTestResultCardDeck();
+    Deck<TestResultCard> testResultCardDeck = new DefaultDeckFactory(new CardFactory()).createTestResultCardDeck();
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Game game = new Game(twoPlayers, null, testResultCardDeck);
     Player player1 = twoPlayers.get(0);
@@ -133,7 +133,7 @@ class GameTest {
 
   @Test
   public void discardTestResultCardMovesToDiscardPileAndClearsGameState() throws Exception {
-    Deck<TestResultCard> testResultCardDeck = new DeckFactory(new CardFactory()).createTestResultCardDeck();
+    Deck<TestResultCard> testResultCardDeck = new DefaultDeckFactory(new CardFactory()).createTestResultCardDeck();
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Game game = new Game(twoPlayers, null, testResultCardDeck);
     Player player1 = twoPlayers.get(0);
@@ -150,7 +150,7 @@ class GameTest {
 
   @Test
   public void discardTestResultCardByWrongPlayerThrowsException() throws Exception {
-    Deck<TestResultCard> testResultCardDeck = new DeckFactory(new CardFactory()).createTestResultCardDeck();
+    Deck<TestResultCard> testResultCardDeck = new DefaultDeckFactory(new CardFactory()).createTestResultCardDeck();
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Game game = new Game(twoPlayers, null, testResultCardDeck);
     Player player1 = twoPlayers.get(0);

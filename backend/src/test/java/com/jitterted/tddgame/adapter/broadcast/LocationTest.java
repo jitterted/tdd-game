@@ -2,6 +2,7 @@ package com.jitterted.tddgame.adapter.broadcast;
 
 import com.jitterted.tddgame.domain.CardFactory;
 import com.jitterted.tddgame.domain.DeckFactory;
+import com.jitterted.tddgame.domain.DefaultDeckFactory;
 import com.jitterted.tddgame.domain.Game;
 import com.jitterted.tddgame.domain.GameFactory;
 import com.jitterted.tddgame.domain.Location;
@@ -15,7 +16,7 @@ public class LocationTest {
 
   @Test
   public void newGameThenPlayer1IsAtLocationOne() throws Exception {
-    DeckFactory deckFactory = new DeckFactory(new CardFactory());
+    DeckFactory deckFactory = new DefaultDeckFactory(new CardFactory());
     Game game = new GameFactory(deckFactory, new PlayerFactory()).createTwoPlayerGame();
 
     Location location = game.locationFor(PlayerId.of(1));
