@@ -12,12 +12,11 @@ import com.jitterted.tddgame.domain.GameFactory;
 import com.jitterted.tddgame.domain.GameService;
 import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.Hand;
-import com.jitterted.tddgame.domain.OnDrawGoesTo;
-import com.jitterted.tddgame.domain.OnPlayGoesTo;
 import com.jitterted.tddgame.domain.Player;
 import com.jitterted.tddgame.domain.PlayerFactory;
 import com.jitterted.tddgame.domain.PlayerId;
 import com.jitterted.tddgame.domain.PlayingCard;
+import com.jitterted.tddgame.domain.PlayingCardDefinition;
 import com.jitterted.tddgame.domain.TestResultCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import org.junit.jupiter.api.Test;
@@ -158,7 +157,7 @@ public class GameControllerDrawTest {
     public Deck<PlayingCard> createPlayingCardDeck() {
       Deck<PlayingCard> deck = new Deck<>(new CopyCardShuffler<>());
       for (int i = 0; i < 20; i++) {
-        deck.addToDiscardPile(cardFactory.playingCard("write code", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
+        deck.addToDiscardPile(cardFactory.playingCard(PlayingCardDefinition.WRITE_CODE));
       }
       return deck;
     }

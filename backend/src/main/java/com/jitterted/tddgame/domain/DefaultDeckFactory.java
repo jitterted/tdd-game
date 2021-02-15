@@ -37,19 +37,20 @@ public class DefaultDeckFactory implements DeckFactory {
 
 
   private void addPlayingCardsToDiscardPileOf(Deck<PlayingCard> deck) {
-    deck.addToDiscardPile(generatePlayingCards("write code", 18, OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
-    deck.addToDiscardPile(generatePlayingCards("less code", 18, OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
-    deck.addToDiscardPile(generatePlayingCards("predict", 18, OnDrawGoesTo.HAND, OnPlayGoesTo.SELF));
-    deck.addToDiscardPile(generatePlayingCards("can't assert", 2, OnDrawGoesTo.IN_PLAY, OnPlayGoesTo.SELF));
-    deck.addToDiscardPile(generatePlayingCards("code bloat", 3, OnDrawGoesTo.IN_PLAY, OnPlayGoesTo.SELF));
-    deck.addToDiscardPile(generatePlayingCards("refactor", 4, OnDrawGoesTo.HAND, OnPlayGoesTo.DISCARD));
+    deck.addToDiscardPile(generatePlayingCards(18, PlayingCardDefinition.WRITE_CODE));
+    deck.addToDiscardPile(generatePlayingCards(18, PlayingCardDefinition.LESS_CODE));
+    deck.addToDiscardPile(generatePlayingCards(18, PlayingCardDefinition.PREDICT));
+    deck.addToDiscardPile(generatePlayingCards(2, PlayingCardDefinition.CANT_ASSERT));
+    deck.addToDiscardPile(generatePlayingCards(3, PlayingCardDefinition.CODE_BLOAT));
+    deck.addToDiscardPile(generatePlayingCards(4, PlayingCardDefinition.REFACTOR));
   }
 
-  private List<PlayingCard> generatePlayingCards(String title, int count, OnDrawGoesTo onDrawGoesTo, OnPlayGoesTo onPlayGoesTo) {
+  private List<PlayingCard> generatePlayingCards(int count, PlayingCardDefinition playingCardDefinition) {
     List<PlayingCard> playingCards = new ArrayList<>();
     for (int i = 0; i < count; i++) {
-      playingCards.add(cardFactory.playingCard(title, onDrawGoesTo, onPlayGoesTo));
+      playingCards.add(cardFactory.playingCard(playingCardDefinition));
     }
     return playingCards;
   }
+
 }
