@@ -13,6 +13,8 @@
 
 ## Refactorings
 
+* [ ] !! Fix the game.start() problem, probably should be responsibility of the GameFactory as tests don't always create games that were correctly initialized.
+
 * [ ] Extract player map from Game (primitive obsession)
 
 * [ ] Remove lombok from core domain code 

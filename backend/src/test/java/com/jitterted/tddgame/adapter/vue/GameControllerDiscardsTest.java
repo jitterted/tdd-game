@@ -14,9 +14,15 @@ import com.jitterted.tddgame.domain.PlayingCard;
 import com.jitterted.tddgame.domain.TwoPlayerGameService;
 import com.jitterted.tddgame.domain.port.GameStateChannel;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.core.task.SyncTaskExecutor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class GameControllerDiscardsTest {
 
@@ -34,6 +40,27 @@ public class GameControllerDiscardsTest {
 
     assertThat(deck.discardPile())
       .containsExactly(playingCardFromHand);
+  }
+
+  @Test
+  public void discardFromHandResultsInGameStateChangedEventSent() throws Exception {
+    SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate, new SyncTaskExecutor());
+
+    GameService gameService = new TwoPlayerGameService(new PlayerFactory(), gameStateChannel);
+
+    GameController gameController = new GameController(gameService, gameStateChannel);
+
+    Game game = gameService.currentGame();
+    Player player = game.players().get(0);
+    PlayingCard playingCardFromHand = player.hand().cards().get(0);
+
+    gameController.discard(String.valueOf(player.id().getId()),
+                           new DiscardAction(playingCardFromHand.id().getId(), DiscardAction.SOURCE_HAND));
+
+    GameStateChangedEvent expectedEvent = GameStateChangedEvent.from(game);
+
+    verify(spySimpMessagingTemplate).convertAndSend(eq("/topic/gamestate"), eq(expectedEvent), anyMap());
   }
 
   @Test

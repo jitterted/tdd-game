@@ -26,9 +26,9 @@ public class GameBroadcastTest {
     Deck<PlayingCard> playerCardDeck = deckFactory.createPlayingCardDeck();
     List<Player> playerList = new PlayerFactory().createTwoPlayers();
     Game game = new Game(playerList, playerCardDeck, testResultCardDeck, gameStateChannelSpy);
+    game.start();
 
     Player player = playerList.get(0);
-    game.drawToFullHandFor(player.id());
     PlayingCard cardToDiscard = player.hand().cards().get(0);
 
     game.discardFromHand(player.id(), cardToDiscard.id());

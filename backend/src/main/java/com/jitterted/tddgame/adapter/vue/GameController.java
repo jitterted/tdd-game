@@ -51,8 +51,6 @@ public class GameController {
     PlayerId playerId = PlayerId.of(Integer.parseInt(playerIdString));
 
     discardAction.executeFor(playerId, gameService);
-
-    gameStateChannel.playerActed(gameService.currentGame());
   }
 
   @PostMapping("{playerId}/plays")
