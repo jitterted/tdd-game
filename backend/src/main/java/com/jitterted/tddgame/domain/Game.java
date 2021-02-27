@@ -1,5 +1,7 @@
 package com.jitterted.tddgame.domain;
 
+import com.jitterted.tddgame.domain.port.GameStateChannel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,14 +11,28 @@ public class Game {
   private final Map<PlayerId, Player> playerMap = new HashMap<>();
   private final Deck<PlayingCard> playingCardDeck;
   private final Deck<TestResultCard> testResultCardDeck;
+  private final GameStateChannel gameStateChannel;
   private DrawnTestResultCard drawnTestResultCard;
 
+  // GOAL: remove this constructor in favor of the one taking the GameStateChannel
   public Game(List<Player> playerList,
               Deck<PlayingCard> playingCardDeck,
               Deck<TestResultCard> testResultCardDeck) {
     playerList.forEach(player -> playerMap.put(player.id(), player));
     this.playingCardDeck = playingCardDeck;
     this.testResultCardDeck = testResultCardDeck;
+    this.gameStateChannel = new GameStateChannel() {
+      @Override public void testResultCardDrawn(DrawnTestResultCard drawnTestResultCard) { }
+      @Override public void testResultCardDiscarded(PlayerId playerId) { }
+      @Override public void playerActed(Game game) { }
+    };
+  }
+
+  public Game(List<Player> playerList, Deck<PlayingCard> playingCardDeck, Deck<TestResultCard> testResultCardDeck, GameStateChannel gameStateChannel) {
+    playerList.forEach(player -> playerMap.put(player.id(), player));
+    this.playingCardDeck = playingCardDeck;
+    this.testResultCardDeck = testResultCardDeck;
+    this.gameStateChannel = gameStateChannel;
   }
 
   public List<Player> players() {
@@ -34,7 +50,7 @@ public class Game {
   public void discardFromHand(PlayerId playerId, CardId cardId) {
     Player player = playerFor(playerId);
     player.discardFromHand(cardId, playingCardDeck);
-    // call out to the GameStateChannel[Port]
+    gameStateChannel.playerActed(this);
   }
 
   public void discardFromInPlay(PlayerId playerId, CardId cardId) {
