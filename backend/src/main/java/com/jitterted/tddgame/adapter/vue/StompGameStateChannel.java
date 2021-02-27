@@ -2,8 +2,8 @@ package com.jitterted.tddgame.adapter.vue;
 
 import com.jitterted.tddgame.domain.DrawnTestResultCard;
 import com.jitterted.tddgame.domain.Game;
-import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.PlayerId;
+import com.jitterted.tddgame.domain.port.GameStateChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

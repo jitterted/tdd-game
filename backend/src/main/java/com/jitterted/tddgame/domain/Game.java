@@ -11,7 +11,9 @@ public class Game {
   private final Deck<TestResultCard> testResultCardDeck;
   private DrawnTestResultCard drawnTestResultCard;
 
-  public Game(List<Player> playerList, Deck<PlayingCard> playingCardDeck, Deck<TestResultCard> testResultCardDeck) {
+  public Game(List<Player> playerList,
+              Deck<PlayingCard> playingCardDeck,
+              Deck<TestResultCard> testResultCardDeck) {
     playerList.forEach(player -> playerMap.put(player.id(), player));
     this.playingCardDeck = playingCardDeck;
     this.testResultCardDeck = testResultCardDeck;
@@ -32,6 +34,7 @@ public class Game {
   public void discardFromHand(PlayerId playerId, CardId cardId) {
     Player player = playerFor(playerId);
     player.discardFromHand(cardId, playingCardDeck);
+    // call out to the GameStateChannel[Port]
   }
 
   public void discardFromInPlay(PlayerId playerId, CardId cardId) {

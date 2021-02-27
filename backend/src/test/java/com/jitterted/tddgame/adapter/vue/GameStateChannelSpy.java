@@ -2,8 +2,8 @@ package com.jitterted.tddgame.adapter.vue;
 
 import com.jitterted.tddgame.domain.DrawnTestResultCard;
 import com.jitterted.tddgame.domain.Game;
-import com.jitterted.tddgame.domain.GameStateChannel;
 import com.jitterted.tddgame.domain.PlayerId;
+import com.jitterted.tddgame.domain.port.GameStateChannel;
 
 public class GameStateChannelSpy implements GameStateChannel {
   private DrawnTestResultCard drawnCard;
