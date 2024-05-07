@@ -42,8 +42,8 @@ class GameTest {
     Game game = new GameFactory().createTwoPlayerGame();
     game.start();
 
-    Player player = game.players().get(0);
-    PlayingCard playingCardFromHand = player.hand().cards().get(0);
+    Player player = game.players().getFirst();
+    PlayingCard playingCardFromHand = player.hand().cards().getFirst();
 
     game.discardFromHand(player.id(), playingCardFromHand.id());
 
@@ -59,7 +59,7 @@ class GameTest {
     PlayingCard playingCard = new CardFactory().playingCard("card1", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     deck.addToDrawPile(playingCard);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
-    Player player0 = twoPlayers.get(0);
+    Player player0 = twoPlayers.getFirst();
     Game game = new Game(twoPlayers, deck, null);
 
     game.drawCardFor(player0.id());
@@ -74,7 +74,7 @@ class GameTest {
   public void playerWithTwoCardsInHandDrawsToFullHandThenHandIsFull() throws Exception {
     Deck<PlayingCard> deck = createPlayingCardDeckDrawPileFilledWith(OnPlayGoesTo.SELF, 10);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
-    Player player0 = twoPlayers.get(0);
+    Player player0 = twoPlayers.getFirst();
     player0.drawFrom(deck);
     player0.drawFrom(deck);
     Game game = new Game(twoPlayers, deck, null);
@@ -103,7 +103,7 @@ class GameTest {
     testResultCardDeck.addToDrawPile(testResultCard);
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Game game = new Game(twoPlayers, null, testResultCardDeck);
-    Player player1 = twoPlayers.get(0);
+    Player player1 = twoPlayers.getFirst();
 
     game.drawTestResultCardFor(player1.id());
 
@@ -120,7 +120,7 @@ class GameTest {
     Deck<TestResultCard> testResultCardDeck = new DefaultDeckFactory(new CardFactory()).createTestResultCardDeck();
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Game game = new Game(twoPlayers, null, testResultCardDeck);
-    Player player1 = twoPlayers.get(0);
+    Player player1 = twoPlayers.getFirst();
     game.drawTestResultCardFor(player1.id());
 
     assertThatThrownBy(() -> {
@@ -133,7 +133,7 @@ class GameTest {
     Deck<TestResultCard> testResultCardDeck = new DefaultDeckFactory(new CardFactory()).createTestResultCardDeck();
     List<Player> twoPlayers = new PlayerFactory().createTwoPlayers();
     Game game = new Game(twoPlayers, null, testResultCardDeck);
-    Player player1 = twoPlayers.get(0);
+    Player player1 = twoPlayers.getFirst();
     game.drawTestResultCardFor(player1.id());
     TestResultCard drawnTestResultCard = game.drawnTestResultCard().card();
 

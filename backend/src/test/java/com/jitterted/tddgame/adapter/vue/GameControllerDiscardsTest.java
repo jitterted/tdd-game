@@ -32,8 +32,8 @@ public class GameControllerDiscardsTest {
     GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
     Game game = gameService.currentGame();
     Deck<PlayingCard> deck = game.deck();
-    Player player = game.players().get(0);
-    PlayingCard playingCardFromHand = player.hand().cards().get(0);
+    Player player = game.players().getFirst();
+    PlayingCard playingCardFromHand = player.hand().cards().getFirst();
 
     gameController.discard(String.valueOf(player.id().getId()),
                            new DiscardAction(playingCardFromHand.id().getId(), DiscardAction.SOURCE_HAND));
@@ -52,8 +52,8 @@ public class GameControllerDiscardsTest {
     GameController gameController = new GameController(gameService, gameStateChannel);
 
     Game game = gameService.currentGame();
-    Player player = game.players().get(0);
-    PlayingCard playingCardFromHand = player.hand().cards().get(0);
+    Player player = game.players().getFirst();
+    PlayingCard playingCardFromHand = player.hand().cards().getFirst();
 
     gameController.discard(String.valueOf(player.id().getId()),
                            new DiscardAction(playingCardFromHand.id().getId(), DiscardAction.SOURCE_HAND));
@@ -71,7 +71,7 @@ public class GameControllerDiscardsTest {
     GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
 
     PlayingCard playableCard = new CardFactory().playingCard("playable", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
-    Player player = game.players().get(0);
+    Player player = game.players().getFirst();
     player.inPlay().add(playableCard);
 
     gameController.discard(String.valueOf(player.id().getId()),

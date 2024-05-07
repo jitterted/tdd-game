@@ -36,7 +36,7 @@ public class GameControllerDrawTest {
   public void newGameThenPlayerHandIsFullWithFiveCards() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
-    Player player = game.players().get(0);
+    Player player = game.players().getFirst();
     Hand hand = player.hand();
 
     assertThat(hand.cards())
@@ -52,9 +52,9 @@ public class GameControllerDrawTest {
     game.start();
     FakeGameService gameService = new FakeGameService(game);
     GameController gameController = new GameController(gameService, mock(GameStateChannel.class));
-    Player player = game.players().get(0);
+    Player player = game.players().getFirst();
     Hand hand = player.hand();
-    CardId cardId = hand.cards().get(0).id();
+    CardId cardId = hand.cards().getFirst().id();
     hand.remove(cardId); // make room in hand for draw from deck
 
     gameController.handleAction(String.valueOf(player.id().getId()),
@@ -72,10 +72,10 @@ public class GameControllerDrawTest {
     GameStateChannel dummy = mock(GameStateChannel.class);
     GameController gameController = new GameController(gameService, dummy);
     Game game = gameService.currentGame();
-    Player player = game.players().get(0);
+    Player player = game.players().getFirst();
     Hand hand = player.hand(); // initial hand is 5 cards
-    hand.remove(hand.cards().get(0).id());
-    hand.remove(hand.cards().get(0).id());
+    hand.remove(hand.cards().getFirst().id());
+    hand.remove(hand.cards().getFirst().id());
 
     gameController.handleAction(String.valueOf(player.id().getId()),
                                 new PlayerAction(PlayerAction.DRAW_HAND));

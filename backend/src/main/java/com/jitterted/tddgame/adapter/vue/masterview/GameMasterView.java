@@ -51,7 +51,7 @@ public class GameMasterView {
   }
 
   private static TestResultCard mostRecentlyDiscardedCardFrom(List<TestResultCard> testResultCardDiscardPile) {
-    return testResultCardDiscardPile.get(testResultCardDiscardPile.size() - 1);
+    return testResultCardDiscardPile.getLast();
   }
 
   public List<PlayerWorldView> getPlayers() {

@@ -32,7 +32,7 @@ public class LocationTest {
     // when
     // player 1 discards a card from their hand
     Player player1 = game.playerFor(PlayerId.of(0));
-    PlayingCard cardToDiscard = player1.hand().cards().get(0);
+    PlayingCard cardToDiscard = player1.hand().cards().getFirst();
     game.discardFromHand(PlayerId.of(0), cardToDiscard.id());
 
     // then

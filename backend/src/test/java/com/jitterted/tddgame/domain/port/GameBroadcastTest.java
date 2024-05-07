@@ -28,8 +28,8 @@ public class GameBroadcastTest {
     Game game = new Game(playerList, playerCardDeck, testResultCardDeck, gameStateChannelSpy);
     game.start();
 
-    Player player = playerList.get(0);
-    PlayingCard cardToDiscard = player.hand().cards().get(0);
+    Player player = playerList.getFirst();
+    PlayingCard cardToDiscard = player.hand().cards().getFirst();
 
     game.discardFromHand(player.id(), cardToDiscard.id());
 

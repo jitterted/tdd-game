@@ -28,7 +28,7 @@ class GameControllerTest {
   public void newGameIsFullHandDealtToAllPlayers() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
-    Player player = game.players().get(0);
+    Player player = game.players().getFirst();
 
     GameController gameController = new GameController(gameService, null);
 
@@ -42,7 +42,7 @@ class GameControllerTest {
   public void selfPlayedCardIsTransferredFromHandToInPlay() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
-    Player player = game.players().get(0);
+    Player player = game.players().getFirst();
     PlayingCard playingCardFromHand = new CardFactory().playingCard("played card", OnDrawGoesTo.HAND, OnPlayGoesTo.SELF);
     player.hand().add(playingCardFromHand);
 
@@ -60,8 +60,8 @@ class GameControllerTest {
   public void gameViewEventSentWhenCardIsPlayedByPlayer() throws Exception {
     GameService gameService = new TwoPlayerGameService(new PlayerFactory());
     Game game = gameService.currentGame();
-    Player player1 = game.players().get(0);
-    PlayingCard playingCardFromHand = player1.hand().cards().get(0);
+    Player player1 = game.players().getFirst();
+    PlayingCard playingCardFromHand = player1.hand().cards().getFirst();
 
     SimpMessagingTemplate spySimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
     GameStateChannel gameStateChannel = new StompGameStateChannel(spySimpMessagingTemplate, new SyncTaskExecutor());
