@@ -17,7 +17,7 @@
 
 * [ ] Extract player map from Game (primitive obsession)
 
-* [ ] Remove lombok from core domain code 
+* [X] Remove lombok from core domain code 
 
 * [X] Discard from Play area: cards go to Deck Discard Pile
 * [X] Multiple players can play
