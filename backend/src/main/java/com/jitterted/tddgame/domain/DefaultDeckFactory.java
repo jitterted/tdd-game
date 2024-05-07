@@ -21,8 +21,8 @@ public class DefaultDeckFactory implements DeckFactory {
   @Override
   public Deck<TestResultCard> createTestResultCardDeck() {
     Deck<TestResultCard> testResultCardDeck = new Deck<>(new RandomCardShuffler<>());
-    testResultCardDeck.addToDiscardPile(generateTestResultCards("as predicted", 3));
-    testResultCardDeck.addToDiscardPile(generateTestResultCards("require 1", 3));
+    testResultCardDeck.addToDiscardPile(generateTestResultCards("as predicted", 2));
+    testResultCardDeck.addToDiscardPile(generateTestResultCards("require 1", 4));
     testResultCardDeck.addToDiscardPile(generateTestResultCards("require 2", 3));
     return testResultCardDeck;
   }
