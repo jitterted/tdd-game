@@ -13,21 +13,21 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @SpringBootApplication
 public class TddGameApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TddGameApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TddGameApplication.class, args);
+    }
 
-	@Bean
-  public GameService defaultTwoPlayerGameService() {
-    return new TwoPlayerGameService(new PlayerFactory());
-  }
+    @Bean
+    public GameService defaultTwoPlayerGameService() {
+        return new TwoPlayerGameService(new PlayerFactory());
+    }
 
-  @Bean
-  @Primary
-  public TaskExecutor threadPoolTaskExecutor() {
-    ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-    threadPoolTaskExecutor.afterPropertiesSet();
-    return threadPoolTaskExecutor;
-  }
+    @Bean
+    @Primary
+    public TaskExecutor threadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+        threadPoolTaskExecutor.afterPropertiesSet();
+        return threadPoolTaskExecutor;
+    }
 
 }

@@ -5,24 +5,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CardFactory {
-  private final AtomicInteger idSequence = new AtomicInteger(0);
+    private final AtomicInteger idSequence = new AtomicInteger(0);
 
-  public PlayingCard playingCard(PlayingCardDefinition playingCardDefinition) {
-    return playingCard(playingCardDefinition.title(), playingCardDefinition.onDrawGoesTo(), playingCardDefinition.onPlayGoesTo());
-  }
+    public PlayingCard playingCard(PlayingCardDefinition playingCardDefinition) {
+        return playingCard(playingCardDefinition.title(), playingCardDefinition.onDrawGoesTo(), playingCardDefinition.onPlayGoesTo());
+    }
 
-  @Deprecated
-  // fix in tests
-  public PlayingCard playingCard(String title, OnDrawGoesTo onDrawGoesTo, OnPlayGoesTo onPlayGoesTo) {
-    return new PlayingCard(nextCardId(), title, onPlayGoesTo, onDrawGoesTo);
-  }
+    @Deprecated
+    // fix in tests
+    public PlayingCard playingCard(String title, OnDrawGoesTo onDrawGoesTo, OnPlayGoesTo onPlayGoesTo) {
+        return new PlayingCard(nextCardId(), title, onPlayGoesTo, onDrawGoesTo);
+    }
 
-  public TestResultCard testResultCard(String title) {
-    return new TestResultCard(nextCardId(), title);
-  }
+    public TestResultCard testResultCard(String title) {
+        return new TestResultCard(nextCardId(), title);
+    }
 
-  @NotNull
-  private CardId nextCardId() {
-    return new CardId(idSequence.getAndIncrement());
-  }
+    @NotNull
+    private CardId nextCardId() {
+        return new CardId(idSequence.getAndIncrement());
+    }
 }

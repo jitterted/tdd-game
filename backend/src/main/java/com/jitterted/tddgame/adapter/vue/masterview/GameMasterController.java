@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/game")
 public class GameMasterController {
-  private final GameService gameService;
+    private final GameService gameService;
 
-  @Autowired
-  public GameMasterController(GameService gameService) {
-    this.gameService = gameService;
-  }
+    @Autowired
+    public GameMasterController(GameService gameService) {
+        this.gameService = gameService;
+    }
 
 
-  @GetMapping
-  public GameMasterView viewGame() {
-    return GameMasterView.from(gameService.currentGame());
-  }
+    @GetMapping
+    public GameMasterView viewGame() {
+        return GameMasterView.from(gameService.currentGame());
+    }
 
 }

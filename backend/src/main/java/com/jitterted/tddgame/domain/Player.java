@@ -1,84 +1,88 @@
 package com.jitterted.tddgame.domain;
 
 public class Player {
-  private final PlayerId playerId;
-  private final Hand hand;
-  private final InPlay inPlay;
-  private User user;
+    private final PlayerId playerId;
+    private final Hand hand;
+    private final InPlay inPlay;
+    private User user;
 
-  public Player(PlayerId playerId) {
-    this.playerId = playerId;
-    hand = new Hand(playerId);
-    inPlay = new InPlay();
-  }
-
-  public Hand hand() {
-    return hand;
-  }
-
-  public void drawFrom(Deck<PlayingCard> deck) {
-    PlayingCard playingCard = deck.draw();
-    playingCard.onDraw(hand, inPlay);
-  }
-
-  public void fillHandFrom(Deck<PlayingCard> deck) {
-    while (!hand.isFull()) {
-      drawFrom(deck);
+    public Player(PlayerId playerId) {
+        this.playerId = playerId;
+        hand = new Hand(playerId);
+        inPlay = new InPlay();
     }
-  }
 
-  public void discardFromHand(CardId cardId, Deck<PlayingCard> deck) {
-    PlayingCard playingCard = hand.remove(cardId);
-    deck.addToDiscardPile(playingCard);
-  }
+    public Hand hand() {
+        return hand;
+    }
 
-  public void discardFromInPlay(CardId cardId, Deck<PlayingCard> deck) {
-    PlayingCard playingCard = inPlay.remove(cardId);
-    deck.addToDiscardPile(playingCard);
-  }
+    public void drawFrom(Deck<PlayingCard> deck) {
+        PlayingCard playingCard = deck.draw();
+        playingCard.onDraw(hand, inPlay);
+    }
 
-  public InPlay inPlay() {
-    return inPlay;
-  }
+    public void fillHandFrom(Deck<PlayingCard> deck) {
+        while (!hand.isFull()) {
+            drawFrom(deck);
+        }
+    }
 
-  public void play(Game game, CardId cardId) {
-    PlayingCard playingCard = hand.remove(cardId);
-    playingCard.usage().play(game, this, playingCard);
-  }
+    public void discardFromHand(CardId cardId, Deck<PlayingCard> deck) {
+        PlayingCard playingCard = hand.remove(cardId);
+        deck.addToDiscardPile(playingCard);
+    }
 
-  public PlayerId id() {
-    return playerId;
-  }
+    public void discardFromInPlay(CardId cardId, Deck<PlayingCard> deck) {
+        PlayingCard playingCard = inPlay.remove(cardId);
+        deck.addToDiscardPile(playingCard);
+    }
 
-  public User assignedUser() {
-    return user;
-  }
+    public InPlay inPlay() {
+        return inPlay;
+    }
 
-  public void assignUser(User user) {
-    this.user = user;
-  }
+    public void play(Game game, CardId cardId) {
+        PlayingCard playingCard = hand.remove(cardId);
+        playingCard.usage().play(game, this, playingCard);
+    }
 
-  public boolean isAssigned() {
-    return user != null;
-  }
+    public PlayerId id() {
+        return playerId;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    public User assignedUser() {
+        return user;
+    }
 
-    Player player = (Player) o;
+    public void assignUser(User user) {
+        this.user = user;
+    }
 
-    return playerId.equals(player.playerId);
-  }
+    public boolean isAssigned() {
+        return user != null;
+    }
 
-  @Override
-  public int hashCode() {
-    return playerId.hashCode();
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-  @Override
-  public String toString() {
-    return "Player: " + playerId;
-  }
+        Player player = (Player) o;
+
+        return playerId.equals(player.playerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return playerId.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Player: " + playerId;
+    }
 }

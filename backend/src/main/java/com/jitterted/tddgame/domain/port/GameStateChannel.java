@@ -6,9 +6,9 @@ import com.jitterted.tddgame.domain.PlayerId;
 
 // PORT for the Broadcast adapter
 public interface GameStateChannel {
-  void testResultCardDrawn(DrawnTestResultCard drawnTestResultCard);
+    void testResultCardDrawn(DrawnTestResultCard drawnTestResultCard);
 
-  void testResultCardDiscarded(PlayerId playerId);
+    void testResultCardDiscarded(PlayerId playerId);
 
-  void playerActed(Game game);
+    void playerActed(Game game);
 }

@@ -1,7 +1,7 @@
 package com.jitterted.tddgame.domain;
 
 public interface GameService {
-  Game currentGame();
+    Game currentGame();
 
-  Player assignNextAvailablePlayerToUser(User user);
+    Player assignNextAvailablePlayerToUser(User user);
 }
