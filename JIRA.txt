@@ -80,8 +80,8 @@ Player's "State Machine":
 
 ## Interaction
 
-1. Ask for name for new game (start with competitive)
-2. Create game -> provide identifier/link
-3. Players join game with ID (via link)
-4. Someone triggers "start game"
-5. All game, deck, etc. contents are created
+[X] 1. Ask for name for new game (start with competitive)
+[X] 2. Create game -> provide identifier/link (handle)
+[ ] 3. Players join game with human readable "Handle" (via typing it in, not link)
+[ ] 4. Someone triggers "start game"
+[ ] 5. All game, deck, etc. contents are created

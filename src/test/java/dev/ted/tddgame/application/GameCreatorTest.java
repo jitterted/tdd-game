@@ -16,4 +16,15 @@ class GameCreatorTest {
         assertThat(createdGame.name())
                 .isEqualTo("game name");
     }
+
+
+    @Test
+    void gamesAssignedUniqueHandle() {
+        GameCreator gameCreator = new GameCreator();
+        Game game1 = gameCreator.createNewGame("TDD Game");
+        Game game2 = gameCreator.createNewGame("TDD Game");
+
+        assertThat(game1.handle())
+                .isNotEqualTo(game2.handle());
+    }
 }
