@@ -3,14 +3,14 @@
 state "What Should It Do?" as what
 state "How Will You Know It Did It?" as how
 state "Write Code For Test" as for_test
-state "Write Code For Feature" as for_feature
 state "Predict Test Will Fail to Compile" as predict_fail_compile
 state "Write Code So Test Compiles" as test_compiles
 state "Predict Test Will Fail" as predict_test_fail
+state "Write Code For Feature" as for_feature
 state "Predict Test Now Passes" as predict_test_passes
 state "Commit Code" as commit_code
 
-[*] --> what : Join Game
+[*] -r-> what : Join Game
 what --> how : Discard Any Action Card
 how --> for_test : Discard Any Action Card
 
@@ -37,19 +37,19 @@ state predict_test_fail {
     WaitForTestResults4 --> WaitForPredict4 : Prediction Fails\n(discard PREDICT card)
 }
 
-for_feature -> predict_test_passes : Play WRITE CODE card
+for_feature -u-> predict_test_passes : Play WRITE CODE card
 
 state predict_test_passes {
     [*] -> WaitForPredict5
     WaitForPredict5 --> WaitForPredict5 : Play LESS CODE card
     WaitForPredict5 --> WaitForTestResults5 : Play PREDICT card
-    WaitForTestResults5 --> commit_code : Prediction Successful\n(discard all in-play cards)
+    WaitForTestResults5 -u-> commit_code : Prediction Successful\n(discard all in-play cards)
     WaitForTestResults5 --> WaitForPredict5 : Prediction Fails\n(discard PREDICT card)
 }
 
 state evaluate_risk <<choice>>
 
-commit_code --> what : No Risk\n(discard entire hand)\nAdd 1 to Commit Points
+commit_code -u-> what : No Risk\n(discard entire hand)\nAdd 1 to Commit Points
 commit_code --> evaluate_risk : Have Risk
 
 evaluate_risk --> what : [roll <= RISK]\nREVERT and start over
