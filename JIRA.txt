@@ -1,0 +1,18 @@
+
+## Cleanup Work
+[ ] Get rid of front-end module, make it a single module project
+
+[ ] Remove the idea of an "opponent", games can have anywhere from 1-6 players
+[ ] (think) get rid of CardId?
+[ ] Separate the Application layer from the Domain
+    [ ] Move PORT to application
+    [ ] Split out card shuffle (RandomCardShuffler) into PORT and ADAPTER
+    [ ] Pull in ArchUnit
+
+## Need
+
+[ ] Structure for the BOARD as 9 separate TILEs
+    [ ] TILE has rules for exit, sometimes multiple exits
+        [ ] Exits have either precondition (discarded a card)
+            or a post-condition (increases cycle risk)
+
