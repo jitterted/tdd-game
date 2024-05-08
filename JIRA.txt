@@ -40,3 +40,48 @@ Player's "State Machine":
         [ ] DISCARD CARD (often causes a transition)
         [ ] PLAY CARD
         [ ] END TURN
+
+## Ubiquitous Language
+* Game (deck, card, tile, etc.)
+    * Competitive: every person for themselves (1:1 player:pawn)
+    * Co-op (mob programming): working together to move pawn forward (N:1 player:pawn)
+* Player
+* Host - part of a Team, they created an instance of a game
+* Team - which is an "account-based" thing: who can "see" each other's games and join
+* Group - set of players currently playing a specific game (they have all JOINed a specific GAME or are members of the game)
+    * one/many PAWN <-> one/many PLAYER (premature)
+    * Support variation where GROUP controls single PAWN
+* Coach - can observe the game without playing, can control/manipulate game elements
+    * "Attached" to one or more TEAMs
+* Win Condition (when is the game over)
+    * First to 5 commits (or 3 commits, whatever)
+    * Timeboxed: most commits within a period of time (duration)
+* Game Master view: can see state of game(s) that have been created/in-progress
+    * Admin version of this allows manipulation of elements for any reason (not sure if this is different from coach role)
+    * Admin can see any game any time
+    * Coach can only see games for the TEAMs to which they're attached
+
+
+## Behavior
+
+1. Host Creates Game (defines competitive or co-op)
+2. Player Joins (existing) Game
+     * Invited by host, or
+     * Chooses available game from team/group
+     * If Host wants to play, they have to join too
+3. Start Game
+    * Decks are shuffled
+    * Cards are dealt: 5 to each Player
+    * Pawns placed at first TILE
+    * Commit tracker set to 0
+    * Risk tracker set to 0/0
+    * Starting player chosen (proceeds clockwise)
+4. Player 1 plays...
+
+## Interaction
+
+1. Ask for name for new game (start with competitive)
+2. Create game -> provide identifier/link
+3. Players join game with ID (via link)
+4. Someone triggers "start game"
+5. All game, deck, etc. contents are created
