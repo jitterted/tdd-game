@@ -84,7 +84,18 @@ Player's "State Machine":
 [X] 2. Create game -> provide identifier/link (handle)
 [ ] 3. Person joins game with human-readable "Handle" (via typing it in, not link)
         [X] Person becomes Player when joined the game
+        [X] Multiple different Persons can join the same game
+        [ ] Constraint: 4 players maximum per game
         [ ] A Person can not join the same game twice, i.e., can't represent TWO Players
             * If a Person joins a game where they are already a player, that is "rejoining" (reconnecting)
-[ ] 4. Someone triggers "start game"
-[ ] 5. All game, deck, etc. contents are created
+[ ] 4. "start game" is Triggered
+    [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
+    [ ] (Temporary) Constraint: players can't join once game is started
+
+[ ] Inbound HTTP Adapter
+    [ ] Pseudo-login pick which Person you are (from a list of Pawn colors)
+    [ ] Host create game: no textbox (use default game name) and "Create Game" button does POST
+    [ ] Person join game: textbox (for handle) and "Join Game" button does POST, redirected to page that connects WebSocket
+
+[ ] Outbound (Notifier) WebSocket Adapter
+    [ ] Display name of game, all players, decks, pawns, etc.

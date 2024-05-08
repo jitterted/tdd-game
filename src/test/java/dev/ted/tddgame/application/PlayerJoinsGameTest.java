@@ -10,20 +10,35 @@ import static org.assertj.core.api.Assertions.*;
 class PlayerJoinsGameTest {
 
     @Test
-    void personJoinsExistingGameThenAddedAsPlayerIfNotAlreadyJoined() {
-        Person person = new Person(27L);
+    void personJoinsExistingGameThenAddedAsPlayer() {
         PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
         Game game = new GameCreator().createNewGame("TDD Game");
+        Person person = new Person(27L);
 
         Player player = playerJoinsGame.join(person, game);
 
         assertThat(player.id())
                 .isNotNull();
-
-        assertThat(game.players())
-                .containsExactly(new Player(1L, 27L));
-
         assertThat(player.personId())
                 .isEqualTo(27L);
+
+        assertThat(game.players())
+                .hasSize(1)
+                .extracting(Player::personId)
+                .containsExactly(27L);
+    }
+
+    @Test
+    void twoPersonsJoinExistingGameThenBothAddedAsDifferentPlayers() {
+        PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
+        Game game = new GameCreator().createNewGame("TDD Game");
+        Person firstPerson = new Person(7L);
+        Person secondPerson = new Person(8L);
+
+        Player firstPlayer = playerJoinsGame.join(firstPerson, game);
+        Player secondPlayer = playerJoinsGame.join(secondPerson, game);
+
+        assertThat(firstPlayer)
+                .isNotEqualTo(secondPlayer);
     }
 }
