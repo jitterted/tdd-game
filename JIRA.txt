@@ -9,10 +9,34 @@
     [ ] Split out card shuffle (RandomCardShuffler) into PORT and ADAPTER
     [ ] Pull in ArchUnit
 
+## Game Layout
+
+Per Game:
+* TILEs
+* ACTION CARD DECK
+* ACTION CARD DISCARD PILE
+* TEST RESULTS DECK
+* TEST RESULTS DISCARD PILE
+* 6-SIDED DIE
+
+Per Player:
+* PAWN (indicates which TILE they're on)
+* HAND
+* PLAY AREA
+* TECH NEGLECT AREA
+* COMMIT TRACKER
+* RISK TRACKER
+
+Player's "State Machine":
+    Player's "TURN" is complete when either: play/discard 3 cards OR explicitly END TURN
+
 ## Need
 
-[ ] Structure for the BOARD as 9 separate TILEs
-    [ ] TILE has rules for exit, sometimes multiple exits
-        [ ] Exits have either precondition (discarded a card)
-            or a post-condition (increases cycle risk)
-
+[ ] Structure for the BOARD as 9 separate TILEs,
+    [ ] PLAYER is ON a TILE (has a game state machine)
+    [ ] player's COMMAND causes change, potentially transition to new TILE
+        [ ] MOVE PAWN - moves the player to a new tile
+        [ ] DRAW CARD (and DRAW FULL)
+        [ ] DISCARD CARD (often causes a transition)
+        [ ] PLAY CARD
+        [ ] END TURN
