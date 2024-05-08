@@ -11,15 +11,47 @@
 
 	<groupId>com.jitterted</groupId>
 	<artifactId>tdd-game</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+	<version>0.1.0-SNAPSHOT</version>
 
   <name>tdd-game</name>
   <description>JitterTed's TDD Game</description>
 
-  <modules>
-    <module>frontend</module>
-    <module>backend</module>
-  </modules>
+	<properties>
+		<java.version>22</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>24.1.0</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
