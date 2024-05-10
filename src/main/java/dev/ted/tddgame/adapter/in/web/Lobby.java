@@ -11,4 +11,9 @@ public class Lobby {
         return "redirect:/lobby";
     }
 
+    @GetMapping("/lobby")
+    public String showLobby() {
+        return "lobby";
+    }
+
 }

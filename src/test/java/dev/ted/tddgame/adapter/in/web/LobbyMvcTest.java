@@ -25,4 +25,10 @@ class LobbyMvcTest {
                .andExpect(status().is3xxRedirection())
                .andExpect(redirectedUrl("/lobby"));
     }
+
+    @Test
+    void getToLobbyIsStatus200Ok() throws Exception {
+        mockMvc.perform(get("/lobby"))
+               .andExpect(status().isOk());
+    }
 }
