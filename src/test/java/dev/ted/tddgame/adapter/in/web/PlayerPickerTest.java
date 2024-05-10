@@ -10,7 +10,7 @@ class PlayerPickerTest {
     void postToPickPlayerRedirectsToLobby() {
         PlayerPicker playerPicker = new PlayerPicker();
 
-        String redirect = playerPicker.pickPlayer();
+        String redirect = playerPicker.pickPlayer("");
 
         assertThat(redirect)
                 .isEqualTo("redirect:/lobby");
