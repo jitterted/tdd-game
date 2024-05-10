@@ -32,7 +32,8 @@ public class Game {
         return playerMap.computeIfAbsent(
                 person.id(),
                 personId ->
-                        new Player(playerIdGenerator.getAndIncrement(), personId));
+                        new Player(personId,
+                                   new PlayerId(playerIdGenerator.getAndIncrement())));
     }
 
 }
