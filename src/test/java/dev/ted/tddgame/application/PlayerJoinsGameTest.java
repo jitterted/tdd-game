@@ -17,7 +17,7 @@ class PlayerJoinsGameTest {
     void personsCanJoinNewGame() {
         Game game = new Game("new", "new");
 
-        assertThat(game.canJoin())
+        assertThat(game.canJoin(new PersonId(42L)))
                 .isTrue();
     }
 
@@ -69,10 +69,10 @@ class PlayerJoinsGameTest {
     }
 
     @Test
-    void personCanNotJoinGameWith_4_Players() {
+    void newPersonCanNotJoinGameWith_4_Players() {
         Game game = gameWith4Players(7L, 9L, 11L, 13L);
 
-        assertThat(game.canJoin())
+        assertThat(game.canJoin(new PersonId(42L)))
                 .isFalse();
     }
 

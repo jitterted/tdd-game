@@ -29,7 +29,7 @@ public class Game {
     }
 
     public Player join(PersonId personId) {
-        if (!canJoin()) {
+        if (!canJoin(personId)) {
             String ids = playerMap.keySet().stream().map(PersonId::id).toList().toString();
             throw new IllegalStateException("Game is full (Person IDs: " + ids + "), so " + personId + " cannot join.");
         }
@@ -41,7 +41,7 @@ public class Game {
                         PlayerId(playerIdGenerator.getAndIncrement())));
     }
 
-    public boolean canJoin() {
+    public boolean canJoin(PersonId personId) {
         return playerMap.size() < 4;
     }
 }
