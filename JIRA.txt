@@ -85,9 +85,9 @@ Player's "State Machine":
 [ ] 3. Person joins game with human-readable "Handle" (via typing it in, not link)
         [X] Person becomes Player when joined the game
         [X] Multiple different Persons can join the same game
-        [ ] Constraint: 4 players maximum per game
-        [ ] A Person can not join the same game twice, i.e., can't represent TWO Players
+        [ ] Constraint: A Person can not join the same game twice, i.e., can't represent TWO Players
             * If a Person joins a game where they are already a player, that is "rejoining" (reconnecting)
+        [ ] Constraint: 4 players maximum per game
 [ ] 4. "start game" is Triggered
     [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
     [ ] (Temporary) Constraint: players can't join once game is started

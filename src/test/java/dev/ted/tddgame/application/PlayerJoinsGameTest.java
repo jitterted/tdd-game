@@ -41,4 +41,18 @@ class PlayerJoinsGameTest {
         assertThat(firstPlayer)
                 .isNotEqualTo(secondPlayer);
     }
+
+    @Test
+    void personJoinsIsRejoinWhenAlreadyPlayerInGame() {
+        PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
+        Game game = new GameCreator().createNewGame("TDD Game");
+        Person person = new Person(7L);
+        Player player = playerJoinsGame.join(person, game);
+        playerJoinsGame.join(new Person(8L), game);
+
+        Player joinAgainPlayer = playerJoinsGame.join(person, game);
+
+        assertThat(joinAgainPlayer)
+                .isEqualTo(player);
+    }
 }
