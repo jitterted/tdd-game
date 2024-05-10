@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(Lobby.class)
 @Tag("mvc")
 @WithMockUser("Blue")
-class PlayerPickerMvcTest {
+class LobbyMvcTest {
 
     @Autowired
     MockMvc mockMvc;
