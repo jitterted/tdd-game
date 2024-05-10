@@ -4,6 +4,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Person;
 import dev.ted.tddgame.domain.PersonId;
 import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
@@ -13,11 +14,11 @@ import static org.assertj.core.api.Assertions.*;
 class PlayerJoinsGameTest {
 
     @Test
-    void newGameIsNotFull() {
+    void personsCanJoinNewGame() {
         Game game = new Game("new", "new");
 
-        assertThat(game.isFull())
-                .isFalse();
+        assertThat(game.canJoin())
+                .isTrue();
     }
 
     @Test
@@ -68,18 +69,40 @@ class PlayerJoinsGameTest {
     }
 
     @Test
-    void gameWith_4_PlayersIsFull() {
-        Game game = gameWith4Players();
+    void personCanNotJoinGameWith_4_Players() {
+        Game game = gameWith4Players(7L, 9L, 11L, 13L);
 
-        assertThat(game.isFull())
-                .isTrue();
+        assertThat(game.canJoin())
+                .isFalse();
     }
 
-    private Game gameWith4Players() {
+    @Test
+    void exceptionThrownIfNewPlayerJoinsFullGame() {
+        Game game = gameWith4Players(7L, 9L, 11L, 13L);
+
+        assertThatIllegalStateException()
+                .isThrownBy(() -> game.join(new Person(new PersonId(18L))))
+                .withMessage("Game is full (Person IDs: [7, 9, 11, 13]), so PersonId[id=18] cannot join.");
+    }
+
+    @Test
+    @Disabled
+    void noExceptionThrownIfPlayerAlreadyInGame() {
+        long existingPersonId = 11L;
+        Game game = gameWith4Players(7L, 9L, existingPersonId, 13L);
+
+        assertThatNoException()
+                .isThrownBy(() -> game.join(new Person(
+                        new PersonId(existingPersonId))));
+    }
+
+    // -- ENCAPSULATED SETUP
+    
+    private Game gameWith4Players(Long... personIds) {
         PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
         Game game = new GameCreator().createNewGame("TDD Game");
 
-        Stream.of(7L, 9L, 11L, 13L)
+        Stream.of(personIds)
               .map(id -> new Person(new PersonId(id)))
               .forEach(person -> playerJoinsGame.join(person, game));
 
