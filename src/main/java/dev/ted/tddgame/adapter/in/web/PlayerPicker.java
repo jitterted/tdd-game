@@ -8,7 +8,7 @@ public class PlayerPicker {
 
     @PostMapping("/pickaplayer")
     public String pickPlayer() {
-        return "redirect:/";
+        return "redirect:/lobby";
     }
 
 }
