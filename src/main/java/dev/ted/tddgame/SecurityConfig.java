@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -24,27 +23,30 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD, DispatcherType.REQUEST).permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
 
-    private static UserDetails createUser(String username, String password, PasswordEncoder encoder, String... roles) {
-        return User.withUsername(username)
-                   .password(encoder.encode(password))
-                   .roles(roles)
-                   .build();
-    }
-
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        UserDetails blueUser = createUser("Blue", "blue", encoder, "USER");
-        UserDetails redUser = createUser("Red", "red", encoder, "USER");
-        UserDetails greenUser = createUser("Green", "green", encoder, "USER");
-        UserDetails yellowUser = createUser("Yellow", "yellow", encoder, "USER");
-        UserDetails blackUser = createUser("Black", "black", encoder, "USER");
-        UserDetails whiteUser = createUser("White", "white", encoder, "USER");
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails blueUser = createUser("Blue", "blue", "USER");
+        UserDetails redUser = createUser("Red", "red", "USER");
+        UserDetails greenUser = createUser("Green", "green", "USER");
+        UserDetails yellowUser = createUser("Yellow", "yellow", "USER");
+        UserDetails blackUser = createUser("Black", "black", "USER");
+        UserDetails whiteUser = createUser("White", "white", "USER");
 
         return new InMemoryUserDetailsManager(blueUser, redUser, greenUser, yellowUser, blackUser, whiteUser);
+    }
+
+    private static UserDetails createUser(String username, String password, String... roles) {
+        return User.withDefaultPasswordEncoder()
+                   .username(username)
+                   .password(password)
+                   .roles(roles)
+                   .build();
     }
 
 }

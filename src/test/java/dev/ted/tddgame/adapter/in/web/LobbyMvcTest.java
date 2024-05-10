@@ -8,12 +8,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(Lobby.class)
 @Tag("mvc")
-@WithMockUser("Blue")
+@WithMockUser(username = "Blue")
 class LobbyMvcTest {
 
     @Autowired
@@ -29,6 +30,7 @@ class LobbyMvcTest {
     @Test
     void getToLobbyIsStatus200Ok() throws Exception {
         mockMvc.perform(get("/lobby"))
-               .andExpect(status().isOk());
+               .andExpect(status().isOk())
+               .andExpect(model().attribute("personName", "Blue"));
     }
 }
