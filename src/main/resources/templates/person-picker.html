@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Pick Your Player</title>
+</head>
+<body>
+
+<h1>Which Player Are You?</h1>
+<form action="#" th:action="@{/pickaplayer}" method="post">
+    <button name="person" value="Blue" style="color: Blue">Blue</button>
+    <button name="person" value="Green" style="color: Green">Green</button>
+    <button name="person" value="Red" style="color: Red">Red</button>
+    <button name="person" value="Yellow" style="background: dimgrey; color: Yellow">Yellow</button>
+    <button name="person" value="Black" style="color: Black">Black</button>
+    <button name="person" value="White" style="background: dimgrey; color: White">White</button>
+</form>
+
+</body>
+</html>
