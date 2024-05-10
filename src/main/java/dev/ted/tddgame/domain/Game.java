@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
 
 public class Game {
     private String name;
     private final String handle;
-    private final Map<Long, Player> playerMap = new HashMap<>();
+    private final Map<PersonId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
 
     public Game(String name, String handle) {
@@ -30,11 +29,10 @@ public class Game {
     }
 
     public Player join(Person person) {
-        return playerMap.computeIfAbsent(person.id(), createNewPlayer());
+        return playerMap.computeIfAbsent(
+                person.id(),
+                personId ->
+                        new Player(playerIdGenerator.getAndIncrement(), personId));
     }
 
-    private Function<Long, Player> createNewPlayer() {
-        return personId ->
-                new Player(playerIdGenerator.getAndIncrement(), personId);
-    }
 }

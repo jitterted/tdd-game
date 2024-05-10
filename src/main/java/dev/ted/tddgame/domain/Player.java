@@ -5,9 +5,9 @@ import java.util.StringJoiner;
 
 public class Player {
     private final Long id;
-    private final Long personId;
+    private final PersonId personId;
 
-    public Player(Long id, Long personId) {
+    public Player(Long id, PersonId personId) {
         this.id = id;
         this.personId = personId;
     }
@@ -16,7 +16,7 @@ public class Player {
         return id;
     }
 
-    public Long personId() {
+    public PersonId personId() {
         return personId;
     }
 

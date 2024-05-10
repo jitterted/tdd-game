@@ -1,13 +1,13 @@
 package dev.ted.tddgame.domain;
 
 public class Person {
-    private final Long id;
+    private final PersonId personId;
 
-    public Person(long id) {
-        this.id = id;
+    public Person(PersonId personId) {
+        this.personId = personId;
     }
 
-    public Long id() {
-        return id;
+    public PersonId id() {
+        return personId;
     }
 }
