@@ -77,23 +77,22 @@ class PlayerJoinsGameTest {
     }
 
     @Test
-    void exceptionThrownIfNewPlayerJoinsFullGame() {
+    void exceptionThrownIfNewPlayerCanNotJoinGame() {
         Game game = gameWith4Players(7L, 9L, 11L, 13L);
 
         assertThatIllegalStateException()
-                .isThrownBy(() -> game.join(new Person(new PersonId(18L))))
+                .isThrownBy(() -> game.join(new PersonId(18L)))
                 .withMessage("Game is full (Person IDs: [7, 9, 11, 13]), so PersonId[id=18] cannot join.");
     }
 
     @Test
-    @Disabled
+    @Disabled("Until canJoin can take a PersonId")
     void noExceptionThrownIfPlayerAlreadyInGame() {
         long existingPersonId = 11L;
         Game game = gameWith4Players(7L, 9L, existingPersonId, 13L);
 
         assertThatNoException()
-                .isThrownBy(() -> game.join(new Person(
-                        new PersonId(existingPersonId))));
+                .isThrownBy(() -> game.join(new PersonId(existingPersonId)));
     }
 
     // -- ENCAPSULATED SETUP

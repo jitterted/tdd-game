@@ -7,7 +7,7 @@ import dev.ted.tddgame.domain.Player;
 public class PlayerJoinsGame {
 
     public Player join(Person person, Game game) {
-        return game.join(person);
+        return game.join(person.id());
     }
 
 }

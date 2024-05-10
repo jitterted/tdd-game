@@ -28,17 +28,17 @@ public class Game {
         return playerMap.values().stream().toList();
     }
 
-    public Player join(Person person) {
+    public Player join(PersonId personId) {
         if (!canJoin()) {
             String ids = playerMap.keySet().stream().map(PersonId::id).toList().toString();
-            throw new IllegalStateException("Game is full (Person IDs: " + ids + "), so " + person.id() + " cannot join.");
+            throw new IllegalStateException("Game is full (Person IDs: " + ids + "), so " + personId + " cannot join.");
         }
 
         return playerMap.computeIfAbsent(
-                person.id(),
-                personId ->
-                        new Player(personId,
-                                   new PlayerId(playerIdGenerator.getAndIncrement())));
+                personId,
+                _ -> new Player(
+                        personId, new
+                        PlayerId(playerIdGenerator.getAndIncrement())));
     }
 
     public boolean canJoin() {
