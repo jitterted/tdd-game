@@ -87,7 +87,7 @@ Player's "State Machine":
         [X] Multiple different Persons can join the same game
         [X] Constraint: A Person can not join the same game twice, i.e., can't represent TWO Players
             * If a Person joins a game where they are already a player, that is "rejoining" (reconnecting)
-        [ ] Constraint: 4 players maximum per game
+        [X] Constraint: 4 players maximum per game (rejoins don't count, of course)
 [ ] 4. "start game" is Triggered
     [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
     [ ] (Temporary) Constraint: players can't join once game is started

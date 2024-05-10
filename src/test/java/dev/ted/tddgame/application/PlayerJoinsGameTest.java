@@ -4,7 +4,6 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Person;
 import dev.ted.tddgame.domain.PersonId;
 import dev.ted.tddgame.domain.Player;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
@@ -86,7 +85,6 @@ class PlayerJoinsGameTest {
     }
 
     @Test
-    @Disabled("Until canJoin can take a PersonId")
     void noExceptionThrownIfPlayerAlreadyInGame() {
         long existingPersonId = 11L;
         Game game = gameWith4Players(7L, 9L, existingPersonId, 13L);

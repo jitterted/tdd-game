@@ -42,6 +42,6 @@ public class Game {
     }
 
     public boolean canJoin(PersonId personId) {
-        return playerMap.size() < 4;
+        return playerMap.size() < 4 || playerMap.containsKey(personId);
     }
 }
