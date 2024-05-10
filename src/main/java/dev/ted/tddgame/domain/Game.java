@@ -36,4 +36,7 @@ public class Game {
                                    new PlayerId(playerIdGenerator.getAndIncrement())));
     }
 
+    public boolean isFull() {
+        return playerMap.size() == 4;
+    }
 }
