@@ -14,12 +14,6 @@ public class Game extends EventSourcedAggregate {
     public Game() {
     }
 
-    @Deprecated
-    public Game(String name, String handle) {
-        this.name = name;
-        this.handle = handle;
-    }
-
     public Game(List<GameEvent> events) {
         for (GameEvent event : events) {
             apply(event);

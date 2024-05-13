@@ -15,7 +15,7 @@ public class GameCreator {
     public Game createNewGame(String nameOfGame) {
         String handle = idGen.generate();
 
-        return new Game(nameOfGame, handle);
+        return Game.create(nameOfGame, handle);
     }
 
 }
