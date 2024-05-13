@@ -36,7 +36,7 @@ class GameCreatorTest {
     @Disabled("Until Game event sourcing is completed")
     void gameViewLoaderReturnsViewOfNewGame() {
         GameViewLoader gameViewLoader = new GameViewLoader();
-        GameCreator gameCreator = GameCreator.create(gameViewLoader);
+        GameCreator gameCreator = GameCreator.create();
 
         Game game = gameCreator.createNewGame("new game");
 

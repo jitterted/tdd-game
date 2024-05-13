@@ -26,9 +26,9 @@ public class Game extends EventSourcedAggregate {
         }
     }
 
-    public static EventSourcedAggregate create(String gameName) {
+    public static EventSourcedAggregate create(String gameName, String handle) {
         Game game = new Game();
-        game.initialize(gameName);
+        game.initialize(gameName, handle);
         return game;
     }
 
@@ -36,15 +36,18 @@ public class Game extends EventSourcedAggregate {
         return new Game(events);
     }
 
-    private void initialize(String gameName) {
-        GameCreated gameCreated = new GameCreated(gameName);
+    private void initialize(String gameName, String handle) {
+        GameCreated gameCreated = new GameCreated(gameName, handle);
         enqueue(gameCreated);
     }
 
     @Override
     public void apply(GameEvent event) {
         switch (event) {
-            case GameCreated(String name) -> this.name = name;
+            case GameCreated(String name, String handle) -> {
+                this.name = name;
+                this.handle = handle;
+            }
         }
     }
 

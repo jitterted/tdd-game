@@ -24,14 +24,18 @@ class GameTest {
 
         @Test
         void creatingGameEmitsGameCreatedEvent() {
-            EventSourcedAggregate game = Game.create("game name");
+            EventSourcedAggregate game = Game.create("game name", "lovely-dog-23");
 
             Stream<GameEvent> events = game.freshEvents();
 
             assertThat(events)
-                    .containsExactly(new GameCreated("game name"));
+                    .containsExactly(new GameCreated("game name", "lovely-dog-23"));
         }
 
+        @Test
+        void name() {
+
+        }
     }
 
     @Nested
@@ -39,12 +43,14 @@ class GameTest {
 
         @Test
         void newGameHasGameName() {
-            List<GameEvent> events = List.of(new GameCreated("jitterted"));
+            List<GameEvent> events = List.of(new GameCreated("jitterted", "breezy-cat-85"));
             Game game = Game.reconstitute(events);
 
             assertThat(game.name())
                     .isEqualTo("jitterted");
+            assertThat(game.handle())
+                    .isEqualTo("breezy-cat-85");
         }
     }
 
-    }
+}
