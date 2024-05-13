@@ -26,7 +26,7 @@ class LobbyTest {
 
     @Test
     void lobbyViewShowsGamesWhenGamesExist() {
-        Lobby lobby = Lobby.createNull(new GameView("42"));
+        Lobby lobby = Lobby.createNull(new GameView("42", "", -1));
 
         ConcurrentModel model = new ConcurrentModel();
         String viewName = lobby.showLobby(DUMMY_PRINCIPAL, model);
@@ -35,7 +35,7 @@ class LobbyTest {
                 .isEqualTo("lobby");
 
         assertThatModel(model)
-                .containsExactly(new GameView("42"));
+                .containsExactly(new GameView("42", "", -1));
     }
 
     @Test
@@ -48,7 +48,7 @@ class LobbyTest {
         lobby.showLobby(DUMMY_PRINCIPAL, model);
 
         assertThatModel(model)
-                .containsExactly(new GameView("New Game Name"));
+                .containsExactly(new GameView("New Game Name", "", -1));
     }
 
     private static ListAssert<GameView> assertThatModel(ConcurrentModel model) {
