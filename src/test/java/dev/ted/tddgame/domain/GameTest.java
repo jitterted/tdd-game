@@ -24,7 +24,7 @@ class GameTest {
 
         @Test
         void creatingGameEmitsGameCreatedEvent() {
-            EventSourcedAggregate game = Game.create("game name", "lovely-dog-23");
+            Game game = Game.create("game name", "lovely-dog-23");
 
             Stream<GameEvent> events = game.freshEvents();
 
@@ -33,8 +33,17 @@ class GameTest {
         }
 
         @Test
-        void name() {
+        void playerJoiningEmitsPlayerJoinedEvent() {
+            Game game = createFreshGame();
 
+            game.join(new PersonId(88L));
+
+            assertThat(game.freshEvents())
+                    .containsExactly(new PlayerJoined(new PersonId(88L)));
+        }
+
+        private static Game createFreshGame() {
+            return Game.reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
         }
     }
 
@@ -42,14 +51,33 @@ class GameTest {
     class EventsProjectState {
 
         @Test
-        void newGameHasGameName() {
-            List<GameEvent> events = List.of(new GameCreated("jitterted", "breezy-cat-85"));
+        void newGameHasGameNameAndHandle() {
+            List<GameEvent> events = List.of(
+                    new GameCreated("jitterted", "breezy-cat-85"));
             Game game = Game.reconstitute(events);
 
             assertThat(game.name())
                     .isEqualTo("jitterted");
             assertThat(game.handle())
                     .isEqualTo("breezy-cat-85");
+        }
+
+        @Test
+        void playerJoinedResultsInPlayerAddedToGame() {
+            List<GameEvent> events = gameWithFreshEvents(
+                    new PlayerJoined(new PersonId(53L)));
+
+            Game game = Game.reconstitute(events);
+
+            assertThat(game.players())
+                    .hasSize(1)
+                    .extracting(Player::personId)
+                    .containsExactly(new PersonId(53L));
+        }
+
+        private static List<GameEvent> gameWithFreshEvents(PlayerJoined freshEvent) {
+            return List.of(new GameCreated("jitterted", "breezy-cat-85"),
+                           freshEvent);
         }
     }
 

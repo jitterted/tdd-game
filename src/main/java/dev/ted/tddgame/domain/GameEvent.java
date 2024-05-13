@@ -1,5 +1,5 @@
 package dev.ted.tddgame.domain;
 
 public sealed interface GameEvent
-    permits GameCreated {
+        permits GameCreated, PlayerJoined {
 }
