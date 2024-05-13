@@ -8,11 +8,9 @@
 
 <p>Hello <span th:text="${personName}">Pink</span>, how are you?</p>
 
-<h1>Which Game Would You Like to Join?</h1>
-<p>Game Name - Game Handle - # Players</p>
-<p>Game Name - Game Handle - # Players</p>
+<h1>No Games Currently Available to Join</h1>
 
-<h2>Host New Game</h2>
+<h1>Host New Game</h1>
 <form action="#" th:action="@{/games}" method="post">
     <input type="number" name="newGameName" placeholder="99"/>
     <button>Host Game</button>

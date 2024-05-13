@@ -92,10 +92,17 @@ Player's "State Machine":
     [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
     [ ] (Temporary) Constraint: players can't join once game is started
 
->> [ ] Inbound HTTP Adapter
-    [ ] Pseudo-login pick which Person you are (from a list of Pawn colors)
-    [ ] Host create game: no textbox (use default game name) and "Create Game" button does POST
-    [ ] Person join game: textbox (for handle) and "Join Game" button does POST, redirected to page that connects WebSocket
+[ ] Inbound HTTP Adapter
+    [ ] Host create game: numeric-only textbox and "Create Game" button does POST
+        [X] MVC part
+>>      [ ] Test to make sure it creates the game and returns "handle" for the game
+    [ ] Lobby shows games available with handles for each
+    [ ] Person join game: textbox (for handle) and "Join Game" button does POST
+        [ ] Creates Player in the Game for the Person
+        [ ] Redirects to page that shows the game page
 
 [ ] Outbound (Notifier) WebSocket Adapter
     [ ] Display name of game, all players, decks, pawns, etc.
+
+
+[ ] Person's own page showing their profile, active games they're in, past games they've played, etc.
