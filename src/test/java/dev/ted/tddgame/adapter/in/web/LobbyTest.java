@@ -2,7 +2,7 @@ package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.domain.GameView;
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Disabled;
+import org.assertj.core.api.ListAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 
@@ -26,7 +26,7 @@ class LobbyTest {
 
     @Test
     void lobbyViewShowsGamesWhenGamesExist() {
-        Lobby lobby = Lobby.createNull(new GameView());
+        Lobby lobby = Lobby.createNull(new GameView("42"));
 
         ConcurrentModel model = new ConcurrentModel();
         String viewName = lobby.showLobby(DUMMY_PRINCIPAL, model);
@@ -34,19 +34,26 @@ class LobbyTest {
         assertThat(viewName)
                 .isEqualTo("lobby");
 
-        assertThat(model.asMap())
-                .extracting("gameViews")
-                .asInstanceOf(InstanceOfAssertFactories.list(GameView.class))
-                .containsExactly(new GameView());
+        assertThatModel(model)
+                .containsExactly(new GameView("42"));
     }
 
     @Test
-    @Disabled("Until showLobby returns existing games to join")
     void newGameWithHandleCreatedUponHostNewGame() {
         Lobby lobby = Lobby.createNull();
 
-        lobby.hostNewGame(DUMMY_PRINCIPAL, "game name");
+        lobby.hostNewGame(DUMMY_PRINCIPAL, "New Game Name");
 
+        ConcurrentModel model = new ConcurrentModel();
+        lobby.showLobby(DUMMY_PRINCIPAL, model);
 
+        assertThatModel(model)
+                .containsExactly(new GameView("New Game Name"));
+    }
+
+    private static ListAssert<GameView> assertThatModel(ConcurrentModel model) {
+        return assertThat(model.asMap())
+                .extracting("gameViews")
+                .asInstanceOf(InstanceOfAssertFactories.list(GameView.class));
     }
 }

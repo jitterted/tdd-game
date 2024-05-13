@@ -46,6 +46,8 @@ public class Lobby {
     @PostMapping("/games")
     public String hostNewGame(Principal principal,
                               @RequestParam("newGameName") String newGameName) {
+        GameView newGame = new GameView(newGameName);
+        gameViews.add(newGame);
         return "redirect:/lobby";
     }
 

@@ -1,4 +1,4 @@
 package dev.ted.tddgame.domain;
 
-public record GameView() {
+public record GameView(String name) {
 }
