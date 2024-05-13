@@ -95,7 +95,7 @@ Player's "State Machine":
 [ ] Inbound HTTP Adapter
     [ ] Host create game: numeric-only textbox and "Create Game" button does POST
         [X] MVC part
->>      [ ] Test to make sure it creates the game and returns "handle" for the game
+        [ ] Test to make sure it creates the game and returns "handle" for the game
     [ ] Lobby shows games available with handles for each
     [ ] Person join game: textbox (for handle) and "Join Game" button does POST
         [ ] Creates Player in the Game for the Person
@@ -104,5 +104,16 @@ Player's "State Machine":
 [ ] Outbound (Notifier) WebSocket Adapter
     [ ] Display name of game, all players, decks, pawns, etc.
 
+
+## Event-Sourcing Game Persistence
+>>> Commands -> Events -> State
+[ ] EventSourcedAggregate<GameEvent>
+[ ] Static method for creating initial game
+[ ] GameEvent interface, with subclasses for each event type
+
+
+
+
+## Future Features
 
 [ ] Person's own page showing their profile, active games they're in, past games they've played, etc.
