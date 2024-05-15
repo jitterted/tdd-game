@@ -47,13 +47,13 @@ public class Lobby {
     @GetMapping("/lobby")
     public String showLobby(Principal principal, Model model) {
         model.addAttribute("personName", principal.getName());
+
         List<Game> allGames = gameStore.findAll();
         if (allGames.isEmpty()) {
             return "no-game-lobby";
         }
 
-        List<GameView> gameViews = allGames.stream().map(GameView::from).toList();
-        model.addAttribute("gameViews", gameViews);
+        model.addAttribute("gameViews", GameView.from(allGames));
         return "lobby";
     }
 
