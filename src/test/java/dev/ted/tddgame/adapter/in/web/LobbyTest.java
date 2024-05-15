@@ -1,9 +1,10 @@
 package dev.ted.tddgame.adapter.in.web;
 
+import dev.ted.tddgame.application.GameCreator;
+import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.GameView;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.api.ListAssert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 
@@ -40,19 +41,14 @@ class LobbyTest {
     }
 
     @Test
-    @Disabled("Until Lobby uses real[istic] Port and the GameCreator use case")
-    void newGameWithHandleCreatedUponHostNewGame() {
-        Lobby lobby = Lobby.createNull();
+    void hostNewGameStoresNewGameInGameStore() {
+        GameStore gameStore = new GameStore();
+        Lobby lobby = Lobby.create(GameCreator.create(gameStore));
 
         lobby.hostNewGame(DUMMY_PRINCIPAL, "New Game Name");
 
-        ConcurrentModel model = new ConcurrentModel();
-        lobby.showLobby(DUMMY_PRINCIPAL, model);
-
-        assertThatGameViewsFrom(model)
-                .first()
-                .extracting(GameView::handle, InstanceOfAssertFactories.STRING)
-                .isNotBlank();
+        assertThat(gameStore.findAll())
+                .hasSize(1);
     }
 
     private static ListAssert<GameView> assertThatGameViewsFrom(ConcurrentModel model) {

@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.in.web;
 
+import dev.ted.tddgame.application.GameCreator;
 import dev.ted.tddgame.domain.GameView;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +16,10 @@ import java.util.List;
 public class Lobby {
 
     private final List<GameView> gameViews = new ArrayList<>();
+    private GameCreator gameCreator;
 
-    public Lobby() {
+    public Lobby(GameCreator gameCreator) {
+        this.gameCreator = gameCreator;
     }
 
     public Lobby(List<GameView> gameViews) {
@@ -24,7 +27,11 @@ public class Lobby {
     }
 
     public static Lobby createNull() {
-        return new Lobby();
+        return new Lobby(GameCreator.createNull());
+    }
+
+    public static Lobby create(GameCreator gameCreator) {
+        return new Lobby(gameCreator);
     }
 
     public static Lobby createNull(GameView gameView) {
@@ -46,8 +53,7 @@ public class Lobby {
     @PostMapping("/games")
     public String hostNewGame(Principal principal,
                               @RequestParam("newGameName") String newGameName) {
-        GameView newGame = new GameView(newGameName, "", -1);
-        gameViews.add(newGame);
+        gameCreator.createNewGame(newGameName);
         return "redirect:/lobby";
     }
 

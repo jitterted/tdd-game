@@ -114,7 +114,8 @@ Player's "State Machine":
 
     Using in-memory persistence for Game
     [ ] Use case to use load (from Repository), modify, save (to Repository) pattern
-    [ ] GameRepository in-memory implementation
+    [X] GameRepository in-memory implementation
+        [ ] Make it use the event-source storage model
     [ ] GameViewLoader implementation using the GameRepository
 
     Real Database
