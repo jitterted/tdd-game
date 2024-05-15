@@ -76,4 +76,12 @@ public class Game extends EventSourcedAggregate {
     public boolean canJoin(PersonId personId) {
         return playerMap.size() < 4 || playerMap.containsKey(personId);
     }
+
+    public Player playerFor(PersonId personId) {
+        return players()
+                   .stream()
+                   .filter(player -> player.personId().equals(personId))
+                   .findFirst()
+                   .get();
+    }
 }

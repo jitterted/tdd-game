@@ -11,11 +11,7 @@ public class PlayerJoinsGame {
     // (as we're not in the Domain, managing Domain state)
     public Player join(Person person, Game game) {
         game.join(person.id());
-        return game.players()
-                   .stream()
-                   .filter(player -> player.personId().equals(person.id()))
-                   .findFirst()
-                   .get();
+        return game.playerFor(person.id());
     }
 
 }
