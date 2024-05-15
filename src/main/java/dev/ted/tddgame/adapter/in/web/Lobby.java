@@ -1,9 +1,12 @@
 package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.application.GameCreator;
+import dev.ted.tddgame.application.PlayerJoinsGame;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameView;
+import dev.ted.tddgame.domain.Person;
+import dev.ted.tddgame.domain.PersonId;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,7 @@ public class Lobby {
 
     private final GameStore gameStore;
     private final GameCreator gameCreator;
+    private PlayerJoinsGame playerJoinsGame;
 
     public Lobby(GameStore gameStore, GameCreator gameCreator) {
         this.gameStore = gameStore;
@@ -67,6 +71,7 @@ public class Lobby {
     @PostMapping("/join")
     public String joinGame(Principal principal,
                            @RequestParam("gameHandle") String gameHandle) {
+        playerJoinsGame.join(new Person(new PersonId(42L)), gameHandle);
         return "redirect:/";
     }
 }

@@ -14,4 +14,7 @@ public class PlayerJoinsGame {
         return game.playerFor(person.id());
     }
 
+    public void join(Person person, String gameHandle) {
+
+    }
 }

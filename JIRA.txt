@@ -98,7 +98,7 @@ Player's "State Machine":
         [X] Test to make sure hostNewGame has Game created and stored
     [X] Lobby shows games available with handles for each
     [ ] Person join game: textbox (for handle) and "Join Game" button does POST
-        [ ] MVC test for /join endpoint
+        [X] MVC test for /join endpoint
         [ ] PostMapping that does:
             [ ] Creates Player in the Game for the Person
             [ ] Redirects to page that shows the game page
