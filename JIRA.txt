@@ -110,9 +110,16 @@ Player's "State Machine":
 [X] EventSourcedAggregate<GameEvent>
 [X] Static method for creating initial game
 [X] GameEvent interface, with subclasses for each event type
-[ ] Fix the Game.join() method to not return the Player, but instead provide method to obtain the Player based on the PersonId
+[X] Fix the Game.join() method to not return the Player, but instead provide method to obtain the Player based on the PersonId
 
+    Using in-memory persistence for Game
+    [ ] Use case to use load (from Repository), modify, save (to Repository) pattern
+    [ ] GameRepository in-memory implementation
+    [ ] GameViewLoader implementation using the GameRepository
 
+    Real Database
+    [ ] Repository Adapter for JDBC
+    [ ] JDBC concrete implementation
 
 
 ## Future Features

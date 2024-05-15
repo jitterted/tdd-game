@@ -1,5 +1,6 @@
 package dev.ted.tddgame.application;
 
+import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.GameViewLoader;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameView;
@@ -12,7 +13,7 @@ class GameCreatorTest {
 
     @Test
     void newGameCreatedWithGivenName() {
-        GameCreator gameCreator = GameCreator.create();
+        GameCreator gameCreator = GameCreator.createNull();
 
         Game createdGame = gameCreator.createNewGame("game name");
 
@@ -23,7 +24,7 @@ class GameCreatorTest {
 
     @Test
     void gamesAssignedUniqueHandle() {
-        GameCreator gameCreator = GameCreator.create();
+        GameCreator gameCreator = GameCreator.createNull();
         Game game1 = gameCreator.createNewGame("TDD Game");
         Game game2 = gameCreator.createNewGame("TDD Game");
 
@@ -31,12 +32,23 @@ class GameCreatorTest {
                 .isNotEqualTo(game2.handle());
     }
 
+    @Test
+    void createdGameCanBeFoundInRepository() {
+        GameStore gameStore = new GameStore();
+        GameCreator gameCreator = GameCreator.create(gameStore);
+
+        Game game = gameCreator.createNewGame("my new game name");
+
+        assertThat(gameStore.findAll())
+                .extracting(Game::name)
+                .containsExactly("my new game name");
+    }
 
     @Test
     @Disabled("Until Game event sourcing, with READ MODEL is completed")
     void gameViewLoaderReturnsViewOfNewGame() {
         GameViewLoader gameViewLoader = new GameViewLoader();
-        GameCreator gameCreator = GameCreator.create();
+        GameCreator gameCreator = GameCreator.createNull();
 
         Game game = gameCreator.createNewGame("new game");
 

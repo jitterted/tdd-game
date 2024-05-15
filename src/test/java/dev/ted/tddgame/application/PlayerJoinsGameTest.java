@@ -23,7 +23,7 @@ class PlayerJoinsGameTest {
     @Test
     void personJoinsExistingGameThenAddedAsPlayer() {
         PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
-        Game game = GameCreator.create().createNewGame("TDD Game");
+        Game game = GameCreator.createNull().createNewGame("TDD Game");
         Person person = new Person(new PersonId(27L));
 
         Player player = playerJoinsGame.join(person, game);
@@ -42,7 +42,7 @@ class PlayerJoinsGameTest {
     @Test
     void twoPersonsJoinExistingGameThenBothAddedAsDifferentPlayers() {
         PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
-        Game game = GameCreator.create().createNewGame("TDD Game");
+        Game game = GameCreator.createNull().createNewGame("TDD Game");
         Person firstPerson = new Person(new PersonId(7L));
         Person secondPerson = new Person(new PersonId(8L));
 
@@ -56,7 +56,7 @@ class PlayerJoinsGameTest {
     @Test
     void personJoinsIsRejoinWhenAlreadyPlayerInGame() {
         PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
-        Game game = GameCreator.create().createNewGame("TDD Game");
+        Game game = GameCreator.createNull().createNewGame("TDD Game");
         Person person = new Person(new PersonId(7L));
         Player player = playerJoinsGame.join(person, game);
         playerJoinsGame.join(new Person(new PersonId(8L)), game);
@@ -97,7 +97,7 @@ class PlayerJoinsGameTest {
     
     private Game gameWith4Players(Long... personIds) {
         PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
-        Game game = GameCreator.create().createNewGame("TDD Game");
+        Game game = GameCreator.createNull().createNewGame("TDD Game");
 
         Stream.of(personIds)
               .map(id -> new Person(new PersonId(id)))
