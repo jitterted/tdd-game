@@ -107,9 +107,10 @@ Player's "State Machine":
 
 ## Event-Sourcing Game Persistence
 >>> Commands -> Events -> State
-[ ] EventSourcedAggregate<GameEvent>
-[ ] Static method for creating initial game
-[ ] GameEvent interface, with subclasses for each event type
+[X] EventSourcedAggregate<GameEvent>
+[X] Static method for creating initial game
+[X] GameEvent interface, with subclasses for each event type
+[ ] Fix the Game.join() method to not return the Player, but instead provide method to obtain the Player based on the PersonId
 
 
 

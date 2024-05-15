@@ -33,7 +33,7 @@ class GameCreatorTest {
 
 
     @Test
-    @Disabled("Until Game event sourcing is completed")
+    @Disabled("Until Game event sourcing, with READ MODEL is completed")
     void gameViewLoaderReturnsViewOfNewGame() {
         GameViewLoader gameViewLoader = new GameViewLoader();
         GameCreator gameCreator = GameCreator.create();

@@ -64,19 +64,13 @@ public class Game extends EventSourcedAggregate {
         return playerMap.values().stream().toList();
     }
 
-    public Player join(PersonId personId) {
+    public void join(PersonId personId) {
         if (!canJoin(personId)) {
             String ids = playerMap.keySet().stream().map(PersonId::id).toList().toString();
             throw new IllegalStateException("Game is full (Person IDs: " + ids + "), so " + personId + " cannot join.");
         }
 
         enqueue(new PlayerJoined(personId));
-
-        return playerMap.computeIfAbsent(
-                personId,
-                _ -> new Player(
-                        personId, new
-                        PlayerId(playerIdGenerator.getAndIncrement())));
     }
 
     public boolean canJoin(PersonId personId) {
