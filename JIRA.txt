@@ -95,7 +95,7 @@ Player's "State Machine":
 [ ] Inbound HTTP Adapter
     [ ] Host create game: numeric-only textbox and "Create Game" button does POST
         [X] MVC part
-        [ ] Test to make sure it creates the game and returns "handle" for the game
+        [X] Test to make sure hostNewGame has Game created and stored
     [ ] Lobby shows games available with handles for each
     [ ] Person join game: textbox (for handle) and "Join Game" button does POST
         [ ] Creates Player in the Game for the Person
