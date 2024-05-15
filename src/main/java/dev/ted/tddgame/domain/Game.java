@@ -78,10 +78,6 @@ public class Game extends EventSourcedAggregate {
     }
 
     public Player playerFor(PersonId personId) {
-        return players()
-                   .stream()
-                   .filter(player -> player.personId().equals(personId))
-                   .findFirst()
-                   .get();
+        return playerMap.get(personId);
     }
 }

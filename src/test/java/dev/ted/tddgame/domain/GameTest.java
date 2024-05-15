@@ -73,6 +73,10 @@ class GameTest {
                     .hasSize(1)
                     .extracting(Player::personId)
                     .containsExactly(new PersonId(53L));
+
+            assertThat(game.playerFor(new PersonId(53L))
+                           .personId())
+                    .isEqualTo(new PersonId(53L));
         }
 
         private static List<GameEvent> gameWithFreshEvents(PlayerJoined freshEvent) {
