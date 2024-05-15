@@ -1,6 +1,8 @@
 package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.application.GameCreator;
+import dev.ted.tddgame.application.port.GameStore;
+import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameView;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,33 +11,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class Lobby {
 
-    private final List<GameView> gameViews = new ArrayList<>();
-    private GameCreator gameCreator;
+    private final GameStore gameStore;
+    private final GameCreator gameCreator;
 
-    public Lobby(GameCreator gameCreator) {
+    public Lobby(GameStore gameStore, GameCreator gameCreator) {
+        this.gameStore = gameStore;
         this.gameCreator = gameCreator;
     }
 
-    public Lobby(List<GameView> gameViews) {
-        this.gameViews.addAll(gameViews);
+    public static Lobby create(GameStore gameStore) {
+        return new Lobby(gameStore, GameCreator.create(gameStore));
     }
 
     public static Lobby createNull() {
-        return new Lobby(GameCreator.createNull());
+        GameStore gameStore = new GameStore();
+        return create(gameStore);
     }
 
-    public static Lobby create(GameCreator gameCreator) {
-        return new Lobby(gameCreator);
-    }
-
-    public static Lobby createNull(GameView gameView) {
-        return new Lobby(List.of(gameView));
+    public static Lobby createNull(Game game) {
+        GameStore gameStore = new GameStore();
+        gameStore.save(game);
+        return create(gameStore);
     }
 
     @GetMapping("/")
@@ -46,8 +47,14 @@ public class Lobby {
     @GetMapping("/lobby")
     public String showLobby(Principal principal, Model model) {
         model.addAttribute("personName", principal.getName());
+        List<Game> allGames = gameStore.findAll();
+        if (allGames.isEmpty()) {
+            return "no-game-lobby";
+        }
+
+        List<GameView> gameViews = allGames.stream().map(GameView::from).toList();
         model.addAttribute("gameViews", gameViews);
-        return gameViews.isEmpty() ? "no-game-lobby" : "lobby";
+        return "lobby";
     }
 
     @PostMapping("/games")
