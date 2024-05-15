@@ -64,4 +64,9 @@ public class Lobby {
         return "redirect:/lobby";
     }
 
+    @PostMapping("/join")
+    public String joinGame(Principal principal,
+                           @RequestParam("gameHandle") String gameHandle) {
+        return "redirect:/";
+    }
 }
