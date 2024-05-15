@@ -10,10 +10,19 @@
 
 <h1>Which Game Would You Like to Join?</h1>
 <ul>
-    <li th:each="gameView : ${gameViews}" th:text="|${gameView.name} - ${gameView.handle} - ${gameView.playerCount}|">
-        Game Name - Game Handle - # Players
+    <li th:each="gameView : ${gameViews}">
+        <span th:text="${gameView.name}">Game Name</span>
+        -
+        <span style="font-family: monospace;" th:text="${gameView.handle}">Game Handle</span>
+        - Player Count =
+        <span th:text="${gameView.playerCount}">0</span>
     </li>
 </ul>
+<form action="#" th:action="@{/join}" method="post">
+    <label for="gameHandle">Game Handle:</label>
+    <input id="gameHandle" type="text" name="gameHandle"/>
+    <button type="submit">Join Game</button>
+</form>
 
 <h2>Host New Game</h2>
 <form action="#" th:action="@{/games}" method="post">

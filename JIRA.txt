@@ -93,13 +93,15 @@ Player's "State Machine":
     [ ] (Temporary) Constraint: players can't join once game is started
 
 [ ] Inbound HTTP Adapter
-    [ ] Host create game: numeric-only textbox and "Create Game" button does POST
+    [X] Host create game: numeric-only textbox and "Create Game" button does POST
         [X] MVC part
         [X] Test to make sure hostNewGame has Game created and stored
-    [ ] Lobby shows games available with handles for each
+    [X] Lobby shows games available with handles for each
     [ ] Person join game: textbox (for handle) and "Join Game" button does POST
-        [ ] Creates Player in the Game for the Person
-        [ ] Redirects to page that shows the game page
+        [ ] MVC test for /join endpoint
+        [ ] PostMapping that does:
+            [ ] Creates Player in the Game for the Person
+            [ ] Redirects to page that shows the game page
 
 [ ] Outbound (Notifier) WebSocket Adapter
     [ ] Display name of game, all players, decks, pawns, etc.
