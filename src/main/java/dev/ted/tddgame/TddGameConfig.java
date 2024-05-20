@@ -20,8 +20,8 @@ public class TddGameConfig {
     }
 
     @Bean
-    public PlayerJoinsGame playerJoinsGame() {
-        return PlayerJoinsGame.createNull();
+    public PlayerJoinsGame playerJoinsGame(GameStore gameStore) {
+        return new PlayerJoinsGame(gameStore);
     }
 
 }

@@ -1,10 +1,10 @@
 package dev.ted.tddgame.application;
 
+import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Person;
 import dev.ted.tddgame.domain.PersonId;
 import dev.ted.tddgame.domain.Player;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
@@ -22,21 +22,13 @@ class PlayerJoinsGameTest {
     }
 
     @Test
-    @Disabled("Until GameStore.findByHandle() exists")
     void personJoinsExistingGameThenAddedAsPlayer() {
-        PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
-        Game game = GameCreator.createNull().createNewGame("TDD Game");
+        Fixture fixture = createFixture();
         Person person = new Person(new PersonId(27L));
 
-        playerJoinsGame.join(person.id(), game.handle());
-//        Player player = playerJoinsGame.join(person, game);
-//
-//        assertThat(player.id())
-//                .isNotNull();
-//        assertThat(player.personId().id())
-//                .isEqualTo(27L);
+        fixture.playerJoinsGame().join(person.id(), fixture.game().handle());
 
-        assertThat(game.players())
+        assertThat(fixture.game().players())
                 .hasSize(1)
                 .extracting(Player::personId)
                 .containsExactly(new PersonId(27L));
@@ -44,30 +36,30 @@ class PlayerJoinsGameTest {
 
     @Test
     void twoPersonsJoinExistingGameThenBothAddedAsDifferentPlayers() {
-        PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
-        Game game = GameCreator.createNull().createNewGame("TDD Game");
-        Person firstPerson = new Person(new PersonId(7L));
-        Person secondPerson = new Person(new PersonId(8L));
+        Fixture fixture = createFixture();
+        PersonId firstPerson = new PersonId(7L);
+        PersonId secondPerson = new PersonId(8L);
 
-        Player firstPlayer = playerJoinsGame.join(firstPerson, game);
-        Player secondPlayer = playerJoinsGame.join(secondPerson, game);
+        fixture.playerJoinsGame().join(firstPerson, fixture.game().handle());
+        fixture.playerJoinsGame().join(secondPerson, fixture.game().handle());
 
-        assertThat(firstPlayer)
-                .isNotEqualTo(secondPlayer);
+        assertThat(fixture.game().players())
+                .map(Player::personId)
+                .containsExactly(firstPerson, secondPerson);
     }
 
     @Test
-    void personJoinsIsRejoinWhenAlreadyPlayerInGame() {
-        PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
-        Game game = GameCreator.createNull().createNewGame("TDD Game");
-        Person person = new Person(new PersonId(7L));
-        Player player = playerJoinsGame.join(person, game);
-        playerJoinsGame.join(new Person(new PersonId(8L)), game);
+    void personJoinsIsNotAddedAsNewPlayerWhenAlreadyPlayerInGame() {
+        Fixture fixture = createFixture();
+        PersonId personId = new PersonId(7L);
+        fixture.playerJoinsGame().join(personId, fixture.game().handle());
+        fixture.playerJoinsGame().join(new PersonId(8L), fixture.game().handle());
 
-        Player joinAgainPlayer = playerJoinsGame.join(person, game);
+        fixture.playerJoinsGame().join(personId, fixture.game().handle());
 
-        assertThat(joinAgainPlayer)
-                .isEqualTo(player);
+        assertThat(fixture.game().players())
+                .as("Expected 2 players, as first person rejoined")
+                .hasSize(2);
     }
 
     @Test
@@ -97,15 +89,27 @@ class PlayerJoinsGameTest {
     }
 
     // -- ENCAPSULATED SETUP
-    
+
     private Game gameWith4Players(Long... personIds) {
-        PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
-        Game game = GameCreator.createNull().createNewGame("TDD Game");
+        Fixture fixture = createFixture();
 
         Stream.of(personIds)
-              .map(id -> new Person(new PersonId(id)))
-              .forEach(person -> playerJoinsGame.join(person, game));
+              .map(PersonId::new)
+              .forEach(personId -> fixture.playerJoinsGame()
+                                          .join(personId, fixture.game().handle()));
 
-        return game;
+        return fixture.game();
     }
+
+    private static Fixture createFixture() {
+        GameStore gameStore = new GameStore();
+        PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame(gameStore);
+        Game game = new GameCreator(gameStore).createNewGame("TDD Game");
+        return new Fixture(playerJoinsGame, game);
+    }
+
+    private record Fixture(PlayerJoinsGame playerJoinsGame, Game game) {
+    }
+
+
 }

@@ -1,6 +1,8 @@
 package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.TddGameConfig;
+import dev.ted.tddgame.application.GameCreator;
+import dev.ted.tddgame.domain.Game;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,14 @@ class GameJoinerMvcTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    GameCreator gameCreator;
+
     @Test
     void postToJoinGameRedirects() throws Exception {
+        Game game = gameCreator.createNewGame("Game Name");
         mockMvc.perform(post("/join")
-                                .param("gameHandle", "345")
+                                .param("gameHandle", game.handle())
                                 .with(csrf()))
                .andExpect(status().is3xxRedirection());
     }
