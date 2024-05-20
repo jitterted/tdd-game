@@ -1,10 +1,12 @@
 package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.TddGameConfig;
+import dev.ted.tddgame.application.PlayerJoinsGame;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +26,9 @@ class LobbyMvcTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @MockBean
+    PlayerJoinsGame playerJoinsGame;
 
     @Test
     void getToRootPathRedirectsToLobby() throws Exception {

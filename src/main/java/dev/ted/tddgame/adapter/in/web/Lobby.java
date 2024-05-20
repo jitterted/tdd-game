@@ -7,6 +7,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameView;
 import dev.ted.tddgame.domain.Person;
 import dev.ted.tddgame.domain.PersonId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +24,15 @@ public class Lobby {
     private final GameCreator gameCreator;
     private PlayerJoinsGame playerJoinsGame;
 
-    public Lobby(GameStore gameStore, GameCreator gameCreator) {
+    @Autowired
+    public Lobby(GameStore gameStore, GameCreator gameCreator, PlayerJoinsGame playerJoinsGame) {
         this.gameStore = gameStore;
         this.gameCreator = gameCreator;
+        this.playerJoinsGame = playerJoinsGame;
     }
 
     public static Lobby create(GameStore gameStore) {
-        return new Lobby(gameStore, GameCreator.create(gameStore));
+        return new Lobby(gameStore, GameCreator.create(gameStore), new PlayerJoinsGame());
     }
 
     public static Lobby createNull() {
