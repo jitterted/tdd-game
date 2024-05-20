@@ -20,11 +20,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD, DispatcherType.REQUEST).permitAll()
-                        .anyRequest().authenticated()
+                        .dispatcherTypeMatchers(DispatcherType.ERROR, DispatcherType.FORWARD)
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults());
+                .formLogin(Customizer.withDefaults())
+        ;
 
         return http.build();
     }
