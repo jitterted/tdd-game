@@ -5,6 +5,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Person;
 import dev.ted.tddgame.domain.PersonId;
 import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
@@ -71,15 +72,6 @@ class PlayerJoinsGameTest {
     }
 
     @Test
-    void exceptionThrownIfNewPlayerCanNotJoinGame() {
-        Game game = gameWith4Players(7L, 9L, 11L, 13L);
-
-        assertThatIllegalStateException()
-                .isThrownBy(() -> game.join(new PersonId(18L)))
-                .withMessage("Game is full (Person IDs: [7, 9, 11, 13]), so PersonId[id=18] cannot join.");
-    }
-
-    @Test
     void noExceptionThrownIfPlayerAlreadyInGame() {
         long existingPersonId = 11L;
         Game game = gameWith4Players(7L, 9L, existingPersonId, 13L);
@@ -88,6 +80,27 @@ class PlayerJoinsGameTest {
                 .isThrownBy(() -> game.join(new PersonId(existingPersonId)));
     }
 
+    @Nested
+    class UnhappyScenarios {
+
+        @Test
+        void exceptionThrownIfNewPlayerCanNotJoinGame() {
+            Game game = gameWith4Players(7L, 9L, 11L, 13L);
+
+            assertThatIllegalStateException()
+                    .isThrownBy(() -> game.join(new PersonId(18L)))
+                    .withMessage("Game is full (Person IDs: [7, 9, 11, 13]), so PersonId[id=18] cannot join.");
+        }
+
+        @Test
+        void exceptionThrownIfGameHandleIsNotFoundInGameStore() {
+            PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
+
+            assertThatIllegalArgumentException()
+                    .isThrownBy(() -> playerJoinsGame.join(new PersonId(42L), "non-existing-game-handle"))
+                    .withMessage("Game with handle 'non-existing-game-handle' was not found in the GameStore.");
+        }
+    }
     // -- ENCAPSULATED SETUP
 
     private Game gameWith4Players(Long... personIds) {

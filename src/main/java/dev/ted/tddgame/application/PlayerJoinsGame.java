@@ -18,7 +18,11 @@ public class PlayerJoinsGame {
     }
 
     public void join(PersonId personId, String gameHandle) {
-        Game game = gameStore.findByHandle(gameHandle).orElseThrow();
+        Game game = gameStore.findByHandle(gameHandle)
+                             .orElseThrow( () -> new IllegalArgumentException(
+                                     "Game with handle '%s' was not found in the GameStore."
+                                             .formatted(gameHandle)
+                             ));
         game.join(personId);
         gameStore.save(game);
     }
