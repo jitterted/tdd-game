@@ -21,7 +21,7 @@ public class TddGameConfig {
 
     @Bean
     public PlayerJoinsGame playerJoinsGame() {
-        return new PlayerJoinsGame();
+        return PlayerJoinsGame.createNull();
     }
 
 }

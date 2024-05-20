@@ -2,18 +2,23 @@ package dev.ted.tddgame.application.port;
 
 import dev.ted.tddgame.domain.Game;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameStore {
 
-    private final ArrayList<Game> games = new ArrayList<>();
+    private final Map<String, Game> gameMap = new HashMap<>();
 
     public List<Game> findAll() {
-        return games;
+        return gameMap.values().stream().toList();
     }
 
     public void save(Game game) {
-        games.add(game);
+        gameMap.put(game.handle(), game);
+    }
+
+    public Game findByHandle(String gameHandle) {
+        return gameMap.get(gameHandle);
     }
 }

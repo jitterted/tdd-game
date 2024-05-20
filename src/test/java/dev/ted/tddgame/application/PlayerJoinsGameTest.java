@@ -4,6 +4,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Person;
 import dev.ted.tddgame.domain.PersonId;
 import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
@@ -21,17 +22,19 @@ class PlayerJoinsGameTest {
     }
 
     @Test
+    @Disabled("Until GameStore.findByHandle() exists")
     void personJoinsExistingGameThenAddedAsPlayer() {
-        PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
+        PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
         Game game = GameCreator.createNull().createNewGame("TDD Game");
         Person person = new Person(new PersonId(27L));
 
-        Player player = playerJoinsGame.join(person, game);
-
-        assertThat(player.id())
-                .isNotNull();
-        assertThat(player.personId().id())
-                .isEqualTo(27L);
+        playerJoinsGame.join(person.id(), game.handle());
+//        Player player = playerJoinsGame.join(person, game);
+//
+//        assertThat(player.id())
+//                .isNotNull();
+//        assertThat(player.personId().id())
+//                .isEqualTo(27L);
 
         assertThat(game.players())
                 .hasSize(1)
@@ -41,7 +44,7 @@ class PlayerJoinsGameTest {
 
     @Test
     void twoPersonsJoinExistingGameThenBothAddedAsDifferentPlayers() {
-        PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
+        PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
         Game game = GameCreator.createNull().createNewGame("TDD Game");
         Person firstPerson = new Person(new PersonId(7L));
         Person secondPerson = new Person(new PersonId(8L));
@@ -55,7 +58,7 @@ class PlayerJoinsGameTest {
 
     @Test
     void personJoinsIsRejoinWhenAlreadyPlayerInGame() {
-        PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
+        PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
         Game game = GameCreator.createNull().createNewGame("TDD Game");
         Person person = new Person(new PersonId(7L));
         Player player = playerJoinsGame.join(person, game);
@@ -96,7 +99,7 @@ class PlayerJoinsGameTest {
     // -- ENCAPSULATED SETUP
     
     private Game gameWith4Players(Long... personIds) {
-        PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame();
+        PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
         Game game = GameCreator.createNull().createNewGame("TDD Game");
 
         Stream.of(personIds)

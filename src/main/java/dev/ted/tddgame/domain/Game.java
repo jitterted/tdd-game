@@ -3,6 +3,7 @@ package dev.ted.tddgame.domain;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Game extends EventSourcedAggregate {
@@ -79,5 +80,31 @@ public class Game extends EventSourcedAggregate {
 
     public Player playerFor(PersonId personId) {
         return playerMap.get(personId);
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Game game)) {
+            return false;
+        }
+
+        return handle.equals(game.handle);
+    }
+
+    @Override
+    public int hashCode() {
+        return handle.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Game.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("handle='" + handle + "'")
+                .add("playerMap=" + playerMap)
+                .toString();
     }
 }
