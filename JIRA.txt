@@ -88,7 +88,10 @@ Player's "State Machine":
         [X] Constraint: A Person can not join the same game twice, i.e., can't represent TWO Players
             * If a Person joins a game where they are already a player, that is "rejoining" (reconnecting)
         [X] Constraint: 4 players maximum per game (rejoins don't count, of course)
-[ ] 4. "start game" is Triggered
+[ ] 4. Waiting for game to start (once at least 1 person has joined)
+    [ ] Receive notification when additional players are added
+    [ ] Can only start game at this point by calling .start()
+[ ] 5. "start game" is Triggered
     [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
     [ ] (Temporary) Constraint: players can't join once game is started
 
@@ -97,11 +100,16 @@ Player's "State Machine":
         [X] MVC part
         [X] Test to make sure hostNewGame has Game created and stored
     [X] Lobby shows games available with handles for each
-    [ ] Person join game: textbox (for handle) and "Join Game" button does POST
+    [X] Person join game: textbox (for handle) and "Join Game" button does POST
         [X] MVC test for /join endpoint
-        [ ] PostMapping that does:
-            [ ] Creates Player in the Game for the Person
-            [ ] Redirects to page that shows the game page
+        [X] PostMapping that does:
+            [X] Creates Player in the Game for the Person
+            [X] Redirects to page that shows the game page
+    [ ] Game-in-progress page: show "modal"
+        [ ] Show other players as they join -- via WebSockets (htmx)
+            [ ] Associate logged in user (username?) with a PersonId for joining, by looking up that username in PersonStore
+            [ ] Get first name from the Person
+        [ ] Start Game starts the game and the modal goes away
 
 [ ] Outbound (Notifier) WebSocket Adapter
     [ ] Display name of game, all players, decks, pawns, etc.
@@ -115,8 +123,8 @@ Player's "State Machine":
 [X] Fix the Game.join() method to not return the Player, but instead provide method to obtain the Player based on the PersonId
 
     Using in-memory persistence for Game
-    [ ] Use case to use load (from Repository), modify, save (to Repository) pattern
-    [X] GameRepository in-memory implementation
+    [X] Use case to use load (from Repository), modify, save (to Repository) pattern
+    [X] GameStore in-memory implementation
         [ ] Make it use the event-source storage model
     [ ] GameViewLoader implementation using the GameRepository
 
