@@ -17,6 +17,12 @@ public class PlayerJoinsGame {
         return new PlayerJoinsGame(new GameStore());
     }
 
+    public static PlayerJoinsGame createNull(Game game) {
+        GameStore gameStore = new GameStore();
+        gameStore.save(game);
+        return new PlayerJoinsGame(gameStore);
+    }
+
     public void join(PersonId personId, String gameHandle) {
         Game game = gameStore.findByHandle(gameHandle)
                              .orElseThrow( () -> new IllegalArgumentException(

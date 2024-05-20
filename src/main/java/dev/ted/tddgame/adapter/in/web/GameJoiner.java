@@ -26,6 +26,6 @@ public class GameJoiner {
     public String joinGame(Principal principal,
                            @RequestParam("gameHandle") String gameHandle) {
         playerJoinsGame.join(new PersonId(42L), gameHandle);
-        return "redirect:/";
+        return "redirect:/game-in-progress";
     }
 }
