@@ -10,7 +10,7 @@ state "Write Code For Feature" as for_feature
 state "Predict Test Now Passes" as predict_test_passes
 state "Commit Code" as commit_code
 
-[*] -r-> what : Join Game
+[*] -r-> what : Game Started
 
 what -r-> how : Discard Any Action Card
 

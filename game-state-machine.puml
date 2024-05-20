@@ -1,0 +1,16 @@
+@startuml
+
+state "Game Created" as GameCreated
+state "Game In Progress" as GameInProgress
+
+[*] --> GameCreated : Host Creates Game
+
+GameCreated --> GameCreated : Player Joins Game
+
+GameCreated --> GameInProgress : Player Starts Game
+
+GameInProgress --> GameInProgress : (See Board State Machine)
+
+GameInProgress --> GameOver : Player Ends Game
+
+@enduml

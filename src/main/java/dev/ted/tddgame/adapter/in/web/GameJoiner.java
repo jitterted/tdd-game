@@ -25,7 +25,7 @@ public class GameJoiner {
 
     @PostMapping("/join")
     public String joinGame(Principal principal,
-                                  @RequestParam("gameHandle") String gameHandle) {
+                           @RequestParam("gameHandle") String gameHandle) {
         playerJoinsGame.join(new Person(new PersonId(42L)), gameHandle);
         return "redirect:/";
     }
