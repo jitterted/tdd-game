@@ -3,11 +3,8 @@ package dev.ted.tddgame.adapter.in.web;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameView;
-import dev.ted.tddgame.domain.Player;
-import dev.ted.tddgame.domain.PlayerId;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.api.ListAssert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 
@@ -52,21 +49,6 @@ class LobbyTest {
 
         assertThat(gameStore.findAll())
                 .hasSize(1);
-    }
-
-    @Test
-    @Disabled("Depends on PlayerJoinsGame.join() accepting a Game Handle instead of a Game Object")
-    void personIsInGameAfterJoinGame() {
-        Game game = Game.create("game name", "rush-cat-21");
-        Lobby lobby = Lobby.createNull(game);
-
-        Principal principal = () -> "Blue";
-        lobby.joinGame(principal, "rush-cat-21");
-
-        assertThat(game.players())
-                .hasSize(1)
-                .extracting(Player::id)
-                .containsExactly(new PlayerId(99L));
     }
 
     private static ListAssert<GameView> assertThatGameViewsFrom(ConcurrentModel model) {

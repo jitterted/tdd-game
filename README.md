@@ -4,7 +4,7 @@ This is the online version of JitterTed's TDD Game (buy a copy at https://tdd.ca
 
 ## Project Status
 
-In May, 2024, I reset the project and am reimplementing it using HTML and [htmx](https://htmx.org) for the front-end, and Spring Boot & Java on the back-end.
+In May 2024, I reset the project and am reimplementing it using HTML and [htmx](https://htmx.org) for the front-end, and Spring Boot & Java on the back-end.
 
 ## Watch Me Code
 

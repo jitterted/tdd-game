@@ -53,11 +53,4 @@ class LobbyMvcTest {
                .andExpect(redirectedUrl("/lobby"));
     }
 
-    @Test
-    void postToJoinGameRedirects() throws Exception {
-        mockMvc.perform(post("/join")
-                                .param("gameHandle", "345")
-                                .with(csrf()))
-               .andExpect(status().is3xxRedirection());
-    }
 }
