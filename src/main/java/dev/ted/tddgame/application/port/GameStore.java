@@ -5,6 +5,7 @@ import dev.ted.tddgame.domain.Game;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class GameStore {
 
@@ -18,7 +19,7 @@ public class GameStore {
         gameMap.put(game.handle(), game);
     }
 
-    public Game findByHandle(String gameHandle) {
-        return gameMap.get(gameHandle);
+    public Optional<Game> findByHandle(String gameHandle) {
+        return Optional.ofNullable(gameMap.get(gameHandle));
     }
 }
