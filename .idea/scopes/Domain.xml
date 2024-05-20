@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Domain" pattern="src:dev.ted.tddgame.domain..*" />
+</component>

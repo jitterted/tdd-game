@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Inbound Adapters" pattern="src:dev.ted.tddgame.adapter.in..*" />
+</component>
