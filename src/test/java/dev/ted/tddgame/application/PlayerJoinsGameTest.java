@@ -27,9 +27,9 @@ class PlayerJoinsGameTest {
     @Test
     void memberJoinsExistingGameThenAddedAsPlayer() {
         Fixture fixture = createFixture();
-        Member member = new Member(new MemberId(27L), "Theresa");
+        Member member = new Member(new MemberId(27L), "Theresa", "the123");
 
-        fixture.playerJoinsGame().join(member.id(), fixture.game().handle(), member.name());
+        fixture.playerJoinsGame().join(member.id(), fixture.game().handle(), member.nickname());
 
         assertThat(fixture.game().players())
                 .hasSize(1)
