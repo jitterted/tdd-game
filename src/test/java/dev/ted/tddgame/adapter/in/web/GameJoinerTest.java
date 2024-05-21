@@ -31,7 +31,7 @@ class GameJoinerTest {
                 .containsExactly(tuple(new MemberId(89L), "BlueNickName"));
 
         assertThat(redirectPage)
-                .isEqualTo("redirect:/game-in-progress");
+                .isEqualTo("redirect:/game");
     }
 
 }
