@@ -1,6 +1,7 @@
 package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.application.PlayerJoinsGame;
+import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
@@ -15,17 +16,19 @@ class GameJoinerTest {
 
     @Test
     void memberIsPlayerInGameAfterJoinGame() {
-        Member member = new Member(new MemberId(89L), "Blue", "blueauth");
+        MemberStore memberStore = new MemberStore();
+        Member member = new Member(new MemberId(89L), "BlueNickName", "blueauth");
+        memberStore.save(member);
         Game game = Game.create("game name", "rush-cat-21");
-        GameJoiner gameJoiner = new GameJoiner(PlayerJoinsGame.createNull(game));
+        GameJoiner gameJoiner = new GameJoiner(PlayerJoinsGame.createNull(game), memberStore);
 
-        Principal principal = () -> "Blue"; // username
+        Principal principal = () -> "blueauth"; // Principal.getName() = authName
         String redirectPage = gameJoiner.joinGame(principal, "rush-cat-21");
 
         assertThat(game.players())
                 .hasSize(1)
-                .extracting(Player::memberId)
-                .containsExactly(new MemberId(42L));
+                .extracting(Player::memberId, Player::playerName)
+                .containsExactly(tuple(new MemberId(89L), "BlueNickName"));
 
         assertThat(redirectPage)
                 .isEqualTo("redirect:/game-in-progress");
