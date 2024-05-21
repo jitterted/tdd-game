@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Game extends EventSourcedAggregate {
     private String name;
     private String handle;
-    private final Map<PersonId, Player> playerMap = new HashMap<>();
+    private final Map<MemberId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
 
     public Game() {
@@ -43,11 +43,11 @@ public class Game extends EventSourcedAggregate {
                 this.name = name;
                 this.handle = handle;
             }
-            case PlayerJoined(PersonId personId) -> {
+            case PlayerJoined(MemberId memberId) -> {
                 playerMap.computeIfAbsent(
-                        personId,
+                        memberId,
                         _ -> new Player(
-                                personId, new
+                                memberId, new
                                 PlayerId(playerIdGenerator.getAndIncrement())));
             }
         }
@@ -65,21 +65,21 @@ public class Game extends EventSourcedAggregate {
         return playerMap.values().stream().toList();
     }
 
-    public void join(PersonId personId) {
-        if (!canJoin(personId)) {
-            String ids = playerMap.keySet().stream().map(PersonId::id).toList().toString();
-            throw new IllegalStateException("Game is full (Person IDs: " + ids + "), so " + personId + " cannot join.");
+    public void join(MemberId memberId) {
+        if (!canJoin(memberId)) {
+            String ids = playerMap.keySet().stream().map(MemberId::id).toList().toString();
+            throw new IllegalStateException("Game is full (Member IDs: " + ids + "), so " + memberId + " cannot join.");
         }
 
-        enqueue(new PlayerJoined(personId));
+        enqueue(new PlayerJoined(memberId));
     }
 
-    public boolean canJoin(PersonId personId) {
-        return playerMap.size() < 4 || playerMap.containsKey(personId);
+    public boolean canJoin(MemberId memberId) {
+        return playerMap.size() < 4 || playerMap.containsKey(memberId);
     }
 
-    public Player playerFor(PersonId personId) {
-        return playerMap.get(personId);
+    public Player playerFor(MemberId memberId) {
+        return playerMap.get(memberId);
     }
 
     @Override

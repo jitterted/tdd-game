@@ -43,7 +43,7 @@ Player's "State Machine":
 
 ## Ubiquitous Language
 * Game (deck, card, tile, etc.)
-    * Competitive: every person for themselves (1:1 player:pawn)
+    * Competitive: every member for themselves (1:1 player:pawn)
     * Co-op (mob programming): working together to move pawn forward (N:1 player:pawn)
 * Player - ties an Account/Member to a specific game ("player in game")
 * Host - part of a Team, they created an instance of a game
@@ -88,7 +88,7 @@ Player's "State Machine":
         [X] Constraint: A Person can not join the same game twice, i.e., can't represent TWO Players
             * If a Person joins a game where they are already a player, that is "rejoining" (reconnecting)
         [X] Constraint: 4 players maximum per game (rejoins don't count, of course)
-[ ] 4. Waiting for game to start (once at least 1 person has joined)
+[ ] 4. Waiting for game to start (once at least 1 member has joined)
     [ ] Receive notification when additional players are added
     [ ] Can only start game at this point by calling .start()
 [ ] 5. "start game" is Triggered

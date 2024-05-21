@@ -1,4 +1,4 @@
 package dev.ted.tddgame.domain;
 
-public record PlayerJoined(PersonId personId) implements GameEvent {
+public record PlayerJoined(MemberId memberId) implements GameEvent {
 }

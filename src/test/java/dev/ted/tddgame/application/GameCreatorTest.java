@@ -37,7 +37,7 @@ class GameCreatorTest {
         GameStore gameStore = new GameStore();
         GameCreator gameCreator = GameCreator.create(gameStore);
 
-        Game game = gameCreator.createNewGame("my new game name");
+        gameCreator.createNewGame("my new game name");
 
         assertThat(gameStore.findAll())
                 .extracting(Game::name)

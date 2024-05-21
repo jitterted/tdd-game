@@ -2,8 +2,8 @@ package dev.ted.tddgame.application;
 
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
-import dev.ted.tddgame.domain.Person;
-import dev.ted.tddgame.domain.PersonId;
+import dev.ted.tddgame.domain.Member;
+import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,69 +15,69 @@ import static org.assertj.core.api.Assertions.*;
 class PlayerJoinsGameTest {
 
     @Test
-    void personsCanJoinNewGame() {
+    void membersCanJoinNewGame() {
         Game game = Game.create("new", "new");
 
-        assertThat(game.canJoin(new PersonId(42L)))
+        assertThat(game.canJoin(new MemberId(42L)))
                 .isTrue();
     }
 
     @Test
-    void personJoinsExistingGameThenAddedAsPlayer() {
+    void memberJoinsExistingGameThenAddedAsPlayer() {
         Fixture fixture = createFixture();
-        Person person = new Person(new PersonId(27L));
+        Member member = new Member(new MemberId(27L));
 
-        fixture.playerJoinsGame().join(person.id(), fixture.game().handle());
+        fixture.playerJoinsGame().join(member.id(), fixture.game().handle());
 
         assertThat(fixture.game().players())
                 .hasSize(1)
-                .extracting(Player::personId)
-                .containsExactly(new PersonId(27L));
+                .extracting(Player::memberId)
+                .containsExactly(new MemberId(27L));
     }
 
     @Test
-    void twoPersonsJoinExistingGameThenBothAddedAsDifferentPlayers() {
+    void twoMembersJoinExistingGameThenBothAddedAsDifferentPlayers() {
         Fixture fixture = createFixture();
-        PersonId firstPerson = new PersonId(7L);
-        PersonId secondPerson = new PersonId(8L);
+        MemberId firstMember = new MemberId(7L);
+        MemberId secondMember = new MemberId(8L);
 
-        fixture.playerJoinsGame().join(firstPerson, fixture.game().handle());
-        fixture.playerJoinsGame().join(secondPerson, fixture.game().handle());
+        fixture.playerJoinsGame().join(firstMember, fixture.game().handle());
+        fixture.playerJoinsGame().join(secondMember, fixture.game().handle());
 
         assertThat(fixture.game().players())
-                .map(Player::personId)
-                .containsExactly(firstPerson, secondPerson);
+                .map(Player::memberId)
+                .containsExactly(firstMember, secondMember);
     }
 
     @Test
-    void personJoinsIsNotAddedAsNewPlayerWhenAlreadyPlayerInGame() {
+    void memberJoinsIsNotAddedAsNewPlayerWhenAlreadyPlayerInGame() {
         Fixture fixture = createFixture();
-        PersonId personId = new PersonId(7L);
-        fixture.playerJoinsGame().join(personId, fixture.game().handle());
-        fixture.playerJoinsGame().join(new PersonId(8L), fixture.game().handle());
+        MemberId memberId = new MemberId(7L);
+        fixture.playerJoinsGame().join(memberId, fixture.game().handle());
+        fixture.playerJoinsGame().join(new MemberId(8L), fixture.game().handle());
 
-        fixture.playerJoinsGame().join(personId, fixture.game().handle());
+        fixture.playerJoinsGame().join(memberId, fixture.game().handle());
 
         assertThat(fixture.game().players())
-                .as("Expected 2 players, as first person rejoined")
+                .as("Expected 2 players, as first member rejoined")
                 .hasSize(2);
     }
 
     @Test
-    void newPersonCanNotJoinGameWith_4_Players() {
+    void newMemberCanNotJoinGameWith_4_Players() {
         Game game = gameWith4Players(7L, 9L, 11L, 13L);
 
-        assertThat(game.canJoin(new PersonId(42L)))
+        assertThat(game.canJoin(new MemberId(42L)))
                 .isFalse();
     }
 
     @Test
     void noExceptionThrownIfPlayerAlreadyInGame() {
-        long existingPersonId = 11L;
-        Game game = gameWith4Players(7L, 9L, existingPersonId, 13L);
+        long existingMemberId = 11L;
+        Game game = gameWith4Players(7L, 9L, existingMemberId, 13L);
 
         assertThatNoException()
-                .isThrownBy(() -> game.join(new PersonId(existingPersonId)));
+                .isThrownBy(() -> game.join(new MemberId(existingMemberId)));
     }
 
     @Nested
@@ -88,8 +88,8 @@ class PlayerJoinsGameTest {
             Game game = gameWith4Players(7L, 9L, 11L, 13L);
 
             assertThatIllegalStateException()
-                    .isThrownBy(() -> game.join(new PersonId(18L)))
-                    .withMessage("Game is full (Person IDs: [7, 9, 11, 13]), so PersonId[id=18] cannot join.");
+                    .isThrownBy(() -> game.join(new MemberId(18L)))
+                    .withMessage("Game is full (Member IDs: [7, 9, 11, 13]), so MemberId[id=18] cannot join.");
         }
 
         @Test
@@ -97,19 +97,19 @@ class PlayerJoinsGameTest {
             PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
 
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> playerJoinsGame.join(new PersonId(42L), "non-existing-game-handle"))
+                    .isThrownBy(() -> playerJoinsGame.join(new MemberId(42L), "non-existing-game-handle"))
                     .withMessage("Game with handle 'non-existing-game-handle' was not found in the GameStore.");
         }
     }
     // -- ENCAPSULATED SETUP
 
-    private Game gameWith4Players(Long... personIds) {
+    private Game gameWith4Players(Long... memberIds) {
         Fixture fixture = createFixture();
 
-        Stream.of(personIds)
-              .map(PersonId::new)
-              .forEach(personId -> fixture.playerJoinsGame()
-                                          .join(personId, fixture.game().handle()));
+        Stream.of(memberIds)
+              .map(MemberId::new)
+              .forEach(memberId -> fixture.playerJoinsGame()
+                                          .join(memberId, fixture.game().handle()));
 
         return fixture.game();
     }

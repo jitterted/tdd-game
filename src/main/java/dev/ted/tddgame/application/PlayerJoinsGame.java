@@ -2,7 +2,7 @@ package dev.ted.tddgame.application;
 
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
-import dev.ted.tddgame.domain.PersonId;
+import dev.ted.tddgame.domain.MemberId;
 
 // Application Use Case (aka Inbound Port) Command
 public class PlayerJoinsGame {
@@ -23,13 +23,13 @@ public class PlayerJoinsGame {
         return new PlayerJoinsGame(gameStore);
     }
 
-    public void join(PersonId personId, String gameHandle) {
+    public void join(MemberId memberId, String gameHandle) {
         Game game = gameStore.findByHandle(gameHandle)
                              .orElseThrow( () -> new IllegalArgumentException(
                                      "Game with handle '%s' was not found in the GameStore."
                                              .formatted(gameHandle)
                              ));
-        game.join(personId);
+        game.join(memberId);
         gameStore.save(game);
     }
 }

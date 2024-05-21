@@ -48,7 +48,7 @@ public class Lobby {
 
     @GetMapping("/lobby")
     public String showLobby(Principal principal, Model model) {
-        model.addAttribute("personName", principal.getName());
+        model.addAttribute("memberName", principal.getName());
 
         List<Game> allGames = gameStore.findAll();
         if (allGames.isEmpty()) {

@@ -1,7 +1,7 @@
 package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.application.PlayerJoinsGame;
-import dev.ted.tddgame.domain.PersonId;
+import dev.ted.tddgame.domain.MemberId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +25,7 @@ public class GameJoiner {
     @PostMapping("/join")
     public String joinGame(Principal principal,
                            @RequestParam("gameHandle") String gameHandle) {
-        playerJoinsGame.join(new PersonId(42L), gameHandle);
+        playerJoinsGame.join(new MemberId(42L), gameHandle);
         return "redirect:/game-in-progress";
     }
 }

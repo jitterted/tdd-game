@@ -41,7 +41,7 @@ class LobbyMvcTest {
     void getToLobbyIsStatus200Ok() throws Exception {
         mockMvc.perform(get("/lobby"))
                .andExpect(status().isOk())
-               .andExpect(model().attribute("personName", "Blue"));
+               .andExpect(model().attribute("memberName", "Blue"));
     }
 
     @Test

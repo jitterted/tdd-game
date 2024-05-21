@@ -4,20 +4,20 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Player {
-    private final PersonId personId;
+    private final MemberId memberId;
     private final PlayerId playerId;
 
-    public Player(PersonId personId, PlayerId playerId) {
+    public Player(MemberId memberId, PlayerId playerId) {
         this.playerId = playerId;
-        this.personId = personId;
+        this.memberId = memberId;
     }
 
     public PlayerId id() {
         return playerId;
     }
 
-    public PersonId personId() {
-        return personId;
+    public MemberId memberId() {
+        return memberId;
     }
 
     @Override
