@@ -1,5 +1,8 @@
 package dev.ted.tddgame;
 
+import dev.ted.tddgame.application.port.MemberStore;
+import dev.ted.tddgame.domain.Member;
+import dev.ted.tddgame.domain.MemberId;
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +15,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private static AtomicLong idGenerator = new AtomicLong(1L);
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,18 +40,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails blueUser = createUser("Blue", "blue", "USER");
-        UserDetails redUser = createUser("Red", "red", "USER");
-        UserDetails greenUser = createUser("Green", "green", "USER");
-        UserDetails yellowUser = createUser("Yellow", "yellow", "USER");
-        UserDetails blackUser = createUser("Black", "black", "USER");
-        UserDetails whiteUser = createUser("White", "white", "USER");
+    public UserDetailsService userDetailsService(MemberStore memberStore) {
+        UserDetails blueUser = createUser(memberStore, "Blue", "blue", "MEMBER");
+        UserDetails redUser = createUser(memberStore, "Red", "red", "MEMBER");
+        UserDetails greenUser = createUser(memberStore, "Green", "green", "MEMBER");
+        UserDetails yellowUser = createUser(memberStore, "Yellow", "yellow", "MEMBER");
+        UserDetails blackUser = createUser(memberStore, "Black", "black", "MEMBER");
+        UserDetails whiteUser = createUser(memberStore, "White", "white", "MEMBER");
 
         return new InMemoryUserDetailsManager(blueUser, redUser, greenUser, yellowUser, blackUser, whiteUser);
     }
 
-    private static UserDetails createUser(String username, String password, String... roles) {
+    private static UserDetails createUser(MemberStore memberStore, String username, String password, String... roles) {
+        memberStore.save(new Member(new MemberId(idGenerator.getAndIncrement()), username + "Nickname", username));
         return User.withDefaultPasswordEncoder()
                    .username(username)
                    .password(password)
