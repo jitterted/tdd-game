@@ -7,7 +7,7 @@ public class Player {
     private final MemberId memberId;
     private final PlayerId playerId;
 
-    public Player(MemberId memberId, PlayerId playerId) {
+    public Player(PlayerId playerId, MemberId memberId) {
         this.playerId = playerId;
         this.memberId = memberId;
     }

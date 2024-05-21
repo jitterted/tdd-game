@@ -47,8 +47,8 @@ public class Game extends EventSourcedAggregate {
                 playerMap.computeIfAbsent(
                         memberId,
                         _ -> new Player(
-                                memberId, new
-                                PlayerId(playerIdGenerator.getAndIncrement())));
+                                new
+                                PlayerId(playerIdGenerator.getAndIncrement()), memberId));
             }
         }
     }
