@@ -25,6 +25,7 @@ public class GameJoiner {
     @PostMapping("/join")
     public String joinGame(Principal principal,
                            @RequestParam("gameHandle") String gameHandle) {
+        // look up Member in MemberStore using principal.getName()
         playerJoinsGame.join(new MemberId(42L), gameHandle);
         return "redirect:/game-in-progress";
     }

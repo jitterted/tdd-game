@@ -48,7 +48,8 @@ public class Game extends EventSourcedAggregate {
                         memberId,
                         _ -> new Player(
                                 new
-                                PlayerId(playerIdGenerator.getAndIncrement()), memberId));
+                                PlayerId(playerIdGenerator.getAndIncrement()),
+                                memberId));
             }
         }
     }

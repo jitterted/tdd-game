@@ -82,13 +82,13 @@ Player's "State Machine":
 
 [X] 1. Ask for name for new game (start with competitive)
 [X] 2. Create game -> provide identifier/link (handle)
-[X] 3. Person joins game with human-readable "Handle" (via typing it in, not link)
-        [X] Person becomes Player when joined the game
-        [X] Multiple different Persons can join the same game
-        [X] Constraint: A Person can not join the same game twice, i.e., can't represent TWO Players
-            * If a Person joins a game where they are already a player, that is "rejoining" (reconnecting)
+[X] 3. Member joins game with human-readable "Handle" (via typing it in, not link)
+        [X] Member becomes Player when joined the game
+        [X] Multiple different Members can join the same game
+        [X] Constraint: A Member can not join the same game twice, i.e., can't represent TWO Players
+            * If a Member joins a game where they are already a player, that is "rejoining" (reconnecting)
         [X] Constraint: 4 players maximum per game (rejoins don't count, of course)
-[ ] 4. Waiting for game to start (once at least 1 member has joined)
+[ ] 4. Waiting for game to start (once at least 1 member has joined the game)
     [ ] Receive notification when additional players are added
     [ ] Can only start game at this point by calling .start()
 [ ] 5. "start game" is Triggered
@@ -107,8 +107,8 @@ Player's "State Machine":
             [X] Redirects to page that shows the game page
     [ ] Game-in-progress page: show "modal"
         [ ] Show other players as they join -- via WebSockets (htmx)
-            [ ] Associate logged in user (username?) with a PersonId for joining, by looking up that username in PersonStore
-            [ ] Get first name from the Person
+            [ ] Associate logged in user (username?) with a MemberId for joining, by looking up that username in MemberStore
+            [ ] Get first name from the Member
         [ ] Start Game starts the game and the modal goes away
 
 [ ] Outbound (Notifier) WebSocket Adapter

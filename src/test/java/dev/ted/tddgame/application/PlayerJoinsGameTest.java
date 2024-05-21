@@ -25,7 +25,7 @@ class PlayerJoinsGameTest {
     @Test
     void memberJoinsExistingGameThenAddedAsPlayer() {
         Fixture fixture = createFixture();
-        Member member = new Member(new MemberId(27L));
+        Member member = new Member(new MemberId(27L), "Theresa");
 
         fixture.playerJoinsGame().join(member.id(), fixture.game().handle());
 

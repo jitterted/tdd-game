@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 class GameJoinerTest {
 
     @Test
-    void memberIsInGameAfterJoinGame() {
+    void memberIsPlayerInGameAfterJoinGame() {
         Game game = Game.create("game name", "rush-cat-21");
         GameJoiner gameJoiner = new GameJoiner(PlayerJoinsGame.createNull(game));
 
