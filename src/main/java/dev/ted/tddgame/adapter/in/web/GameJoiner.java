@@ -26,7 +26,9 @@ public class GameJoiner {
     public String joinGame(Principal principal,
                            @RequestParam("gameHandle") String gameHandle) {
         // look up Member in MemberStore using principal.getName()
-        playerJoinsGame.join(new MemberId(42L), gameHandle);
+        // get their MemberId and their name (which is the default Player Name)
+        String playerName = "Member's name, by default";
+        playerJoinsGame.join(new MemberId(42L), gameHandle, playerName);
         return "redirect:/game-in-progress";
     }
 }

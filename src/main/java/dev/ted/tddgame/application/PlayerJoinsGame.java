@@ -23,13 +23,13 @@ public class PlayerJoinsGame {
         return new PlayerJoinsGame(gameStore);
     }
 
-    public void join(MemberId memberId, String gameHandle) {
+    public void join(MemberId memberId, String gameHandle, String playerName) {
         Game game = gameStore.findByHandle(gameHandle)
                              .orElseThrow( () -> new IllegalArgumentException(
                                      "Game with handle '%s' was not found in the GameStore."
                                              .formatted(gameHandle)
                              ));
-        game.join(memberId);
+        game.join(memberId, playerName);
         gameStore.save(game);
     }
 }

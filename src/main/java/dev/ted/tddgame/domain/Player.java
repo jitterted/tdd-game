@@ -5,11 +5,13 @@ import java.util.StringJoiner;
 
 public class Player {
     private final MemberId memberId;
+    private final String playerName;
     private final PlayerId playerId;
 
-    public Player(PlayerId playerId, MemberId memberId) {
+    public Player(PlayerId playerId, MemberId memberId, String playerName) {
         this.playerId = playerId;
         this.memberId = memberId;
+        this.playerName = playerName;
     }
 
     public PlayerId id() {
@@ -18,6 +20,10 @@ public class Player {
 
     public MemberId memberId() {
         return memberId;
+    }
+
+    public String playerName() {
+        return playerName;
     }
 
     @Override

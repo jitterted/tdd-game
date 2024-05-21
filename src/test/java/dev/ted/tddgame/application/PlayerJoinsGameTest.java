@@ -14,6 +14,8 @@ import static org.assertj.core.api.Assertions.*;
 
 class PlayerJoinsGameTest {
 
+    private static final String IRRELEVANT_PLAYER_NAME = "irrelevant player name";
+
     @Test
     void membersCanJoinNewGame() {
         Game game = Game.create("new", "new");
@@ -27,12 +29,12 @@ class PlayerJoinsGameTest {
         Fixture fixture = createFixture();
         Member member = new Member(new MemberId(27L), "Theresa");
 
-        fixture.playerJoinsGame().join(member.id(), fixture.game().handle());
+        fixture.playerJoinsGame().join(member.id(), fixture.game().handle(), member.name());
 
         assertThat(fixture.game().players())
                 .hasSize(1)
-                .extracting(Player::memberId)
-                .containsExactly(new MemberId(27L));
+                .extracting(Player::memberId, Player::playerName)
+                .containsExactly(tuple(new MemberId(27L), "Theresa"));
     }
 
     @Test
@@ -41,8 +43,8 @@ class PlayerJoinsGameTest {
         MemberId firstMember = new MemberId(7L);
         MemberId secondMember = new MemberId(8L);
 
-        fixture.playerJoinsGame().join(firstMember, fixture.game().handle());
-        fixture.playerJoinsGame().join(secondMember, fixture.game().handle());
+        fixture.playerJoinsGame().join(firstMember, fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
+        fixture.playerJoinsGame().join(secondMember, fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
 
         assertThat(fixture.game().players())
                 .map(Player::memberId)
@@ -53,10 +55,10 @@ class PlayerJoinsGameTest {
     void memberJoinsIsNotAddedAsNewPlayerWhenAlreadyPlayerInGame() {
         Fixture fixture = createFixture();
         MemberId memberId = new MemberId(7L);
-        fixture.playerJoinsGame().join(memberId, fixture.game().handle());
-        fixture.playerJoinsGame().join(new MemberId(8L), fixture.game().handle());
+        fixture.playerJoinsGame().join(memberId, fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
+        fixture.playerJoinsGame().join(new MemberId(8L), fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
 
-        fixture.playerJoinsGame().join(memberId, fixture.game().handle());
+        fixture.playerJoinsGame().join(memberId, fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
 
         assertThat(fixture.game().players())
                 .as("Expected 2 players, as first member rejoined")
@@ -77,7 +79,7 @@ class PlayerJoinsGameTest {
         Game game = gameWith4Players(7L, 9L, existingMemberId, 13L);
 
         assertThatNoException()
-                .isThrownBy(() -> game.join(new MemberId(existingMemberId)));
+                .isThrownBy(() -> game.join(new MemberId(existingMemberId), IRRELEVANT_PLAYER_NAME));
     }
 
     @Nested
@@ -88,7 +90,7 @@ class PlayerJoinsGameTest {
             Game game = gameWith4Players(7L, 9L, 11L, 13L);
 
             assertThatIllegalStateException()
-                    .isThrownBy(() -> game.join(new MemberId(18L)))
+                    .isThrownBy(() -> game.join(new MemberId(18L), IRRELEVANT_PLAYER_NAME))
                     .withMessage("Game is full (Member IDs: [7, 9, 11, 13]), so MemberId[id=18] cannot join.");
         }
 
@@ -97,7 +99,7 @@ class PlayerJoinsGameTest {
             PlayerJoinsGame playerJoinsGame = PlayerJoinsGame.createNull();
 
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> playerJoinsGame.join(new MemberId(42L), "non-existing-game-handle"))
+                    .isThrownBy(() -> playerJoinsGame.join(new MemberId(42L), "non-existing-game-handle", IRRELEVANT_PLAYER_NAME))
                     .withMessage("Game with handle 'non-existing-game-handle' was not found in the GameStore.");
         }
     }
@@ -109,7 +111,7 @@ class PlayerJoinsGameTest {
         Stream.of(memberIds)
               .map(MemberId::new)
               .forEach(memberId -> fixture.playerJoinsGame()
-                                          .join(memberId, fixture.game().handle()));
+                                          .join(memberId, fixture.game().handle(), IRRELEVANT_PLAYER_NAME));
 
         return fixture.game();
     }

@@ -36,10 +36,10 @@ class GameTest {
         void playerJoiningEmitsPlayerJoinedEvent() {
             Game game = createFreshGame();
 
-            game.join(new MemberId(88L));
+            game.join(new MemberId(88L), "player name");
 
             assertThat(game.freshEvents())
-                    .containsExactly(new PlayerJoined(new MemberId(88L)));
+                    .containsExactly(new PlayerJoined(new MemberId(88L), "player name"));
         }
 
         private static Game createFreshGame() {
@@ -65,14 +65,14 @@ class GameTest {
         @Test
         void playerJoinedResultsInPlayerAddedToGame() {
             List<GameEvent> events = gameWithFreshEvents(
-                    new PlayerJoined(new MemberId(53L)));
+                    new PlayerJoined(new MemberId(53L), "Member 53 Name"));
 
             Game game = Game.reconstitute(events);
 
             assertThat(game.players())
                     .hasSize(1)
-                    .extracting(Player::memberId)
-                    .containsExactly(new MemberId(53L));
+                    .extracting(Player::memberId, Player::playerName)
+                    .containsExactly(tuple(new MemberId(53L), "Member 53 Name"));
 
             assertThat(game.playerFor(new MemberId(53L))
                            .memberId())

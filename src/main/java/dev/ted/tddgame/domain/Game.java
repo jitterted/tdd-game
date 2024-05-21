@@ -43,13 +43,14 @@ public class Game extends EventSourcedAggregate {
                 this.name = name;
                 this.handle = handle;
             }
-            case PlayerJoined(MemberId memberId) -> {
+            case PlayerJoined(MemberId memberId, String playerName) -> {
                 playerMap.computeIfAbsent(
                         memberId,
                         _ -> new Player(
                                 new
                                 PlayerId(playerIdGenerator.getAndIncrement()),
-                                memberId));
+                                memberId,
+                                playerName));
             }
         }
     }
@@ -66,13 +67,13 @@ public class Game extends EventSourcedAggregate {
         return playerMap.values().stream().toList();
     }
 
-    public void join(MemberId memberId) {
+    public void join(MemberId memberId, String playerName) {
         if (!canJoin(memberId)) {
             String ids = playerMap.keySet().stream().map(MemberId::id).toList().toString();
             throw new IllegalStateException("Game is full (Member IDs: " + ids + "), so " + memberId + " cannot join.");
         }
 
-        enqueue(new PlayerJoined(memberId));
+        enqueue(new PlayerJoined(memberId, playerName));
     }
 
     public boolean canJoin(MemberId memberId) {
