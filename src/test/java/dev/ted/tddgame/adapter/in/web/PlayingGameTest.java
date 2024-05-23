@@ -5,11 +5,9 @@ import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
-import dev.ted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
-
-import java.util.List;
+import org.springframework.ui.Model;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -26,19 +24,14 @@ class PlayingGameTest {
         gameStore.save(game);
         PlayingGame playingGame = new PlayingGame(gameStore);
 
-        ConcurrentModel model = new ConcurrentModel();
+        Model model = new ConcurrentModel();
         playingGame.game(model, gameHandle);
 
         GameView gameView = (GameView) model.getAttribute("gameView");
 
         assertThat(gameView)
                 .isEqualTo(new GameView(game.handle(),
-                                        from(game.players())));
+                                        PlayerView.from(game.players())));
     }
 
-    private List<PlayerView> from(List<Player> players) {
-        return players.stream()
-                      .map(player -> new PlayerView(player.playerName()))
-                      .toList();
-    }
 }
