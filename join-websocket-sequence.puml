@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Player1
+actor Player2
+boundary "Browser" as Browser #blue
+boundary "Who's Here? Component" as WhoHere #blue
+boundary "Notifications Component" as Notifications #blue
+control "Game Joiner\n<<controller>>" as GameJoiner #lightblue
+entity "Player Joins Game\n<<use case>>" as PlayerJoinsGame #orange
+participant "WebSocket Session Manager" as WebSocketMgr #lightblue
+
+Player1 -> GameJoiner: POST to /join endpoint (click button)
+GameJoiner -> PlayerJoinsGame: player1 joined "gameHandle"
+GameJoiner -> Player1: redirect to /game/gameHandle
+Player1 -> WebSocketMgr: WebSocket Connect (WebSocketSession has Principal)
+WebSocketMgr -> WhoHere: "Player1"
+WebSocketMgr -> Notifications: "Player1 Joined"
+
+Player2 -> WebSocketMgr: WebSocket Connect
+WebSocketMgr -> WhoHere: "Player1", "Player2"
+WebSocketMgr -> Notifications: "Player2 Joined"
+
+@enduml
