@@ -4,6 +4,7 @@ import dev.ted.tddgame.application.port.GameStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Collections;
 
@@ -16,8 +17,9 @@ public class PlayingGame {
         this.gameStore = gameStore;
     }
 
-    @GetMapping("/game") // RESUME HERE: add Game Handle as path parameter, redirecting from
-    public String game(Model model) {
+    @GetMapping("/game/{gameHandle}")
+    public String game(Model model,
+                       @PathVariable("gameHandle") String gameHandle) {
         model.addAttribute("gameView", new GameView("handle", Collections.emptyList()));
         return "game";
     }

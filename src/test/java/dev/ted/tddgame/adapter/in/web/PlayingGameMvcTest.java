@@ -23,7 +23,7 @@ class PlayingGameMvcTest {
 
     @Test
     void getToGameEndpointReturns200() throws Exception {
-        mockMvc.perform(get("/game"))
+        mockMvc.perform(get("/game/gameHandle"))
                .andExpect(status().isOk());
     }
 }
