@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>JitterTed's TDD Game</title>
+    <link rel="stylesheet" href="/static/game.css" th:href="@{/game.css}">
 </head>
 <body>
 
@@ -10,45 +11,24 @@
     <div class="relative bg-white pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 mx-auto max-w-lg rounded-lg px-14">
         <div class="mx-auto max-w-md">
             <h1 class="text-2xl font-bold">Waiting for Game to Begin...</h1>
+            <p>Game Handle: <strong th:text="${gameView.handle}">fill-sky-99</strong> </p>
             <div class="divide-y divide-gray-500/50">
                 <div class="space-y-6 py-8 text-base leading-7 text-gray-600">
                     <h2 class="text-lg font-semibold">Here's who is here:</h2>
                     <ul class="space-y-4">
-                        <li class="flex items-center">
+                        <li class="flex items-center" th:each="playerView : ${gameView.playerViews}">
                             <svg class="h-6 w-6 flex-none fill-sky-100 stroke-sky-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="11" />
                                 <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
                             </svg>
                             <p class="ml-3">
-                                <strong>Blue</strong> (this is you)
+                                <strong th:text="${playerView.name}">Blue</strong>
                             </p>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="h-6 w-6 flex-none fill-sky-100 stroke-sky-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="11" />
-                                <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
-                            </svg>
-                            <p class="ml-3">
-                                <strong>Yellow</strong>
-                            </p>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="h-6 w-6 flex-none fill-sky-100 stroke-sky-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="11" />
-                                <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
-                            </svg>
-                            <p class="ml-3">(waiting)</p>
                         </li>
                     </ul>
                 </div>
                 <div class="pt-6 text-base font-semibold leading-7">
                     <p class="text-gray-900">Notifications:</p>
-                    <p>
-                        ...
-                    </p>
-                    <p>
-                        ...
-                    </p>
                     <p>
                         ...
                     </p>

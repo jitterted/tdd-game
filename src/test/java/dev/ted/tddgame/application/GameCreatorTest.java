@@ -1,9 +1,9 @@
 package dev.ted.tddgame.application;
 
+import dev.ted.tddgame.adapter.in.web.GameLobbyView;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.GameViewLoader;
 import dev.ted.tddgame.domain.Game;
-import dev.ted.tddgame.domain.GameView;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -53,7 +53,7 @@ class GameCreatorTest {
         Game game = gameCreator.createNewGame("new game");
 
         assertThat(gameViewLoader.findAll())
-                .containsExactly(new GameView(game.name(), game.handle(), 0));
+                .containsExactly(new GameLobbyView(game.name(), game.handle(), 0));
     }
 
 }

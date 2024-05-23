@@ -19,11 +19,12 @@ class GameJoinerTest {
         MemberStore memberStore = new MemberStore();
         Member member = new Member(new MemberId(89L), "BlueNickName", "blueauth");
         memberStore.save(member);
-        Game game = Game.create("game name", "rush-cat-21");
+        String gameHandle = "rush-cat-21";
+        Game game = Game.create("game name", gameHandle);
         GameJoiner gameJoiner = new GameJoiner(PlayerJoinsGame.createNull(game), memberStore);
 
         Principal principal = () -> "blueauth"; // Principal.getName() = authName
-        String redirectPage = gameJoiner.joinGame(principal, "rush-cat-21");
+        String redirectPage = gameJoiner.joinGame(principal, gameHandle);
 
         assertThat(game.players())
                 .hasSize(1)
@@ -31,7 +32,7 @@ class GameJoinerTest {
                 .containsExactly(tuple(new MemberId(89L), "BlueNickName"));
 
         assertThat(redirectPage)
-                .isEqualTo("redirect:/game");
+                .isEqualTo("redirect:/game/rush-cat-21");
     }
 
 }

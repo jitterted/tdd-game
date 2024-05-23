@@ -3,7 +3,6 @@ package dev.ted.tddgame.adapter.in.web;
 import dev.ted.tddgame.application.GameCreator;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
-import dev.ted.tddgame.domain.GameView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +54,7 @@ public class Lobby {
             return "no-game-lobby";
         }
 
-        model.addAttribute("gameViews", GameView.from(allGames));
+        model.addAttribute("gameViews", GameLobbyView.from(allGames));
         return "lobby";
     }
 

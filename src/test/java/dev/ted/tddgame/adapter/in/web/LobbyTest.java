@@ -2,7 +2,6 @@ package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
-import dev.ted.tddgame.domain.GameView;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.api.ListAssert;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,7 @@ class LobbyTest {
                 .isEqualTo("lobby");
 
         assertThatGameViewsFrom(model)
-                .containsExactly(new GameView("game name", "shiny-chrome-12", 0));
+                .containsExactly(new GameLobbyView("game name", "shiny-chrome-12", 0));
     }
 
     @Test
@@ -51,9 +50,9 @@ class LobbyTest {
                 .hasSize(1);
     }
 
-    private static ListAssert<GameView> assertThatGameViewsFrom(ConcurrentModel model) {
+    private static ListAssert<GameLobbyView> assertThatGameViewsFrom(ConcurrentModel model) {
         return assertThat(model.asMap())
                 .extracting("gameViews")
-                .asInstanceOf(InstanceOfAssertFactories.list(GameView.class));
+                .asInstanceOf(InstanceOfAssertFactories.list(GameLobbyView.class));
     }
 }

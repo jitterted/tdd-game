@@ -31,6 +31,6 @@ public class GameJoiner {
         Member member = memberStore.findByAuthName(principal.getName())
                                      .orElseThrow(() -> new RuntimeException("Member not found with authName: " + principal.getName()));
         playerJoinsGame.join(member.id(), gameHandle, member.nickname());
-        return "redirect:/game";
+        return "redirect:/game/" + gameHandle;
     }
 }
