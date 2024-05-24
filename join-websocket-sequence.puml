@@ -16,8 +16,8 @@ Player1 -> GameJoiner: POST to /join endpoint (click button)
 GameJoiner -> PlayerJoinsGame: player1 joined "gameHandle"
 GameJoiner -> Player1: redirect to /game/gameHandle
 Player1 -> WebSocketMgr: WebSocket Connect (WebSocketSession has Principal)
-WebSocketMgr -> WhoHere: "Player1"
 WebSocketMgr -> Notifications: "Player1 Joined"
+WebSocketMgr -> WhoHere: "Player1"
 
 Player2 -> WebSocketMgr: WebSocket Connect
 WebSocketMgr -> WhoHere: "Player1", "Player2"

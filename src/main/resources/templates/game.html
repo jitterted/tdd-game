@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>JitterTed's TDD Game</title>
-    <link rel="stylesheet" href="/static/game.css" th:href="@{/game.css}">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
     <script type="application/javascript">
@@ -51,27 +51,25 @@
                             </p>
                         </li>
                         <li class="flex items-center" th:each="playerView : ${gameView.playerViews}">
-                            <svg class="h-6 w-6 flex-none fill-red-100 stroke-sky-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="h-6 w-6 flex-none fill-red-100 stroke-orange-300 stroke-2"
+                                 stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="11" />
                                 <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
                             </svg>
                             <p class="ml-3">
-                                <strong th:text="${playerView.name}">Yellow</strong> (not yet connected)
+                                <strong>Joined Player Name</strong> (not yet connected)
                             </p>
                         </li>
                     </ul>
                 </div>
                 <div class="pt-6 text-base leading-7">
                     <p class="text-gray-900 font-semibold">Notifications:</p>
-                    <div id="notification-container"
-                         hx-swap="afterbegin">
-                        <p>
-                            - [13:56] - Yellow has joined the game.
-                        </p>
-                        <p>
-                            - [13:53] - Blue has connected.
-                        </p>
-                    </div>
+                    <ul id="notification-container"
+                        class="list-disc ml-4"
+                        hx-swap="afterbegin">
+                        <li>[13:56] - Yellow has joined the game.</li>
+                        <li>[13:53] - Blue has connected.</li>
+                    </ul>
                 </div>
             </div>
         </div>

@@ -8,9 +8,11 @@ import dev.ted.tddgame.domain.MemberId;
 public class PlayerJoinsGame {
 
     private final GameStore gameStore;
+    private GameFinder gameFinder;
 
     public PlayerJoinsGame(GameStore gameStore) {
         this.gameStore = gameStore;
+        this.gameFinder = new GameFinder(gameStore);
     }
 
     public static PlayerJoinsGame createNull() {
@@ -24,11 +26,7 @@ public class PlayerJoinsGame {
     }
 
     public void join(MemberId memberId, String gameHandle, String playerName) {
-        Game game = gameStore.findByHandle(gameHandle)
-                             .orElseThrow( () -> new IllegalArgumentException(
-                                     "Game with handle '%s' was not found in the GameStore."
-                                             .formatted(gameHandle)
-                             ));
+        Game game = gameFinder.byHandle(gameHandle);
         game.join(memberId, playerName);
         gameStore.save(game);
         // broadcast that the Member has joined the Game as a Player

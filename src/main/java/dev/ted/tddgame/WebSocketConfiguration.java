@@ -1,5 +1,6 @@
 package dev.ted.tddgame;
 
+import dev.ted.tddgame.adapter.in.websocket.WebSocketInboundHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -10,10 +11,10 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfiguration implements WebSocketConfigurer {
 
-    private final WebSocketBroadcaster webSocketHandler;
+    private final WebSocketInboundHandler webSocketHandler;
 
     @Autowired
-    public WebSocketConfiguration(WebSocketBroadcaster webSocketHandler) {
+    public WebSocketConfiguration(WebSocketInboundHandler webSocketHandler) {
         this.webSocketHandler = webSocketHandler;
     }
 
