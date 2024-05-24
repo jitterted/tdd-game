@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -6,9 +7,30 @@
     <link rel="stylesheet" href="/static/game.css" th:href="@{/game.css}">
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
+    <script type="application/javascript">
+        function afterWebSocketConnects(event) {
+            console.log("afterWebSocketConnects: ", event);
+            event.detail.socketWrapper.send("connect: ");
+        }
+    </script>
+    <script th:inline="javascript">
+        window.addEventListener('htmx:ws-open', function (evt) {
+            var gameHandle = [[${gameView.handle}]];
+            console.log("htmx:ws-open event", gameHandle, evt);
+            event.detail.socketWrapper.send("connect:" + gameHandle);
+        })
+    </script>
 </head>
-<body hx-ext="ws"
-      th:ws-connect="|/game/${gameView.handle}/ws|">
+<body>
+<!-- hx-on-htmx-ws-open=""   should work on all elements, but only seems to work when on the same element that does the connect? -->
+<div hx-ext="ws"
+     ws-connect="/ws/game">WebSocket connector
+<!--    <form id="gameSelector"-->
+<!--          ws-send>-->
+<!--        <input hidden type="text" name="gameHandle" th:value="${gameView.handle}">-->
+<!--        <button type="submit">Connect</button>-->
+<!--    </form>-->
+</div>
 
 <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
     <div class="relative bg-white pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 mx-auto max-w-lg rounded-lg px-14">
@@ -41,12 +63,15 @@
                 </div>
                 <div class="pt-6 text-base leading-7">
                     <p class="text-gray-900 font-semibold">Notifications:</p>
-                    <p>
-                        - [13:56] - Yellow has joined the game.
-                    </p>
-                    <p>
-                        - [13:53] - Blue has connected.
-                    </p>
+                    <div id="notification-container"
+                         hx-swap="afterbegin">
+                        <p>
+                            - [13:56] - Yellow has joined the game.
+                        </p>
+                        <p>
+                            - [13:53] - Blue has connected.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

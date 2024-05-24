@@ -31,5 +31,6 @@ public class PlayerJoinsGame {
                              ));
         game.join(memberId, playerName);
         gameStore.save(game);
+        // broadcast that the Member has joined the Game as a Player
     }
 }

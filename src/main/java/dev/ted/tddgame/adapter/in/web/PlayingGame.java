@@ -23,7 +23,8 @@ public class PlayingGame {
                        @PathVariable("gameHandle") String gameHandle) {
         List<Player> playerViews = gameStore
                 .findByHandle(gameHandle)
-                .orElseThrow()
+                .orElseThrow(() -> new RuntimeException("Game '%s' not found"
+                        .formatted(gameHandle)))
                 .players();
         model.addAttribute("gameView", new GameView(gameHandle, PlayerView.from(playerViews)));
         return "game";
