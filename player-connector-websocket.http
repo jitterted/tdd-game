@@ -1,6 +1,24 @@
+## GET HTTP Basic auth
+GET http://localhost:8080/login
+Content-Type: text/html
+
+### POST login
+POST http://localhost:8080/login
+Content-Type: application/x-www-form-urlencoded
+
+username=Blue&password=blue
+
+### POST to join game
+POST http://localhost:8080/join
+Content-Type: application/x-www-form-urlencoded
+
+gameHandle=testy-spider-83
+
+### WebSocket
 WEBSOCKET ws://localhost:8080/ws/game
-connect:anyGame
+connect:testy-spider-83
 #=== wait-for-server
 
 ###
+    Authorization: Basic Yellow eWVsbG93
 ###

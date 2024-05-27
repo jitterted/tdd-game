@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(Lobby.class)
-@Import(TddGameConfig.class)
+@Import({TddGameConfig.class, TestConfig.class})
 @Tag("mvc")
 @WithMockUser(username = "Blue")
 class LobbyMvcTest {

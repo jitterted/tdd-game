@@ -5,6 +5,7 @@ import dev.ted.tddgame.application.GameFinder;
 import dev.ted.tddgame.application.MemberFinder;
 import dev.ted.tddgame.application.PlayerConnector;
 import dev.ted.tddgame.application.PlayerJoinsGame;
+import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import org.springframework.context.annotation.Bean;
@@ -33,11 +34,9 @@ public class TddGameConfig {
         return new PlayerJoinsGame(gameStore);
     }
 
-
     @Bean
-    public PlayerConnector playerConnector(MemberStore memberStore, GameStore gameStore) {
-        return new PlayerConnector((_, _) -> {
-        }, new MemberFinder(memberStore), new GameFinder(gameStore));
+    public PlayerConnector playerConnector(Broadcaster broadcaster, MemberStore memberStore, GameStore gameStore) {
+        return new PlayerConnector(broadcaster, new MemberFinder(memberStore), new GameFinder(gameStore));
     }
 
 }

@@ -47,7 +47,7 @@ class PlayerConnectorTest {
         }
 
         @Override
-        public void playerConnectedToGame(Game game, Player player) {
+        public void announcePlayerConnectedToGame(Game game, Player player) {
             playerConnectedToGameWasCalled = true;
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(game)
