@@ -3,22 +3,24 @@
 
 autonumber
 
-actor Player1
-actor Player2
-boundary "Browser" as Browser #blue
-boundary "Who's Here? Component" as WhoHere #blue
-boundary "Notifications Component" as Notifications #blue
+actor "Player1\n<<browser>>" as Player1
+actor "Player2\n<<browser>>" as Player2
+boundary "Who's Connected?\n<<UI component>>" as WhoHere #blue
+boundary "Notifications\n<<UI component>>" as Notifications #blue
 control "Game Joiner\n<<controller>>" as GameJoiner #lightblue
 entity "Player Joins Game\n<<use case>>" as PlayerJoinsGame #orange
-participant "WebSocket Session Manager" as WebSocketMgr #lightblue
+participant "WebSocket\nSession\nManager" as WebSocketMgr #lightblue
 
-Player1 -> GameJoiner: POST to /join endpoint (click button)
+Player1 -> GameJoiner: POST to /join endpoint (clicked button)
 GameJoiner -> PlayerJoinsGame: player1 joined "gameHandle"
 GameJoiner -> Player1: redirect to /game/gameHandle
 Player1 -> WebSocketMgr: WebSocket Connect (WebSocketSession has Principal)
 WebSocketMgr -> Notifications: "Player1 Joined"
 WebSocketMgr -> WhoHere: "Player1"
 
+Player2 -> GameJoiner: POST to /join endpoint (clicked button)
+GameJoiner -> PlayerJoinsGame: player2 joined "gameHandle"
+GameJoiner -> Player2: redirect to /game/gameHandle
 Player2 -> WebSocketMgr: WebSocket Connect
 WebSocketMgr -> WhoHere: "Player1", "Player2"
 WebSocketMgr -> Notifications: "Player2 Joined"

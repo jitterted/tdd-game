@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
-    <script type="application/javascript">
+  <script src="https://kit.fontawesome.com/899946e7ef.js" crossorigin="anonymous"></script>    <script type="application/javascript">
         function afterWebSocketConnects(event) {
             console.log("afterWebSocketConnects: ", event);
             event.detail.socketWrapper.send("connect: ");
@@ -42,24 +42,17 @@
                     <h2 class="text-lg font-semibold">People who have joined:</h2>
                     <ul class="space-y-4">
                         <li class="flex items-center" th:each="playerView : ${gameView.playerViews}">
-                            <svg class="h-6 w-6 flex-none fill-sky-100 stroke-sky-500 stroke-2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="11" />
-                                <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
-                            </svg>
-                            <p class="ml-3">
-                                <strong th:text="${playerView.name}">Blue</strong>
-                            </p>
+                          <i class="fa-duotone fa-person-circle-check fa-2xl" style="--fa-primary-color: #1fdf00; --fa-secondary-color: #28b900; --fa-secondary-opacity: 0.7;"></i>
+                          <p class="ml-3">
+                            <strong th:text="${playerView.name}">Blue</strong>
+                          </p>
                         </li>
-                        <li class="flex items-center" th:each="playerView : ${gameView.playerViews}">
-                            <svg class="h-6 w-6 flex-none fill-red-100 stroke-orange-300 stroke-2"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="11" />
-                                <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
-                            </svg>
-                            <p class="ml-3">
-                                <strong>Joined Player Name</strong> (not yet connected)
-                            </p>
-                        </li>
+                      <li class="flex items-center" th:each="playerView : ${gameView.playerViews}">
+                        <i class="fa-duotone fa-person-circle-question fa-2xl" style="--fa-primary-color: #fac000; --fa-secondary-color: #aa8800; --fa-secondary-opacity: 0.7;"></i>
+                        <p class="ml-3">
+                          <strong>Yellow</strong> (not yet connected)
+                        </p>
+                      </li>
                     </ul>
                 </div>
                 <div class="pt-6 text-base leading-7">
