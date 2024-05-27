@@ -1,6 +1,9 @@
 package dev.ted.tddgame;
 
 import dev.ted.tddgame.application.GameCreator;
+import dev.ted.tddgame.application.GameFinder;
+import dev.ted.tddgame.application.MemberFinder;
+import dev.ted.tddgame.application.PlayerConnector;
 import dev.ted.tddgame.application.PlayerJoinsGame;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
@@ -28,6 +31,13 @@ public class TddGameConfig {
     @Bean
     public PlayerJoinsGame playerJoinsGame(GameStore gameStore) {
         return new PlayerJoinsGame(gameStore);
+    }
+
+
+    @Bean
+    public PlayerConnector playerConnector(MemberStore memberStore, GameStore gameStore) {
+        return new PlayerConnector((_, _) -> {
+        }, new MemberFinder(memberStore), new GameFinder(gameStore));
     }
 
 }

@@ -10,7 +10,9 @@ public class PlayerConnector {
     private final MemberFinder memberFinder;
     private final GameFinder gameFinder;
 
-    public PlayerConnector(Broadcaster broadcaster, MemberFinder memberFinder, GameFinder gameFinder) {
+    public PlayerConnector(Broadcaster broadcaster,
+                           MemberFinder memberFinder,
+                           GameFinder gameFinder) {
         this.broadcaster = broadcaster;
         this.memberFinder = memberFinder;
         this.gameFinder = gameFinder;

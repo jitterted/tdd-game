@@ -1,0 +1,6 @@
+WEBSOCKET ws://localhost:8080/ws/game
+connect:anyGame
+#=== wait-for-server
+
+###
+###

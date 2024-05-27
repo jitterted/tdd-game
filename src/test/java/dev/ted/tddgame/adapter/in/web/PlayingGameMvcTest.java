@@ -1,6 +1,8 @@
 package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.TddGameConfig;
+import dev.ted.tddgame.application.port.GameStore;
+import dev.ted.tddgame.domain.Game;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,12 @@ class PlayingGameMvcTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    GameStore gameStore;
+
     @Test
     void getToGameEndpointReturns200() throws Exception {
+        gameStore.save(Game.create("Game Name", "gameHandle"));
         mockMvc.perform(get("/game/gameHandle"))
                .andExpect(status().isOk());
     }

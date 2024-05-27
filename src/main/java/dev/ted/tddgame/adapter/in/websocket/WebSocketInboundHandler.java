@@ -1,7 +1,9 @@
 package dev.ted.tddgame.adapter.in.websocket;
 
+import dev.ted.tddgame.application.PlayerConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketMessage;
@@ -18,7 +20,12 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
     // Map<WebSocketSession, List<GameHandle>>, i.e., a Multi-valued Map, e.g. https://github.com/eclipse/eclipse-collections/blob/master/docs/guide.md#-multimap
 
-    // DEPENDS ON: PlayerConnector
+    private final PlayerConnector playerConnector;
+
+    @Autowired
+    public WebSocketInboundHandler(PlayerConnector playerConnector) {
+        this.playerConnector = playerConnector;
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
