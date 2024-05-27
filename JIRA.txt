@@ -89,7 +89,7 @@ Player's "State Machine":
             * If a Member joins a game where they are already a player, that is "rejoining" (reconnecting)
         [X] Constraint: 4 players maximum per game (rejoins don't count, of course)
 [ ] 4. Waiting for game to start (once at least 1 member has joined the game)
-    [ ] Receive notification when additional players are added
+    [X] Receive notification when additional players are added
     [ ] Can only start game at this point by calling .start()
 [ ] 5. "start game" is Triggered
     [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
@@ -106,10 +106,11 @@ Player's "State Machine":
             [X] Creates Player in the Game for the Person
             [X] Redirects to page that shows the game page
     [ ] Game-in-progress page: show "modal"
-        [ ] Show other players as they join -- via WebSockets (htmx)
-            [ ] Associate logged in user (username?) with a MemberId for joining, by looking up that username in MemberStore
-            [ ] Get first name from the Member
-        [ ] Start Game starts the game and the modal goes away
+        [X] Show other players as they join -- via WebSockets (htmx)
+            [X] Associate logged in user (username?) with a MemberId for joining, by looking up that username in MemberStore
+            [X] Get first name from the Player (their in-game name)
+        [ ] Show "Start Game" button (might have constraints on when this button shows up later)
+            [ ] Start Game starts the game and the modal goes away
 
 [ ] Outbound (Notifier) WebSocket Adapter
     [ ] Display name of game, all players, decks, pawns, etc.
