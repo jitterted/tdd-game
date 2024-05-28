@@ -8,7 +8,9 @@ boundary "Other Players\n<<UI component>>" as OtherPlayers #blue
 
 Player1 -> GameStarter: POST to /game/{gameHandle}/start
 GameStarter -> Game: startGame()
-GameStarter -> Game: queryState()
-GameStarter -> OtherPlayers
+GameStarter -> Game: players()
+loop for each player
+    GameStarter -> OtherPlayers: render other player
+end
 
 @enduml
