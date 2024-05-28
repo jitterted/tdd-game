@@ -1,0 +1,13 @@
+@startuml
+
+autonumber
+
+actor "Player1\n<<browser>>" as Player1
+actor "Player2\n<<browser>>" as Player2
+
+Player1 -> GameStarter: POST to /game/{gameHandle}/start
+GameStarter -> Game: startGame()
+GameStarter -> Game: queryState()
+GameStarter ->
+
+@enduml

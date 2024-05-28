@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <title>JitterTed's TDD Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link th:href="@{/css/game.css}" href="/static/game.css" rel="stylesheet"/>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
-  <script src="https://kit.fontawesome.com/899946e7ef.js" crossorigin="anonymous"></script>    <script type="application/javascript">
+    <script src="https://kit.fontawesome.com/899946e7ef.js" crossorigin="anonymous"></script>
+    <script type="application/javascript">
         function afterWebSocketConnects(event) {
             console.log("afterWebSocketConnects: ", event);
             event.detail.socketWrapper.send("connect: ");
@@ -24,7 +26,7 @@
 <body>
 <!-- hx-on-htmx-ws-open=""   should work on all elements, but only seems to work when on the same element that does the connect? -->
 <div hx-ext="ws"
-     ws-connect="/ws/game">WebSocket connector
+     ws-connect="/ws/game">
 <!--    <form id="gameSelector"-->
 <!--          ws-send>-->
 <!--        <input hidden type="text" name="gameHandle" th:value="${gameView.handle}">-->
@@ -54,12 +56,15 @@
 <!--                        </p>-->
 <!--                      </li>-->
                     </ul>
+                    <button type="button" class="rounded-md bg-green-600 px-3.5 py-2 text-md font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                        Start Game
+                    </button>
                 </div>
                 <div class="pt-6 text-base leading-7">
                     <p class="text-gray-900 font-semibold">Notifications:</p>
                     <ul id="notification-container"
                         class="list-disc ml-4">
-                        <li>(notifications will appear here)</li>
+<!--                        <li>(notifications will appear here)</li>-->
                     </ul>
                 </div>
             </div>
