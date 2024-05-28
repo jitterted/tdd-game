@@ -4,10 +4,11 @@ autonumber
 
 actor "Player1\n<<browser>>" as Player1
 actor "Player2\n<<browser>>" as Player2
+boundary "Other Players\n<<UI component>>" as OtherPlayers #blue
 
 Player1 -> GameStarter: POST to /game/{gameHandle}/start
 GameStarter -> Game: startGame()
 GameStarter -> Game: queryState()
-GameStarter ->
+GameStarter -> OtherPlayers
 
 @enduml
