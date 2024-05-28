@@ -5,7 +5,6 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -34,6 +33,8 @@ class PlayerConnectorTest {
         private final Game expectedGame;
         private final Player expectedPlayer;
         private boolean playerConnectedToGameWasCalled;
+        private Game actualGame;
+        private Player actualPlayer;
 
         public MockBroadcaster(Game expectedGame, Player expectedPlayer) {
             this.expectedGame = expectedGame;
@@ -44,17 +45,17 @@ class PlayerConnectorTest {
             assertThat(playerConnectedToGameWasCalled)
                     .as("playerConnectedToGame() was not called")
                     .isTrue();
+            assertThat(actualGame)
+                    .isEqualTo(expectedGame);
+            assertThat(actualPlayer)
+                    .isEqualTo(expectedPlayer);
         }
 
         @Override
         public void announcePlayerConnectedToGame(Game game, Player player) {
             playerConnectedToGameWasCalled = true;
-            SoftAssertions.assertSoftly(softly -> {
-                softly.assertThat(game)
-                      .isEqualTo(expectedGame);
-                softly.assertThat(player)
-                      .isEqualTo(expectedPlayer);
-            });
+            this.actualGame = game;
+            this.actualPlayer = player;
         }
     }
 }
