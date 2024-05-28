@@ -8,6 +8,11 @@ boundary "Other Players\n<<UI component>>" as OtherPlayers #blue
 
 Player1 -> GameStarter: POST to /game/{gameHandle}/start
 GameStarter -> Game: startGame()
+Game -> Player: drawToFullFrom(actionDeck)
+Player -> Hand: drawToFullFrom(actionDeck)
+loop until 5 cards
+    Hand -> ActionDeck: draw()
+end
 GameStarter -> Game: players()
 loop for each player
     GameStarter -> OtherPlayers: render other player
