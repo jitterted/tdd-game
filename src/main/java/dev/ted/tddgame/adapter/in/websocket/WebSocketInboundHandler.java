@@ -37,7 +37,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         LOGGER.info("WebSocket Text Message received from session: {}, with message: {}", session.toString(), message.toString());
         String messagePayload = (String) message.getPayload();
         LOGGER.info("Payload details: {}", messagePayload);
-        String gameHandle = messagePayload.split(":")[1];
+        String gameHandle = messagePayload.split(":")[1]; // e.g. "connect:sleepy-goose-78"
         webSocketBroadcaster.connect(session, gameHandle);
 
         playerConnector.connect(session.getPrincipal().getName(), gameHandle);
