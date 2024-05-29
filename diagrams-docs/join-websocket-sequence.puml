@@ -7,6 +7,7 @@ actor "Player1\n<<browser>>" as Player1
 actor "Player2\n<<browser>>" as Player2
 boundary "Who's Connected?\n<<UI component>>" as WhoHere #blue
 boundary "Notifications\n<<UI component>>" as Notifications #blue
+boundary "Waiting Modal\n<<UI component>>" as WaitingRoom #blue
 control "Game Joiner\n<<controller>>" as GameJoiner #lightblue
 entity "Player Joins Game\n<<use case>>" as PlayerJoinsGame #orange
 participant "WebSocket\nSession\nManager" as WebSocketMgr #lightblue
@@ -24,5 +25,10 @@ GameJoiner -> Player2: redirect to /game/gameHandle
 Player2 -> WebSocketMgr: WebSocket Connect
 WebSocketMgr -> WhoHere: "Player1", "Player2"
 WebSocketMgr -> Notifications: "Player2 Joined"
+
+Player2 -> GamePlayService: POST to /game/gameHandle/start endpoint (clicked button)
+GamePlayService -> WaitingRoom: broadcast "delete id waiting-room-modal" \n (idempotent, so OK to send multiple times)
+GamePlayService -> Game: if !game.started() -> start() -> gameStore.save(game)
+GamePlayService -> GameUI: broadcast other player hands, your hand, your in-play-area, etc.
 
 @enduml

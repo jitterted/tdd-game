@@ -94,7 +94,7 @@ Player's "State Machine":
 [ ] 5. "start game" is Triggered
     [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
         [X] Create ActionCard, Deck container, able to draw and replenish from discard
-        [ ] Nullable-ize the Deck with Embedded Stub for configuring response to "give me shuffled deck"
+        [X] Nullable-ize the Deck with Embedded Stub for configuring response to "give me shuffled deck"
         [ ] Player draws to full hand from Action Card deck
         [ ] Player discards card, which adds to Discard Pile
             [ ] Represented in UI by checkboxes?
