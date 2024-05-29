@@ -134,7 +134,9 @@ Player's "State Machine":
     Using in-memory persistence for Game
     [X] Use case to use load (from Repository), modify, save (to Repository) pattern
     [X] GameStore in-memory implementation
-        [ ] Make it use the event-source storage model
+
+==> RESUME HERE
+        [ ] Make it use the event-source storage model (so freshEvents is clear upon reconstitution, i.e., when findBy happens)
     [ ] GameViewLoader implementation using the GameRepository
 
     Real Database

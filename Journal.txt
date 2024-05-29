@@ -1,0 +1,16 @@
+May 29, 2024 - Wednesday
+========================
+
+* Struggled with CSS to create the layout for the "Your Hand" section of the Game
+
+* Added shuffling of the discard pile to the draw pile in the Deck, using embedded stub a la Nullables
+
+* Lot of thinking about design around UI Components
+
+* Decided (for now) to use POST for sending commands instead of going through the WebSocket
+
+* Added endpoint for the POST to start game
+
+* Decided to rely on the Game's events (via freshEvents) to check for behavior/state change - this currently causes a test to fail, since we didn't clear freshEvents
+
+* Next time need to properly handle GameStore's find so that we can rely on freshEvents to be cleared when loaded

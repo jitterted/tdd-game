@@ -35,7 +35,10 @@ public class PlayingGame {
 
     @PostMapping("/game/{gameHandle}/start-game")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void startGame(Model model,
-                            @PathVariable("gameHandle") String gameHandle) {
+    public void startGame(@PathVariable("gameHandle") String gameHandle) {
+        gameStore.findByHandle(gameHandle)
+                 .orElseThrow(() -> new RuntimeException("Game '%s' not found"
+                                                                 .formatted(gameHandle)))
+                 .start();
     }
 }

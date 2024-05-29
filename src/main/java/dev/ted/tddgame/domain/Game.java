@@ -7,6 +7,7 @@ import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Game extends EventSourcedAggregate {
+    private static final int MAXIMUM_NUMBER_OF_PLAYERS = 4;
     private String name;
     private String handle;
     private final Map<MemberId, Player> playerMap = new HashMap<>();
@@ -52,6 +53,8 @@ public class Game extends EventSourcedAggregate {
                                 memberId,
                                 playerName));
             }
+            case GameStarted _ -> {
+            }
         }
     }
 
@@ -77,11 +80,15 @@ public class Game extends EventSourcedAggregate {
     }
 
     public boolean canJoin(MemberId memberId) {
-        return playerMap.size() < 4 || playerMap.containsKey(memberId);
+        return playerMap.size() < MAXIMUM_NUMBER_OF_PLAYERS || playerMap.containsKey(memberId);
     }
 
     public Player playerFor(MemberId memberId) {
         return playerMap.get(memberId);
+    }
+
+    public void start() {
+
     }
 
     @Override
@@ -109,4 +116,5 @@ public class Game extends EventSourcedAggregate {
                 .add("playerMap=" + playerMap)
                 .toString();
     }
+
 }
