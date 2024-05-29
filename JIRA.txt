@@ -93,6 +93,14 @@ Player's "State Machine":
     [ ] Can only start game at this point by calling .start()
 [ ] 5. "start game" is Triggered
     [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
+        [X] Create ActionCard, Deck container, able to draw and replenish from discard
+        [ ] Nullable-ize the Deck with Embedded Stub for configuring response to "give me shuffled deck"
+        [ ] Player draws to full hand from Action Card deck
+        [ ] Player discards card, which adds to Discard Pile
+            [ ] Represented in UI by checkboxes?
+        [ ] Player has "Hand" and "Tech Neglect" area
+        [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
+        ==> switch to working on UI display of Player hands, in-play areas, etc.
     [ ] (Temporary) Constraint: players can't join once game is started
 
 [ ] Inbound HTTP Adapter
