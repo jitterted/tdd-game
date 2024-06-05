@@ -1,6 +1,5 @@
 package dev.ted.tddgame.domain;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -66,7 +65,7 @@ class GameTest {
             assertThat(game.freshEvents())
                     .containsExactly(
                             new GameStarted(),
-                            new PlayerDrewActionCard(new PlayerId(42L), ActionCard.PREDICT)
+                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.PREDICT)
                     );
         }
 
@@ -108,11 +107,10 @@ class GameTest {
         }
 
         @Test
-        @Disabled("Disabled until the Player can keep track of ActionCards in their hand")
         void playerDrewCardResultsInPlayerHavingCardDrawn() {
             List<GameEvent> events = gameCreatedAndTheEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"),
-                    new PlayerDrewActionCard(new PlayerId(53L), ActionCard.PREDICT));
+                    new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
             Game game = Game.reconstitute(events);
 
             Player player = game.playerFor(new MemberId(53L));

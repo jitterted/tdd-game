@@ -1,4 +1,4 @@
 package dev.ted.tddgame.domain;
 
-public record PlayerDrewActionCard(PlayerId playerId, ActionCard actionCard) implements GameEvent {
+public record PlayerDrewActionCard(MemberId memberId, ActionCard actionCard) implements GameEvent {
 }

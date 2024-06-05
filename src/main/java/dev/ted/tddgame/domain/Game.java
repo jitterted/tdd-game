@@ -52,8 +52,8 @@ public class Game extends EventSourcedAggregate {
                                                       playerName));
             case GameStarted _ -> {
             }
-            case PlayerDrewActionCard playerDrewActionCard -> {
-            }
+            case PlayerDrewActionCard(MemberId memberId, ActionCard actionCard) ->
+                    playerFor(memberId).addCardToHand(actionCard);
         }
     }
 
@@ -84,7 +84,8 @@ public class Game extends EventSourcedAggregate {
 
     public void start() {
         enqueue(new GameStarted());
-        enqueue(new PlayerDrewActionCard(new PlayerId(42L), ActionCard.PREDICT));
+        MemberId memberId = playerMap.keySet().iterator().next();
+        enqueue(new PlayerDrewActionCard(memberId, ActionCard.PREDICT));
     }
 
     public Player playerFor(MemberId memberId) {
