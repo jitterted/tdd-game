@@ -18,7 +18,7 @@ class PlayerTest {
     }
 
     @Test
-    void playerHasTwoActionCardsInHandAfterDrawingActionCardTwice() {
+    void playerHasTwoActionCardsInHandAfterDrawingActionCardsTwice() {
         Player player = createPlayer();
 
         player.addCardToHand(ActionCard.LESS_CODE);
@@ -26,6 +26,18 @@ class PlayerTest {
 
         assertThat(player.hand())
                 .containsExactly(ActionCard.LESS_CODE, ActionCard.WRITE_CODE);
+    }
+
+    @Test
+    void playerHasTwoActionCardsInHandAfterDrawingSameTypeOfActionCardTwice() {
+        Player player = createPlayer();
+
+        player.addCardToHand(ActionCard.PREDICT);
+        player.addCardToHand(ActionCard.PREDICT);
+
+        assertThat(player.hand())
+                .hasSize(2)
+                .containsOnly(ActionCard.PREDICT);
     }
 
 
