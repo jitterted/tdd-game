@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
@@ -8,6 +9,7 @@ public class Player {
     private final MemberId memberId;
     private final String playerName;
     private final PlayerId playerId;
+    private final ArrayList<ActionCard> actionCards = new ArrayList<>();
 
     public Player(PlayerId playerId, MemberId memberId, String playerName) {
         this.playerId = playerId;
@@ -56,6 +58,10 @@ public class Player {
     }
 
     public Stream<ActionCard> hand() {
-        return null;
+        return actionCards.stream();
+    }
+
+    public void addCardToHand(ActionCard actionCard) {
+        actionCards.add(actionCard);
     }
 }
