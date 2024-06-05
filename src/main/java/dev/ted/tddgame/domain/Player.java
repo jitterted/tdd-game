@@ -2,6 +2,7 @@ package dev.ted.tddgame.domain;
 
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.stream.Stream;
 
 public class Player {
     private final MemberId memberId;
@@ -52,5 +53,9 @@ public class Player {
         return new StringJoiner(", ", Player.class.getSimpleName() + "[", "]")
                 .add("id=" + playerId.id())
                 .toString();
+    }
+
+    public Stream<ActionCard> hand() {
+        return null;
     }
 }

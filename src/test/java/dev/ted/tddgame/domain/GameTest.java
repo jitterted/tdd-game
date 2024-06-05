@@ -1,8 +1,10 @@
 package dev.ted.tddgame.domain;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,7 +26,7 @@ class GameTest {
         Game reconstituted = Game.reconstitute(List.of(
                 new GameCreated("name", "snowy-hound-21"),
                 new PlayerJoined(new MemberId(1L), "player 1")
-                ));
+        ));
 
         assertThat(reconstituted.freshEvents())
                 .isEmpty();
@@ -54,13 +56,18 @@ class GameTest {
         }
 
         @Test
-        void startGameEmitsGameStartedEvent() {
-            Game game = createFreshGame();
+        void startGameEmitsGameStartedAndPlayerDrewCardEvents() {
+            Game game = Game.reconstitute(List.of(
+                    new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
+                    new PlayerJoined(new MemberId(1L), "player 1")));
 
             game.start();
 
             assertThat(game.freshEvents())
-                    .containsExactly(new GameStarted());
+                    .containsExactly(
+                            new GameStarted(),
+                            new PlayerDrewActionCard(new PlayerId(42L), ActionCard.PREDICT)
+                    );
         }
 
         private static Game createFreshGame() {
@@ -85,7 +92,7 @@ class GameTest {
 
         @Test
         void playerJoinedResultsInPlayerAddedToGame() {
-            List<GameEvent> events = gameWithFreshEvents(
+            List<GameEvent> events = gameCreatedAndTheEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"));
 
             Game game = Game.reconstitute(events);
@@ -100,9 +107,24 @@ class GameTest {
                     .isEqualTo(new MemberId(53L));
         }
 
-        private static List<GameEvent> gameWithFreshEvents(PlayerJoined freshEvent) {
-            return List.of(new GameCreated("jitterted", "breezy-cat-85"),
-                           freshEvent);
+        @Test
+        @Disabled("Disabled until the Player can keep track of ActionCards in their hand")
+        void playerDrewCardResultsInPlayerHavingCardDrawn() {
+            List<GameEvent> events = gameCreatedAndTheEvents(
+                    new PlayerJoined(new MemberId(53L), "Member 53 Name"),
+                    new PlayerDrewActionCard(new PlayerId(53L), ActionCard.PREDICT));
+            Game game = Game.reconstitute(events);
+
+            Player player = game.playerFor(new MemberId(53L));
+            assertThat(player.hand())
+                    .containsExactly(ActionCard.PREDICT);
+        }
+
+        private static List<GameEvent> gameCreatedAndTheEvents(GameEvent... freshEvents) {
+            List<GameEvent> events = new ArrayList<>();
+            events.add(new GameCreated("jitterted", "breezy-cat-85"));
+            events.addAll(List.of(freshEvents));
+            return events;
         }
     }
 

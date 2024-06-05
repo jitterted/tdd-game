@@ -44,16 +44,15 @@ public class Game extends EventSourcedAggregate {
                 this.name = name;
                 this.handle = handle;
             }
-            case PlayerJoined(MemberId memberId, String playerName) -> {
-                playerMap.computeIfAbsent(
-                        memberId,
-                        _ -> new Player(
-                                new
-                                PlayerId(playerIdGenerator.getAndIncrement()),
-                                memberId,
-                                playerName));
-            }
+            case PlayerJoined(MemberId memberId, String playerName) ->
+                    playerMap.computeIfAbsent(memberId,
+                                              _ -> new Player(
+                                                      new PlayerId(playerIdGenerator.getAndIncrement()),
+                                                      memberId,
+                                                      playerName));
             case GameStarted _ -> {
+            }
+            case PlayerDrewActionCard playerDrewActionCard -> {
             }
         }
     }
@@ -83,12 +82,13 @@ public class Game extends EventSourcedAggregate {
         return playerMap.size() < MAXIMUM_NUMBER_OF_PLAYERS || playerMap.containsKey(memberId);
     }
 
-    public Player playerFor(MemberId memberId) {
-        return playerMap.get(memberId);
-    }
-
     public void start() {
         enqueue(new GameStarted());
+        enqueue(new PlayerDrewActionCard(new PlayerId(42L), ActionCard.PREDICT));
+    }
+
+    public Player playerFor(MemberId memberId) {
+        return playerMap.get(memberId);
     }
 
     @Override
