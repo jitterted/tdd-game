@@ -10,7 +10,11 @@ boundary "Notifications\n<<UI component>>" as Notifications #blue
 boundary "Waiting Modal\n<<UI component>>" as WaitingRoom #blue
 control "Game Joiner\n<<controller>>" as GameJoiner #lightblue
 entity "Player Joins Game\n<<use case>>" as PlayerJoinsGame #orange
+control "Playing Game\n<<controller>>" as PlayingGame #lightblue
 participant "WebSocket\nSession\nManager" as WebSocketMgr #lightblue
+participant "Game Play\n<<use case>>" as GamePlayService #orange
+entity "Game\n<<aggregate>>" as Game #yellow
+database "Game Store\n<<repository>>" as GameStore #purple
 
 Player1 -> GameJoiner: POST to /join endpoint (clicked button)
 GameJoiner -> PlayerJoinsGame: player1 joined "gameHandle"
@@ -26,9 +30,11 @@ Player2 -> WebSocketMgr: WebSocket Connect
 WebSocketMgr -> WhoHere: "Player1", "Player2"
 WebSocketMgr -> Notifications: "Player2 Joined"
 
-Player2 -> GamePlayService: POST to /game/gameHandle/start endpoint (clicked button)
+Player2 -> PlayingGame: POST to /game/gameHandle/start endpoint (clicked button)
+PlayingGame -> GamePlayService: start game
 GamePlayService -> WaitingRoom: broadcast "delete id waiting-room-modal" \n (idempotent, so OK to send multiple times)
-GamePlayService -> Game: if !game.started() -> start() -> gameStore.save(game)
+GamePlayService -> Game: if !game.started() -> start()
+GamePlayService -> GameStore: save(game)
 GamePlayService -> GameUI: broadcast other player hands, your hand, your in-play-area, etc.
 
 @enduml

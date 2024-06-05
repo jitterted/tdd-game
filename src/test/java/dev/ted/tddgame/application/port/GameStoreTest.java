@@ -24,4 +24,6 @@ class GameStoreTest {
         assertThat(gameStore.findByHandle("gameHandle"))
                 .contains(game);
     }
+
+
 }
