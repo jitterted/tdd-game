@@ -65,6 +65,11 @@ class GameTest {
             assertThat(game.freshEvents())
                     .containsExactly(
                             new GameStarted(),
+                            // player 1 draws 5 cards (that's the "full hand")
+                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.PREDICT),
+                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.LESS_CODE),
+                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.LESS_CODE),
+                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.WRITE_CODE),
                             new PlayerDrewActionCard(new MemberId(1L), ActionCard.PREDICT)
                     );
         }

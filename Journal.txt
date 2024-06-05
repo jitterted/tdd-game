@@ -1,3 +1,28 @@
+June 5, 2024 - Wednesday
+========================
+
+* Shifting my mindset to a more event-sourced approach for storing state instead of mapping an entire object graph to a database. With the events, I don't worry about how to store objects like the Player directly in the database.
+
+* Still struggling with committing more often
+
+* Cody does a good job of summarizing what I've done based on commit messages. I wish it could also look at the code itself and summarize what I've done based on the code.
+
+* Decided that the PlayerId is not really needed, as the Player can be identified by the MemberId in the context of a specific Game. It does mean that I can't have a Member act as multiple Players in a single Game.
+
+* Copy-pasting the code from Blackjack was helpful to move quickly with the event-sourcing, but forgot to copy the code that was handling "fresh events" separately from the events used to reconstitute the Game.
+
+* Keep making the mistake of storing whole object references in the in-memory store (repository), which leads to code that works when I'm able to reference the same object, instead of the realistic case of restoring objects from persistence, and then throwing them away after saving.
+
+* Need to submit a feature request for IntelliJ IDEA to find usages based on a Record's constructor
+
+* Here's a copy for reference of the summary that Cody created based on commit messages:
+
+  *  Refactoring and Preparation for Player Hand: You started by refactoring the PlayerDrewActionCard event to use MemberId instead of PlayerId, as the former is what is received from the outside world. This change also introduced a limitation where a single Member cannot act as multiple Players in a single Game. Additionally, you prepared for the Player to have a "hand" consisting of ActionCard objects.
+  *  Game Start and Player Drawing Cards: You implemented the game start functionality, where the game.start() method enqueues the GameStarted event. Furthermore, you added a test to demonstrate that multiple cards of the same type can be added to a player's hand. At this stage, the game start process involves only the first player drawing a single (hard-coded) card, which generates an event for that player.
+  *  Player Hand Management: You introduced the concept of a Player's hand, where the Player can keep track of cards added to their hand. This involved creating a new event, PlayerDrewActionCard, but it did not yet change the state of the game.
+  *  Event-Sourcing and Persistence: You converted the GameStore from storing Game object references to storing Events (as DTOs) and reconstituting the Game objects from those DTOs. This change more closely emulates real persistence and brings the project closer to that goal. Additionally, you added an EventDto (somewhat generalized) with a test, copied from the Blackjack project.
+  *  Join Sequence and Game Start Details: Finally, you updated the join sequence to include more details around starting a game.
+
 May 29, 2024 - Wednesday
 ========================
 
