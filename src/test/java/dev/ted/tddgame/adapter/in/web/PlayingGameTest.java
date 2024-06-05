@@ -44,7 +44,7 @@ class PlayingGameTest {
     }
 
     private Fixture createFixture() {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
         String gameHandle = "wily-coyote-77";
         Game game = Game.create("Only Game In Progress", gameHandle);
         MemberStore memberStore = new MemberStore();

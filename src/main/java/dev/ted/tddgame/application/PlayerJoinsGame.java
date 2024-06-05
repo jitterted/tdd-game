@@ -8,7 +8,7 @@ import dev.ted.tddgame.domain.MemberId;
 public class PlayerJoinsGame {
 
     private final GameStore gameStore;
-    private GameFinder gameFinder;
+    private final GameFinder gameFinder;
 
     public PlayerJoinsGame(GameStore gameStore) {
         this.gameStore = gameStore;
@@ -16,13 +16,7 @@ public class PlayerJoinsGame {
     }
 
     public static PlayerJoinsGame createNull() {
-        return new PlayerJoinsGame(new GameStore());
-    }
-
-    public static PlayerJoinsGame createNull(Game game) {
-        GameStore gameStore = new GameStore();
-        gameStore.save(game);
-        return new PlayerJoinsGame(gameStore);
+        return new PlayerJoinsGame(GameStore.createEmpty());
     }
 
     public void join(MemberId memberId, String gameHandle, String playerName) {

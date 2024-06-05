@@ -19,6 +19,17 @@ class GameTest {
                 .isNotBlank();
     }
 
+    @Test
+    void reconstitutedGameFromEventsHasNoFreshEvents() {
+        Game reconstituted = Game.reconstitute(List.of(
+                new GameCreated("name", "snowy-hound-21"),
+                new PlayerJoined(new MemberId(1L), "player 1")
+                ));
+
+        assertThat(reconstituted.freshEvents())
+                .isEmpty();
+    }
+
     @Nested
     class CommandsGenerateEvents {
 

@@ -11,7 +11,7 @@ class GameStoreTest {
 
     @Test
     void emptyOptionalWhenHandleNotFound() {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
 
         assertThat(gameStore.findByHandle("doesNotExist"))
                 .isEmpty();
@@ -19,17 +19,17 @@ class GameStoreTest {
 
     @Test
     void savedGameCanBeFoundByHandle() {
-        GameStore gameStore = new GameStore();
-        Game game = Game.create("Game Name", "gameHandle");
+        GameStore gameStore = GameStore.createEmpty();
+        Game game = Game.create("Game Name", "sad-beaver-92");
         gameStore.save(game);
 
-        assertThat(gameStore.findByHandle("gameHandle"))
+        assertThat(gameStore.findByHandle("sad-beaver-92"))
                 .contains(game);
     }
 
     @Test
     void saveAppendsFreshEventsAndKeepsReconstitutedEvents() {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
         Game game = Game.create("Game Name", "sleepy-mouse-33");
         gameStore.save(game);
 
@@ -37,10 +37,19 @@ class GameStoreTest {
         loadedGame.join(new MemberId(12L), "Alice");
         gameStore.save(loadedGame);
 
+        Game reloadedGame = gameStore.findByHandle("sleepy-mouse-33").orElseThrow();
+        reloadedGame.join(new MemberId(13L), "Bob");
+        gameStore.save(reloadedGame);
+
         Game reconstitutedGame = gameStore.findByHandle("sleepy-mouse-33").orElseThrow();
 
+        assertThat(reconstitutedGame.name())
+                .isEqualTo("Game Name");
         assertThat(reconstitutedGame.players())
                 .extracting(Player::memberId, Player::playerName)
-                .containsExactly(tuple(new MemberId(12L), "Alice"));
+                .containsExactly(
+                        tuple(new MemberId(12L), "Alice"),
+                        tuple(new MemberId(13L), "Bob")
+                        );
     }
 }

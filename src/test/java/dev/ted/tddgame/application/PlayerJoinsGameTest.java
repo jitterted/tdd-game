@@ -29,7 +29,7 @@ class PlayerJoinsGameTest {
         Fixture fixture = createFixture();
         Member member = new Member(new MemberId(27L), "Theresa", "the123");
 
-        fixture.playerJoinsGame().join(member.id(), fixture.game().handle(), member.nickname());
+        fixture.playerJoinsGame().join(member.id(), fixture.gameHandle(), member.nickname());
 
         assertThat(fixture.game().players())
                 .hasSize(1)
@@ -43,8 +43,8 @@ class PlayerJoinsGameTest {
         MemberId firstMember = new MemberId(7L);
         MemberId secondMember = new MemberId(8L);
 
-        fixture.playerJoinsGame().join(firstMember, fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
-        fixture.playerJoinsGame().join(secondMember, fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
+        fixture.playerJoinsGame().join(firstMember, fixture.gameHandle(), IRRELEVANT_PLAYER_NAME);
+        fixture.playerJoinsGame().join(secondMember, fixture.gameHandle(), IRRELEVANT_PLAYER_NAME);
 
         assertThat(fixture.game().players())
                 .map(Player::memberId)
@@ -54,11 +54,12 @@ class PlayerJoinsGameTest {
     @Test
     void memberJoinsIsNotAddedAsNewPlayerWhenAlreadyPlayerInGame() {
         Fixture fixture = createFixture();
-        MemberId memberId = new MemberId(7L);
-        fixture.playerJoinsGame().join(memberId, fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
-        fixture.playerJoinsGame().join(new MemberId(8L), fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
+        MemberId firstMemberId = new MemberId(7L);
+        MemberId secondMemberId = new MemberId(8L);
+        fixture.playerJoinsGame().join(firstMemberId, fixture.gameHandle(), IRRELEVANT_PLAYER_NAME);
+        fixture.playerJoinsGame().join(secondMemberId, fixture.gameHandle(), IRRELEVANT_PLAYER_NAME);
 
-        fixture.playerJoinsGame().join(memberId, fixture.game().handle(), IRRELEVANT_PLAYER_NAME);
+        fixture.playerJoinsGame().join(firstMemberId, fixture.gameHandle(), IRRELEVANT_PLAYER_NAME);
 
         assertThat(fixture.game().players())
                 .as("Expected 2 players, as first member rejoined")
@@ -70,6 +71,7 @@ class PlayerJoinsGameTest {
         Game game = gameWith4Players(7L, 9L, 11L, 13L);
 
         assertThat(game.canJoin(new MemberId(42L)))
+                .as("New member can not join game that already has 4 players")
                 .isFalse();
     }
 
@@ -103,7 +105,9 @@ class PlayerJoinsGameTest {
                     .withMessage("Game with handle 'non-existing-game-handle' was not found in the GameStore.");
         }
     }
-    // -- ENCAPSULATED SETUP
+
+
+    // -- ENCAPSULATED SETUP --
 
     private Game gameWith4Players(Long... memberIds) {
         Fixture fixture = createFixture();
@@ -111,19 +115,22 @@ class PlayerJoinsGameTest {
         Stream.of(memberIds)
               .map(MemberId::new)
               .forEach(memberId -> fixture.playerJoinsGame()
-                                          .join(memberId, fixture.game().handle(), IRRELEVANT_PLAYER_NAME));
+                                          .join(memberId, fixture.gameHandle(), IRRELEVANT_PLAYER_NAME));
 
         return fixture.game();
     }
 
     private static Fixture createFixture() {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
         PlayerJoinsGame playerJoinsGame = new PlayerJoinsGame(gameStore);
         Game game = new GameCreator(gameStore).createNewGame("TDD Game");
-        return new Fixture(playerJoinsGame, game);
+        return new Fixture(playerJoinsGame, gameStore, game.handle());
     }
 
-    private record Fixture(PlayerJoinsGame playerJoinsGame, Game game) {
+    private record Fixture(PlayerJoinsGame playerJoinsGame, GameStore gameStore, String gameHandle) {
+        Game game() {
+            return gameStore.findByHandle(gameHandle).orElseThrow();
+        }
     }
 
 

@@ -16,7 +16,7 @@ public class TddGameConfig {
 
     @Bean
     public GameStore gameStore() {
-        return new GameStore();
+        return GameStore.createEmpty();
     }
 
     @Bean

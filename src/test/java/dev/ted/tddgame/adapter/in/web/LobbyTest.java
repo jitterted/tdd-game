@@ -41,7 +41,7 @@ class LobbyTest {
 
     @Test
     void hostNewGameStoresNewGameInGameStore() {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
         Lobby lobby = Lobby.create(gameStore);
 
         lobby.hostNewGame(DUMMY_PRINCIPAL, "New Game Name");

@@ -34,7 +34,7 @@ class GameCreatorTest {
 
     @Test
     void createdGameCanBeFoundInRepository() {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
         GameCreator gameCreator = GameCreator.create(gameStore);
 
         gameCreator.createNewGame("my new game name");

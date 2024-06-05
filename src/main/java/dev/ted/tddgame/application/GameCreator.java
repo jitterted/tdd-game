@@ -16,7 +16,7 @@ public class GameCreator {
     }
 
     public static GameCreator createNull() {
-        return new GameCreator(new GameStore());
+        return new GameCreator(GameStore.createEmpty());
     }
 
     public static GameCreator create(GameStore gameStore) {

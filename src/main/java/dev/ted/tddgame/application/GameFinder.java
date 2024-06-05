@@ -11,7 +11,7 @@ public class GameFinder {
     }
 
     public static GameFinder createNull(Game game) {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
         gameStore.save(game);
         return new GameFinder(gameStore);
     }

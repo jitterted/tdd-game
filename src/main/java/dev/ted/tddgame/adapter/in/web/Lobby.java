@@ -30,12 +30,12 @@ public class Lobby {
     }
 
     public static Lobby createNull() {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
         return create(gameStore);
     }
 
     public static Lobby createNull(Game game) {
-        GameStore gameStore = new GameStore();
+        GameStore gameStore = GameStore.createEmpty();
         gameStore.save(game);
         return create(gameStore);
     }
