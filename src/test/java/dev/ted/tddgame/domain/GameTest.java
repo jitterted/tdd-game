@@ -53,6 +53,16 @@ class GameTest {
                     .containsExactly(new PlayerJoined(new MemberId(88L), "player name"));
         }
 
+        @Test
+        void startGameEmitsGameStartedEvent() {
+            Game game = createFreshGame();
+
+            game.start();
+
+            assertThat(game.freshEvents())
+                    .containsExactly(new GameStarted());
+        }
+
         private static Game createFreshGame() {
             return Game.reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
         }

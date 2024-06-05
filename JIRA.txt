@@ -115,7 +115,7 @@ Player's "State Machine":
             [X] Redirects to page that shows the game page
     [ ] Game-in-progress page: show "modal"
         [X] Show other players as they join -- via WebSockets (htmx)
-            [X] Associate logged in user (username?) with a MemberId for joining, by looking up that username in MemberStore
+            [X] Associate logged-in user (username?) with a MemberId for joining, by looking up that username in MemberStore
             [X] Get first name from the Player (their in-game name)
         [ ] Show "Start Game" button (might have constraints on when this button shows up later)
             [ ] Start Game starts the game and the modal goes away
@@ -134,9 +134,8 @@ Player's "State Machine":
     Using in-memory persistence for Game
     [X] Use case to use load (from Repository), modify, save (to Repository) pattern
     [X] GameStore in-memory implementation
+        [X] Make it use the event-source storage model (so freshEvents is clear upon reconstitution, i.e., when findBy happens)
 
-==> RESUME HERE
-        [ ] Make it use the event-source storage model (so freshEvents is clear upon reconstitution, i.e., when findBy happens)
     [ ] GameViewLoader implementation using the GameRepository
 
     Real Database

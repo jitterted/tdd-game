@@ -3,10 +3,8 @@ package dev.ted.tddgame.adapter.in.web;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
-import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -30,19 +28,6 @@ class PlayingGameTest {
                                         PlayerView.from(fixture.game().players())));
     }
 
-    @Test
-    @Disabled("Until freshEvents returns truly fresh events, and the Game implements start game")
-    void gameStartedEventGeneratedWhenGameStarted() {
-        Fixture fixture = createFixture();
-        PlayingGame playingGame = new PlayingGame(fixture.gameStore());
-
-        playingGame.startGame(fixture.gameHandle());
-
-        Game game = fixture.gameStore().findByHandle(fixture.gameHandle()).orElseThrow();
-        assertThat(game.freshEvents())
-                .containsExactly(new GameStarted());
-    }
-
     private Fixture createFixture() {
         GameStore gameStore = GameStore.createEmpty();
         String gameHandle = "wily-coyote-77";
@@ -53,7 +38,7 @@ class PlayingGameTest {
         gameStore.save(game);
         return new Fixture(gameStore, gameHandle, game);
     }
-    private record Fixture(GameStore gameStore, String gameHandle, Game game) {
 
+    private record Fixture(GameStore gameStore, String gameHandle, Game game) {
     }
 }

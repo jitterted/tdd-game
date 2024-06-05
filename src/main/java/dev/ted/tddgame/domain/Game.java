@@ -88,7 +88,7 @@ public class Game extends EventSourcedAggregate {
     }
 
     public void start() {
-
+        enqueue(new GameStarted());
     }
 
     @Override
