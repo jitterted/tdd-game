@@ -8,12 +8,23 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Game extends EventSourcedAggregate {
     private static final int MAXIMUM_NUMBER_OF_PLAYERS = 4;
+    private List<ActionCard> actionCardsForDeck;
     private String name;
     private String handle;
     private final Map<MemberId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
 
-    public Game() {
+    private Game() {
+    }
+
+    public Game(List<GameEvent> gameEvents, ActionCard... actionCards) {
+        this(gameEvents);
+        this.actionCardsForDeck = List.of(actionCards);
+    }
+
+    public static Game configureForTest(List<GameEvent> gameEvents,
+                                        ActionCard... actionCards) {
+        return new Game(gameEvents, actionCards);
     }
 
     public Game(List<GameEvent> events) {
@@ -50,8 +61,12 @@ public class Game extends EventSourcedAggregate {
                                                       new PlayerId(playerIdGenerator.getAndIncrement()),
                                                       memberId,
                                                       playerName));
+            case ActionCardDeckCreated _ -> {
+            }
+
             case GameStarted _ -> {
             }
+
             case PlayerDrewActionCard(MemberId memberId, ActionCard actionCard) ->
                     playerFor(memberId).addCardToHand(actionCard);
         }
@@ -84,8 +99,7 @@ public class Game extends EventSourcedAggregate {
 
     public void start() {
         enqueue(new GameStarted());
-        MemberId memberId = playerMap.keySet().iterator().next();
-        enqueue(new PlayerDrewActionCard(memberId, ActionCard.PREDICT));
+        enqueue(new ActionCardDeckCreated(actionCardsForDeck));
     }
 
     public Player playerFor(MemberId memberId) {

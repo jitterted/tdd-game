@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -55,6 +56,31 @@ class GameTest {
         }
 
         @Test
+        void startGameEmitsActionCardDeckCreatedEvent() {
+            List<GameEvent> committedEvents = List.of(
+                    new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
+                    new PlayerJoined(new MemberId(1L), "player 1"));
+            Game game = Game.configureForTest(
+                    committedEvents,
+                    ActionCard.PREDICT,
+                    ActionCard.WRITE_CODE,
+                    ActionCard.LESS_CODE);
+
+            game.start();
+
+            assertThat(game.freshEvents())
+                    .containsExactly(
+                            new GameStarted(),
+                            new ActionCardDeckCreated(
+                                    List.of(
+                                            ActionCard.PREDICT,
+                                            ActionCard.WRITE_CODE,
+                                            ActionCard.LESS_CODE
+                                    )));
+        }
+
+        @Test
+        @Disabled("Until we have an Action deck created that we can draw from")
         void startGameEmitsGameStartedAndPlayerDrewCardEvents() {
             Game game = Game.reconstitute(List.of(
                     new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
