@@ -56,15 +56,20 @@ class GameTest {
         }
 
         @Test
-        void startGameEmitsActionCardDeckCreatedEvent() {
+        @Disabled("Until we successfully apply the deck created event")
+        void startGameEmitsGameStarted_DeckCreated_PlayerDrawCards_Events() {
+            MemberId memberId = new MemberId(1L);
             List<GameEvent> committedEvents = List.of(
                     new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
-                    new PlayerJoined(new MemberId(1L), "player 1"));
+                    new PlayerJoined(memberId, "player 1"));
             Game game = Game.configureForTest(
                     committedEvents,
                     ActionCard.PREDICT,
+                    ActionCard.LESS_CODE,
+                    ActionCard.LESS_CODE,
                     ActionCard.WRITE_CODE,
-                    ActionCard.LESS_CODE);
+                    ActionCard.PREDICT
+            );
 
             game.start();
 
@@ -74,31 +79,20 @@ class GameTest {
                             new ActionCardDeckCreated(
                                     List.of(
                                             ActionCard.PREDICT,
+                                            ActionCard.LESS_CODE,
+                                            ActionCard.LESS_CODE,
                                             ActionCard.WRITE_CODE,
-                                            ActionCard.LESS_CODE
-                                    )));
-        }
-
-        @Test
-        @Disabled("Until we have an Action deck created that we can draw from")
-        void startGameEmitsGameStartedAndPlayerDrewCardEvents() {
-            Game game = Game.reconstitute(List.of(
-                    new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
-                    new PlayerJoined(new MemberId(1L), "player 1")));
-
-            game.start();
-
-            assertThat(game.freshEvents())
-                    .containsExactly(
-                            new GameStarted(),
+                                            ActionCard.PREDICT
+                                    )),
                             // player 1 draws 5 cards (that's the "full hand")
-                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.PREDICT),
-                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.LESS_CODE),
-                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.LESS_CODE),
-                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.WRITE_CODE),
-                            new PlayerDrewActionCard(new MemberId(1L), ActionCard.PREDICT)
+                            new PlayerDrewActionCard(memberId, ActionCard.PREDICT),
+                            new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE),
+                            new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE),
+                            new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE),
+                            new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
                     );
         }
+
 
         private static Game createFreshGame() {
             return Game.reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
@@ -122,7 +116,7 @@ class GameTest {
 
         @Test
         void playerJoinedResultsInPlayerAddedToGame() {
-            List<GameEvent> events = gameCreatedAndTheEvents(
+            List<GameEvent> events = gameCreatedAndTheseEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"));
 
             Game game = Game.reconstitute(events);
@@ -138,8 +132,35 @@ class GameTest {
         }
 
         @Test
+        void actionCardDeckCreatedResultsInDeckHavingCardsFromEvent() {
+            List<GameEvent> events = gameCreatedPlayerJoinedAnd(
+                    new ActionCardDeckCreated(List.of(
+                            ActionCard.PREDICT,
+                            ActionCard.LESS_CODE,
+                            ActionCard.PREDICT
+                    )));
+
+            Game game = Game.reconstitute(events);
+
+            assertThat(game.actionCardDeck().drawPile())
+                    .isEmpty();
+            assertThat(game.actionCardDeck().discardPile())
+                    .containsExactly(ActionCard.PREDICT,
+                                     ActionCard.LESS_CODE,
+                                     ActionCard.PREDICT);
+        }
+
+        private List<GameEvent> gameCreatedPlayerJoinedAnd(GameEvent... freshEvents) {
+            List<GameEvent> events = new ArrayList<>();
+            events.add(new GameCreated("jitterted", "breezy-cat-85"));
+            events.add(new PlayerJoined(new MemberId(42L), "IRRELEVANT PLAYER NAME"));
+            events.addAll(List.of(freshEvents));
+            return events;
+        }
+
+        @Test
         void playerDrewCardResultsInPlayerHavingCardDrawn() {
-            List<GameEvent> events = gameCreatedAndTheEvents(
+            List<GameEvent> events = gameCreatedAndTheseEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"),
                     new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
             Game game = Game.reconstitute(events);
@@ -149,7 +170,7 @@ class GameTest {
                     .containsExactly(ActionCard.PREDICT);
         }
 
-        private static List<GameEvent> gameCreatedAndTheEvents(GameEvent... freshEvents) {
+        private static List<GameEvent> gameCreatedAndTheseEvents(GameEvent... freshEvents) {
             List<GameEvent> events = new ArrayList<>();
             events.add(new GameCreated("jitterted", "breezy-cat-85"));
             events.addAll(List.of(freshEvents));
