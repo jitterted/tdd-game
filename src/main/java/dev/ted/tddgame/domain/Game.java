@@ -13,6 +13,7 @@ public class Game extends EventSourcedAggregate {
     private String handle;
     private final Map<MemberId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
+    private Deck<ActionCard> actionCardDeck;
 
     private Game() {
     }
@@ -61,7 +62,8 @@ public class Game extends EventSourcedAggregate {
                                                       new PlayerId(playerIdGenerator.getAndIncrement()),
                                                       memberId,
                                                       playerName));
-            case ActionCardDeckCreated _ -> {
+            case ActionCardDeckCreated(List<ActionCard> actionCards) -> {
+                actionCardDeck = Deck.create(actionCards);
             }
 
             case GameStarted _ -> {
@@ -100,10 +102,15 @@ public class Game extends EventSourcedAggregate {
     public void start() {
         enqueue(new GameStarted());
         enqueue(new ActionCardDeckCreated(actionCardsForDeck));
+
     }
 
     public Player playerFor(MemberId memberId) {
         return playerMap.get(memberId);
+    }
+
+    public DeckView<ActionCard> actionCardDeck() {
+        return actionCardDeck.view();
     }
 
     @Override
@@ -131,5 +138,4 @@ public class Game extends EventSourcedAggregate {
                 .add("playerMap=" + playerMap)
                 .toString();
     }
-
 }

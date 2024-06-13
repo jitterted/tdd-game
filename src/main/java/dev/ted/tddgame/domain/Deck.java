@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Queue;
 
 public class Deck<CARD> {
-    private final Queue<CARD> drawPile = new LinkedList<>();
     private final Shuffler<CARD> shuffler;
+    private final Queue<CARD> drawPile = new LinkedList<>();
     private List<CARD> discardPile;
 
     // for production usage, uses random shuffler
@@ -42,6 +42,11 @@ public class Deck<CARD> {
         discardPile = shuffler.shuffleCards(discardPile);
         drawPile.addAll(discardPile);
         discardPile.clear();
+    }
+
+    public DeckView<CARD> view() {
+        return new DeckView<>(Collections.emptyList(),
+                              List.copyOf(discardPile));
     }
 
     // -- EMBEDDED STUB for Nullable Shuffler --
