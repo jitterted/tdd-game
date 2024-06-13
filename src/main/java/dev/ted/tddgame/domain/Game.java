@@ -103,7 +103,9 @@ public class Game extends EventSourcedAggregate {
     public void start() {
         enqueue(new GameStarted());
         enqueue(new ActionCardDeckCreated(actionCardsForDeck));
-
+        MemberId firstMemberId = players().iterator().next().memberId();
+        enqueue(new PlayerDrewActionCard(firstMemberId,
+                                         actionCardDeck.draw()));
     }
 
     public Player playerFor(MemberId memberId) {

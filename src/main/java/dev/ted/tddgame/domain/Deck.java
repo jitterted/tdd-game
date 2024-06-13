@@ -17,14 +17,14 @@ public class Deck<CARD> {
         return new Deck<>(cards, new RandomShuffler<>());
     }
 
-    private Deck(List<CARD> cards, Shuffler<CARD> shuffler) {
-        discardPile = new ArrayList<>(cards);
-        this.shuffler = shuffler;
-    }
-
     public static Deck<ActionCard> createForTest(ActionCard... actionCards) {
         return new Deck<>(Collections.emptyList(),
                           _ -> new ArrayList<>(Arrays.asList(actionCards)));
+    }
+
+    private Deck(List<CARD> cards, Shuffler<CARD> shuffler) {
+        discardPile = new ArrayList<>(cards);
+        this.shuffler = shuffler;
     }
 
     public CARD draw() {
