@@ -41,6 +41,14 @@ public class Player {
 
     public void drawToFullFrom(Deck<ActionCard> actionCardDeck,
                                Consumer<GameEvent> eventConsumer) {
+        drawCardFrom(actionCardDeck, eventConsumer);
+        drawCardFrom(actionCardDeck, eventConsumer);
+        drawCardFrom(actionCardDeck, eventConsumer);
+        drawCardFrom(actionCardDeck, eventConsumer);
+        drawCardFrom(actionCardDeck, eventConsumer);
+    }
+
+    private void drawCardFrom(Deck<ActionCard> actionCardDeck, Consumer<GameEvent> eventConsumer) {
         PlayerDrewActionCard event =
                 new PlayerDrewActionCard(memberId, actionCardDeck.draw());
         eventConsumer.accept(event);

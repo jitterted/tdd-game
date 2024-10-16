@@ -85,10 +85,10 @@ class GameTest {
                                     )),
                             // player 1 draws 5 cards (that's the "full hand")
                             new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
-//                            , new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE)
-//                            , new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE)
-//                            , new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE)
-//                            , new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
+                            , new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE)
+                            , new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE)
+                            , new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE)
+                            , new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
                     );
         }
 

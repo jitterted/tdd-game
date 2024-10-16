@@ -98,7 +98,7 @@ Player's "State Machine":
 
 ==> WE ARE HERE:
 
-        [ ] Player draws to full hand from Action Card deck
+        [ ] Player draws to full hand from Action Card deck as part of start game
         [ ] Player discards card, which adds to Discard Pile
             [ ] Represented in UI by checkboxes?
         [ ] Player has "Hand" and "Tech Neglect" area
