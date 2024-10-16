@@ -99,6 +99,8 @@ Player's "State Machine":
 ==> WE ARE HERE:
 
         [ ] Player draws to full hand from Action Card deck as part of start game
+            [X] 5 events generated: 1 for each of 5 cards drawn
+            [ ] State of player's Hand: has 5 cards
         [ ] Player discards card, which adds to Discard Pile
             [ ] Represented in UI by checkboxes?
         [ ] Player has "Hand" and "Tech Neglect" area

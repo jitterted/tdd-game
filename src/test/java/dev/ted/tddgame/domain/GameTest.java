@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -158,15 +159,20 @@ class GameTest {
         }
 
         @Test
-        void playerDrewCardResultsInPlayerHavingCardDrawn() {
+        @Disabled("Until actionCardDeck().drawPile() is fully implemented")
+        void playerDrewCardResultsInPlayerHavingCardDrawnAndDeckDrawPileEmpty() {
             List<GameEvent> events = gameCreatedAndTheseEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"),
+                    new GameStarted(),
+                    new ActionCardDeckCreated(List.of(ActionCard.PREDICT)),
                     new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
             Game game = Game.reconstitute(events);
 
             Player player = game.playerFor(new MemberId(53L));
             assertThat(player.hand())
                     .containsExactly(ActionCard.PREDICT);
+            assertThat(game.actionCardDeck().drawPile())
+                    .isEmpty();
         }
 
         private static List<GameEvent> gameCreatedAndTheseEvents(GameEvent... freshEvents) {

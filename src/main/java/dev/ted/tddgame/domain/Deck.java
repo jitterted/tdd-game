@@ -49,7 +49,7 @@ public class Deck<CARD> {
     }
 
     public DeckView<CARD> view() {
-        return new DeckView<>(Collections.emptyList(),
+        return new DeckView<>(List.copyOf(drawPile),
                               List.copyOf(discardPile));
     }
 

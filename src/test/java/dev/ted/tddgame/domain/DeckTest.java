@@ -59,6 +59,19 @@ class DeckTest {
                     .doesNotContainSequence(allStandardActionCards);
 
         }
+
+        @Test
+        void viewHasNonEmptyDrawAndDiscardPiles() throws Exception {
+            Deck<ActionCard> deck = Deck.createForTest(ActionCard.WRITE_CODE,
+                                                       ActionCard.LESS_CODE,
+                                                       ActionCard.PREDICT);
+
+            deck.draw(); // force replenish by drawing the WRITE_CODE
+
+            assertThat(deck.view().drawPile())
+                    .containsExactly(ActionCard.LESS_CODE,
+                                     ActionCard.PREDICT);
+        }
     }
 
     private List<ActionCard> createStandardActionCards() {
