@@ -1,3 +1,26 @@
+October 15, 2024 - Tuesday
+==========================
+
+* Recovered most of our context
+
+* Created sequence diagram to document what happens when the "start game" scenario is started, clarifying where the "fresh" events go (a new container each transaction)
+
+* Decided to have Game's apply loop dispatch events specific for Player and Deck directly to each of those entities (instead of sending the events to everyone)
+
+NEXT: get the currently failing test to pass, implement player drawing cards to full hand inside of Game.start(), then refactor to move that behavior into Player
+
+
+June 13, 2024 - Thursday
+========================
+* Event-sourcing with entities (like Deck and Player) that are part of the Aggregate, is quite unfamiliar
+
+* It's even worse when combining ES with also be not 100% comfortable with "Nullable Infra Wrappers"
+
+* Spelling out precisely the events that would get generated and then how the reconstitution (rebuild? replay?) happens, both when the player just draws cards from a Deck that has enough, as well as when the Deck has to be replenished via shuffling
+
+* Switch from "reconstitute" to "rebuild" (easier to say and type)
+
+
 June 5, 2024 - Wednesday
 ========================
 

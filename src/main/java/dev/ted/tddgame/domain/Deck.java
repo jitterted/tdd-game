@@ -18,8 +18,12 @@ public class Deck<CARD> {
     }
 
     public static Deck<ActionCard> createForTest(ActionCard... actionCards) {
-        return new Deck<>(Collections.emptyList(),
-                          _ -> new ArrayList<>(Arrays.asList(actionCards)));
+        return createForTest(Arrays.asList(actionCards));
+    }
+
+    public static Deck<ActionCard> createForTest(List<ActionCard> actionCards) {
+        return new Deck<>(new ArrayList<>(actionCards),
+                          new IdentityShuffler<>());
     }
 
     private Deck(List<CARD> cards, Shuffler<CARD> shuffler) {
@@ -50,6 +54,13 @@ public class Deck<CARD> {
     }
 
     // -- EMBEDDED STUB for Nullable Shuffler --
+
+    private static class IdentityShuffler<CARD> implements Shuffler<CARD> {
+        @Override
+        public List<CARD> shuffleCards(List<CARD> discardPile) {
+            return new ArrayList<>(discardPile);
+        }
+    }
 
     private static class RandomShuffler<CARD> implements Shuffler<CARD> {
         @Override

@@ -3,6 +3,7 @@ package dev.ted.tddgame.domain;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class Player {
@@ -28,6 +29,23 @@ public class Player {
     public String playerName() {
         return playerName;
     }
+
+    public Stream<ActionCard> hand() {
+        return actionCards.stream();
+    }
+
+    @Deprecated // will be replaced by event-triggered apply
+    public void addCardToHand(ActionCard actionCard) {
+        actionCards.add(actionCard);
+    }
+
+    public void drawToFullFrom(Deck<ActionCard> actionCardDeck,
+                               Consumer<GameEvent> eventConsumer) {
+        PlayerDrewActionCard event =
+                new PlayerDrewActionCard(memberId, actionCardDeck.draw());
+        eventConsumer.accept(event);
+    }
+
 
     @Override
     public final boolean equals(Object o) {
@@ -57,11 +75,4 @@ public class Player {
                 .toString();
     }
 
-    public Stream<ActionCard> hand() {
-        return actionCards.stream();
-    }
-
-    public void addCardToHand(ActionCard actionCard) {
-        actionCards.add(actionCard);
-    }
 }

@@ -13,7 +13,7 @@ public abstract class EventSourcedAggregate {
         apply(event);
     }
 
-    public abstract void apply(GameEvent event);
+    protected abstract void apply(GameEvent event);
 
     public Stream<GameEvent> freshEvents() {
         return freshEvents.stream();

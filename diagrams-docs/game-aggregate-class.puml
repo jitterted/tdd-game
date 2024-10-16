@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class EventSourceAggregate {
+#void enqueue(GameEvent)
+#void apply(GameEvent)
++Stream<GameEvent> freshEvents()
+}
+
+class Game << Aggregate >> {
+Player[] players
+ActionDeck deck
+List<GameEvent> freshEventsContainer
+}
+
+Game -up-|> EventSourceAggregate
+
+class Player << Entity >> {
++void apply(PlayerEvent)
+}
+
+class ActionDeck << Entity >> {
+}
+
+Game --> Player
+Game --> ActionDeck
+
+@enduml

@@ -1,0 +1,52 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Host
+boundary GameService
+participant Game
+participant Player
+participant Deck
+'participant GUE as "Game\nUncommitted Events"
+'participant DUE as "Deck\nUncommitted Events"
+'participant PUE as "Player\nUncommitted Events"
+'container internally is a List, but when passed to entities, it's an interface with only an `add(Event)` method
+'   for the Event Store, it has the additional method of `Stream<Event> all()`
+participant UE as "Uncommitted Events\nContainer"
+database EventStore as "Event Store"
+
+Host -> GameService: Start Game
+group Rebuild In-Memory State
+    GameService -> EventStore: load all events for Game G123
+    EventStore --> GameService: Stream<GameEvent>
+    GameService -> Game: Apply Loaded Events (thru its constructor)
+    loop Apply Events
+        Game -> Game: apply event
+        Game -> Player: apply event
+        Game -> Deck: apply event
+    end
+end
+
+' State is now loaded into memory
+
+GameService -> UE: new
+activate UE
+GameService -> Game: *CMD* Start Game\n(pass in Uncommitted Events Container)
+
+Game -> UE: GameStarted(...)
+Game -> UE: ActionCardDeckCreated(...)
+Game -> Player: *CMD* Draw To Full
+Player -> Deck: *CMD* Draw Card
+Deck -> Deck: *CMD* Shuffle from Discard Pile
+Deck -> UE: ReplenishTo(A, B, ... Y, Z)
+Deck --> Player: (Card = A)
+Player -> UE: PlayerDrewCard(1, A)
+' (close transaction)
+'     UE_Lookup - global/singleton lookup - do not like
+' ✅ Pass in UE as dependency in constructor
+'     Pass in UE as parameter to command invocation
+ GameService -> EventStore: store(Uncommitted Events Container)
+deactivate UE
+
+@enduml
