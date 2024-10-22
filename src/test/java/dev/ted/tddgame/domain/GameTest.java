@@ -159,19 +159,26 @@ class GameTest {
         }
 
         @Test
-        @Disabled("Until actionCardDeck().drawPile() is fully implemented")
+        @Disabled("Until Deck has been converted to being event-sourced")
         void playerDrewCardResultsInPlayerHavingCardDrawnAndDeckDrawPileEmpty() {
             List<GameEvent> events = gameCreatedAndTheseEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"),
                     new GameStarted(),
-                    new ActionCardDeckCreated(List.of(ActionCard.PREDICT)),
+                    new ActionCardDeckCreated(List.of(
+                            ActionCard.PREDICT,
+                            ActionCard.REFACTOR)),
                     new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
             Game game = Game.reconstitute(events);
 
             Player player = game.playerFor(new MemberId(53L));
             assertThat(player.hand())
+                    .as("Hand had unexpected cards")
                     .containsExactly(ActionCard.PREDICT);
             assertThat(game.actionCardDeck().drawPile())
+                    .as("draw pile was not as expected")
+                    .containsExactly(ActionCard.REFACTOR);
+            assertThat(game.actionCardDeck().discardPile())
+                    .as("discard pile should be empty")
                     .isEmpty();
         }
 

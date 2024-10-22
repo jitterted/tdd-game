@@ -12,6 +12,10 @@ public class Deck<CARD> {
     private final Queue<CARD> drawPile = new LinkedList<>();
     private List<CARD> discardPile;
 
+    // events that Deck generates/applies
+    // * DeckCreated(cards to be put in discard pile)
+    // * DeckReplenished(cards to be put in draw pile)
+
     // for production usage, uses random shuffler
     public static <CARD> Deck<CARD> create(List<CARD> cards) {
         return new Deck<>(cards, new RandomShuffler<>());
@@ -33,8 +37,11 @@ public class Deck<CARD> {
 
     public CARD draw() {
         if (drawPile.isEmpty()) {
+            // generate event to replenish from discard
+            // enqueue it: which also APPLIES it (to change state)
             replenishDrawPileFromDiscardPile();
         }
+        // if needed, the replenish already changed the state of drawPile
         return drawPile.remove();
     }
 
@@ -44,8 +51,10 @@ public class Deck<CARD> {
 
     private void replenishDrawPileFromDiscardPile() {
         discardPile = shuffler.shuffleCards(discardPile);
-        drawPile.addAll(discardPile);
-        discardPile.clear();
+        // generate event: replenishTo(shuffle of discardPile)
+        drawPile.addAll(discardPile); // happens in apply?
+        discardPile.clear(); // happens in apply?
+        // apply the event
     }
 
     public DeckView<CARD> view() {

@@ -1,3 +1,128 @@
+October 17, 2024 - Thursday
+===========================
+
+* Never enqueue() events during apply(), in fact, can we throw an exception if this happens??
+
+* Commands --Generate--> Events and Events --Change--> State, but we ENQUEUE events inside command methods, which does both STORE and APPLY those events
+
+
+October 16, 2024 - Wednesday
+============================
+
+* Got tests passing for player drawing card from deck and finally did a commit
+
+* (Re-)encountered need for isolating shuffling randomness for the deck when replenishing
+
+* Discovered that Deck.view() was incomplete!
+
+* Comments originally from Game.start() trying to figure out events and state change
+
+
+        // Deck starts with cards: [A..Z]
+        // stuff happens, deck now has [Y, Z]
+        //  -> DeckReplenishedTo(Y, Z)
+        // player.drawToFull(deck)
+        //  ->  PlayerDrawFromDeck(gets Y)
+        //      PlayerDrawFromDeck(gets Z)
+        //      [ran out of cards, so shuffle to replenish] <-- what event here?
+        //      PlayerDrawFromDeck(gets A)
+
+        // player has: Y, Z, A
+        // deck has B..Z
+
+        // Create new Deck by Shuffling the Discard Pile (Deck = [A..E])
+        // Player.drawToFull(deck)
+        //  -> deck.draw(), deck.draw(), deck.draw() -> Player = [A, B, C], Deck = [D, E]
+        // COMMANDS -> EVENTS:
+        // (cmd) Create new Game("Game Name")
+        // (evt) GameCreated("Game Name", "handle")
+
+        // (cmd) Player 1 joins
+        // (evt) PlayerJoined("1")
+
+        // (cmd) Player 2 joins
+        // (evt) PlayerJoined("2")
+
+        // (state) Player1[], Player2[]
+
+        // (cmd) Start Game Command
+        // (evt) GameStarted()
+        // (evt) ActionCardDeckCreated(A,B,C,D,E)
+
+        // (state) Deck(draw)[](discard)[A,B,C,D,E]
+
+        // ** Player Draw to Full Hand Command
+        // ** Player 1 Draw Card from Deck
+        // -> DeckReplTo(A..E) // moves (shuffles) discard pile to draw pile
+        // -> PlayerDrewCard(1) -> A
+
+        // ** Player 1 Draw Card from Deck
+        // -> PlayerDrewCard(1) -> B
+        // ** Player 1 Draw Card from Deck
+        // -> PlayerDrewCard(1) -> C
+        // ** Player 1 Discards "B"
+        // -> PlayerDiscards(1, B)
+        // ** Player 2 Draw Card from Deck
+        // -> PlayerDrewCard(2) -> D
+        // ** Player 2 Draw Card from Deck
+        // -> PlayerDrewCard(2) -> E
+
+        // ** Player 2 Draw Card from Deck
+        // -> DeckReplFromDiscard(B) -> Deck[B]
+        // -> PlayerDrewCard(2) -> B
+
+
+
+        // REBUILD:
+        // --events--          --resulting state--
+        // DeckReplTo(A..E)     -> Player1 [], Deck = [A..E]
+        // PlayerDrewCard(1)    -> Player1 [A], Deck [B..E][]
+        // PlayerDrewCard(1)    -> Player1 [A, B], Deck [C..E][]
+        // PlayerDrewCard(1)    -> Player1 [A, B, C], Deck [D..E][]
+        // PlayerDiscards(1, B) -> Player1 [A, C], Deck [D..E][B]
+        // PlayerDrewCard(2)    -> Player2 [D], Deck [E][]
+        // PlayerDrewCard(2)    -> Player2 [D, E], Deck [][]
+        // DeckRepl(B)          -> Player1 [A, C], Player 2 [D, E], Deck [B][]
+        // PlayerDrewCard(2)    -> Player1 [A, C], Player 2 [D, E, B], Deck [][]
+
+        // next player...
+        // Player2.drawToFull(deck)
+        //  -> deck.draw() [D], deck.draw() [E], DeckReplenishTo[X, Y, Z] (via command, right before enqueue), deck.draw() [X]
+        // Player2.uncommitedEvents() => PD(D), PD(E), REPL(X,Y,Z), PD(X)
+        //  (Player2 has D, E, X) (Deck has Y, Z)
+        // PlayerDrew(D)
+        // PlayerDrew(E)
+        // DeckReplenishedTo(X, Y, Z)
+        // PlayerDrew(X)
+
+        // REBUILD:
+        // DeckReplTo(A..E) -> Deck = [A..E]
+        // PlayerDrew(1, A) -> Player1 [A], Deck [B..E]
+        // PlayerDrew(1, B) -> Player1 [A, B], Deck [C..E]
+        // PlayerDrew(1, C) -> Player1 [A, B, C], Deck [D..E]
+        // PlayerDrew(2, D) -> Player2 [D], Deck [E]
+        // PlayerDrew(2, E) -> Player2 [E], Deck []
+        // DeckReplenishedTo(X, Y, Z) -> Deck [X, Y, Z]
+        // PlayerDrew(2, X) -> Player2 [X], Deck [Y, Z]
+
+
+
+
+        // RECONSTITUTE FROM PERSISTENCE
+        //  DeckReplenishedTo(Y, Z)
+        //  PlayerDrewCard(Y), [applying this does not modify Deck]
+        //  PlayerDrewCard(Z),
+        //  PlayerDrewCard(A),
+        //  DeckReplenishedTo(B..Z)
+
+        // player has: Y, Z, A
+        // deck has: B..Z
+        // EVENTS: PlayerDrewCard() [applying this asks player to draw card from deck]
+        //         PlayerDrewCard(),
+        //         -- deck ran out of cards in Draw Pile: shuffle happens --
+        //         DeckReplenishedTo(A..Z)
+        //         PlayerDrewCard()
+
 October 15, 2024 - Tuesday
 ==========================
 
