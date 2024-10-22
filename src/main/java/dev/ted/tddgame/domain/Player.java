@@ -38,8 +38,6 @@ public class Player {
         actionCards.add(((PlayerDrewActionCard) event).actionCard());
     }
 
-    // will be replaced by event-triggered apply
-
     public void drawToFullFrom(Deck<ActionCard> actionCardDeck,
                                Consumer<GameEvent> eventConsumer) {
         drawCardFrom(actionCardDeck, eventConsumer);
@@ -49,9 +47,10 @@ public class Player {
         drawCardFrom(actionCardDeck, eventConsumer);
     }
 
-    private void drawCardFrom(Deck<ActionCard> actionCardDeck, Consumer<GameEvent> eventConsumer) {
+    private void drawCardFrom(Deck<ActionCard> actionCardDeck,
+                              Consumer<GameEvent> eventConsumer) {
         PlayerDrewActionCard event =
-                new PlayerDrewActionCard(memberId, actionCardDeck.draw());
+                new PlayerDrewActionCard(memberId, actionCardDeck.draw(eventConsumer));
         eventConsumer.accept(event);
     }
 

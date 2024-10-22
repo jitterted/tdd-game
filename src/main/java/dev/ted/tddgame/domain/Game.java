@@ -71,8 +71,12 @@ public class Game extends EventSourcedAggregate {
                     actionCardDeck = deckFactory.createDeck(actionCards);
 
             case PlayerEvent playerEvent ->
-                    playerFor(playerEvent.memberId()).apply(playerEvent);
+                    playerFor(playerEvent.memberId())
+                            .apply(playerEvent);
 
+            case DeckEvent deckEvent -> {
+//                actionCardDeck.apply(deckEvent)
+            }
         }
     }
 

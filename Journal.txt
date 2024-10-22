@@ -1,7 +1,19 @@
+October 22, 2024 - Tuesday
+==========================
+
+* Decided that moving a card from the deck to the Player's hand is a two-event process (e.g., debit card from deck, credit card to player's hand)
+
+    * Makes applying events easier: we don't have to hand the deck to the Player's `apply()` method, only the event
+
+    * Preserves "conservation of cards" (or consistency of entities) at the Game's aggregate transaction level
+
+
 October 17, 2024 - Thursday
 ===========================
 
 * Never enqueue() events during apply(), in fact, can we throw an exception if this happens??
+
+    * i.e., MUST NOT generate NEW events as the result of applying them
 
 * Commands --Generate--> Events and Events --Change--> State, but we ENQUEUE events inside command methods, which does both STORE and APPLY those events
 

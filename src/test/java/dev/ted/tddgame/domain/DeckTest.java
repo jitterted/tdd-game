@@ -5,13 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.*;
 
 class DeckTest {
 
+    private static final Consumer<GameEvent> DUMMY_EVENT_CONSUMER = _ -> {};
+
     @Nested
     class newActionCardDeck {
+
         @Test
         void hasEmptyDrawPile() {
             List<ActionCard> actionCards = List.of(
@@ -52,7 +56,7 @@ class DeckTest {
 
             List<ActionCard> drawnCards = new ArrayList<>();
             do {
-                drawnCards.add(deck.draw());
+                drawnCards.add(deck.draw(DUMMY_EVENT_CONSUMER));
             } while (!deck.isDrawPileEmpty());
 
             assertThat(drawnCards)
@@ -66,13 +70,46 @@ class DeckTest {
                                                        ActionCard.LESS_CODE,
                                                        ActionCard.PREDICT);
 
-            deck.draw(); // force replenish by drawing the WRITE_CODE
+            deck.draw(DUMMY_EVENT_CONSUMER); // force replenish by drawing the WRITE_CODE
 
             assertThat(deck.view().drawPile())
                     .containsExactly(ActionCard.LESS_CODE,
                                      ActionCard.PREDICT);
         }
     }
+
+    @Nested
+    class CommandGeneratesEvents {
+        @Test
+        void nonEmptyDrawPileDrawSingleCardGeneratesOneCardDrawnEvent() {
+            Deck<ActionCard> deck = Deck.createForTest(ActionCard.PREDICT);
+
+            List<GameEvent> freshEvents = new ArrayList<>();
+            deck.draw(freshEvents::add);
+
+            assertThat(freshEvents)
+                    .containsExactly(
+                            new DeckCardDrawn<>(ActionCard.PREDICT));
+        }
+
+        @Test
+        void drawPileWithTwoCardsDrawTwoCardsGeneratesTwoCardDrawnEvents() {
+            Deck<ActionCard> deck = Deck.createForTest(ActionCard.LESS_CODE,
+                                                       ActionCard.WRITE_CODE);
+
+            List<GameEvent> freshEvents = new ArrayList<>();
+            deck.draw(freshEvents::add);
+            deck.draw(freshEvents::add);
+
+            assertThat(freshEvents)
+                    .containsExactly(
+                            new DeckCardDrawn<>(ActionCard.LESS_CODE),
+                            new DeckCardDrawn<>(ActionCard.WRITE_CODE)
+                    );
+        }
+    }
+
+    // HELPER METHODS
 
     private List<ActionCard> createStandardActionCards() {
         List<ActionCard> allActionCards = new ArrayList<>();
@@ -91,11 +128,10 @@ class DeckTest {
         }
     }
 
-
     private List<ActionCard> drawCards(Deck<ActionCard> deck, int numberOfCards) {
         List<ActionCard> drawnCards = new ArrayList<>();
         for (int i = 0; i < numberOfCards; i++) {
-            drawnCards.add(deck.draw());
+            drawnCards.add(deck.draw(DUMMY_EVENT_CONSUMER));
         }
         return drawnCards;
     }

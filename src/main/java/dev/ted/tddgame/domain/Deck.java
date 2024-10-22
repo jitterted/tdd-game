@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.Consumer;
 
 public class Deck<CARD> {
     private final Shuffler<CARD> shuffler;
@@ -35,14 +36,16 @@ public class Deck<CARD> {
         this.shuffler = shuffler;
     }
 
-    public CARD draw() {
+    CARD draw(Consumer<GameEvent> eventConsumer) {
         if (drawPile.isEmpty()) {
             // generate event to replenish from discard
             // enqueue it: which also APPLIES it (to change state)
             replenishDrawPileFromDiscardPile();
         }
         // if needed, the replenish already changed the state of drawPile
-        return drawPile.remove();
+        CARD drawnCard = drawPile.remove();
+        eventConsumer.accept(new DeckCardDrawn<>(drawnCard));
+        return drawnCard;
     }
 
     public boolean isDrawPileEmpty() {

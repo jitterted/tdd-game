@@ -56,7 +56,6 @@ class GameTest {
         }
 
         @Test
-//        @Disabled("Until the player.drawToFullFrom() has been implemented")
         void startGameEmitsGameStarted_DeckCreated_PlayerDrawCards_Events() {
             MemberId memberId = new MemberId(1L);
             List<GameEvent> committedEvents = List.of(
@@ -85,10 +84,15 @@ class GameTest {
                                             ActionCard.PREDICT
                                     )),
                             // player 1 draws 5 cards (that's the "full hand")
-                            new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
+                            new DeckCardDrawn<>(ActionCard.PREDICT)
+                            , new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
+                            , new DeckCardDrawn<>(ActionCard.LESS_CODE)
                             , new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE)
+                            , new DeckCardDrawn<>(ActionCard.LESS_CODE)
                             , new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE)
+                            , new DeckCardDrawn<>(ActionCard.WRITE_CODE)
                             , new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE)
+                            , new DeckCardDrawn<>(ActionCard.PREDICT)
                             , new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
                     );
         }
