@@ -83,4 +83,7 @@ public class Player {
                 .toString();
     }
 
+    public void apply(PlayerEvent event) {
+        addCardToHand(((PlayerDrewActionCard) event).actionCard());
+    }
 }

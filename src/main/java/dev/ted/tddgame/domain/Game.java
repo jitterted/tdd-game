@@ -67,18 +67,11 @@ public class Game extends EventSourcedAggregate {
             case GameStarted _ -> {
             }
 
-            case ActionCardDeckCreated(List<ActionCard> actionCards) -> {
-                actionCardDeck = deckFactory.createDeck(actionCards);
-            }
+            case ActionCardDeckCreated(List<ActionCard> actionCards) ->
+                    actionCardDeck = deckFactory.createDeck(actionCards);
 
-            // case PlayerEvent
-                // dispatch to Player
-                // player.apply(event)
-
-            case PlayerDrewActionCard(MemberId memberId, ActionCard actionCard) ->
-                    // Move to the model where this event is simply forwarded to the specific player for it to apply
-                    // playerFor(memberId).apply(event)
-                    playerFor(memberId).addCardToHand(actionCard);
+            case PlayerEvent playerEvent ->
+                    playerFor(playerEvent.memberId()).apply(playerEvent);
 
         }
     }
