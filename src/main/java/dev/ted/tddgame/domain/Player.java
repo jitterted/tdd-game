@@ -35,13 +35,10 @@ public class Player {
     }
 
     public void apply(PlayerEvent event) {
-        addCardToHand(((PlayerDrewActionCard) event).actionCard());
+        actionCards.add(((PlayerDrewActionCard) event).actionCard());
     }
 
-    @Deprecated // will be replaced by event-triggered apply
-    public void addCardToHand(ActionCard actionCard) {
-        actionCards.add(actionCard);
-    }
+    // will be replaced by event-triggered apply
 
     public void drawToFullFrom(Deck<ActionCard> actionCardDeck,
                                Consumer<GameEvent> eventConsumer) {
