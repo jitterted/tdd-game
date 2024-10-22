@@ -34,6 +34,10 @@ public class Player {
         return actionCards.stream();
     }
 
+    public void apply(PlayerEvent event) {
+        addCardToHand(((PlayerDrewActionCard) event).actionCard());
+    }
+
     @Deprecated // will be replaced by event-triggered apply
     public void addCardToHand(ActionCard actionCard) {
         actionCards.add(actionCard);
@@ -81,9 +85,5 @@ public class Player {
         return new StringJoiner(", ", Player.class.getSimpleName() + "[", "]")
                 .add("id=" + playerId.id())
                 .toString();
-    }
-
-    public void apply(PlayerEvent event) {
-        addCardToHand(((PlayerDrewActionCard) event).actionCard());
     }
 }

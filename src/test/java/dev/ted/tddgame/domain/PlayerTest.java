@@ -1,6 +1,9 @@
 package dev.ted.tddgame.domain;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -11,39 +14,50 @@ class PlayerTest {
 
     @Test
     void newPlayerHasEmptyHand() {
-        Player player = createPlayer();
+        Player player = createPlayer(IRRELEVANT_MEMBER_ID);
 
         assertThat(player.hand())
                 .isEmpty();
     }
 
-    @Test
-    void playerHasTwoActionCardsInHandAfterDrawingActionCardsTwice() {
-        Player player = createPlayer();
+    @Nested
+    class EventsProjectState {
 
-        player.addCardToHand(ActionCard.LESS_CODE);
-        player.addCardToHand(ActionCard.WRITE_CODE);
+        @Test
+        void drewActionCardTwiceResultsInTwoCardsInHand() {
+            MemberId memberId = new MemberId(37L);
+            Player player = createPlayer(memberId.id());
+            List<PlayerEvent> events = List.of(
+                    new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE),
+                    new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE));
 
-        assertThat(player.hand())
-                .containsExactly(ActionCard.LESS_CODE, ActionCard.WRITE_CODE);
+            events.forEach(player::apply);
+
+            assertThat(player.hand())
+                    .containsExactly(ActionCard.LESS_CODE, ActionCard.WRITE_CODE);
+        }
+
+        @Test
+        void playerHasTwoActionCardsInHandAfterDrawingSameTypeOfActionCardTwice() {
+            MemberId memberId = new MemberId(37L);
+            Player player = createPlayer(memberId.id());
+            List<PlayerEvent> events = List.of(
+                    new PlayerDrewActionCard(memberId, ActionCard.PREDICT),
+                    new PlayerDrewActionCard(memberId, ActionCard.PREDICT));
+
+            events.forEach(player::apply);
+
+            assertThat(player.hand())
+                    .hasSize(2)
+                    .containsOnly(ActionCard.PREDICT);
+        }
+
     }
 
-    @Test
-    void playerHasTwoActionCardsInHandAfterDrawingSameTypeOfActionCardTwice() {
-        Player player = createPlayer();
 
-        player.addCardToHand(ActionCard.PREDICT);
-        player.addCardToHand(ActionCard.PREDICT);
-
-        assertThat(player.hand())
-                .hasSize(2)
-                .containsOnly(ActionCard.PREDICT);
-    }
-
-
-    private Player createPlayer() {
+    private static Player createPlayer(long memberId) {
         return new Player(new PlayerId(IRRELEVANT_PLAYER_ID),
-                          new MemberId(IRRELEVANT_MEMBER_ID),
+                          new MemberId(memberId),
                           "Player 1");
     }
 }
