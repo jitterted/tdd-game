@@ -85,7 +85,6 @@ class DeckTest {
     @Nested
     class CommandGeneratesEvents {
         @Test
-        @Disabled("Until deck.apply() is completed")
         void emptyDrawPileDrawOneCardGeneratesCardDrawnAndReplenishEvents() {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.PREDICT);
 
@@ -99,17 +98,18 @@ class DeckTest {
         }
 
         @Test
-        @Disabled("Until above test passes")
-        void drawPileWithTwoCardsDrawTwoCardsGeneratesTwoCardDrawnEvents() {
+        void drawPileWithTwoCardsDrawTwoCardsGeneratesReplenishAndTwoCardDrawnEvents() {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.LESS_CODE,
                                                        ActionCard.WRITE_CODE);
+            DeckEventEnqueuer deckEventEnqueuer = new DeckEventEnqueuer(deck);
 
-            List<GameEvent> freshEvents = new ArrayList<>();
-            deck.draw(freshEvents::add);
-            deck.draw(freshEvents::add);
+            deck.draw(deckEventEnqueuer);
+            deck.draw(deckEventEnqueuer);
 
-            assertThat(freshEvents)
+            assertThat(deckEventEnqueuer.deckEvents())
                     .containsExactly(
+                            new DeckReplenished<>(List.of(ActionCard.LESS_CODE,
+                                                          ActionCard.WRITE_CODE)),
                             new DeckCardDrawn<>(ActionCard.LESS_CODE),
                             new DeckCardDrawn<>(ActionCard.WRITE_CODE)
                     );

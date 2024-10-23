@@ -13,7 +13,8 @@ public class Deck<CARD> {
     private final Queue<CARD> drawPile = new LinkedList<>();
     private List<CARD> discardPile;
 
-    // for production usage, uses random shuffler
+    // TODO: for production usage, uses random shuffler
+    // TODO: must never accept a list of cards that is empty
     public static <CARD> Deck<CARD> create(List<CARD> cards) {
         return new Deck<>(cards, new RandomShuffler<>());
     }
@@ -34,11 +35,9 @@ public class Deck<CARD> {
 
     CARD draw(Consumer<GameEvent> eventConsumer) {
         if (drawPile.isEmpty()) {
-            // generate event to replenish from discard
-            // enqueue it: which also APPLIES it (to change state)
             replenishDrawPileFromDiscardPile(eventConsumer);
         }
-        CARD drawnCard = drawPile.remove(); // TODO needs to be .peek, the remove happens when we .apply() the generated event
+        CARD drawnCard = drawPile.peek();
         eventConsumer.accept(new DeckCardDrawn<>(drawnCard));
         return drawnCard;
     }
