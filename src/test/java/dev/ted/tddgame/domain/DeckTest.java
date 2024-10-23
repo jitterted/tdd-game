@@ -6,13 +6,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.*;
 
 class DeckTest {
 
-    private static final Consumer<GameEvent> DUMMY_EVENT_CONSUMER = _ -> {
+    private static final EventEnqueuer DUMMY_EVENT_ENQUEUER = _ -> {
     };
 
     @Nested
@@ -59,7 +58,7 @@ class DeckTest {
 
             List<ActionCard> drawnCards = new ArrayList<>();
             do {
-                drawnCards.add(deck.draw(DUMMY_EVENT_CONSUMER));
+                drawnCards.add(deck.draw(DUMMY_EVENT_ENQUEUER));
             } while (!deck.isDrawPileEmpty());
 
             assertThat(drawnCards)
@@ -73,7 +72,7 @@ class DeckTest {
                                                        ActionCard.LESS_CODE,
                                                        ActionCard.PREDICT);
 
-            deck.draw(DUMMY_EVENT_CONSUMER); // force replenish by drawing the WRITE_CODE
+            deck.draw(DUMMY_EVENT_ENQUEUER); // force replenish by drawing the WRITE_CODE
 
             assertThat(deck.view()
                            .drawPile())
@@ -115,7 +114,7 @@ class DeckTest {
                     );
         }
 
-        static class DeckEventEnqueuer implements Consumer<GameEvent> {
+        static class DeckEventEnqueuer implements EventEnqueuer {
             private final Deck<ActionCard> deck;
             private final List<DeckEvent> deckEvents;
 
@@ -125,7 +124,7 @@ class DeckTest {
             }
 
             @Override
-            public void accept(GameEvent gameEvent) {
+            public void enqueue(GameEvent gameEvent) {
                 if (gameEvent instanceof DeckEvent deckEvent) {
                     deck.apply(deckEvent);
                     deckEvents.add(deckEvent);
@@ -214,7 +213,7 @@ class DeckTest {
     private List<ActionCard> drawCards(Deck<ActionCard> deck, int numberOfCards) {
         List<ActionCard> drawnCards = new ArrayList<>();
         for (int i = 0; i < numberOfCards; i++) {
-            drawnCards.add(deck.draw(DUMMY_EVENT_CONSUMER));
+            drawnCards.add(deck.draw(DUMMY_EVENT_ENQUEUER));
         }
         return drawnCards;
     }

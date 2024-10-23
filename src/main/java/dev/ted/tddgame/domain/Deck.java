@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.function.Consumer;
 
 public class Deck<CARD> {
     private final Shuffler<CARD> shuffler;
@@ -33,12 +32,12 @@ public class Deck<CARD> {
         this.shuffler = shuffler;
     }
 
-    CARD draw(Consumer<GameEvent> eventConsumer) {
+    CARD draw(EventEnqueuer eventEnqueuer) {
         if (drawPile.isEmpty()) {
-            replenishDrawPileFromDiscardPile(eventConsumer);
+            replenishDrawPileFromDiscardPile(eventEnqueuer);
         }
         CARD drawnCard = drawPile.peek();
-        eventConsumer.accept(new DeckCardDrawn<>(drawnCard));
+        eventEnqueuer.enqueue(new DeckCardDrawn<>(drawnCard));
         return drawnCard;
     }
 
@@ -46,9 +45,9 @@ public class Deck<CARD> {
         return drawPile.isEmpty();
     }
 
-    private void replenishDrawPileFromDiscardPile(Consumer<GameEvent> eventConsumer) {
+    private void replenishDrawPileFromDiscardPile(EventEnqueuer eventEnqueuer) {
         discardPile = shuffler.shuffleCards(discardPile);
-        eventConsumer.accept(new DeckReplenished<>(discardPile));
+        eventEnqueuer.enqueue(new DeckReplenished<>(discardPile));
     }
 
     public DeckView<CARD> view() {
@@ -64,7 +63,6 @@ public class Deck<CARD> {
             }
 
             case DeckCardDrawn<CARD> deckCardDrawn -> {
-                // we don't track the removed card, it's already in another event
                 CARD removedCard = drawPile.remove();
                 if (!deckCardDrawn.card().equals(removedCard)) {
                     throw new IllegalStateException();

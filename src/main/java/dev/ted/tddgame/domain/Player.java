@@ -3,7 +3,6 @@ package dev.ted.tddgame.domain;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.StringJoiner;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class Player {
@@ -39,19 +38,19 @@ public class Player {
     }
 
     public void drawToFullFrom(Deck<ActionCard> actionCardDeck,
-                               Consumer<GameEvent> eventConsumer) {
-        drawCardFrom(actionCardDeck, eventConsumer);
-        drawCardFrom(actionCardDeck, eventConsumer);
-        drawCardFrom(actionCardDeck, eventConsumer);
-        drawCardFrom(actionCardDeck, eventConsumer);
-        drawCardFrom(actionCardDeck, eventConsumer);
+                               EventEnqueuer eventEnqueuer) {
+        drawCardFrom(actionCardDeck, eventEnqueuer);
+        drawCardFrom(actionCardDeck, eventEnqueuer);
+        drawCardFrom(actionCardDeck, eventEnqueuer);
+        drawCardFrom(actionCardDeck, eventEnqueuer);
+        drawCardFrom(actionCardDeck, eventEnqueuer);
     }
 
     private void drawCardFrom(Deck<ActionCard> actionCardDeck,
-                              Consumer<GameEvent> eventConsumer) {
+                              EventEnqueuer eventEnqueuer) {
         PlayerDrewActionCard event =
-                new PlayerDrewActionCard(memberId, actionCardDeck.draw(eventConsumer));
-        eventConsumer.accept(event);
+                new PlayerDrewActionCard(memberId, actionCardDeck.draw(eventEnqueuer));
+        eventEnqueuer.enqueue(event);
     }
 
 
