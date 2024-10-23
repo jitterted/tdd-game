@@ -74,9 +74,8 @@ public class Game extends EventSourcedAggregate {
                     playerFor(playerEvent.memberId())
                             .apply(playerEvent);
 
-            case DeckEvent deckEvent -> {
-//                actionCardDeck.apply(deckEvent)
-            }
+            case DeckEvent deckEvent ->
+                    actionCardDeck.apply(deckEvent);
         }
     }
 

@@ -3,6 +3,9 @@ October 23, 2024 - Wednesday
 
 * Set up _TODO_ filter to also find @Disabled tests (or some other way)
 
+* Events should defensively copy any non-Value Objects like `List`
+
+
 
 October 22, 2024 - Tuesday
 ==========================

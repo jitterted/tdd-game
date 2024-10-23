@@ -56,7 +56,6 @@ class GameTest {
         }
 
         @Test
-        @Disabled("Until Deck is completely event-sourced")
         void startGameEmitsGameStarted_DeckCreated_PlayerDrawCards_Events() {
             MemberId memberId = new MemberId(1L);
             List<GameEvent> committedEvents = List.of(
