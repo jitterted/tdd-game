@@ -177,6 +177,18 @@ class DeckTest {
                     .as("Expected Discard Pile to be Empty")
                     .isEmpty();
         }
+
+        @Test
+        void exceptionWhenDeckCardDrawnHasDifferentCardThanDrawnFromDrawPile() {
+            Deck<ActionCard> deck = Deck.createForTest(ActionCard.REFACTOR,
+                                                       ActionCard.CODE_BLOAT);
+            deck.apply(new DeckReplenished<>(List.of(ActionCard.REFACTOR,
+                                                     ActionCard.CODE_BLOAT)));
+
+            assertThatIllegalStateException()
+                    .isThrownBy(() -> deck.apply(
+                            new DeckCardDrawn<>(ActionCard.PREDICT)));
+        }
     }
 
 

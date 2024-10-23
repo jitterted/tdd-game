@@ -66,7 +66,10 @@ public class Deck<CARD> {
 
             case DeckCardDrawn<CARD> deckCardDrawn -> {
                 // we don't track the removed card, it's already in another event
-                drawPile.remove();
+                CARD removedCard = drawPile.remove();
+                if (!deckCardDrawn.card().equals(removedCard)) {
+                    throw new IllegalStateException();
+                }
             }
         }
     }
