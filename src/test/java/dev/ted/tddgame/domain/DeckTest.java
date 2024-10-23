@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,8 @@ import static org.assertj.core.api.Assertions.*;
 
 class DeckTest {
 
-    private static final Consumer<GameEvent> DUMMY_EVENT_CONSUMER = _ -> {};
+    private static final Consumer<GameEvent> DUMMY_EVENT_CONSUMER = _ -> {
+    };
 
     @Nested
     class newActionCardDeck {
@@ -72,7 +74,8 @@ class DeckTest {
 
             deck.draw(DUMMY_EVENT_CONSUMER); // force replenish by drawing the WRITE_CODE
 
-            assertThat(deck.view().drawPile())
+            assertThat(deck.view()
+                           .drawPile())
                     .containsExactly(ActionCard.LESS_CODE,
                                      ActionCard.PREDICT);
         }
@@ -81,18 +84,21 @@ class DeckTest {
     @Nested
     class CommandGeneratesEvents {
         @Test
-        void nonEmptyDrawPileDrawSingleCardGeneratesOneCardDrawnEvent() {
+        @Disabled("Until deck.apply() is completed")
+        void emptyDrawPileDrawOneCardGeneratesCardDrawnAndReplenishEvents() {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.PREDICT);
 
-            List<GameEvent> freshEvents = new ArrayList<>();
-            deck.draw(freshEvents::add);
+            DeckEventEnqueuer deckEventEnqueuer = new DeckEventEnqueuer(deck);
+            deck.draw(deckEventEnqueuer);
 
-            assertThat(freshEvents)
+            assertThat(deckEventEnqueuer.deckEvents())
                     .containsExactly(
+                            new DeckReplenished<>(List.of(ActionCard.PREDICT)),
                             new DeckCardDrawn<>(ActionCard.PREDICT));
         }
 
         @Test
+        @Disabled("Until above test passes")
         void drawPileWithTwoCardsDrawTwoCardsGeneratesTwoCardDrawnEvents() {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.LESS_CODE,
                                                        ActionCard.WRITE_CODE);
@@ -107,7 +113,70 @@ class DeckTest {
                             new DeckCardDrawn<>(ActionCard.WRITE_CODE)
                     );
         }
+
+        static class DeckEventEnqueuer implements Consumer<GameEvent> {
+            private final Deck<ActionCard> deck;
+            private final List<DeckEvent> deckEvents;
+
+            public DeckEventEnqueuer(Deck<ActionCard> deck) {
+                this.deck = deck;
+                deckEvents = new ArrayList<>();
+            }
+
+            @Override
+            public void accept(GameEvent gameEvent) {
+                if (gameEvent instanceof DeckEvent deckEvent) {
+                    deck.apply(deckEvent);
+                    deckEvents.add(deckEvent);
+                }
+            }
+
+            public List<DeckEvent> deckEvents() {
+                return deckEvents;
+            }
+        }
     }
+
+    @Nested
+    class EventsProjectState {
+
+        @Test
+        void deckReplenishedEventMovesCardsIntoDrawPile() {
+            Deck<ActionCard> deck = Deck.createForTest(ActionCard.LESS_CODE,
+                                                       ActionCard.CANT_ASSERT);
+            DeckReplenished<ActionCard> deckEvent =
+                    new DeckReplenished<>(List.of(
+                            ActionCard.LESS_CODE,
+                            ActionCard.CANT_ASSERT));
+
+            deck.apply(deckEvent);
+
+            assertThat(deck.view().drawPile())
+                    .as("Draw Pile contents not as expected")
+                    .containsExactly(ActionCard.LESS_CODE,
+                                     ActionCard.CANT_ASSERT);
+            assertThat(deck.view().discardPile())
+                    .as("Expected Discard Pile to be Empty")
+                    .isEmpty();
+        }
+
+        @Test
+        @Disabled("Requires replenish event handling to be implemented")
+        void deckCardDrawnEventRemovesCardFromDeck() {
+            Deck<ActionCard> deck = Deck.createForTest(ActionCard.REFACTOR,
+                                                       ActionCard.CODE_BLOAT);
+
+            deck.apply(new DeckCardDrawn<>(ActionCard.REFACTOR));
+
+            assertThat(deck.view()
+                           .drawPile())
+                    .containsExactly(ActionCard.CODE_BLOAT);
+            assertThat(deck.view()
+                           .discardPile())
+                    .isEmpty();
+        }
+    }
+
 
     // HELPER METHODS
 

@@ -13,10 +13,6 @@ public class Deck<CARD> {
     private final Queue<CARD> drawPile = new LinkedList<>();
     private List<CARD> discardPile;
 
-    // events that Deck generates/applies
-    // * DeckCreated(cards to be put in discard pile)
-    // * DeckReplenished(cards to be put in draw pile)
-
     // for production usage, uses random shuffler
     public static <CARD> Deck<CARD> create(List<CARD> cards) {
         return new Deck<>(cards, new RandomShuffler<>());
@@ -40,10 +36,9 @@ public class Deck<CARD> {
         if (drawPile.isEmpty()) {
             // generate event to replenish from discard
             // enqueue it: which also APPLIES it (to change state)
-            replenishDrawPileFromDiscardPile();
+            replenishDrawPileFromDiscardPile(eventConsumer);
         }
-        // if needed, the replenish already changed the state of drawPile
-        CARD drawnCard = drawPile.remove();
+        CARD drawnCard = drawPile.remove(); // TODO needs to be .peek, the remove happens when we .apply() the generated event
         eventConsumer.accept(new DeckCardDrawn<>(drawnCard));
         return drawnCard;
     }
@@ -52,9 +47,9 @@ public class Deck<CARD> {
         return drawPile.isEmpty();
     }
 
-    private void replenishDrawPileFromDiscardPile() {
+    private void replenishDrawPileFromDiscardPile(Consumer<GameEvent> eventConsumer) {
         discardPile = shuffler.shuffleCards(discardPile);
-        // generate event: replenishTo(shuffle of discardPile)
+        eventConsumer.accept(new DeckReplenished<>(discardPile));
         drawPile.addAll(discardPile); // happens in apply?
         discardPile.clear(); // happens in apply?
         // apply the event
@@ -63,6 +58,12 @@ public class Deck<CARD> {
     public DeckView<CARD> view() {
         return new DeckView<>(List.copyOf(drawPile),
                               List.copyOf(discardPile));
+    }
+
+    public void apply(DeckEvent deckEvent) {
+        DeckReplenished<CARD> deckReplenished = (DeckReplenished<CARD>) deckEvent;
+        drawPile.addAll(deckReplenished.cardsInDrawPile());
+        discardPile.clear();
     }
 
     // -- EMBEDDED STUB for Nullable Shuffler --

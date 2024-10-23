@@ -101,6 +101,11 @@ Player's "State Machine":
         [ ] Player draws to full hand from Action Card deck as part of start game
             [X] 5 events generated: 1 for each of 5 cards drawn
             [ ] State of player's Hand: has 5 cards
+        [ ] Deck event-sourcing
+            [X] Draw (with no replenish) generates events
+==>         [ ] Draw event projects state change in Deck
+            [ ] Replenish generates events
+            [ ] Applying replenish to deck
         [ ] Player discards card, which adds to Discard Pile
             [ ] Represented in UI by checkboxes?
         [ ] Player has "Hand" and "Tech Neglect" area

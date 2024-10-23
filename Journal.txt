@@ -1,3 +1,9 @@
+October 23, 2024 - Wednesday
+============================
+
+* Set up _TODO_ filter to also find @Disabled tests (or some other way)
+
+
 October 22, 2024 - Tuesday
 ==========================
 
@@ -6,6 +12,11 @@ October 22, 2024 - Tuesday
     * Makes applying events easier: we don't have to hand the deck to the Player's `apply()` method, only the event
 
     * Preserves "conservation of cards" (or consistency of entities) at the Game's aggregate transaction level
+
+
++ Next time: implement the Deck Replenish event (command generates the Replenish, and applying Replenish puts the cards in the Draw pile)
+
+    + Then we can go back and finish up the Deck CardDrawn event application (which eventually will cause us to replace drawPile.remove() with drawPile.peek())
 
 
 October 17, 2024 - Thursday

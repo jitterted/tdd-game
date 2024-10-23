@@ -7,7 +7,7 @@ abstract class EventSourceAggregate {
 +Stream<GameEvent> freshEvents()
 }
 
-class Game << Aggregate >> {
+class Game << Aggregate Root >> {
 Player[] players
 ActionDeck deck
 List<GameEvent> freshEventsContainer
