@@ -186,7 +186,21 @@ class DeckTest {
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> deck.apply(
-                            new DeckCardDrawn<>(ActionCard.PREDICT)));
+                            new DeckCardDrawn<>(ActionCard.PREDICT)))
+                    .withMessage("Card drawn from DrawPile did not match card in event = DeckCardDrawn[card=PREDICT], card drawn = REFACTOR");
+        }
+
+        @Test
+        void exceptionWhenDeckCardDrawnRemovesFromEmptyDrawPile() {
+            Deck<ActionCard> deck = Deck.createForTest(ActionCard.REFACTOR,
+                                                       ActionCard.CODE_BLOAT);
+
+            // draw pile is empty, because we haven't applied a DeckReplenished event
+
+            assertThatIllegalStateException()
+                    .isThrownBy(() -> deck.apply(
+                            new DeckCardDrawn<>(ActionCard.REFACTOR)))
+                    .withMessage("DrawPile must not be empty when applying event: DeckCardDrawn[card=REFACTOR]");
         }
     }
 

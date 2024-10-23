@@ -63,9 +63,13 @@ public class Deck<CARD> {
             }
 
             case DeckCardDrawn<CARD> deckCardDrawn -> {
+                if (drawPile.isEmpty()) {
+                    throw new IllegalStateException("DrawPile must not be empty when applying event: " + deckCardDrawn);
+                }
                 CARD removedCard = drawPile.remove();
                 if (!deckCardDrawn.card().equals(removedCard)) {
-                    throw new IllegalStateException();
+                    throw new IllegalStateException("Card drawn from DrawPile did not match card in event = %s, card drawn = %s"
+                                                            .formatted(deckCardDrawn, removedCard));
                 }
             }
         }
