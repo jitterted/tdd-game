@@ -1,6 +1,5 @@
 package dev.ted.tddgame.domain;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -170,14 +169,18 @@ class GameTest {
         }
 
         @Test
-        @Disabled("Until Deck has been converted to being event-sourced")
         void playerDrewCardResultsInPlayerHavingCardDrawnAndDeckDrawPileEmpty() {
+            // TODO: replace all of these event instantiations with more encapsulation and Collaborator-Based Isolation?
             List<GameEvent> events = gameCreatedAndTheseEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"),
                     new GameStarted(),
                     new ActionCardDeckCreated(List.of(
                             ActionCard.PREDICT,
                             ActionCard.REFACTOR)),
+                    new DeckReplenished<>(List.of(
+                            ActionCard.PREDICT,
+                            ActionCard.REFACTOR)),
+                    new DeckCardDrawn<>(ActionCard.PREDICT),
                     new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
             Game game = Game.reconstitute(events);
 
