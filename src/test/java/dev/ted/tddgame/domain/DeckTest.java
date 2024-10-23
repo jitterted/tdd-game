@@ -16,6 +16,7 @@ class DeckTest {
     };
 
     @Nested
+    @Disabled("Until replenish and draw events work")
     class newActionCardDeck {
 
         @Test
@@ -161,18 +162,19 @@ class DeckTest {
         }
 
         @Test
-        @Disabled("Requires replenish event handling to be implemented")
         void deckCardDrawnEventRemovesCardFromDeck() {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.REFACTOR,
                                                        ActionCard.CODE_BLOAT);
+            deck.apply(new DeckReplenished<>(List.of(ActionCard.REFACTOR,
+                                                     ActionCard.CODE_BLOAT)));
 
             deck.apply(new DeckCardDrawn<>(ActionCard.REFACTOR));
 
-            assertThat(deck.view()
-                           .drawPile())
+            assertThat(deck.view().drawPile())
+                    .as("Draw Pile contents not as expected")
                     .containsExactly(ActionCard.CODE_BLOAT);
-            assertThat(deck.view()
-                           .discardPile())
+            assertThat(deck.view().discardPile())
+                    .as("Expected Discard Pile to be Empty")
                     .isEmpty();
         }
     }

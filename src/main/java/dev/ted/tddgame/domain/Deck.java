@@ -50,9 +50,6 @@ public class Deck<CARD> {
     private void replenishDrawPileFromDiscardPile(Consumer<GameEvent> eventConsumer) {
         discardPile = shuffler.shuffleCards(discardPile);
         eventConsumer.accept(new DeckReplenished<>(discardPile));
-        drawPile.addAll(discardPile); // happens in apply?
-        discardPile.clear(); // happens in apply?
-        // apply the event
     }
 
     public DeckView<CARD> view() {
@@ -60,10 +57,18 @@ public class Deck<CARD> {
                               List.copyOf(discardPile));
     }
 
-    public void apply(DeckEvent deckEvent) {
-        DeckReplenished<CARD> deckReplenished = (DeckReplenished<CARD>) deckEvent;
-        drawPile.addAll(deckReplenished.cardsInDrawPile());
-        discardPile.clear();
+    public void apply(DeckEvent<CARD> deckEvent) {
+        switch (deckEvent) {
+            case DeckReplenished<CARD> deckReplenished -> {
+                drawPile.addAll(deckReplenished.cardsInDrawPile());
+                discardPile.clear();
+            }
+
+            case DeckCardDrawn<CARD> deckCardDrawn -> {
+                // we don't track the removed card, it's already in another event
+                drawPile.remove();
+            }
+        }
     }
 
     // -- EMBEDDED STUB for Nullable Shuffler --
