@@ -95,17 +95,18 @@ Player's "State Machine":
     [ ] Action Card deck shuffled, 5 cards dealt to each Player, etc.
         [X] Create ActionCard, Deck container, able to draw and replenish from discard
         [X] Nullable-ize the Deck with Embedded Stub for configuring response to "give me shuffled deck"
+        [X] Player draws to full hand from Action Card deck as part of start game
+            [X] 5 events generated: 1 for each of 5 cards drawn
+            [X] State of player's Hand: has 5 cards
 
 ==> WE ARE HERE:
 
-        [ ] Player draws to full hand from Action Card deck as part of start game
-            [X] 5 events generated: 1 for each of 5 cards drawn
-            [ ] State of player's Hand: has 5 cards
-        [ ] Deck event-sourcing
+==>     [ ] Deck event-sourcing
             [X] Draw (with no replenish) generates events
-==>         [X] Draw event projects state change in Deck
+            [X] Draw event projects state change in Deck
             [X] Replenish generates events
             [X] Applying replenish to deck
+
         [ ] Player discards card, which adds to Discard Pile
             [ ] Represented in UI by checkboxes?
         [ ] Player has "Hand" and "Tech Neglect" area

@@ -1,6 +1,5 @@
 package dev.ted.tddgame.domain;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -11,11 +10,29 @@ import static org.assertj.core.api.Assertions.*;
 
 class DeckTest {
 
-    private static final EventEnqueuer DUMMY_EVENT_ENQUEUER = _ -> {
-    };
+    static class DeckEventEnqueuer implements EventEnqueuer {
+        private final Deck<ActionCard> deck;
+        private final List<DeckEvent> deckEvents;
+
+        public DeckEventEnqueuer(Deck<ActionCard> deck) {
+            this.deck = deck;
+            deckEvents = new ArrayList<>();
+        }
+
+        @Override
+        public void enqueue(GameEvent gameEvent) {
+            if (gameEvent instanceof DeckEvent deckEvent) {
+                deck.apply(deckEvent);
+                deckEvents.add(deckEvent);
+            }
+        }
+
+        public List<DeckEvent> deckEvents() {
+            return deckEvents;
+        }
+    }
 
     @Nested
-    @Disabled("Until replenish and draw events work")
     class newActionCardDeck {
 
         @Test
@@ -55,10 +72,11 @@ class DeckTest {
         void drawnCardsAreFromReplenishedShuffledDiscardPile() {
             List<ActionCard> allStandardActionCards = createStandardActionCards();
             Deck<ActionCard> deck = Deck.create(allStandardActionCards);
+            EventEnqueuer eventEnqueuer = new DeckEventEnqueuer(deck);
 
             List<ActionCard> drawnCards = new ArrayList<>();
             do {
-                drawnCards.add(deck.draw(DUMMY_EVENT_ENQUEUER));
+                drawnCards.add(deck.draw(eventEnqueuer));
             } while (!deck.isDrawPileEmpty());
 
             assertThat(drawnCards)
@@ -71,8 +89,9 @@ class DeckTest {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.WRITE_CODE,
                                                        ActionCard.LESS_CODE,
                                                        ActionCard.PREDICT);
+            EventEnqueuer eventEnqueuer = new DeckEventEnqueuer(deck);
 
-            deck.draw(DUMMY_EVENT_ENQUEUER); // force replenish by drawing the WRITE_CODE
+            deck.draw(eventEnqueuer); // force replenish by drawing the WRITE_CODE
 
             assertThat(deck.view()
                            .drawPile())
@@ -84,10 +103,10 @@ class DeckTest {
     @Nested
     class CommandGeneratesEvents {
         @Test
-        void emptyDrawPileDrawOneCardGeneratesCardDrawnAndReplenishEvents() {
+        void emptyDrawPileDrawOneCardGeneratesReplenishAndCardDrawnEvents() {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.PREDICT);
 
-            DeckEventEnqueuer deckEventEnqueuer = new DeckEventEnqueuer(deck);
+            DeckTest.DeckEventEnqueuer deckEventEnqueuer = new DeckTest.DeckEventEnqueuer(deck);
             deck.draw(deckEventEnqueuer);
 
             assertThat(deckEventEnqueuer.deckEvents())
@@ -100,7 +119,7 @@ class DeckTest {
         void drawPileWithTwoCardsDrawTwoCardsGeneratesReplenishAndTwoCardDrawnEvents() {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.LESS_CODE,
                                                        ActionCard.WRITE_CODE);
-            DeckEventEnqueuer deckEventEnqueuer = new DeckEventEnqueuer(deck);
+            DeckTest.DeckEventEnqueuer deckEventEnqueuer = new DeckTest.DeckEventEnqueuer(deck);
 
             deck.draw(deckEventEnqueuer);
             deck.draw(deckEventEnqueuer);
@@ -114,27 +133,6 @@ class DeckTest {
                     );
         }
 
-        static class DeckEventEnqueuer implements EventEnqueuer {
-            private final Deck<ActionCard> deck;
-            private final List<DeckEvent> deckEvents;
-
-            public DeckEventEnqueuer(Deck<ActionCard> deck) {
-                this.deck = deck;
-                deckEvents = new ArrayList<>();
-            }
-
-            @Override
-            public void enqueue(GameEvent gameEvent) {
-                if (gameEvent instanceof DeckEvent deckEvent) {
-                    deck.apply(deckEvent);
-                    deckEvents.add(deckEvent);
-                }
-            }
-
-            public List<DeckEvent> deckEvents() {
-                return deckEvents;
-            }
-        }
     }
 
     @Nested
@@ -227,7 +225,7 @@ class DeckTest {
     private List<ActionCard> drawCards(Deck<ActionCard> deck, int numberOfCards) {
         List<ActionCard> drawnCards = new ArrayList<>();
         for (int i = 0; i < numberOfCards; i++) {
-            drawnCards.add(deck.draw(DUMMY_EVENT_ENQUEUER));
+            drawnCards.add(deck.draw(new DeckEventEnqueuer(deck)));
         }
         return drawnCards;
     }

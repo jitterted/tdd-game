@@ -5,6 +5,11 @@ October 23, 2024 - Wednesday
 
 * Events should defensively copy any non-Value Objects like `List`
 
+* Added messages to exceptions right away (instead of waiting until "later")
+
+* Are we losing some sense of overall behavior by NOT having a test that is purely Commands + Queries (i.e., tests that don't mention Events at all) -- perhaps as a Use Case-oriented "acceptance test"
+
+NEXT TIME: fix broken DeckTest:newActionCardDeck tests (missing enqueuer? or events?)
 
 
 October 22, 2024 - Tuesday
