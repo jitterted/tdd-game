@@ -49,7 +49,7 @@ public class Player {
     private void drawCardFrom(Deck<ActionCard> actionCardDeck,
                               EventEnqueuer eventEnqueuer) {
         PlayerDrewActionCard event =
-                new PlayerDrewActionCard(memberId, actionCardDeck.draw(eventEnqueuer));
+                new PlayerDrewActionCard(memberId, actionCardDeck.draw());
         eventEnqueuer.enqueue(event);
     }
 

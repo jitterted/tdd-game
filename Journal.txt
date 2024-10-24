@@ -1,3 +1,12 @@
+October 24, 2024 - Thursday
+===========================
+
+* Turned out to be nicer to pass in the Game reference (really its enqueue method handle) to Deck's constructor rather than passing it to the draw() method. It makes the test author not have to understand how to properly create an "enqueuer" to make Deck work properly, but tests can still access the generated events via the events "receiver" (aka Accumulator).
+
+* Deck's createForTest() methods getting a bit out of hand, so need to move to a more builder-like or lambda-based configuration mechanism
+
+
+
 October 23, 2024 - Wednesday
 ============================
 

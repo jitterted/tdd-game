@@ -10,12 +10,14 @@ import java.util.Queue;
 public class Deck<CARD> {
     private final Shuffler<CARD> shuffler;
     private final Queue<CARD> drawPile = new LinkedList<>();
+    private final EventEnqueuer eventEnqueuer;
     private List<CARD> discardPile;
 
     // TODO: for production usage, uses random shuffler
     // TODO: must never accept a list of cards that is empty
-    public static <CARD> Deck<CARD> create(List<CARD> cards) {
-        return new Deck<>(cards, new RandomShuffler<>());
+    public static <CARD> Deck<CARD> create(List<CARD> cards,
+                                           EventEnqueuer eventEnqueuer) {
+        return new Deck<>(cards, new RandomShuffler<>(), eventEnqueuer);
     }
 
     public static Deck<ActionCard> createForTest(ActionCard... actionCards) {
@@ -23,31 +25,65 @@ public class Deck<CARD> {
     }
 
     public static Deck<ActionCard> createForTest(List<ActionCard> actionCards) {
-        return new Deck<>(new ArrayList<>(actionCards),
-                          new IdentityShuffler<>());
+        return new Deck<>(actionCards,
+                          new IdentityShuffler<>(),
+                          new ArrayList<>());
     }
 
-    private Deck(List<CARD> cards, Shuffler<CARD> shuffler) {
+    public static Deck<ActionCard> createForRandomTest(List<ActionCard> actionCards) {
+        return new Deck<>(actionCards,
+                          new RandomShuffler<>(),
+                          new ArrayList<>());
+    }
+
+    public static Deck<ActionCard> createForTest(List<DeckEvent<ActionCard>> deckEventsReceiver,
+                                                 ActionCard... actionCards) {
+        return new Deck<>(Arrays.asList(actionCards),
+                          new IdentityShuffler<>(),
+                          deckEventsReceiver);
+    }
+
+    public static Deck<ActionCard> createForTest(EventEnqueuer eventEnqueuer,
+                                                 List<ActionCard> actionCards) {
+        return new Deck<>(actionCards,
+                          new IdentityShuffler<>(),
+                          eventEnqueuer);
+    }
+
+    // intended for Production only
+    private Deck(List<CARD> cards,
+                 Shuffler<CARD> shuffler,
+                 EventEnqueuer eventEnqueuer) {
         discardPile = new ArrayList<>(cards);
         this.shuffler = shuffler;
+        this.eventEnqueuer = eventEnqueuer;
     }
 
-    CARD draw(EventEnqueuer eventEnqueuer) {
+    // intended for tests only
+    private Deck(List<CARD> cards,
+                 Shuffler<CARD> shuffler,
+                 List<DeckEvent<CARD>> deckEventsReceiver) {
+        discardPile = new ArrayList<>(cards);
+        this.shuffler = shuffler;
+        this.eventEnqueuer = new DeckEventEnqueuer<>(this, deckEventsReceiver);
+    }
+
+    public CARD draw() {
         if (drawPile.isEmpty()) {
-            replenishDrawPileFromDiscardPile(eventEnqueuer);
+            replenishDrawPileFromDiscardPile();
         }
         CARD drawnCard = drawPile.peek();
         eventEnqueuer.enqueue(new DeckCardDrawn<>(drawnCard));
         return drawnCard;
     }
 
-    public boolean isDrawPileEmpty() {
-        return drawPile.isEmpty();
-    }
-
-    private void replenishDrawPileFromDiscardPile(EventEnqueuer eventEnqueuer) {
+    private void replenishDrawPileFromDiscardPile() {
         discardPile = shuffler.shuffleCards(discardPile);
         eventEnqueuer.enqueue(new DeckReplenished<>(discardPile));
+    }
+
+    public boolean isDrawPileEmpty() {
+        return drawPile.isEmpty();
     }
 
     public DeckView<CARD> view() {
@@ -67,7 +103,8 @@ public class Deck<CARD> {
                     throw new IllegalStateException("DrawPile must not be empty when applying event: " + deckCardDrawn);
                 }
                 CARD removedCard = drawPile.remove();
-                if (!deckCardDrawn.card().equals(removedCard)) {
+                if (!deckCardDrawn.card()
+                                  .equals(removedCard)) {
                     throw new IllegalStateException("Card drawn from DrawPile did not match card in event = %s, card drawn = %s"
                                                             .formatted(deckCardDrawn, removedCard));
                 }
@@ -95,5 +132,24 @@ public class Deck<CARD> {
 
     private interface Shuffler<CARD> {
         List<CARD> shuffleCards(List<CARD> discardPile);
+    }
+}
+
+class DeckEventEnqueuer<CARD> implements EventEnqueuer {
+    private final Deck<CARD> deck;
+    private final List<DeckEvent<CARD>> deckEvents;
+
+    public DeckEventEnqueuer(Deck<CARD> deck, List<DeckEvent<CARD>> deckEvents) {
+        this.deck = deck;
+        this.deckEvents = deckEvents;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public void enqueue(GameEvent gameEvent) {
+        if (gameEvent instanceof DeckEvent deckEvent) {
+            deck.apply(deckEvent);
+            deckEvents.add(deckEvent);
+        }
     }
 }

@@ -98,6 +98,8 @@ Player's "State Machine":
         [X] Player draws to full hand from Action Card deck as part of start game
             [X] 5 events generated: 1 for each of 5 cards drawn
             [X] State of player's Hand: has 5 cards
+        [ ] Use real random shuffler for Deck
+
 
 ==> WE ARE HERE:
 

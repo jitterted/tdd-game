@@ -10,28 +10,6 @@ import static org.assertj.core.api.Assertions.*;
 
 class DeckTest {
 
-    static class DeckEventEnqueuer implements EventEnqueuer {
-        private final Deck<ActionCard> deck;
-        private final List<DeckEvent> deckEvents;
-
-        public DeckEventEnqueuer(Deck<ActionCard> deck) {
-            this.deck = deck;
-            deckEvents = new ArrayList<>();
-        }
-
-        @Override
-        public void enqueue(GameEvent gameEvent) {
-            if (gameEvent instanceof DeckEvent deckEvent) {
-                deck.apply(deckEvent);
-                deckEvents.add(deckEvent);
-            }
-        }
-
-        public List<DeckEvent> deckEvents() {
-            return deckEvents;
-        }
-    }
-
     @Nested
     class newActionCardDeck {
 
@@ -40,7 +18,7 @@ class DeckTest {
             List<ActionCard> actionCards = List.of(
                     ActionCard.PREDICT,
                     ActionCard.WRITE_CODE);
-            Deck<ActionCard> deck = Deck.create(actionCards);
+            Deck<ActionCard> deck = Deck.create(actionCards, null);
 
             assertThat(deck.isDrawPileEmpty())
                     .as("Draw Pile should be empty when Deck is created")
@@ -48,7 +26,7 @@ class DeckTest {
         }
 
         @Test
-        void canDrawFullSetOfCardsAfterReplenishTriggeredByDraw() throws Exception {
+        void canDrawFullSetOfCardsAfterReplenishTriggeredByDraw()  {
             Deck<ActionCard> deck = Deck.createForTest(
                     ActionCard.PREDICT,
                     ActionCard.WRITE_CODE,
@@ -69,14 +47,13 @@ class DeckTest {
         }
 
         @Test
-        void drawnCardsAreFromReplenishedShuffledDiscardPile() {
+        void drawnCardsAreShuffledFromDiscardPile() {
             List<ActionCard> allStandardActionCards = createStandardActionCards();
-            Deck<ActionCard> deck = Deck.create(allStandardActionCards);
-            EventEnqueuer eventEnqueuer = new DeckEventEnqueuer(deck);
+            Deck<ActionCard> deck = Deck.createForRandomTest(allStandardActionCards);
 
             List<ActionCard> drawnCards = new ArrayList<>();
             do {
-                drawnCards.add(deck.draw(eventEnqueuer));
+                drawnCards.add(deck.draw());
             } while (!deck.isDrawPileEmpty());
 
             assertThat(drawnCards)
@@ -85,16 +62,14 @@ class DeckTest {
         }
 
         @Test
-        void viewHasNonEmptyDrawAndDiscardPiles() throws Exception {
+        void viewHasNonEmptyDrawAndDiscardPiles() {
             Deck<ActionCard> deck = Deck.createForTest(ActionCard.WRITE_CODE,
                                                        ActionCard.LESS_CODE,
                                                        ActionCard.PREDICT);
-            EventEnqueuer eventEnqueuer = new DeckEventEnqueuer(deck);
 
-            deck.draw(eventEnqueuer); // force replenish by drawing the WRITE_CODE
+            deck.draw(); // force replenish by drawing the WRITE_CODE
 
-            assertThat(deck.view()
-                           .drawPile())
+            assertThat(deck.view().drawPile())
                     .containsExactly(ActionCard.LESS_CODE,
                                      ActionCard.PREDICT);
         }
@@ -104,12 +79,13 @@ class DeckTest {
     class CommandGeneratesEvents {
         @Test
         void emptyDrawPileDrawOneCardGeneratesReplenishAndCardDrawnEvents() {
-            Deck<ActionCard> deck = Deck.createForTest(ActionCard.PREDICT);
+            List<DeckEvent<ActionCard>> deckEventsReceiver = new ArrayList<>();
+            Deck<ActionCard> deck = Deck.createForTest(deckEventsReceiver,
+                                                       ActionCard.PREDICT);
 
-            DeckTest.DeckEventEnqueuer deckEventEnqueuer = new DeckTest.DeckEventEnqueuer(deck);
-            deck.draw(deckEventEnqueuer);
+            deck.draw();
 
-            assertThat(deckEventEnqueuer.deckEvents())
+            assertThat(deckEventsReceiver)
                     .containsExactly(
                             new DeckReplenished<>(List.of(ActionCard.PREDICT)),
                             new DeckCardDrawn<>(ActionCard.PREDICT));
@@ -117,14 +93,14 @@ class DeckTest {
 
         @Test
         void drawPileWithTwoCardsDrawTwoCardsGeneratesReplenishAndTwoCardDrawnEvents() {
-            Deck<ActionCard> deck = Deck.createForTest(ActionCard.LESS_CODE,
+            List<DeckEvent<ActionCard>> deckEventsReceiver = new ArrayList<>();
+            Deck<ActionCard> deck = Deck.createForTest(deckEventsReceiver,
+                                                       ActionCard.LESS_CODE,
                                                        ActionCard.WRITE_CODE);
-            DeckTest.DeckEventEnqueuer deckEventEnqueuer = new DeckTest.DeckEventEnqueuer(deck);
+            deck.draw();
+            deck.draw();
 
-            deck.draw(deckEventEnqueuer);
-            deck.draw(deckEventEnqueuer);
-
-            assertThat(deckEventEnqueuer.deckEvents())
+            assertThat(deckEventsReceiver)
                     .containsExactly(
                             new DeckReplenished<>(List.of(ActionCard.LESS_CODE,
                                                           ActionCard.WRITE_CODE)),
@@ -225,7 +201,7 @@ class DeckTest {
     private List<ActionCard> drawCards(Deck<ActionCard> deck, int numberOfCards) {
         List<ActionCard> drawnCards = new ArrayList<>();
         for (int i = 0; i < numberOfCards; i++) {
-            drawnCards.add(deck.draw(new DeckEventEnqueuer(deck)));
+            drawnCards.add(deck.draw());
         }
         return drawnCards;
     }

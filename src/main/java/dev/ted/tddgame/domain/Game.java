@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Game extends EventSourcedAggregate {
     private static final int MAXIMUM_NUMBER_OF_PLAYERS = 4;
-    private final DeckFactory deckFactory = new DeckFactory();
     private List<ActionCard> actionCardsForDeck;
     private String name;
     private String handle;
@@ -60,6 +59,7 @@ public class Game extends EventSourcedAggregate {
                 this.name = name;
                 this.handle = handle;
             }
+
             case PlayerJoined(MemberId memberId, String playerName) ->
                     playerMap.computeIfAbsent(memberId,
                                               _ -> createPlayer(memberId, playerName));
@@ -68,7 +68,9 @@ public class Game extends EventSourcedAggregate {
             }
 
             case ActionCardDeckCreated(List<ActionCard> actionCards) ->
-                    actionCardDeck = deckFactory.createDeck(actionCards);
+                    // TODO: switch to production version for random shuffler
+                    actionCardDeck = Deck.createForTest(this::enqueue,
+                            actionCards);
 
             case PlayerEvent playerEvent ->
                     playerFor(playerEvent.memberId())
