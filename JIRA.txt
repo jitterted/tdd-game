@@ -128,9 +128,11 @@ Player's "State Machine":
             [X] Associate logged-in user (username?) with a MemberId for joining, by looking up that username in MemberStore
             [X] Get first name from the Player (their in-game name)
 
+        [ ] Show "Start Game" button (might have constraints on when this button shows up later)
+
 ==> WE ARE HERE:
 
-        [ ] Show "Start Game" button (might have constraints on when this button shows up later)
+            [ ] Create standard action deck when starting the game
             [ ] Start Game starts the game and the modal goes away
 
 [ ] Outbound (Notifier) WebSocket Adapter

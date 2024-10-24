@@ -7,7 +7,7 @@ October 24, 2024 - Thursday
 
 ? Why did the th:href have /css as the base path for game.css: did that work before, or did something else change?
 
-
+NEXT TIME: Have Game use the DeckFactory to create the Action Card Deck so when the game starts (via .start()), the deck is created properly. Then the PlayingGameMvcTest.post should pass.
 
 October 23, 2024 - Wednesday
 ============================

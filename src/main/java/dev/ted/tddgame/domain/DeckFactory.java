@@ -1,13 +1,28 @@
 package dev.ted.tddgame.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeckFactory {
 
-//    public DeckFactory() {
-//    }
+    public Deck<ActionCard> createActionCardDeck() {
+        return Deck.create(createStandardActionCards(), null);
+    }
 
-    public Deck<ActionCard> createDeck(List<ActionCard> actionCards) {
-        return Deck.createForTest(actionCards);
+    private List<ActionCard> createStandardActionCards() {
+        List<ActionCard> allActionCards = new ArrayList<>();
+        addActionCards(18, ActionCard.WRITE_CODE, allActionCards);
+        addActionCards(18, ActionCard.LESS_CODE, allActionCards);
+        addActionCards(18, ActionCard.PREDICT, allActionCards);
+        addActionCards(2, ActionCard.CANT_ASSERT, allActionCards);
+        addActionCards(3, ActionCard.CODE_BLOAT, allActionCards);
+        addActionCards(4, ActionCard.REFACTOR, allActionCards);
+        return allActionCards;
+    }
+
+    private void addActionCards(int count, ActionCard actionCard, List<ActionCard> allActionCards) {
+        for (int i = 0; i < count; i++) {
+            allActionCards.add(actionCard);
+        }
     }
 }
