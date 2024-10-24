@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>JitterTed's TDD Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link th:href="@{/css/game.css}" href="/static/game.css" rel="stylesheet"/>
+    <link th:href="@{/game.css}" href="/static/game.css" rel="stylesheet"/>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
     <script src="https://kit.fontawesome.com/899946e7ef.js" crossorigin="anonymous"></script>
@@ -35,7 +35,7 @@
 </div>
 
 <!-- Waiting for Game to Begin modal dialog -->
-<div id="modal-container" hidden>
+<div id="modal-container">
 <div id="waiting-room-modal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"></div>
 

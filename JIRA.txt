@@ -100,10 +100,7 @@ Player's "State Machine":
             [X] State of player's Hand: has 5 cards
         [ ] Use real random shuffler for Deck
 
-
-==> WE ARE HERE:
-
-==>     [ ] Deck event-sourcing
+        [X] Deck event-sourcing
             [X] Draw (with no replenish) generates events
             [X] Draw event projects state change in Deck
             [X] Replenish generates events
@@ -130,6 +127,9 @@ Player's "State Machine":
         [X] Show other players as they join -- via WebSockets (htmx)
             [X] Associate logged-in user (username?) with a MemberId for joining, by looking up that username in MemberStore
             [X] Get first name from the Player (their in-game name)
+
+==> WE ARE HERE:
+
         [ ] Show "Start Game" button (might have constraints on when this button shows up later)
             [ ] Start Game starts the game and the modal goes away
 

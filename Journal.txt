@@ -5,6 +5,8 @@ October 24, 2024 - Thursday
 
 * Deck's createForTest() methods getting a bit out of hand, so need to move to a more builder-like or lambda-based configuration mechanism
 
+? Why did the th:href have /css as the base path for game.css: did that work before, or did something else change?
+
 
 
 October 23, 2024 - Wednesday
