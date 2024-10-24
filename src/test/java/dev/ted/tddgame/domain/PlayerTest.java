@@ -58,6 +58,7 @@ class PlayerTest {
     private static Player createPlayer(long memberId) {
         return new Player(new PlayerId(IRRELEVANT_PLAYER_ID),
                           new MemberId(memberId),
-                          "Player 1");
+                          "Player 1",
+                          null);
     }
 }

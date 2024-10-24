@@ -46,9 +46,9 @@ class WaitingRoomHtmlRendererTest {
     @Test
     void htmlGeneratedCorrectlyForMultipleJoinedPlayers() {
         String firstPlayerName = "Murf";
-        Player firstPlayer = new Player(new PlayerId(2L), new MemberId(3L), firstPlayerName);
+        Player firstPlayer = new Player(new PlayerId(2L), new MemberId(3L), firstPlayerName, null);
         String secondPlayerName = "Drednok";
-        Player secondPlayer = new Player(new PlayerId(4L), new MemberId(5L), secondPlayerName);
+        Player secondPlayer = new Player(new PlayerId(4L), new MemberId(5L), secondPlayerName, null);
         String expectedHtml = """
                <swap id="joined-players-container" hx-swap-oob="innerHTML">
                    <li class="flex items-center">

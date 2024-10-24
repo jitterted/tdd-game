@@ -85,7 +85,8 @@ public class Game extends EventSourcedAggregate {
         return new Player(
                 new PlayerId(playerIdGenerator.getAndIncrement()),
                 memberId,
-                playerName);
+                playerName,
+                this::enqueue);
     }
 
     public String name() {
@@ -119,7 +120,7 @@ public class Game extends EventSourcedAggregate {
 
         MemberId firstMemberId = players().iterator().next().memberId();
         Player player = playerFor(firstMemberId);
-        player.drawToFullFrom(actionCardDeck, this::enqueue);
+        player.drawToFullFrom(actionCardDeck);
     }
 
     public Player playerFor(MemberId memberId) {

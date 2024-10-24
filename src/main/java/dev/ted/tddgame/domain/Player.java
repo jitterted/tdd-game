@@ -1,6 +1,7 @@
 package dev.ted.tddgame.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
@@ -9,12 +10,15 @@ public class Player {
     private final MemberId memberId;
     private final String playerName;
     private final PlayerId playerId;
-    private final ArrayList<ActionCard> actionCards = new ArrayList<>();
+    private final List<ActionCard> actionCards = new ArrayList<>();
+    private final EventEnqueuer eventEnqueuer;
 
-    public Player(PlayerId playerId, MemberId memberId, String playerName) {
+    public Player(PlayerId playerId, MemberId memberId,
+                  String playerName, EventEnqueuer eventEnqueuer) {
         this.playerId = playerId;
         this.memberId = memberId;
         this.playerName = playerName;
+        this.eventEnqueuer = eventEnqueuer;
     }
 
     public PlayerId id() {
@@ -37,17 +41,15 @@ public class Player {
         actionCards.add(((PlayerDrewActionCard) event).actionCard());
     }
 
-    public void drawToFullFrom(Deck<ActionCard> actionCardDeck,
-                               EventEnqueuer eventEnqueuer) {
-        drawCardFrom(actionCardDeck, eventEnqueuer);
-        drawCardFrom(actionCardDeck, eventEnqueuer);
-        drawCardFrom(actionCardDeck, eventEnqueuer);
-        drawCardFrom(actionCardDeck, eventEnqueuer);
-        drawCardFrom(actionCardDeck, eventEnqueuer);
+    public void drawToFullFrom(Deck<ActionCard> actionCardDeck) {
+        drawCardFrom(actionCardDeck);
+        drawCardFrom(actionCardDeck);
+        drawCardFrom(actionCardDeck);
+        drawCardFrom(actionCardDeck);
+        drawCardFrom(actionCardDeck);
     }
 
-    private void drawCardFrom(Deck<ActionCard> actionCardDeck,
-                              EventEnqueuer eventEnqueuer) {
+    private void drawCardFrom(Deck<ActionCard> actionCardDeck) {
         PlayerDrewActionCard event =
                 new PlayerDrewActionCard(memberId, actionCardDeck.draw());
         eventEnqueuer.enqueue(event);
