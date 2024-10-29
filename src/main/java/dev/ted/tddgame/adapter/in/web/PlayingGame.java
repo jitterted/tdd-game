@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.in.web;
 
+import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Player;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,11 @@ import java.util.List;
 public class PlayingGame {
 
     private final GameStore gameStore;
+    private final GamePlay gamePlay;
 
-    public PlayingGame(GameStore gameStore) {
+    public PlayingGame(GameStore gameStore, GamePlay gamePlay) {
         this.gameStore = gameStore;
+        this.gamePlay = gamePlay;
     }
 
     @GetMapping("/game/{gameHandle}")
@@ -36,9 +39,6 @@ public class PlayingGame {
     @PostMapping("/game/{gameHandle}/start-game")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void startGame(@PathVariable("gameHandle") String gameHandle) {
-        gameStore.findByHandle(gameHandle)
-                 .orElseThrow(() -> new RuntimeException("Game '%s' not found"
-                                                                 .formatted(gameHandle)))
-                 .start();
+         gamePlay.start(gameHandle);
     }
 }

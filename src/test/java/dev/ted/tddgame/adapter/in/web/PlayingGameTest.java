@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.in.web;
 
+import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
@@ -16,7 +17,8 @@ class PlayingGameTest {
     @Test
     void gameReturnsGameViewWithPlayerViews() {
         Fixture fixture = createFixture();
-        PlayingGame playingGame = new PlayingGame(fixture.gameStore());
+        GamePlay gamePlay = new GamePlay(fixture.gameStore());
+        PlayingGame playingGame = new PlayingGame(fixture.gameStore(), gamePlay);
 
         Model model = new ConcurrentModel();
         playingGame.game(model, fixture.gameHandle());
