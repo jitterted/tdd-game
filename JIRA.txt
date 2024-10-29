@@ -108,10 +108,22 @@ Player's "State Machine":
 
         [ ] Player discards card, which adds to Discard Pile
             [ ] Represented in UI by checkboxes?
-        [ ] Player has "Hand" and "Tech Neglect" area
-        [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
-        ==> switch to working on UI display of Player hands, in-play areas, etc.
+
+==> WE ARE HERE:
+
+        [ ] Start Game starts the game:
+            [ ] The modal goes away (via broadcasting `hx-swap-oob="delete"`)
+            [ ] If the game is not already started, call .start()
+            [ ] Broadcast Players' cards
+                [ ] Player has "Hand" and "Tech Neglect" area
+                [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
+                ==> switch to working on UI display of Player hands, in-play areas, etc.
+            [ ] Broadcast Action Deck
+                [ ] Display a back of card in the draw pile if it's not empty
+                [ ] Display most recently discarded card in the discard pile if it's not empty
+
     [ ] (Temporary) Constraint: players can't join once game is started
+
 
 [ ] Inbound HTTP Adapter
     [X] Host create game: numeric-only textbox and "Create Game" button does POST
@@ -131,9 +143,6 @@ Player's "State Machine":
         [X] Show "Start Game" button (might have constraints on when this button shows up later)
             [X] Create standard action deck when starting the game
 
-==> WE ARE HERE:
-
-        [ ] Start Game starts the game and the modal goes away
 
 [ ] Outbound (Notifier) WebSocket Adapter
     [ ] Display name of game, all players, decks, pawns, etc.

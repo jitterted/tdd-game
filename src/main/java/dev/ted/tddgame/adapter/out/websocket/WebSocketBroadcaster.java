@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class WebSocketBroadcaster implements Broadcaster {
-    private static Logger LOGGER = LoggerFactory.getLogger(WebSocketBroadcaster.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketBroadcaster.class);
     private final Multimap<String, WebSocketSession> gameHandleToSession = new Multimap<>();
 
     @Override
@@ -26,6 +26,14 @@ public class WebSocketBroadcaster implements Broadcaster {
         String html =
                 WaitingRoomHtmlRenderer.forConnectNotification(LocalTime.now(), player.playerName())
                 + WaitingRoomHtmlRenderer.forJoinedPlayers(game.players());
+        sendHtmlTo(gameHandleToSession.get(game.handle()), html);
+    }
+
+    @Override
+    public void clearStartgameModal(Game game) {
+        String html = """
+                      <swap id="modal-container" hx-swap-oob="delete" />
+                      """;
         sendHtmlTo(gameHandleToSession.get(game.handle()), html);
     }
 

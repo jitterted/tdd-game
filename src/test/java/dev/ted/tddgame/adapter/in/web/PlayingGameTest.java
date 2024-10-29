@@ -1,11 +1,13 @@
 package dev.ted.tddgame.adapter.in.web;
 
 import dev.ted.tddgame.application.GamePlay;
+import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
+import dev.ted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -17,7 +19,17 @@ class PlayingGameTest {
     @Test
     void gameReturnsGameViewWithPlayerViews() {
         Fixture fixture = createFixture();
-        GamePlay gamePlay = new GamePlay(fixture.gameStore());
+        Broadcaster dummyBroadcaster = new Broadcaster() {
+            @Override
+            public void announcePlayerConnectedToGame(Game game, Player player) {
+            }
+
+            @Override
+            public void clearStartgameModal(Game game) {
+            }
+        };
+
+        GamePlay gamePlay = new GamePlay(fixture.gameStore(), dummyBroadcaster);
         PlayingGame playingGame = new PlayingGame(fixture.gameStore(), gamePlay);
 
         Model model = new ConcurrentModel();

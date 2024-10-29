@@ -57,5 +57,9 @@ class PlayerConnectorTest {
             this.actualGame = game;
             this.actualPlayer = player;
         }
+
+        @Override
+        public void clearStartgameModal(Game game) {
+        }
     }
 }

@@ -63,7 +63,10 @@
                                 <!--                        </p>-->
                                 <!--                      </li>-->
                             </ul>
-                            <button type="button" class="rounded-md bg-green-600 px-3.5 py-2 text-md font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                            <button type="button"
+                                    th:hx-post="@{/game/{handle}/start-game(handle=${gameView.handle()})}"
+                                    hx-trigger="click"
+                                    class="rounded-md bg-green-600 px-3.5 py-2 text-md font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
                                 Start Game
                             </button>
                         </div>
@@ -81,6 +84,7 @@
     </div>
 </div>
 </div>
+
 <div class="game-screen">
     <div class="all-other-players-container">
         <div class="other-player-container">

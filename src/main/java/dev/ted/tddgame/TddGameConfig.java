@@ -41,8 +41,8 @@ public class TddGameConfig {
     }
 
     @Bean
-    public GamePlay gamePlay(GameStore gameStore) {
-        return new GamePlay(gameStore);
+    public GamePlay gamePlay(GameStore gameStore, Broadcaster broadcaster) {
+        return new GamePlay(gameStore, broadcaster);
     }
 
 }

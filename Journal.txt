@@ -13,6 +13,15 @@ October 29, 2024 - Tuesday
     .map(event -> (ActionCardDeckCreated) event)
     ```
 
+* Re-learned that responding (via websocket) with HTML that contains an `hx-swap-oob` with `delete` will delete the HTML element from the page. This is what we want to remove the modal after the Start Game button is clicked.
+
+* Used the following Thymeleaf syntax with the `hx-post` to get the button to do a POST to the correct endpoint:
+
+  ```
+  th:hx-post="@{/game/{handle}/start-game(handle=${gameView.handle()})}"
+  hx-trigger="click"
+  ```
+
 
 October 24, 2024 - Thursday
 ===========================
