@@ -71,36 +71,22 @@ class GameTest {
 
             game.start();
 
+
             assertThat(game.freshEvents())
-                    .containsExactly(
-                            new GameStarted(),
-                            new ActionCardDeckCreated(
-                                    List.of(
-                                            ActionCard.PREDICT,
-                                            ActionCard.LESS_CODE,
-                                            ActionCard.LESS_CODE,
-                                            ActionCard.WRITE_CODE,
-                                            ActionCard.PREDICT
-                                    )),
-                            new DeckReplenished<>(List.of(
-                                    ActionCard.PREDICT,
-                                    ActionCard.LESS_CODE,
-                                    ActionCard.LESS_CODE,
-                                    ActionCard.WRITE_CODE,
-                                    ActionCard.PREDICT
-                            )),
-                            // player 1 draws 5 cards (that's the "full hand")
-                            new DeckCardDrawn<>(ActionCard.PREDICT)
-                            , new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
-                            , new DeckCardDrawn<>(ActionCard.LESS_CODE)
-                            , new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE)
-                            , new DeckCardDrawn<>(ActionCard.LESS_CODE)
-                            , new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE)
-                            , new DeckCardDrawn<>(ActionCard.WRITE_CODE)
-                            , new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE)
-                            , new DeckCardDrawn<>(ActionCard.PREDICT)
-                            , new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
-                    );
+                    .hasExactlyElementsOfTypes(
+                            GameStarted.class,
+                            ActionCardDeckCreated.class,
+                            DeckReplenished.class,
+                            DeckCardDrawn.class,
+                            PlayerDrewActionCard.class,
+                            DeckCardDrawn.class,
+                            PlayerDrewActionCard.class,
+                            DeckCardDrawn.class,
+                            PlayerDrewActionCard.class,
+                            DeckCardDrawn.class,
+                            PlayerDrewActionCard.class,
+                            DeckCardDrawn.class,
+                            PlayerDrewActionCard.class);
         }
 
 

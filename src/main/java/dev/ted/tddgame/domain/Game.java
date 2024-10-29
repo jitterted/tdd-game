@@ -67,14 +67,14 @@ public class Game extends EventSourcedAggregate {
             case GameStarted _ -> {
             }
 
+            case PlayerEvent playerEvent ->
+                    playerFor(playerEvent.memberId())
+                            .apply(playerEvent);
+
             case ActionCardDeckCreated(List<ActionCard> actionCards) ->
                     // TODO: switch to production version for random shuffler
                     actionCardDeck = Deck.createForTest(this::enqueue,
                             actionCards);
-
-            case PlayerEvent playerEvent ->
-                    playerFor(playerEvent.memberId())
-                            .apply(playerEvent);
 
             case DeckEvent deckEvent ->
                     actionCardDeck.apply(deckEvent);

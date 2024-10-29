@@ -1,3 +1,10 @@
+October 29, 2024 - Tuesday
+==========================
+
+* For next time: improve test output for events, more easily seeing which events are missing and/or out of order. May need to figure out what triggers IntelliJ IDEA's "compare" dialog for test output.
+
+
+
 October 24, 2024 - Thursday
 ===========================
 
