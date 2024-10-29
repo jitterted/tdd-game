@@ -60,17 +60,9 @@ class GameTest {
             List<GameEvent> committedEvents = List.of(
                     new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
                     new PlayerJoined(memberId, "player 1"));
-            Game game = Game.configureForTest(
-                    committedEvents,
-                    ActionCard.PREDICT,
-                    ActionCard.LESS_CODE,
-                    ActionCard.LESS_CODE,
-                    ActionCard.WRITE_CODE,
-                    ActionCard.PREDICT
-            );
+            Game game = Game.reconstitute(committedEvents);
 
             game.start();
-
 
             assertThat(game.freshEvents())
                     .hasExactlyElementsOfTypes(
@@ -87,6 +79,18 @@ class GameTest {
                             PlayerDrewActionCard.class,
                             DeckCardDrawn.class,
                             PlayerDrewActionCard.class);
+
+            ActionCardDeckCreated actionCardDeckCreated =
+                    game.freshEvents()
+                        .filter(event -> event instanceof ActionCardDeckCreated)
+                        .map(event -> (ActionCardDeckCreated) event)
+                        .findFirst()
+                        .get();
+
+            assertThat(actionCardDeckCreated.actionCards())
+                    .as("Number of action cards in deck created event must be 63")
+                    .hasSize(63);
+
         }
 
 
@@ -138,9 +142,11 @@ class GameTest {
 
             Game game = Game.reconstitute(events);
 
-            assertThat(game.actionCardDeck().drawPile())
+            assertThat(game.actionCardDeck()
+                           .drawPile())
                     .isEmpty();
-            assertThat(game.actionCardDeck().discardPile())
+            assertThat(game.actionCardDeck()
+                           .discardPile())
                     .containsExactly(ActionCard.PREDICT,
                                      ActionCard.LESS_CODE,
                                      ActionCard.PREDICT);
@@ -174,10 +180,12 @@ class GameTest {
             assertThat(player.hand())
                     .as("Hand had unexpected cards")
                     .containsExactly(ActionCard.PREDICT);
-            assertThat(game.actionCardDeck().drawPile())
+            assertThat(game.actionCardDeck()
+                           .drawPile())
                     .as("draw pile was not as expected")
                     .containsExactly(ActionCard.REFACTOR);
-            assertThat(game.actionCardDeck().discardPile())
+            assertThat(game.actionCardDeck()
+                           .discardPile())
                     .as("discard pile should be empty")
                     .isEmpty();
         }

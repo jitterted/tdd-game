@@ -3,16 +3,17 @@ package dev.ted.tddgame.domain;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 class DeckFactoryTest {
 
     @Test
     void createActionCardDeckHasAllActionCardsInDiscardPile() {
-        Deck<ActionCard> actionCardDeck = new DeckFactory().createActionCardDeck();
+        List<ActionCard> actionCards = new DeckFactory().createStandardActionCards();
 
-        assertThat(actionCardDeck.view()
-                                 .discardPile())
+        assertThat(actionCards)
                 .haveExactly(18, actionCardMatching(ActionCard.WRITE_CODE))
                 .haveExactly(18, actionCardMatching(ActionCard.LESS_CODE))
                 .haveExactly(18, actionCardMatching(ActionCard.PREDICT))

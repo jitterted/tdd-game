@@ -3,6 +3,15 @@ October 29, 2024 - Tuesday
 
 * For next time: improve test output for events, more easily seeing which events are missing and/or out of order. May need to figure out what triggers IntelliJ IDEA's "compare" dialog for test output.
 
+* Realized that we don't want to create the Deck entity when executing Game's start() method. We want to create the Deck when the events are played back during the apply().
+
+* RULE: only create Entities and Value Objects when events are replayed via apply().
+
+? Can we use Pattern Matching somehow to make this easier:
+    ```
+    .filter(event -> event instanceof ActionCardDeckCreated)
+    .map(event -> (ActionCardDeckCreated) event)
+    ```
 
 
 October 24, 2024 - Thursday
@@ -48,11 +57,11 @@ October 22, 2024 - Tuesday
 October 17, 2024 - Thursday
 ===========================
 
-* Never enqueue() events during apply(), in fact, can we throw an exception if this happens??
+* RULE: Never enqueue() (i.e., generate new) events during apply(), in fact, can we throw an exception if this happens??
 
     * i.e., MUST NOT generate NEW events as the result of applying them
 
-* Commands --Generate--> Events and Events --Change--> State, but we ENQUEUE events inside command methods, which does both STORE and APPLY those events
+* RULE: Commands --Generate--> Events and Events --Change--> State (which might include creating entities/value objects), but we ENQUEUE events inside command methods, which does both STORE and APPLY those events
 
 
 October 16, 2024 - Wednesday

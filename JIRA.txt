@@ -163,6 +163,17 @@ Player's "State Machine":
 [ ] Add HexArchTest
     [ ] Add rule that Production code must not call nullable methods (createNull) and only call constructors
 
+[ ] Create custom AssertJ assertions, e.g.:
+    [ ] Find a specific event in a list of events and assert on its properties
+        e.g.:
+        ```
+        assertThat(game.freshEvents())
+                .forEvent(ActionCardDeckCreated.class)
+                .hasOne()
+                .extracting(ActionCardDeckCreated::actionCards)
+                .hasSize(63);
+        ```
+
 ## Naming
 
 [X] Come up with a name other than Person(Id) that's easier to differentiate from Player(Id), hopefully something other than "Account" or "User"

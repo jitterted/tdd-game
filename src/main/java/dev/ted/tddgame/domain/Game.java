@@ -8,30 +8,19 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Game extends EventSourcedAggregate {
     private static final int MAXIMUM_NUMBER_OF_PLAYERS = 4;
-    private List<ActionCard> actionCardsForDeck;
     private String name;
     private String handle;
     private final Map<MemberId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
+    private final DeckFactory deckFactory = new DeckFactory();
     private Deck<ActionCard> actionCardDeck;
 
     private Game() {
     }
 
-    public Game(List<GameEvent> gameEvents,
-                ActionCard... actionCards
-    ) {
-        this(gameEvents);
-        this.actionCardsForDeck = List.of(actionCards);
-    }
-
-    public static Game configureForTest(List<GameEvent> gameEvents,
-                                        ActionCard... actionCards) {
-        return new Game(gameEvents, actionCards);
-    }
-
-    // for REBUILDING Game (et al) state
-    public Game(List<GameEvent> events) {
+    // Rebuilds Game (and its entities) state
+    // Public production code should use #reconstitute()
+    private Game(List<GameEvent> events) {
         for (GameEvent event : events) {
             apply(event);
         }
@@ -116,7 +105,7 @@ public class Game extends EventSourcedAggregate {
 
     public void start() {
         enqueue(new GameStarted());
-        enqueue(new ActionCardDeckCreated(actionCardsForDeck));
+        enqueue(new ActionCardDeckCreated(deckFactory.createStandardActionCards()));
 
         MemberId firstMemberId = players().iterator().next().memberId();
         Player player = playerFor(firstMemberId);
