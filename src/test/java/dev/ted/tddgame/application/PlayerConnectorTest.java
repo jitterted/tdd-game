@@ -59,7 +59,8 @@ class PlayerConnectorTest {
         }
 
         @Override
-        public void clearStartgameModal(Game game) {
+        public void clearStartGameModal(Game game) {
+            throw new IllegalStateException("clearStartgameModal should never be called during Player Connection");
         }
     }
 }

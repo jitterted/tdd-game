@@ -121,6 +121,8 @@ Player's "State Machine":
             [ ] Broadcast Action Deck
                 [ ] Display a back of card in the draw pile if it's not empty
                 [ ] Display most recently discarded card in the discard pile if it's not empty
+        [ ] Refreshing the page should trigger a refresh of the state from the back-end
+            [ ] Should happen upon the Websocket's "handleMessage" "connect" command
 
     [ ] (Temporary) Constraint: players can't join once game is started
 
@@ -135,7 +137,7 @@ Player's "State Machine":
         [X] PostMapping that does:
             [X] Creates Player in the Game for the Person
             [X] Redirects to page that shows the game page
-    [ ] Game-in-progress page: show "modal"
+    [X] Game-in-progress page: show "modal"
         [X] Show other players as they join -- via WebSockets (htmx)
             [X] Associate logged-in user (username?) with a MemberId for joining, by looking up that username in MemberStore
             [X] Get first name from the Player (their in-game name)

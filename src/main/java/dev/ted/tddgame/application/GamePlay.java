@@ -5,6 +5,7 @@ import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
 
 // Application-level Use Case (aka Inbound Port)
+// aka COMMAND
 public class GamePlay {
 
     private final GameStore gameStore;
@@ -17,12 +18,14 @@ public class GamePlay {
 
     public void start(String gameHandle) {
         Game game = gameStore.findByHandle(gameHandle)
-                             .orElseThrow(() -> new RuntimeException("Game '%s' not found"
-                                                                             .formatted(gameHandle)));
-        broadcaster.clearStartgameModal(game);
+                             .orElseThrow(() -> new RuntimeException(
+                                     "Game '%s' not found".formatted(gameHandle)));
 
-        game.start();
+        broadcaster.clearStartGameModal(game);
 
+        // start game (if not already started!)
+
+        // broadcast state for the game now that it's started
     }
 
 }

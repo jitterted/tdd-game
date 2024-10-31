@@ -30,7 +30,7 @@ public class WebSocketBroadcaster implements Broadcaster {
     }
 
     @Override
-    public void clearStartgameModal(Game game) {
+    public void clearStartGameModal(Game game) {
         String html = """
                       <swap id="modal-container" hx-swap-oob="delete" />
                       """;

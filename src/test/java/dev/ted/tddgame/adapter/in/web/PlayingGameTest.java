@@ -25,7 +25,7 @@ class PlayingGameTest {
             }
 
             @Override
-            public void clearStartgameModal(Game game) {
+            public void clearStartGameModal(Game game) {
             }
         };
 
