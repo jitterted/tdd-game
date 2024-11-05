@@ -3,16 +3,17 @@ package dev.ted.tddgame.application;
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Game;
+import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Disabled("Until EventDto to/from Event has covered all GameEvents")
 class GamePlayTest {
 
     @Test
@@ -35,10 +36,10 @@ class GamePlayTest {
 
         gamePlay.start(gameFixture.gameHandle);
 
-        Game game = gameFixture.gameStore()
-                               .findByHandle(gameFixture.gameHandle())
-                               .orElseThrow();
-        assertThat(game.freshEvents())
+        List<GameEvent> gameEvents = gameFixture
+                .gameStore()
+                .allEventsFor(gameFixture.gameHandle());
+        assertThat(gameEvents)
                 .contains(new GameStarted());
 
     }

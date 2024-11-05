@@ -44,6 +44,14 @@ public class GameStore {
         handleToEventDtoMap.put(game.handle(), existingEventDtos);
     }
 
+    public List<GameEvent> allEventsFor(String gameHandle) {
+        return handleToEventDtoMap
+                .get(gameHandle)
+                .stream()
+                .map(EventDto::toDomain)
+                .toList();
+    }
+
     public Optional<Game> findByHandle(String gameHandle) {
         if (handleToEventDtoMap.containsKey(gameHandle)) {
             Game game = reconstitute(gameHandle);
@@ -54,11 +62,8 @@ public class GameStore {
     }
 
     private Game reconstitute(String gameHandle) {
-        List<GameEvent> gameEvents = handleToEventDtoMap
-                .get(gameHandle)
-                .stream()
-                .map(EventDto::toDomain)
-                .toList();
+        List<GameEvent> gameEvents = allEventsFor(gameHandle);
         return Game.reconstitute(gameEvents);
     }
+
 }
