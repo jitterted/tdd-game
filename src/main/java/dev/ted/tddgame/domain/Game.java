@@ -145,4 +145,5 @@ public class Game extends EventSourcedAggregate {
                 .add("playerMap=" + playerMap)
                 .toString();
     }
+
 }

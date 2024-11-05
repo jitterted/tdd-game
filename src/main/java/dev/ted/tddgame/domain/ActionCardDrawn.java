@@ -1,7 +1,7 @@
 package dev.ted.tddgame.domain;
 
-public record DeckCardDrawn<CARD>(CARD card) implements DeckEvent<CARD> {
-    public DeckCardDrawn {
+public record ActionCardDrawn(ActionCard card) implements DeckEvent<ActionCard> {
+    public ActionCardDrawn {
         if (card == null) {
             throw new IllegalArgumentException("CARD must not be null");
         }

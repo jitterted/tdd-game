@@ -69,15 +69,15 @@ class GameTest {
                             GameStarted.class,
                             ActionCardDeckCreated.class,
                             DeckReplenished.class,
-                            DeckCardDrawn.class,
+                            ActionCardDrawn.class,
                             PlayerDrewActionCard.class,
-                            DeckCardDrawn.class,
+                            ActionCardDrawn.class,
                             PlayerDrewActionCard.class,
-                            DeckCardDrawn.class,
+                            ActionCardDrawn.class,
                             PlayerDrewActionCard.class,
-                            DeckCardDrawn.class,
+                            ActionCardDrawn.class,
                             PlayerDrewActionCard.class,
-                            DeckCardDrawn.class,
+                            ActionCardDrawn.class,
                             PlayerDrewActionCard.class);
 
             ActionCardDeckCreated actionCardDeckCreated =
@@ -172,7 +172,7 @@ class GameTest {
                     new DeckReplenished<>(List.of(
                             ActionCard.PREDICT,
                             ActionCard.REFACTOR)),
-                    new DeckCardDrawn<>(ActionCard.PREDICT),
+                    new ActionCardDrawn(ActionCard.PREDICT),
                     new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
             Game game = Game.reconstitute(events);
 

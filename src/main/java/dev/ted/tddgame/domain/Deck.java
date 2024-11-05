@@ -73,8 +73,15 @@ public class Deck<CARD> {
             replenishDrawPileFromDiscardPile();
         }
         CARD drawnCard = drawPile.peek();
-        eventEnqueuer.enqueue(new DeckCardDrawn<>(drawnCard));
+        //      1. Check concrete type of CARD, e.g. if drawnCard.class == ActionCard, then generate ActionCardDrawn
+        //      2. Ask CARD for its event representing card drawn, e.g., drawnCard.drawEvent()
+        // [✅] 3. push down the event creation to a concrete subclass
+        eventEnqueuer.enqueue(createCardDrawnEvent(drawnCard));
         return drawnCard;
+    }
+
+    protected ActionCardDrawn createCardDrawnEvent(CARD drawnCard) {
+        return new ActionCardDrawn((ActionCard) drawnCard);
     }
 
     private void replenishDrawPileFromDiscardPile() {
@@ -98,15 +105,15 @@ public class Deck<CARD> {
                 discardPile.clear();
             }
 
-            case DeckCardDrawn<CARD> deckCardDrawn -> {
+            case ActionCardDrawn actionCardDrawn -> {
                 if (drawPile.isEmpty()) {
-                    throw new IllegalStateException("DrawPile must not be empty when applying event: " + deckCardDrawn);
+                    throw new IllegalStateException("DrawPile must not be empty when applying event: " + actionCardDrawn);
                 }
                 CARD removedCard = drawPile.remove();
-                if (!deckCardDrawn.card()
-                                  .equals(removedCard)) {
+                if (!actionCardDrawn.card()
+                                    .equals(removedCard)) {
                     throw new IllegalStateException("Card drawn from DrawPile did not match card in event = %s, card drawn = %s"
-                                                            .formatted(deckCardDrawn, removedCard));
+                                                            .formatted(actionCardDrawn, removedCard));
                 }
             }
         }

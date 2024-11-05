@@ -24,6 +24,9 @@ public class GamePlay {
         broadcaster.clearStartGameModal(game);
 
         // start game (if not already started!)
+        game.start();
+
+        gameStore.save(game);
 
         // broadcast state for the game now that it's started
     }

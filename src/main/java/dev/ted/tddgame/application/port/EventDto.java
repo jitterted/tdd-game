@@ -2,9 +2,12 @@ package dev.ted.tddgame.application.port;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.ted.tddgame.domain.ActionCardDeckCreated;
+import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
+import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 
 import java.util.HashMap;
@@ -32,9 +35,12 @@ public class EventDto {
     //    so that when adding (and especially renaming) classes, the mapping works
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final Map<String, Class<? extends GameEvent>> eventNameToClassMap = Map.of(
-            "GameCreated", GameCreated.class,
-            "PlayerJoined", PlayerJoined.class,
-            "GameStarted", GameStarted.class
+            "GameCreated", GameCreated.class
+            , "PlayerJoined", PlayerJoined.class
+            , "GameStarted", GameStarted.class
+            , "ActionCardDeckCreated", ActionCardDeckCreated.class
+            , "PlayerDrewActionCard", PlayerDrewActionCard.class
+            , "ActionCardDrawn", ActionCardDrawn.class
     );
     private static final Map<Class<? extends GameEvent>, String> classToEventName =
             swapKeysValues(eventNameToClassMap);
@@ -47,11 +53,13 @@ public class EventDto {
         return swapped;
     }
 
-
-    public EventDto(int entityId, int eventId, String eventType, String json) {
+    public EventDto(int entityId, int eventId, String eventClassName, String json) {
+        if (eventClassName == null) {
+            throw new IllegalArgumentException("Event class name cannot be null, JSON is: " + json);
+        }
         this.entityId = entityId;
         this.eventId = eventId;
-        this.eventType = eventType;
+        this.eventType = eventClassName;
         this.json = json;
     }
 
@@ -60,6 +68,9 @@ public class EventDto {
         try {
             String json = objectMapper.writeValueAsString(event);
             String className = classToEventName.get(event.getClass());
+            if (className == null) {
+                throw new IllegalArgumentException("Unknown event class: " + event.getClass().getSimpleName());
+            }
             return new EventDto(entityId, eventId, className, json);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -78,7 +89,7 @@ public class EventDto {
         try {
             return objectMapper.readValue(json, eventNameToClassMap.get(eventType));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Problem convert JSON: " + json + " to " + eventType, e);
         }
     }
 
