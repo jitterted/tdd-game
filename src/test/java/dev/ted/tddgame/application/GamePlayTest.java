@@ -8,18 +8,19 @@ import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class GamePlayTest {
+public class GamePlayTest {
 
     @Test
     void startSendsClearModalViaBroadcaster() {
         GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
-        MockBroadcaster mockBroadcaster = new MockBroadcaster(gameFixture.game());
+        ClearStartGameModalMockBroadcaster mockBroadcaster = new ClearStartGameModalMockBroadcaster(gameFixture.game());
         GamePlay gamePlay = new GamePlay(gameFixture.gameStore(), mockBroadcaster);
 
         gamePlay.start(gameFixture.gameHandle());
@@ -32,7 +33,7 @@ class GamePlayTest {
         GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
 
         GamePlay gamePlay = new GamePlay(gameFixture.gameStore(),
-                                         new DummyBroadcaster());
+                                         new NoOpDummyBroadcaster());
 
         gamePlay.start(gameFixture.gameHandle);
 
@@ -41,6 +42,24 @@ class GamePlayTest {
                 .allEventsFor(gameFixture.gameHandle());
         assertThat(gameEvents)
                 .contains(new GameStarted());
+    }
+
+    @Test
+    @Disabled("Test this at the Game.start() level, not here")
+    void doNotStartGameAgainIfAlreadyStarted() {
+
+    }
+
+    @Test
+    void startGameBroadcastsGameStartedInformation() {
+        GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
+        GameUpdateMockBroadcaster mockBroadcaster =
+                new GameUpdateMockBroadcaster(gameFixture.game());
+        GamePlay gamePlay = new GamePlay(gameFixture.gameStore(), mockBroadcaster);
+
+        gamePlay.start(gameFixture.gameHandle());
+
+        mockBroadcaster.verify();
 
     }
 
@@ -58,19 +77,14 @@ class GamePlayTest {
     private record GameFixture(String gameHandle, Game game, GameStore gameStore) {
     }
 
-    static class MockBroadcaster implements Broadcaster {
+    static class ClearStartGameModalMockBroadcaster extends CrashTestDummyBroadcaster {
 
         private final Game expectedGame;
         private Game lastGameCleared = null;
         private boolean clearStartGameModalWasInvoked = false;
 
-        public MockBroadcaster(Game expectedGame) {
+        public ClearStartGameModalMockBroadcaster(Game expectedGame) {
             this.expectedGame = expectedGame;
-        }
-
-        @Override
-        public void announcePlayerConnectedToGame(Game game, Player player) {
-            throw new IllegalStateException("announcePlayerConnectedToGame should NOT have been invoked during start of game.");
         }
 
         @Override
@@ -89,13 +103,54 @@ class GamePlayTest {
         }
     }
 
-    private static class DummyBroadcaster implements Broadcaster {
+    static class CrashTestDummyBroadcaster implements Broadcaster {
+        @Override
+        public void announcePlayerConnectedToGame(Game game, Player player) {
+            throw new IllegalStateException("announcePlayerConnectedToGame should NOT have been invoked.");
+        }
+
+        @Override
+        public void clearStartGameModal(Game game) {
+            throw new IllegalArgumentException("clearStartGameModal should NOT have been invoked.");
+        }
+
+        @Override
+        public void gameUpdate(Game game) {
+            throw new IllegalArgumentException("gameUpdate should NOT have been invoked.");
+        }
+    }
+
+    public static class NoOpDummyBroadcaster implements Broadcaster {
         @Override
         public void announcePlayerConnectedToGame(Game game, Player player) {
         }
 
         @Override
         public void clearStartGameModal(Game game) {
+        }
+
+        @Override
+        public void gameUpdate(Game game) {
+        }
+    }
+
+    private static class GameUpdateMockBroadcaster extends NoOpDummyBroadcaster {
+        private final Game expectedGame;
+        private Game actualGameFromUpdate;
+
+        public GameUpdateMockBroadcaster(Game expectedGame) {
+            this.expectedGame = expectedGame;
+        }
+
+        public void verify() {
+            assertThat(actualGameFromUpdate)
+                    .as("Game from update was not the expected Game that was started")
+                    .isEqualTo(expectedGame);
+        }
+
+        @Override
+        public void gameUpdate(Game game) {
+            actualGameFromUpdate = game;
         }
     }
 }

@@ -7,4 +7,6 @@ public interface Broadcaster {
     void announcePlayerConnectedToGame(Game game, Player player);
 
     void clearStartGameModal(Game game);
+
+    void gameUpdate(Game game);
 }

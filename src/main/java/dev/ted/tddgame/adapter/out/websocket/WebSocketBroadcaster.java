@@ -37,6 +37,11 @@ public class WebSocketBroadcaster implements Broadcaster {
         sendHtmlTo(gameHandleToSession.get(game.handle()), html);
     }
 
+    @Override
+    public void gameUpdate(Game game) {
+        throw new UnsupportedOperationException("Game Update not implemented yet");
+    }
+
     public void sendHtmlTo(Set<WebSocketSession> webSocketSessions, String html) {
         webSocketSessions.forEach(session -> {
             try {

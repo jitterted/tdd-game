@@ -1,6 +1,5 @@
 package dev.ted.tddgame.application;
 
-import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
@@ -29,7 +28,7 @@ class PlayerConnectorTest {
         mockBroadcaster.verify();
     }
 
-    private static class MockBroadcaster implements Broadcaster {
+    private static class MockBroadcaster extends GamePlayTest.CrashTestDummyBroadcaster {
         private final Game expectedGame;
         private final Player expectedPlayer;
         private boolean playerConnectedToGameWasCalled;

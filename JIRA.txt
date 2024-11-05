@@ -114,6 +114,10 @@ Player's "State Machine":
         [ ] Start Game starts the game:
             [X] The modal goes away (via broadcasting `hx-swap-oob="delete"`)
             [ ] If the game is not already started, call .start() (and persist this state change)
+            [ ] Split the Broadcaster interface into two:
+                (1) All events before the game has started (e.g., announce player joined)
+                (2) All events while the game is being played
+                [ ] Maybe split further into: events during START vs. events while game is being played, or put the "clear modal" into the pre-start game interface
             [ ] Broadcast Players' cards
                 [ ] Player has "Hand" and "Tech Neglect" area
                 [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
