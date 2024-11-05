@@ -1,3 +1,9 @@
+November 5, 2024 - Tuesday
+==========================
+* RULE: Don't use generified Event Records/Classes as Event objects as they're hard to serialize/deserialize in JSON and can't use Pattern Matching with generics
+
+
+
 October 29, 2024 - Tuesday
 ==========================
 

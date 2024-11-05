@@ -41,7 +41,7 @@ public class Player {
         actionCards.add(((PlayerDrewActionCard) event).actionCard());
     }
 
-    public void drawToFullFrom(Deck<ActionCard> actionCardDeck) {
+    public void drawToFullFrom(ActionCardDeck actionCardDeck) {
         drawCardFrom(actionCardDeck);
         drawCardFrom(actionCardDeck);
         drawCardFrom(actionCardDeck);
@@ -49,7 +49,7 @@ public class Player {
         drawCardFrom(actionCardDeck);
     }
 
-    private void drawCardFrom(Deck<ActionCard> actionCardDeck) {
+    private void drawCardFrom(ActionCardDeck actionCardDeck) {
         PlayerDrewActionCard event =
                 new PlayerDrewActionCard(memberId, actionCardDeck.draw());
         eventEnqueuer.enqueue(event);

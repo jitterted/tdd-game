@@ -13,7 +13,7 @@ public class Game extends EventSourcedAggregate {
     private final Map<MemberId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
     private final DeckFactory deckFactory = new DeckFactory();
-    private Deck<ActionCard> actionCardDeck;
+    private ActionCardDeck actionCardDeck;
 
     private Game() {
     }
@@ -62,8 +62,8 @@ public class Game extends EventSourcedAggregate {
 
             case ActionCardDeckCreated(List<ActionCard> actionCards) ->
                     // TODO: switch to production version for random shuffler
-                    actionCardDeck = Deck.createForTest(this::enqueue,
-                            actionCards);
+                    actionCardDeck = ActionCardDeck.createForTest(this::enqueue,
+                                                                  actionCards);
 
             case DeckEvent deckEvent ->
                     actionCardDeck.apply(deckEvent);

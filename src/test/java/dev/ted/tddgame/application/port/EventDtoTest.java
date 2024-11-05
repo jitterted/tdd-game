@@ -1,9 +1,8 @@
 package dev.ted.tddgame.application.port;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
+import dev.ted.tddgame.domain.ActionCardDeckReplenished;
 import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
@@ -11,7 +10,6 @@ import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerJoined;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,7 +24,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Disabled("Until we have only non-generic Event records")
 class EventDtoTest {
 
     @Test
@@ -43,32 +40,6 @@ class EventDtoTest {
                         """
                         {"gameName":"game name","handle":"lovely-dog-23"}"""));
 
-    }
-
-    @Test
-    void objectMapperCorrectlyInstantiatesEventRecord() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        GameEvent noGenericsOriginal = new GameCreated("game name", "gameHandle");
-        String noGenericsJson = objectMapper.writeValueAsString(noGenericsOriginal);
-        GameEvent noGenericsDeserialized = objectMapper.readValue(noGenericsJson, GameCreated.class);
-        assertThat(noGenericsDeserialized)
-                .isEqualTo(noGenericsOriginal);
-
-        ActionCardDrawn predictDrawnDirectInstantiation = new ActionCardDrawn(ActionCard.PREDICT);
-        String json = objectMapper
-                .writeValueAsString(predictDrawnDirectInstantiation);
-
-        ActionCardDrawn actionCardDrawnFromJson = objectMapper
-                .readValue(json, ActionCardDrawn.class);
-
-        assertThat(predictDrawnDirectInstantiation.card().getClass())
-                .as("Cards should be equal")
-                .isEqualTo(actionCardDrawnFromJson.card().getClass());
-
-        assertThat(actionCardDrawnFromJson)
-                .as("Deserialized event is not the same as the original event object")
-                .isEqualTo(predictDrawnDirectInstantiation);
     }
 
     @Test
@@ -112,6 +83,11 @@ class EventDtoTest {
                 , Arguments.of(new ActionCardDeckCreated(List.of(ActionCard.PREDICT)))
                 , Arguments.of(new PlayerDrewActionCard(memberId, ActionCard.REFACTOR))
                 , Arguments.of(new ActionCardDrawn(ActionCard.PREDICT))
+                , Arguments.of(new ActionCardDeckReplenished(
+                        List.of(ActionCard.WRITE_CODE,
+                                ActionCard.LESS_CODE,
+                                ActionCard.CANT_ASSERT)
+                ))
         );
     }
 }

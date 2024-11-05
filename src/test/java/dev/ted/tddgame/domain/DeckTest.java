@@ -18,7 +18,7 @@ class DeckTest {
             List<ActionCard> actionCards = List.of(
                     ActionCard.PREDICT,
                     ActionCard.WRITE_CODE);
-            Deck<ActionCard> deck = Deck.create(actionCards, null);
+            ActionCardDeck deck = ActionCardDeck.create(actionCards, null);
 
             assertThat(deck.isDrawPileEmpty())
                     .as("Draw Pile should be empty when Deck is created")
@@ -27,7 +27,7 @@ class DeckTest {
 
         @Test
         void canDrawFullSetOfCardsAfterReplenishTriggeredByDraw()  {
-            Deck<ActionCard> deck = Deck.createForTest(
+            ActionCardDeck deck = ActionCardDeck.createForTest(
                     ActionCard.PREDICT,
                     ActionCard.WRITE_CODE,
                     ActionCard.REFACTOR,
@@ -49,7 +49,7 @@ class DeckTest {
         @Test
         void drawnCardsAreShuffledFromDiscardPile() {
             List<ActionCard> allStandardActionCards = createStandardActionCards();
-            Deck<ActionCard> deck = Deck.createForRandomTest(allStandardActionCards);
+            ActionCardDeck deck = ActionCardDeck.createForRandomTest(allStandardActionCards);
 
             List<ActionCard> drawnCards = new ArrayList<>();
             do {
@@ -63,9 +63,9 @@ class DeckTest {
 
         @Test
         void viewHasNonEmptyDrawAndDiscardPiles() {
-            Deck<ActionCard> deck = Deck.createForTest(ActionCard.WRITE_CODE,
-                                                       ActionCard.LESS_CODE,
-                                                       ActionCard.PREDICT);
+            ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.WRITE_CODE,
+                                                               ActionCard.LESS_CODE,
+                                                               ActionCard.PREDICT);
 
             deck.draw(); // force replenish by drawing the WRITE_CODE
 
@@ -79,31 +79,31 @@ class DeckTest {
     class CommandGeneratesEvents {
         @Test
         void emptyDrawPileDrawOneCardGeneratesReplenishAndCardDrawnEvents() {
-            List<DeckEvent<ActionCard>> deckEventsReceiver = new ArrayList<>();
-            Deck<ActionCard> deck = Deck.createForTest(deckEventsReceiver,
-                                                       ActionCard.PREDICT);
+            List<DeckEvent> deckEventsReceiver = new ArrayList<>();
+            ActionCardDeck deck = ActionCardDeck.createForTest(deckEventsReceiver,
+                                                               ActionCard.PREDICT);
 
             deck.draw();
 
             assertThat(deckEventsReceiver)
                     .containsExactly(
-                            new DeckReplenished<>(List.of(ActionCard.PREDICT)),
+                            new ActionCardDeckReplenished(List.of(ActionCard.PREDICT)),
                             new ActionCardDrawn(ActionCard.PREDICT));
         }
 
         @Test
         void drawPileWithTwoCardsDrawTwoCardsGeneratesReplenishAndTwoCardDrawnEvents() {
-            List<DeckEvent<ActionCard>> deckEventsReceiver = new ArrayList<>();
-            Deck<ActionCard> deck = Deck.createForTest(deckEventsReceiver,
-                                                       ActionCard.LESS_CODE,
-                                                       ActionCard.WRITE_CODE);
+            List<DeckEvent> deckEventsReceiver = new ArrayList<>();
+            ActionCardDeck deck = ActionCardDeck.createForTest(deckEventsReceiver,
+                                                               ActionCard.LESS_CODE,
+                                                               ActionCard.WRITE_CODE);
             deck.draw();
             deck.draw();
 
             assertThat(deckEventsReceiver)
                     .containsExactly(
-                            new DeckReplenished<>(List.of(ActionCard.LESS_CODE,
-                                                          ActionCard.WRITE_CODE)),
+                            new ActionCardDeckReplenished(List.of(ActionCard.LESS_CODE,
+                                                                    ActionCard.WRITE_CODE)),
                             new ActionCardDrawn(ActionCard.LESS_CODE),
                             new ActionCardDrawn(ActionCard.WRITE_CODE)
                     );
@@ -116,10 +116,10 @@ class DeckTest {
 
         @Test
         void deckReplenishedEventMovesCardsIntoDrawPile() {
-            Deck<ActionCard> deck = Deck.createForTest(ActionCard.LESS_CODE,
-                                                       ActionCard.CANT_ASSERT);
-            DeckReplenished<ActionCard> deckEvent =
-                    new DeckReplenished<>(List.of(
+            ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.LESS_CODE,
+                                                               ActionCard.CANT_ASSERT);
+            ActionCardDeckReplenished deckEvent =
+                    new ActionCardDeckReplenished(List.of(
                             ActionCard.LESS_CODE,
                             ActionCard.CANT_ASSERT));
 
@@ -136,10 +136,10 @@ class DeckTest {
 
         @Test
         void deckCardDrawnEventRemovesCardFromDeck() {
-            Deck<ActionCard> deck = Deck.createForTest(ActionCard.REFACTOR,
-                                                       ActionCard.CODE_BLOAT);
-            deck.apply(new DeckReplenished<>(List.of(ActionCard.REFACTOR,
-                                                     ActionCard.CODE_BLOAT)));
+            ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.REFACTOR,
+                                                               ActionCard.CODE_BLOAT);
+            deck.apply(new ActionCardDeckReplenished(List.of(ActionCard.REFACTOR,
+                                                               ActionCard.CODE_BLOAT)));
 
             deck.apply(new ActionCardDrawn(ActionCard.REFACTOR));
 
@@ -153,10 +153,10 @@ class DeckTest {
 
         @Test
         void exceptionWhenDeckCardDrawnHasDifferentCardThanDrawnFromDrawPile() {
-            Deck<ActionCard> deck = Deck.createForTest(ActionCard.REFACTOR,
-                                                       ActionCard.CODE_BLOAT);
-            deck.apply(new DeckReplenished<>(List.of(ActionCard.REFACTOR,
-                                                     ActionCard.CODE_BLOAT)));
+            ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.REFACTOR,
+                                                               ActionCard.CODE_BLOAT);
+            deck.apply(new ActionCardDeckReplenished(List.of(ActionCard.REFACTOR,
+                                                               ActionCard.CODE_BLOAT)));
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> deck.apply(
@@ -166,10 +166,10 @@ class DeckTest {
 
         @Test
         void exceptionWhenDeckCardDrawnRemovesFromEmptyDrawPile() {
-            Deck<ActionCard> deck = Deck.createForTest(ActionCard.REFACTOR,
-                                                       ActionCard.CODE_BLOAT);
+            ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.REFACTOR,
+                                                               ActionCard.CODE_BLOAT);
 
-            // draw pile is empty, because we haven't applied a DeckReplenished event
+            // draw pile is empty, because we haven't applied a ActionCardDeckReplenished event
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> deck.apply(
@@ -198,7 +198,7 @@ class DeckTest {
         }
     }
 
-    private List<ActionCard> drawCards(Deck<ActionCard> deck, int numberOfCards) {
+    private List<ActionCard> drawCards(ActionCardDeck deck, int numberOfCards) {
         List<ActionCard> drawnCards = new ArrayList<>();
         for (int i = 0; i < numberOfCards; i++) {
             drawnCards.add(deck.draw());

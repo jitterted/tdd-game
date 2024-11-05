@@ -68,7 +68,7 @@ class GameTest {
                     .hasExactlyElementsOfTypes(
                             GameStarted.class,
                             ActionCardDeckCreated.class,
-                            DeckReplenished.class,
+                            ActionCardDeckReplenished.class,
                             ActionCardDrawn.class,
                             PlayerDrewActionCard.class,
                             ActionCardDrawn.class,
@@ -169,7 +169,7 @@ class GameTest {
                     new ActionCardDeckCreated(List.of(
                             ActionCard.PREDICT,
                             ActionCard.REFACTOR)),
-                    new DeckReplenished<>(List.of(
+                    new ActionCardDeckReplenished(List.of(
                             ActionCard.PREDICT,
                             ActionCard.REFACTOR)),
                     new ActionCardDrawn(ActionCard.PREDICT),

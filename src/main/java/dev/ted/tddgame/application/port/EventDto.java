@@ -3,6 +3,7 @@ package dev.ted.tddgame.application.port;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
+import dev.ted.tddgame.domain.ActionCardDeckReplenished;
 import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
@@ -41,6 +42,7 @@ public class EventDto {
             , "ActionCardDeckCreated", ActionCardDeckCreated.class
             , "PlayerDrewActionCard", PlayerDrewActionCard.class
             , "ActionCardDrawn", ActionCardDrawn.class
+            , "ActionCardDeckReplenished", ActionCardDeckReplenished.class
     );
     private static final Map<Class<? extends GameEvent>, String> classToEventName =
             swapKeysValues(eventNameToClassMap);
