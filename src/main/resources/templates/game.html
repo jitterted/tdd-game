@@ -35,7 +35,7 @@
 </div>
 
 <!-- Waiting for Game to Begin modal dialog -->
-<div id="modal-container">
+<div style="display: none" id="modal-container">
 <div id="waiting-room-modal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"></div>
 
@@ -96,8 +96,15 @@
                 <div class="other-player-workspace">
                     Workspace
                 </div>
-                <div class="other-player-hand">
+                <div class="other-player-hand-container">
                     Hand
+                    <div class="other-player-hand">
+                        LESS CODE
+                        WRITE CODE
+                        PREDICT
+                        PREDICT
+                        REFACTOR
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,30 +142,25 @@
         <div>
             <p>Test Results Deck</p>
         </div>
-        <div>Your Play Area</div>
-        <div class="big-hand">
-            <h2>Your Hand</h2>
-            <div id="your-hand" class="big-hand-container">
-                <label>
-                    <input id="card1" type="checkbox">
-                    PREDICT
-                </label>
-                <label>
-                    <input id="card2" type="checkbox">
-                    PREDICT
-                </label>
-                <label>
-                    <input id="card3" type="checkbox">
-                    LESS CODE
-                </label>
-                <label>
-                    <input id="card4" type="checkbox">
-                    WRITE CODE
-                </label>
-                <label>
-                    <input id="card5" type="checkbox">
-                    REFACTOR
-                </label>
+    </div>
+    <div>Your Play Area</div>
+    <div class="big-hand">
+        <h2>Your Hand</h2>
+        <div id="your-hand" class="big-hand-container">
+            <div class="big-hand-card">
+                PREDICT
+            </div>
+            <div class="big-hand-card">
+                PREDICT
+            </div>
+            <div class="big-hand-card">
+                LESS CODE
+            </div>
+            <div class="big-hand-card">
+                WRITE CODE
+            </div>
+            <div class="big-hand-card">
+                REFACTOR
             </div>
         </div>
     </div>
