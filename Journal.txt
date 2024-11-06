@@ -2,6 +2,10 @@ November 5, 2024 - Tuesday
 ==========================
 * RULE: Don't use generified Event Records/Classes as Event objects as they're hard to serialize/deserialize in JSON and can't use Pattern Matching with generics
 
+* Becoming more clear that the Broadcaster interface needs to be split, perhaps to a "pre-start" and a "post-start" set of interfaces
+
+
+NEXT: verify that in the Broadcaster.gameUpdate(), it creates the htmx-HTML that has what we need to display the player cards, action deck, etc.
 
 
 October 29, 2024 - Tuesday

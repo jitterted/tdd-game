@@ -114,6 +114,7 @@ Player's "State Machine":
         [ ] Start Game starts the game:
             [X] The modal goes away (via broadcasting `hx-swap-oob="delete"`)
             [ ] If the game is not already started, call .start() (and persist this state change)
+                [ ] Implement this from the GameTest
             [ ] Split the Broadcaster interface into two:
                 (1) All events before the game has started (e.g., announce player joined)
                 (2) All events while the game is being played

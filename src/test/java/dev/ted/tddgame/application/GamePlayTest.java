@@ -93,6 +93,11 @@ public class GamePlayTest {
             lastGameCleared = game;
         }
 
+        @Override
+        public void gameUpdate(Game game) {
+            // this is fine if it's called
+        }
+
         public void verify() {
             assertThat(clearStartGameModalWasInvoked)
                     .as("Expected the clearStartGameModal() to be invoked")

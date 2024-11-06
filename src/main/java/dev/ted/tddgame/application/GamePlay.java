@@ -28,7 +28,7 @@ public class GamePlay {
 
         gameStore.save(game);
 
-        // broadcast state for the game now that it's started
+        broadcaster.gameUpdate(game);
     }
 
 }
