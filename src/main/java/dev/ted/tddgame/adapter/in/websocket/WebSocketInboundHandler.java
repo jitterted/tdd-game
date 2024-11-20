@@ -1,6 +1,6 @@
 package dev.ted.tddgame.adapter.in.websocket;
 
-import dev.ted.tddgame.adapter.out.websocket.WebSocketBroadcaster;
+import dev.ted.tddgame.adapter.shared.PlayerConnections;
 import dev.ted.tddgame.application.PlayerConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +15,13 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class WebSocketInboundHandler extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketInboundHandler.class);
 
-    // Map<WebSocketSession, List<GameHandle>>, i.e., a Multi-valued Map, e.g. https://github.com/eclipse/eclipse-collections/blob/master/docs/guide.md#-multimap
-
     private final PlayerConnector playerConnector;
-    private final WebSocketBroadcaster webSocketBroadcaster;
+    private final PlayerConnections playerConnections;
 
     @Autowired
-    public WebSocketInboundHandler(PlayerConnector playerConnector, WebSocketBroadcaster webSocketBroadcaster) {
+    public WebSocketInboundHandler(PlayerConnector playerConnector, PlayerConnections playerConnections) {
         this.playerConnector = playerConnector;
-        this.webSocketBroadcaster = webSocketBroadcaster;
+        this.playerConnections = playerConnections;
     }
 
     @Override
@@ -38,7 +36,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         String messagePayload = (String) message.getPayload();
         LOGGER.info("Payload details: {}", messagePayload);
         String gameHandle = messagePayload.split(":")[1]; // e.g. "join:sleepy-goose-78"
-        webSocketBroadcaster.playerConnections.connect(session, gameHandle);
+        playerConnections.connect(session, gameHandle);
 
         String playerUsername = session.getPrincipal().getName();
         playerConnector.connect(playerUsername, gameHandle);
@@ -46,7 +44,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-        webSocketBroadcaster.playerConnections.disconnect(session);
+        playerConnections.disconnect(session);
     }
 
 }

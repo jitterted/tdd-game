@@ -1,7 +1,9 @@
 package dev.ted.tddgame.adapter.shared;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
+@Component
 public class PlayerConnections {
     private final Multimap<String, WebSocketSession> gameHandleToSessions = new Multimap<String, WebSocketSession>();
 
