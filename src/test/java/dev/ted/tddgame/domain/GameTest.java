@@ -45,13 +45,24 @@ class GameTest {
         }
 
         @Test
-        void playerJoiningEmitsPlayerJoinedEvent() {
+        void memberJoiningEmitsPlayerJoinedEvent() {
             Game game = createFreshGame();
 
             game.join(new MemberId(88L), "player name");
 
             assertThat(game.freshEvents())
                     .containsExactly(new PlayerJoined(new MemberId(88L), "player name"));
+        }
+
+        @Test
+        void memberJoiningTwiceDoesNotEmitNewPlayerJoinedEvent() {
+            Game game = createFreshGame();
+
+            game.join(new MemberId(88L), "player name");
+            game.join(new MemberId(88L), "player name");
+
+            assertThat(game.freshEvents())
+                    .containsOnlyOnce(new PlayerJoined(new MemberId(88L), "player name"));
         }
 
         @Test

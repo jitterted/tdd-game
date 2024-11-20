@@ -96,11 +96,21 @@ public class Game extends EventSourcedAggregate {
             throw new IllegalStateException("Game is full (Member IDs: " + ids + "), so " + memberId + " cannot join.");
         }
 
-        enqueue(new PlayerJoined(memberId, playerName));
+        if (!memberAlreadyInGame(memberId)) {
+            enqueue(new PlayerJoined(memberId, playerName));
+        }
     }
 
     public boolean canJoin(MemberId memberId) {
-        return playerMap.size() < MAXIMUM_NUMBER_OF_PLAYERS || playerMap.containsKey(memberId);
+        return gameHasSpaceAvailable() || memberAlreadyInGame(memberId);
+    }
+
+    private boolean memberAlreadyInGame(MemberId memberId) {
+        return playerMap.containsKey(memberId);
+    }
+
+    private boolean gameHasSpaceAvailable() {
+        return playerMap.size() < MAXIMUM_NUMBER_OF_PLAYERS;
     }
 
     public void start() {
