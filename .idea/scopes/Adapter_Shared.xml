@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Adapter Shared" pattern="src:dev.ted.tddgame.adapter.shared..*" />
+</component>

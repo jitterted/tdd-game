@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SharedFileColors">
+    <fileColor scope="Adapter Shared" color="c5d9eb" />
     <fileColor scope="Outbound Adapters" color="Violet" />
     <fileColor scope="Inbound Adapters" color="Blue" />
     <fileColor scope="Application" color="Orange" />
