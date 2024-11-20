@@ -5,6 +5,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 
+// USE CASE: Handles players connecting to the game
 public class PlayerConnector {
     private final Broadcaster broadcaster;
     private final MemberFinder memberFinder;

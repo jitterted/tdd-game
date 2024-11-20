@@ -39,6 +39,7 @@ public class WebSocketBroadcaster implements Broadcaster {
 
     @Override
     public void gameUpdate(Game game) {
+        // customize the HTML transformation for each player
         throw new UnsupportedOperationException("Game Update not implemented yet");
     }
 
