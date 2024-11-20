@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.shared.PlayerConnections;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
@@ -18,7 +19,7 @@ class WebSocketBroadcasterTest {
         MemberId memberId = new MemberId(78L);
         game.join(memberId, "Oliver");
         Player player = game.playerFor(memberId);
-        WebSocketBroadcaster broadcaster = new WebSocketBroadcaster();
+        WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(new PlayerConnections());
 
         broadcaster.announcePlayerConnectedToGame(game, player);
 
@@ -35,7 +36,7 @@ class WebSocketBroadcasterTest {
         MemberId memberId = new MemberId(78L);
         game.join(memberId, "Oliver");
         Player player = game.playerFor(memberId);
-        WebSocketBroadcaster broadcaster = new WebSocketBroadcaster();
+        WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(new PlayerConnections());
         broadcaster.announcePlayerConnectedToGame(game, player);
 
         broadcaster.gameUpdate(game);

@@ -19,7 +19,8 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
     private final PlayerConnections playerConnections;
 
     @Autowired
-    public WebSocketInboundHandler(PlayerConnector playerConnector, PlayerConnections playerConnections) {
+    public WebSocketInboundHandler(PlayerConnector playerConnector,
+                                   PlayerConnections playerConnections) {
         this.playerConnector = playerConnector;
         this.playerConnections = playerConnections;
     }

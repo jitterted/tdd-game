@@ -17,7 +17,11 @@ import java.util.Set;
 @Component
 public class WebSocketBroadcaster implements Broadcaster {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketBroadcaster.class);
-    public final PlayerConnections playerConnections = new PlayerConnections();
+    private final PlayerConnections playerConnections;
+
+    public WebSocketBroadcaster(PlayerConnections playerConnections) {
+        this.playerConnections = playerConnections;
+    }
 
     @Override
     public void announcePlayerConnectedToGame(Game game, Player player) {
