@@ -87,7 +87,9 @@
 
 <div class="game-screen">
     <div class="all-other-players-container">
-        <div class="other-player-container">
+        <!-- HTMX TARGET for PLAYER #1  -->
+        <div id="other-player-container-1"
+             class="other-player-container">
             <h2 id="other-player-name-1"
                 class="other-player-name-header">
                 Player 1
@@ -99,16 +101,17 @@
                 <div class="other-player-hand-container">
                     Hand
                     <div class="other-player-hand">
-                        LESS CODE
-                        WRITE CODE
-                        PREDICT
-                        PREDICT
-                        REFACTOR
+                        <div class="other-player-card">LESS CODE</div>
+                        <div class="other-player-card">WRITE CODE</div>
+                        <div class="other-player-card">PREDICT</div>
+                        <div class="other-player-card">PREDICT</div>
+                        <div class="other-player-card">REFACTOR</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="other-player-container">
+        <div id="other-player-container-2"
+             class="other-player-container">
             <h2 id="other-player-name-2"
                 class="other-player-name-header">
                 Player 2
@@ -117,19 +120,37 @@
                 <div class="other-player-workspace">
                     Workspace
                 </div>
-                <div class="other-player-hand">
+                <div class="other-player-hand-container">
                     Hand
+                    <div class="other-player-hand">
+                        <div class="other-player-card">LESS CODE</div>
+                        <div class="other-player-card">WRITE CODE</div>
+                        <div class="other-player-card">PREDICT</div>
+                        <div class="other-player-card">PREDICT</div>
+                        <div class="other-player-card">REFACTOR</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="other-player-container">
-            <h2 class="other-player-name-header">Player 3</h2>
+        <div id="other-player-container-3"
+             class="other-player-container">
+            <h2 id="other-player-name-3"
+                class="other-player-name-header">
+                Player 3
+            </h2>
             <div class="other-player-cards-container">
                 <div class="other-player-workspace">
                     Workspace
                 </div>
-                <div class="other-player-hand">
+                <div class="other-player-hand-container">
                     Hand
+                    <div class="other-player-hand">
+                        <div class="other-player-card">LESS CODE</div>
+                        <div class="other-player-card">WRITE CODE</div>
+                        <div class="other-player-card">PREDICT</div>
+                        <div class="other-player-card">PREDICT</div>
+                        <div class="other-player-card">REFACTOR</div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -52,11 +52,21 @@
 }
 
 .other-player-hand {
+    font-size: .75rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     padding: 0.25rem;
     border-width: 1px;
     border-color: #D1D5DB;
     --tw-bg-opacity: 1;
-    background-color: rgb(241 245 249 / var(--tw-bg-opacity))/* #f1f5f9 */;
+    background-color: rgb(241 245 249 / var(--tw-bg-opacity)) /* #f1f5f9 */;
+}
+
+.other-player-card {
+    border: 1px solid #999;
+    background-color: #FFF;
+    margin: 0.25rem;
+    padding: 0.25rem;
 }
 
 .last-column {
