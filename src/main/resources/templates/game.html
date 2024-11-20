@@ -12,14 +12,14 @@
     <script type="application/javascript">
         function afterWebSocketConnects(event) {
             console.log("afterWebSocketConnects: ", event);
-            event.detail.socketWrapper.send("connect: ");
+            // event.detail.socketWrapper.send("connect: ");
         }
     </script>
     <script th:inline="javascript">
         window.addEventListener('htmx:ws-open', function (evt) {
             var gameHandle = [[${gameView.handle}]];
             console.log("htmx:ws-open event", gameHandle, evt);
-            event.detail.socketWrapper.send("connect:" + gameHandle);
+            event.detail.socketWrapper.send("join:" + gameHandle);
         })
     </script>
 </head>

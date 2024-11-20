@@ -21,7 +21,7 @@ gameHandle=testy-spider-83
 ### WebSocket
 WEBSOCKET ws://localhost:8080/ws/game
 
-connect:testy-spider-83
+join:testy-spider-83
 #=== wait-for-server
 
 ###
