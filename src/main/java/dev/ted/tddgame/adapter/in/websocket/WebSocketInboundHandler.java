@@ -38,7 +38,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         String messagePayload = (String) message.getPayload();
         LOGGER.info("Payload details: {}", messagePayload);
         String gameHandle = messagePayload.split(":")[1]; // e.g. "join:sleepy-goose-78"
-        webSocketBroadcaster.connect(session, gameHandle);
+        webSocketBroadcaster.playerConnections.connect(session, gameHandle);
 
         String playerUsername = session.getPrincipal().getName();
         playerConnector.connect(playerUsername, gameHandle);
@@ -46,7 +46,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-        webSocketBroadcaster.disconnect(session);
+        webSocketBroadcaster.playerConnections.disconnect(session);
     }
 
 }

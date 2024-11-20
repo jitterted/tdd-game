@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.shared.PlayerConnections;
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Player;
@@ -11,15 +12,12 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class WebSocketBroadcaster implements Broadcaster {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketBroadcaster.class);
-    private final Multimap<String, WebSocketSession> gameHandleToSessions = new Multimap<>();
+    public final PlayerConnections playerConnections = new PlayerConnections();
 
     @Override
     public void announcePlayerConnectedToGame(Game game, Player player) {
@@ -27,7 +25,8 @@ public class WebSocketBroadcaster implements Broadcaster {
                 WaitingRoomHtmlRenderer.forConnectNotification(LocalTime.now(), player.playerName())
                 + WaitingRoomHtmlRenderer.forJoinedPlayers(game.players());
         // create PlayerViewComponent(player, sessionForThatPlayer)
-        sendHtmlTo(gameHandleToSessions.get(game.handle()), html);
+        sendHtmlTo(playerConnections.getGameHandleToSessions()
+                                    .get(game.handle()), html);
     }
 
     @Override
@@ -35,7 +34,8 @@ public class WebSocketBroadcaster implements Broadcaster {
         String html = """
                       <swap id="modal-container" hx-swap-oob="delete" />
                       """;
-        sendHtmlTo(gameHandleToSessions.get(game.handle()), html);
+        sendHtmlTo(playerConnections.getGameHandleToSessions()
+                                    .get(game.handle()), html);
     }
 
     @Override
@@ -57,40 +57,4 @@ public class WebSocketBroadcaster implements Broadcaster {
         });
     }
 
-    public void disconnect(WebSocketSession webSocketSession) {
-        // Remove this WebSocketSession from all Game handles
-
-        // tell each Game that the player has disconnected:
-        // by using a SessionToGameMap
-
-    }
-
-    public void connect(WebSocketSession session, String gameHandle) {
-        gameHandleToSessions.put(gameHandle, session);
-    }
-}
-
-class Multimap<K, V> {
-    private final Map<K, Set<V>> map = new ConcurrentHashMap<>();
-
-    public void put(K key, V value) {
-        Set<V> values = map.computeIfAbsent(key, k -> new HashSet<>());
-        values.add(value);
-    }
-
-    public Set<V> get(K key) {
-        return map.getOrDefault(key, new HashSet<>());
-    }
-
-    public boolean remove(K key, V value) {
-        Set<V> values = map.get(key);
-        if (values != null) {
-            boolean removed = values.remove(value);
-            if (values.isEmpty()) {
-                map.remove(key);
-            }
-            return removed;
-        }
-        return false;
-    }
 }
