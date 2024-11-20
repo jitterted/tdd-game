@@ -4,6 +4,7 @@ build/
 .idea
 *.iws
 *.iml
+!.idea/scopes
 
 target/
 .DS_Store
