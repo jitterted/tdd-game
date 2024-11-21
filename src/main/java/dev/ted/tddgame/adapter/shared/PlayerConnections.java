@@ -4,10 +4,8 @@ import dev.ted.tddgame.domain.Game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -20,10 +18,6 @@ public class PlayerConnections {
     private final Multimap<String, MessageSender> gameHandleToMessageSender = new Multimap<>();
 
     public PlayerConnections() {
-    }
-
-    public void connect(WebSocketSession session, String gameHandle) {
-        connect(new WebSocketMessageSender(session), gameHandle);
     }
 
     public void connect(MessageSender messageSender, String gameHandle) {
@@ -69,27 +63,5 @@ public class PlayerConnections {
         }
     }
 
-    private static class WebSocketMessageSender implements MessageSender {
-        private final WebSocketSession webSocketSession;
-
-        public WebSocketMessageSender(WebSocketSession webSocketSession) {
-            this.webSocketSession = webSocketSession;
-        }
-
-        @Override
-        public boolean isOpen() {
-            return webSocketSession.isOpen();
-        }
-
-        @Override
-        public void sendMessage(String message) {
-            try {
-                // throw exception so this connection gets removed from the map
-                webSocketSession.sendMessage(new TextMessage(message));
-            } catch (IOException e) {
-                LOGGER.warn("Unable to send message to webSocketSession: " + webSocketSession.getId(), e);
-            }
-        }
-    }
 }
 

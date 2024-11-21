@@ -14,6 +14,40 @@ class WebSocketBroadcasterTest {
 
     @Test
     void htmlSentToAllConnectedPlayersUponPlayerConnected() {
+        Fixture fixture = createGameWithTwoPlayersConnected();
+        fixture.game.start();
+
+        fixture.broadcaster.announcePlayerConnectedToGame(fixture.game,
+                                                          fixture.oliverPlayer);
+
+        // expect HTML sent to all connected sessions
+        assertThat(fixture.messageSenderForOliver
+                          .lastSentMessage())
+                .as("Last sent message should not be null, i.e., was never called")
+                .isNotNull()
+                .isNotEmpty();
+        assertThat(fixture.messageSenderForSamantha
+                          .lastSentMessage())
+                .as("Last sent message should not be null, i.e., was never called")
+                .isNotNull()
+                .isNotEmpty();
+    }
+
+    @Disabled("Until gameUpdate is implemented")
+    @Test
+    void playerSpecificHtmlSentUponGameUpdate() {
+        Fixture fixture = createGameWithTwoPlayersConnected();
+
+        fixture.broadcaster.gameUpdate(fixture.game);
+
+        assertThat(fixture.messageSenderForOliver.lastSentMessage())
+                .as("Oliver's HTML should not be the same as Samantha's")
+                .isNotEqualTo(fixture.messageSenderForSamantha.lastSentMessage());
+    }
+
+    // FIXTURE setup
+
+    private Fixture createGameWithTwoPlayersConnected() {
         Game game = Game.create("irrelevant game name", "gameHandle");
         MemberId memberIdForOliver = new MemberId(78L);
         game.join(memberIdForOliver, "Oliver");
@@ -24,39 +58,16 @@ class WebSocketBroadcasterTest {
         MessageSenderSpy messageSenderForSamantha = new MessageSenderSpy();
         playerConnections.connect(messageSenderForSamantha, "gameHandle");
         WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(playerConnections);
-        game.start();
-
         Player oliverPlayer = game.playerFor(memberIdForOliver);
-        broadcaster.announcePlayerConnectedToGame(game, oliverPlayer);
-
-        // expect HTML sent to all connected sessions
-        assertThat(messageSenderForOliver.lastSentMessage())
-                .as("Last sent message should not be null, i.e., was never called")
-                .isNotNull()
-                .isNotEmpty();
-        assertThat(messageSenderForSamantha.lastSentMessage())
-                .as("Last sent message should not be null, i.e., was never called")
-                .isNotNull()
-                .isNotEmpty();
+        return new Fixture(game, memberIdForOliver, messageSenderForOliver, oliverPlayer, messageSenderForSamantha, broadcaster);
     }
 
-
-    @Disabled("Until we have a way to access player's outbound text")
-    @Test
-    void playerSpecificHtmlSentUponGameUpdate() {
-        Game game = Game.create("irrelevant game name", "gameHandle");
-        game.start();
-        MemberId memberId = new MemberId(78L);
-        game.join(memberId, "Oliver");
-        Player player = game.playerFor(memberId);
-        WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(new PlayerConnections());
-        broadcaster.announcePlayerConnectedToGame(game, player);
-
-        broadcaster.gameUpdate(game);
-
-        // then HTML (customized for Player1) is sent to Player1
-        // how to verify?
-        fail("need to check the player-tailored HTML");
+    private record Fixture(Game game,
+                           MemberId memberIdForOliver,
+                           MessageSenderSpy messageSenderForOliver,
+                           Player oliverPlayer,
+                           MessageSenderSpy messageSenderForSamantha,
+                           WebSocketBroadcaster broadcaster) {
     }
 
     private static class MessageSenderSpy implements MessageSender {
