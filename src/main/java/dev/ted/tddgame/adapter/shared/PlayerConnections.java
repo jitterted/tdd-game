@@ -15,14 +15,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class PlayerConnections {
-    private final Multimap<String, WebSocketSession> gameHandleToSessions = new Multimap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayerConnections.class);
+
+    private final Multimap<String, MessageSender> gameHandleToMessageSender = new Multimap<>();
 
     public PlayerConnections() {
     }
 
     public void connect(WebSocketSession session, String gameHandle) {
-        gameHandleToSessions.put(gameHandle, session);
+        connect(new WebSocketMessageSender(session), gameHandle);
+    }
+
+    public void connect(MessageSender messageSender, String gameHandle) {
+        gameHandleToMessageSender.put(gameHandle, messageSender);
     }
 
     public void disconnect(WebSocketSession webSocketSession) {
@@ -33,19 +38,10 @@ public class PlayerConnections {
 
     }
 
-    public void send(Game game, String html) {
-        gameHandleToSessions
+    public void sendToAll(Game game, String html) {
+        gameHandleToMessageSender
                 .get(game.handle())
-                .forEach(session -> {
-                    try {
-                        if (session.isOpen()) {
-                            session.sendMessage(new TextMessage(html));
-                        }
-                        // else remove them from the maps
-                    } catch (IOException e) {
-                        LOGGER.warn("Unable to send message to session: " + session.getId(), e);
-                    }
-                });
+                .forEach(messageSender -> messageSender.sendMessage(html));
     }
 
     private static class Multimap<K, V> {
@@ -70,6 +66,29 @@ public class PlayerConnections {
                 return removed;
             }
             return false;
+        }
+    }
+
+    private static class WebSocketMessageSender implements MessageSender {
+        private final WebSocketSession webSocketSession;
+
+        public WebSocketMessageSender(WebSocketSession webSocketSession) {
+            this.webSocketSession = webSocketSession;
+        }
+
+        @Override
+        public boolean isOpen() {
+            return webSocketSession.isOpen();
+        }
+
+        @Override
+        public void sendMessage(String message) {
+            try {
+                // throw exception so this connection gets removed from the map
+                webSocketSession.sendMessage(new TextMessage(message));
+            } catch (IOException e) {
+                LOGGER.warn("Unable to send message to webSocketSession: " + webSocketSession.getId(), e);
+            }
         }
     }
 }
