@@ -15,19 +15,26 @@ class WebSocketBroadcasterTest {
     @Test
     void htmlSentToAllConnectedPlayersUponPlayerConnected() {
         Game game = Game.create("irrelevant game name", "gameHandle");
-        MemberId memberId = new MemberId(78L);
-        game.join(memberId, "Oliver");
-        Player player = game.playerFor(memberId);
+        MemberId memberIdForOliver = new MemberId(78L);
+        game.join(memberIdForOliver, "Oliver");
+        game.join(new MemberId(63L), "Samantha");
         PlayerConnections playerConnections = new PlayerConnections();
-        MessageSenderSpy messageSender = new MessageSenderSpy();
-        playerConnections.connect(messageSender, "gameHandle");
+        MessageSenderSpy messageSenderForOliver = new MessageSenderSpy();
+        playerConnections.connect(messageSenderForOliver, "gameHandle");
+        MessageSenderSpy messageSenderForSamantha = new MessageSenderSpy();
+        playerConnections.connect(messageSenderForSamantha, "gameHandle");
         WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(playerConnections);
         game.start();
 
-        broadcaster.announcePlayerConnectedToGame(game, player);
+        Player oliverPlayer = game.playerFor(memberIdForOliver);
+        broadcaster.announcePlayerConnectedToGame(game, oliverPlayer);
 
         // expect HTML sent to all connected sessions
-        assertThat(messageSender.lastSentMessage())
+        assertThat(messageSenderForOliver.lastSentMessage())
+                .as("Last sent message should not be null, i.e., was never called")
+                .isNotNull()
+                .isNotEmpty();
+        assertThat(messageSenderForSamantha.lastSentMessage())
                 .as("Last sent message should not be null, i.e., was never called")
                 .isNotNull()
                 .isNotEmpty();
