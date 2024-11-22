@@ -112,6 +112,10 @@ Player's "State Machine":
 
 ==> WE ARE HERE:
 
+    [ ] The association of Member (and their logged-in username) vs. the Player's name in the context of a Game needs to be resolved. When we're sending Player-tailored HTML, we need to know: for which `Player` we're generating the HTML (we know this because we iterate through all Players from the Game, i.e., game.players()), and THEN, we need to send that HTML to the correct WebSocketSession, which has to be associated (mapped) with the Game + PlayerId.
+
+        When we get a connection through the WebSocketInboundHandler, we need to know which game this is from (we get this via the "join:gameHandle" message), and we ALSO NEED the PlayerId.
+
         [ ] Start Game starts the game:
             [X] The modal goes away (via broadcasting `hx-swap-oob="delete"`)
             [ ] If the game is not already started, call .start() (and persist this state change)
