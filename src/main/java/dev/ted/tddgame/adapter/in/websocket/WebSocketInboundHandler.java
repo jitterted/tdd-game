@@ -41,11 +41,13 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         String messagePayload = (String) message.getPayload();
         LOGGER.info("Payload details: {}", messagePayload);
         String gameHandle = messagePayload.split(":")[1]; // e.g. "join:sleepy-goose-78"
-//        playerConnections.connect(messageSender, gameHandle);
+
         playerConnections.connect(new WebSocketMessageSender(session), gameHandle);
 
-        String playerUsername = session.getPrincipal().getName();
-        playerConnector.connect(playerUsername, gameHandle);
+        // this is the username for the logged-in user, and NOT the name of the player in the context of the game
+        String memberUsername = session.getPrincipal().getName();
+        // need to look up or otherwise figure out the Player ID for this Member that is a Player in the Game
+        playerConnector.connect(memberUsername, gameHandle);
     }
 
     @Override

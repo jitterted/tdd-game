@@ -17,6 +17,7 @@
     </script>
     <script th:inline="javascript">
         window.addEventListener('htmx:ws-open', function (evt) {
+            // need the PlayerId here to send it along with the gameHandle
             var gameHandle = [[${gameView.handle}]];
             console.log("htmx:ws-open event", gameHandle, evt);
             event.detail.socketWrapper.send("join:" + gameHandle);

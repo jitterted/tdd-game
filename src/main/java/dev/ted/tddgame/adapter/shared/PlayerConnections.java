@@ -15,7 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerConnections {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayerConnections.class);
 
-    private final Multimap<String, MessageSender> gameHandleToMessageSender = new Multimap<>();
+    private final Multimap<String, MessageSender> gameHandleToMessageSender =
+            new Multimap<>();
+    // Map<GameId+PlayerId, MessageSender>
 
     public PlayerConnections() {
     }
@@ -24,8 +26,9 @@ public class PlayerConnections {
         gameHandleToMessageSender.put(gameHandle, messageSender);
     }
 
+    // disconnect needs to then look up the session in both maps
     public void disconnect(WebSocketSession webSocketSession) {
-        // Remove this WebSocketSession from all Game handles
+        // Remove this WebSocketSession from both Maps
 
         // tell each Game that the player has disconnected:
         // by using a SessionToGameMap

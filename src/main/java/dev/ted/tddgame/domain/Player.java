@@ -7,9 +7,9 @@ import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 public class Player {
+    private final PlayerId playerId;
     private final MemberId memberId;
     private final String playerName;
-    private final PlayerId playerId;
     private final List<ActionCard> actionCards = new ArrayList<>();
     private final EventEnqueuer eventEnqueuer;
 

@@ -33,7 +33,7 @@ class WebSocketBroadcasterTest {
                 .isNotEmpty();
     }
 
-    @Disabled("Until gameUpdate is implemented")
+    @Disabled("Until PlayerConnections supports sending HTML to a specific Player in a Game")
     @Test
     void playerSpecificHtmlSentUponGameUpdate() {
         Fixture fixture = createGameWithTwoPlayersConnected();
