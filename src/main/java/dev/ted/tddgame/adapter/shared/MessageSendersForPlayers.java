@@ -12,13 +12,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class PlayerConnections {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerConnections.class);
+public class MessageSendersForPlayers {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageSendersForPlayers.class);
 
     private final Multimap<String, MessageSender> gameHandleToMessageSender = new Multimap<>();
     private final Map<GamePlayerCompositeKey, MessageSender> gamePlayerToMessageSender = new ConcurrentHashMap<>();
 
-    public PlayerConnections() {
+    public MessageSendersForPlayers() {
     }
 
     @Deprecated
@@ -26,15 +26,15 @@ public class PlayerConnections {
         gameHandleToMessageSender.put(gameHandle, messageSender);
     }
 
-    public void connect(MessageSender messageSender, String gameHandle, PlayerId playerId) {
+    public void add(MessageSender messageSender, String gameHandle, PlayerId playerId) {
         gamePlayerToMessageSender.put(new GamePlayerCompositeKey(gameHandle, playerId), messageSender);
         gameHandleToMessageSender.put(gameHandle, messageSender);
     }
 
     /**
-     * disconnect needs to look up the session in both maps and remove them
+     * this needs to look up the session in both maps and remove them from each
      */
-    public void disconnect(WebSocketSession webSocketSession) {
+    public void remove(WebSocketSession webSocketSession) {
         // Remove this WebSocketSession from both Maps
 
         // tell each Game that the player has disconnected:

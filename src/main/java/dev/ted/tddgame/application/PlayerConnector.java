@@ -23,6 +23,7 @@ public class PlayerConnector {
         Game game = gameFinder.byHandle(gameHandle);
         MemberId memberId = memberFinder.byUsername(playerUsername).id();
         Player player = game.playerFor(memberId);
+        // MessageSendersForPlayers.add(messageSender, gameHandle, player.id())
         broadcaster.announcePlayerConnectedToGame(game, player);
     }
 }

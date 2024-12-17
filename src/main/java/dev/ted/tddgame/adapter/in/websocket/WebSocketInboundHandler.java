@@ -1,7 +1,7 @@
 package dev.ted.tddgame.adapter.in.websocket;
 
 import dev.ted.tddgame.adapter.shared.MessageSender;
-import dev.ted.tddgame.adapter.shared.PlayerConnections;
+import dev.ted.tddgame.adapter.shared.MessageSendersForPlayers;
 import dev.ted.tddgame.application.PlayerConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +20,13 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketInboundHandler.class);
 
     private final PlayerConnector playerConnector;
-    private final PlayerConnections playerConnections;
+    private final MessageSendersForPlayers messageSendersForPlayers;
 
     @Autowired
     public WebSocketInboundHandler(PlayerConnector playerConnector,
-                                   PlayerConnections playerConnections) {
+                                   MessageSendersForPlayers messageSendersForPlayers) {
         this.playerConnector = playerConnector;
-        this.playerConnections = playerConnections;
+        this.messageSendersForPlayers = messageSendersForPlayers;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         LOGGER.info("Payload details: {}", messagePayload);
         String gameHandle = messagePayload.split(":")[1]; // e.g. "join:sleepy-goose-78"
 
-        playerConnections.connect(new WebSocketMessageSender(session), gameHandle);
+        messageSendersForPlayers.connect(new WebSocketMessageSender(session), gameHandle);
 
         // this is the username for the logged-in user, and NOT the name of the player in the context of the game
         String memberUsername = session.getPrincipal().getName();
@@ -52,7 +52,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-        playerConnections.disconnect(session);
+        messageSendersForPlayers.remove(session);
     }
 
     private static class WebSocketMessageSender implements MessageSender {

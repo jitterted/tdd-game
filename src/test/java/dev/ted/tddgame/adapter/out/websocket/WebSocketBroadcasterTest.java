@@ -1,7 +1,7 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.shared.MessageSender;
-import dev.ted.tddgame.adapter.shared.PlayerConnections;
+import dev.ted.tddgame.adapter.shared.MessageSendersForPlayers;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
@@ -33,7 +33,7 @@ class WebSocketBroadcasterTest {
                 .isNotEmpty();
     }
 
-    @Disabled("Until PlayerConnections supports sending HTML to a specific Player in a Game")
+    @Disabled("Until MessageSendersForPlayers supports sending HTML to a specific Player in a Game")
     @Test
     void playerSpecificHtmlSentUponGameUpdate() {
         Fixture fixture = createGameWithTwoPlayersConnected();
@@ -52,12 +52,12 @@ class WebSocketBroadcasterTest {
         MemberId memberIdForOliver = new MemberId(78L);
         game.join(memberIdForOliver, "Oliver");
         game.join(new MemberId(63L), "Samantha");
-        PlayerConnections playerConnections = new PlayerConnections();
+        MessageSendersForPlayers messageSendersForPlayers = new MessageSendersForPlayers();
         MessageSenderSpy messageSenderForOliver = new MessageSenderSpy();
-        playerConnections.connect(messageSenderForOliver, "gameHandle");
+        messageSendersForPlayers.connect(messageSenderForOliver, "gameHandle");
         MessageSenderSpy messageSenderForSamantha = new MessageSenderSpy();
-        playerConnections.connect(messageSenderForSamantha, "gameHandle");
-        WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(playerConnections);
+        messageSendersForPlayers.connect(messageSenderForSamantha, "gameHandle");
+        WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(messageSendersForPlayers);
         Player oliverPlayer = game.playerFor(memberIdForOliver);
         return new Fixture(game, memberIdForOliver, messageSenderForOliver, oliverPlayer, messageSenderForSamantha, broadcaster);
     }

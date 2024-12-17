@@ -1,6 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
-import dev.ted.tddgame.adapter.shared.PlayerConnections;
+import dev.ted.tddgame.adapter.shared.MessageSendersForPlayers;
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Player;
@@ -10,10 +10,10 @@ import java.time.LocalTime;
 
 @Component
 public class WebSocketBroadcaster implements Broadcaster {
-    private final PlayerConnections playerConnections;
+    private final MessageSendersForPlayers messageSendersForPlayers;
 
-    public WebSocketBroadcaster(PlayerConnections playerConnections) {
-        this.playerConnections = playerConnections;
+    public WebSocketBroadcaster(MessageSendersForPlayers messageSendersForPlayers) {
+        this.messageSendersForPlayers = messageSendersForPlayers;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class WebSocketBroadcaster implements Broadcaster {
                 WaitingRoomHtmlRenderer.forConnectNotification(LocalTime.now(), player.playerName())
                 + WaitingRoomHtmlRenderer.forJoinedPlayers(game.players());
         // create PlayerViewComponent(player, sessionForThatPlayer)
-        playerConnections.sendToAll(game.handle(), html);
+        messageSendersForPlayers.sendToAll(game.handle(), html);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class WebSocketBroadcaster implements Broadcaster {
         String html = """
                       <swap id="modal-container" hx-swap-oob="delete" />
                       """;
-        playerConnections.sendToAll(game.handle(), html);
+        messageSendersForPlayers.sendToAll(game.handle(), html);
     }
 
     @Override
