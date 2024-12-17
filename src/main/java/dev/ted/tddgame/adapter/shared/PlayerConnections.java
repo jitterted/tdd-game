@@ -1,6 +1,5 @@
 package dev.ted.tddgame.adapter.shared;
 
-import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.PlayerId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,21 +16,23 @@ public class PlayerConnections {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayerConnections.class);
 
     private final Multimap<String, MessageSender> gameHandleToMessageSender = new Multimap<>();
-    private final Map<String, MessageSender> gamePlayerToMessageSender = new ConcurrentHashMap<>();
+    private final Map<GamePlayerCompositeKey, MessageSender> gamePlayerToMessageSender = new ConcurrentHashMap<>();
 
     public PlayerConnections() {
     }
 
+    @Deprecated
     public void connect(MessageSender messageSender, String gameHandle) {
         gameHandleToMessageSender.put(gameHandle, messageSender);
     }
 
     public void connect(MessageSender messageSender, String gameHandle, PlayerId playerId) {
-        gamePlayerToMessageSender.put(gameHandle + playerId, messageSender);
+        gamePlayerToMessageSender.put(new GamePlayerCompositeKey(gameHandle, playerId), messageSender);
+        gameHandleToMessageSender.put(gameHandle, messageSender);
     }
 
     /**
-     *  disconnect needs to look up the session in both maps and remove them
+     * disconnect needs to look up the session in both maps and remove them
      */
     public void disconnect(WebSocketSession webSocketSession) {
         // Remove this WebSocketSession from both Maps
@@ -41,15 +42,16 @@ public class PlayerConnections {
 
     }
 
-    public void sendToAll(Game game, String html) {
+    public void sendToAll(String gameHandle, String html) {
         gameHandleToMessageSender
-                .get(game.handle())
+                .get(gameHandle)
                 .forEach(messageSender -> messageSender.sendMessage(html));
     }
 
     public void sendTo(String gameHandle, PlayerId playerId, String message) {
-        gamePlayerToMessageSender.get(gameHandle + playerId)
-                                 .sendMessage(message);
+        gamePlayerToMessageSender
+                .get(new GamePlayerCompositeKey(gameHandle, playerId))
+                .sendMessage(message);
     }
 
     private static class Multimap<K, V> {
@@ -77,5 +79,7 @@ public class PlayerConnections {
         }
     }
 
+    private record GamePlayerCompositeKey(String gameHandle, PlayerId playerId) {
+    }
 }
 

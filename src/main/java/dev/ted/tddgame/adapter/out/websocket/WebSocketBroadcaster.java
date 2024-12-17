@@ -22,7 +22,7 @@ public class WebSocketBroadcaster implements Broadcaster {
                 WaitingRoomHtmlRenderer.forConnectNotification(LocalTime.now(), player.playerName())
                 + WaitingRoomHtmlRenderer.forJoinedPlayers(game.players());
         // create PlayerViewComponent(player, sessionForThatPlayer)
-        playerConnections.sendToAll(game, html);
+        playerConnections.sendToAll(game.handle(), html);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class WebSocketBroadcaster implements Broadcaster {
         String html = """
                       <swap id="modal-container" hx-swap-oob="delete" />
                       """;
-        playerConnections.sendToAll(game, html);
+        playerConnections.sendToAll(game.handle(), html);
     }
 
     @Override
