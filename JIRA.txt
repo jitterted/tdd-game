@@ -177,6 +177,7 @@ Player's "State Machine":
     [ ] GameViewLoader implementation using the GameRepository
 
     Real Database
+    [ ] Truly unique ID for Game (instead of Game's "handle")
     [ ] Repository Adapter for JDBC
     [ ] JDBC concrete implementation
 

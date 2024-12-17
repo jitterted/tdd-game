@@ -37,10 +37,9 @@ public class WebSocketBroadcaster implements Broadcaster {
     public void gameUpdate(Game game) {
         // for each player, create HTML for that player
         for (Player player : game.players()) {
-            String playerHtml = player.playerName();
-//            playerConnections.sendToPlayer(gameId, playerId, playerHtml)
+            String playerHtml = ""; // generate customized HTML for this player
+//            playerConnections.sendToPlayer(game.handle(), player.id(), playerHtml);
         }
-
 
         throw new UnsupportedOperationException("Game Update not implemented yet");
     }
