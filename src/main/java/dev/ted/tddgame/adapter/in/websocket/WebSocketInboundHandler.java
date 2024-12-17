@@ -1,7 +1,7 @@
 package dev.ted.tddgame.adapter.in.websocket;
 
+import dev.ted.tddgame.adapter.out.websocket.MessageSendersForPlayers;
 import dev.ted.tddgame.adapter.shared.MessageSender;
-import dev.ted.tddgame.adapter.shared.MessageSendersForPlayers;
 import dev.ted.tddgame.application.PlayerConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,5 +1,6 @@
-package dev.ted.tddgame.adapter.shared;
+package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.shared.MessageSender;
 import dev.ted.tddgame.domain.PlayerId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
