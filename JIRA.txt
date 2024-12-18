@@ -118,6 +118,8 @@ Player's "State Machine":
 
         When we get a connection through the WebSocketInboundHandler, we need to know which game this is from (we get this via the "join:gameHandle" message), and we ALSO NEED the PlayerId (we get this somehow?)
 
+        [ ] PlayerConnector will collaborate with the new ForTrackingPlayerMessageSenders Port interface (which is implemented by the MessageSendersForPlayers class)
+
         [ ] Start Game starts the game:
             [X] The modal goes away (via broadcasting `hx-swap-oob="delete"`)
             [ ] If the game is not already started, call .start() (and persist this state change)

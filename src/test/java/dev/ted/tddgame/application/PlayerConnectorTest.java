@@ -21,7 +21,8 @@ class PlayerConnectorTest {
         MockBroadcaster mockBroadcaster = new MockBroadcaster(game, player);
         PlayerConnector playerConnector = new PlayerConnector(mockBroadcaster,
                                                               MemberFinder.createNull(member),
-                                                              GameFinder.createNull(game));
+                                                              GameFinder.createNull(game),
+                                                              null);
 
         playerConnector.connect(playerUsername, gameHandle);
 

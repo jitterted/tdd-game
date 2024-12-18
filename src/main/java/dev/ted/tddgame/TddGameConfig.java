@@ -37,7 +37,10 @@ public class TddGameConfig {
 
     @Bean
     public PlayerConnector playerConnector(Broadcaster broadcaster, MemberStore memberStore, GameStore gameStore) {
-        return new PlayerConnector(broadcaster, new MemberFinder(memberStore), new GameFinder(gameStore));
+        return new PlayerConnector(broadcaster,
+                                   new MemberFinder(memberStore),
+                                   new GameFinder(gameStore),
+                                   null);
     }
 
     @Bean

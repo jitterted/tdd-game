@@ -1,6 +1,7 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.shared.MessageSender;
+import dev.ted.tddgame.application.port.ForTrackingPlayerMessageSenders;
 import dev.ted.tddgame.domain.PlayerId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class MessageSendersForPlayers {
+public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageSendersForPlayers.class);
 
     private final Multimap<String, MessageSender> gameHandleToMessageSender = new Multimap<>();
@@ -27,6 +28,7 @@ public class MessageSendersForPlayers {
         gameHandleToMessageSender.put(gameHandle, messageSender);
     }
 
+    @Override
     public void add(MessageSender messageSender, String gameHandle, PlayerId playerId) {
         gamePlayerToMessageSender.put(new GamePlayerCompositeKey(gameHandle, playerId), messageSender);
         gameHandleToMessageSender.put(gameHandle, messageSender);
@@ -35,6 +37,7 @@ public class MessageSendersForPlayers {
     /**
      * this needs to look up the session in both maps and remove them from each
      */
+    @Override
     public void remove(WebSocketSession webSocketSession) {
         // Remove this WebSocketSession from both Maps
 

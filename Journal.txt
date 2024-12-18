@@ -1,3 +1,11 @@
+December 17, 2024 - Tuesday
+===========================
+
+* Change in design: moved the "thing" that tracks the players and their associated WebSocket connections (sessions) from a shared adapter class, and instead can be part of the Broadcaster Outbound Adapter implementation. This is possible because the InBoundHandler wraps the WebSocketSession in a MessageSender, which is I/O-Free, and so can be handled inside the Application Layer. The InboundHandler now doesn't need to directly talk to the Player-Connection tracker, it adds/removes sessions (wrapped in MessageSenders) via the PlayerConnector use case (service).
+
+* Discovered that we've been using GameHandle as a unique identifier for the Game aggregate, but we should use a more properly unique identifier for persistence.
+
+
 November 20, 2024 - Wednesday
 =============================
 
