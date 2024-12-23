@@ -50,14 +50,16 @@ class WebSocketBroadcasterTest {
         Game game = Game.create("irrelevant game name", "gameHandle");
         MemberId memberIdForOliver = new MemberId(78L);
         game.join(memberIdForOliver, "Oliver");
-        game.join(new MemberId(63L), "Samantha");
+        MemberId memberIdForSamantha = new MemberId(63L);
+        game.join(memberIdForSamantha, "Samantha");
+        Player oliverPlayer = game.playerFor(memberIdForOliver);
+        Player samanthaPlayer = game.playerFor(memberIdForSamantha);
         MessageSendersForPlayers messageSendersForPlayers = new MessageSendersForPlayers();
         MessageSenderSpy messageSenderForOliver = new MessageSenderSpy();
-        messageSendersForPlayers.connect(messageSenderForOliver, "gameHandle");
+        messageSendersForPlayers.add(messageSenderForOliver, "gameHandle", oliverPlayer.id());
         MessageSenderSpy messageSenderForSamantha = new MessageSenderSpy();
-        messageSendersForPlayers.connect(messageSenderForSamantha, "gameHandle");
+        messageSendersForPlayers.add(messageSenderForSamantha, "gameHandle", samanthaPlayer.id());
         WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(messageSendersForPlayers);
-        Player oliverPlayer = game.playerFor(memberIdForOliver);
         return new Fixture(game, memberIdForOliver, messageSenderForOliver, oliverPlayer, messageSenderForSamantha, broadcaster);
     }
 

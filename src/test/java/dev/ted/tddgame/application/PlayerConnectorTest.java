@@ -23,17 +23,7 @@ class PlayerConnectorTest {
         game.join(member.id(), "Green Player Name");
         Player player = game.playerFor(member.id());
         MockBroadcaster mockBroadcaster = new MockBroadcaster(game, player);
-        ForTrackingPlayerMessageSenders dummyForTrackingPlayerMessageSenders = new ForTrackingPlayerMessageSenders() {
-            @Override
-            public void add(MessageSender messageSender, String gameHandle, PlayerId playerId) {
-
-            }
-
-            @Override
-            public void remove(WebSocketSession webSocketSession) {
-
-            }
-        };
+        ForTrackingPlayerMessageSenders dummyForTrackingPlayerMessageSenders = new DummyForTrackingPlayerMessageSenders();
         PlayerConnector playerConnector = new PlayerConnector(mockBroadcaster,
                                                               MemberFinder.createNull(member),
                                                               GameFinder.createNull(game),
@@ -76,6 +66,18 @@ class PlayerConnectorTest {
         @Override
         public void clearStartGameModal(Game game) {
             throw new IllegalStateException("clearStartgameModal should never be called during Player Connection");
+        }
+    }
+
+    private static class DummyForTrackingPlayerMessageSenders implements ForTrackingPlayerMessageSenders {
+        @Override
+        public void add(MessageSender messageSender, String gameHandle, PlayerId playerId) {
+
+        }
+
+        @Override
+        public void remove(WebSocketSession webSocketSession) {
+
         }
     }
 }
