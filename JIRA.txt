@@ -110,22 +110,25 @@ Player's "State Machine":
         [ ] Player discards card, which adds to Discard Pile
             [ ] Represented in UI by checkboxes?
 
-==> WE ARE HERE:
-
     [ ] The association of Member (and their logged-in username) vs. the Player's name in the context of a Game needs to be resolved. When we're sending Player-tailored HTML, we need to know: for which `Player` we're generating the HTML (we know this because we iterate through all Players from the Game, i.e., game.players()), and THEN, we need to send that HTML to the correct WebSocketSession, which has to be associated (mapped) with the Game + PlayerId.
 
-        [ ] PlayerConnections needs to have a sendTo(GameId, PlayerId, HTML): the Game that the Player is in, used to identify the target websocket to which we send the customized HTML
+        [X] PlayerConnections needs to have a sendTo(GameId, PlayerId, HTML): the Game that the Player is in, used to identify the target websocket to which we send the customized HTML
 
-        When we get a connection through the WebSocketInboundHandler, we need to know which game this is from (we get this via the "join:gameHandle" message), and we ALSO NEED the PlayerId (we get this somehow?)
+        When we get a connection through the WebSocketInboundHandler, we need to know which game this is from (we get this via the "join:gameHandle" message), and we ALSO NEED the PlayerId (we get this via the security principal's name)
 
-        [ ] PlayerConnector will collaborate with the new ForTrackingPlayerMessageSenders Port interface (which is implemented by the MessageSendersForPlayers class)
+        [X] PlayerConnector will collaborate with the new ForTrackingPlayerMessageSenders Port interface (which is implemented by the MessageSendersForPlayers class)
 
         [ ] Start Game starts the game:
             [X] The modal goes away (via broadcasting `hx-swap-oob="delete"`)
             [ ] If the game is not already started, call .start() (and persist this state change)
                 [ ] Implement this from the GameTest
             [ ] Broadcast Players' cards (WebSocketBroadcaster.gameUpdate)
-                [ ] Player has "Hand" and "Tech Neglect" area
+                [X] Player has cards in the "Your Hand" area
+
+==> WE ARE HERE:
+
+                [ ] Show other players' cards in their areas (requires all players initially drawing their hands to full, right now we only do this for the first player)
+                [ ] Player might have cards in the "Tech Neglect" area
                 [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
                 ==> switch to working on UI display of Player hands, in-play areas, etc.
             [ ] Broadcast Action Deck

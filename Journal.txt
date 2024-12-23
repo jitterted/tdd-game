@@ -1,3 +1,23 @@
+December 23, 2024 - Monday
+==========================
+
+* Be careful to configure Spring Beans properly as we don't currently have any tests to ensure that it is indeed configured with the correct components
+
+* The AssertJ-JSoup library is meh, not quite what I need: while the HTML comparison failure is more concise (and resilient to whitespace differences), it's not a very "fluent" API
+
+    * Will need a library for generating the HTML and one (customized for AssertJ) for testing the HTML
+
+* Having the WebSocketBroadcaster contain the Player to MessageSender map seems to be working nicely
+
+* Need to refine the CSS in game.html so that it leverages the CSS nesting to do away with having a custom CSS name for each player
+
+* Used the direct application of events to put cards in players hands: works for now, will that be problematic in the future (because we might not have the "correct" stream of events?)
+
+    * This should only be a temporary workaround for the fact that Player does not (yet) expose (publicly) the Player.drawCardFrom(ActionCardDeck) method
+
+* The Broadcaster currently iterates through the Players in the Game to send out customized HTML, but really we want all MessageSenders _Connected_ to the Game to receive HTML: mostly for Players, but also for Observers/Watchers
+
+
 December 17, 2024 - Tuesday
 ===========================
 
