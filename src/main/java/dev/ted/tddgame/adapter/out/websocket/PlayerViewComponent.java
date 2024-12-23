@@ -9,9 +9,19 @@ public class PlayerViewComponent {
     public String generateHtmlFor(Player player) {
         return """
                <swap id="your-hand" hx-swap-oob="innerHTML">%s</swap>
-               """.formatted("""
-                             
-                                 <div class="card">PREDICT</div>
-                             """);
+               """.formatted(cardsAsHtml(player));
+    }
+
+    private String cardsAsHtml(Player player) {
+        if (player.hand()
+                  .findAny()
+                  .isPresent()) {
+            return """
+                   
+                       <div class="card">PREDICT</div>
+                   """;
+        } else {
+            return "";
+        }
     }
 }
