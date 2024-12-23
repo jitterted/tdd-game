@@ -4,7 +4,6 @@ import dev.ted.tddgame.adapter.shared.MessageSender;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -30,7 +29,6 @@ class WebSocketBroadcasterTest {
                 .isNotEmpty();
     }
 
-    @Disabled("Until MessageSendersForPlayers supports sending HTML to a specific Player in a Game")
     @Test
     void playerSpecificHtmlSentUponGameUpdate() {
         Fixture fixture = createGameWithTwoPlayersConnected();
