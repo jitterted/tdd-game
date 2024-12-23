@@ -13,15 +13,13 @@ public class PlayerViewComponent {
     }
 
     private String cardsAsHtml(Player player) {
-        if (player.hand()
-                  .findAny()
-                  .isPresent()) {
-            return """
-                   
-                       <div class="card">PREDICT</div>
-                   """;
-        } else {
-            return "";
-        }
+        return player.hand()
+                     .findFirst()
+                     .map(card -> """
+                                  
+                                      <div class="card">%s</div>
+                                  """.formatted(card.title()))
+                     .orElse("");
     }
+
 }

@@ -32,17 +32,17 @@ class PlayerViewComponentTest {
     void generateHtmlWithOneDivForPlayerWithOneCards() {
         Player player = createPlayer(34L, "Player with one PREDICT card");
         player.apply(new PlayerDrewActionCard(player.memberId(),
-                                              ActionCard.PREDICT));
+                                              ActionCard.LESS_CODE));
 
         String generatedHtml = new PlayerViewComponent().generateHtmlFor(player);
 
         Assertions.assertThatDocument(generatedHtml)
-                          .elementContainsText("swap#your-hand > div.card", "PREDICT");
+                          .elementContainsText("swap#your-hand > div.card", "less code");
 
         assertThat(generatedHtml)
                 .isEqualTo("""
                            <swap id="your-hand" hx-swap-oob="innerHTML">
-                               <div class="card">PREDICT</div>
+                               <div class="card">less code</div>
                            </swap>
                            """);
     }
