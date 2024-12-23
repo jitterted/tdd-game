@@ -10,6 +10,7 @@ import java.time.LocalTime;
 @Component
 public class WebSocketBroadcaster implements Broadcaster {
     private final MessageSendersForPlayers messageSendersForPlayers;
+    private final PlayerViewComponent playerViewComponent = new PlayerViewComponent();
 
     public WebSocketBroadcaster(MessageSendersForPlayers messageSendersForPlayers) {
         this.messageSendersForPlayers = messageSendersForPlayers;
@@ -34,11 +35,20 @@ public class WebSocketBroadcaster implements Broadcaster {
 
     @Override
     public void gameUpdate(Game game) {
-        // for each player, create HTML for that player
+        // FUTURE: we want to iterate through all connected View Components (that encapsulated the MessageSender)
+        // so that way we can broadcast updates to Observers who are NOT Players in the game
         for (Player player : game.players()) {
-            String playerHtml = player.playerName(); // generate customized HTML for this player
-            messageSendersForPlayers.sendTo(game.handle(), player.id(), playerHtml);
+            messageSendersForPlayers.sendTo(game.handle(), player.id(),
+                                            playerViewComponent.generateHtmlFor(player));
         }
     }
 
+    public static class PlayerViewComponent {
+        public PlayerViewComponent() {
+        }
+
+        private String generateHtmlFor(Player player) {
+            return player.playerName();
+        }
+    }
 }
