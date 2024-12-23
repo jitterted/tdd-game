@@ -4,7 +4,11 @@ import dev.ted.tddgame.domain.Player;
 
 public class PlayerViewComponent {
 
+    // Constructor takes the Player whose point of view we use when generating HTML
+
     public String generateHtmlFor(Player player) {
-        return player.playerName();
+        return """
+               <swap id="your-hand" hx-swap-oob="innerHTML"></swap>
+               """;
     }
 }
