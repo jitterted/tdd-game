@@ -20,13 +20,11 @@ class WebSocketBroadcasterTest {
                                                           fixture.oliverPlayer);
 
         // expect HTML sent to all connected sessions
-        assertThat(fixture.messageSenderForOliver
-                          .lastSentMessage())
+        assertThat(fixture.messageSenderForOliver.lastSentMessage())
                 .as("Last sent message should not be null, i.e., was never called")
                 .isNotNull()
                 .isNotEmpty();
-        assertThat(fixture.messageSenderForSamantha
-                          .lastSentMessage())
+        assertThat(fixture.messageSenderForSamantha.lastSentMessage())
                 .as("Last sent message should not be null, i.e., was never called")
                 .isNotNull()
                 .isNotEmpty();

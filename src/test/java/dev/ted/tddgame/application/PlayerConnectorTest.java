@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 class PlayerConnectorTest {
 
     @Test
-    void playerConnectedMessageBroadcastWhenPlayerConnectsToGame() {
+    void playerConnectedMessageBroadcastToAllWhenPlayerConnectsToGame() {
         String playerUsername = "greenusername";
         Member member = new Member(new MemberId(17L), "Green Member Name", playerUsername);
         String gameHandle = "sassy-dog-35";
@@ -23,15 +23,18 @@ class PlayerConnectorTest {
         game.join(member.id(), "Green Player Name");
         Player player = game.playerFor(member.id());
         MockBroadcaster mockBroadcaster = new MockBroadcaster(game, player);
-        ForTrackingPlayerMessageSenders dummyForTrackingPlayerMessageSenders = new DummyForTrackingPlayerMessageSenders();
+        MessageSender messageSender = new DummyMessageSender();
+        MockForTrackingPlayerMessageSenders mockTrackingPlayerMessageSenders =
+                new MockForTrackingPlayerMessageSenders(messageSender, gameHandle, player.id());
         PlayerConnector playerConnector = new PlayerConnector(mockBroadcaster,
                                                               MemberFinder.createNull(member),
                                                               GameFinder.createNull(game),
-                                                              dummyForTrackingPlayerMessageSenders);
+                                                              mockTrackingPlayerMessageSenders);
 
-        playerConnector.connect(playerUsername, gameHandle, null);
+        playerConnector.connect(playerUsername, gameHandle, messageSender);
 
         mockBroadcaster.verify();
+        mockTrackingPlayerMessageSenders.verify();
     }
 
     private static class MockBroadcaster extends GamePlayTest.CrashTestDummyBroadcaster {
@@ -69,15 +72,55 @@ class PlayerConnectorTest {
         }
     }
 
-    private static class DummyForTrackingPlayerMessageSenders implements ForTrackingPlayerMessageSenders {
+    private static class MockForTrackingPlayerMessageSenders implements ForTrackingPlayerMessageSenders {
+        private final MessageSender expectedMessageSender;
+        private final String expectedGameHandle;
+        private final PlayerId expectedPlayerId;
+        private MessageSender actualMessageSender;
+        private String actualGameHandle;
+        private PlayerId actualPlayerId;
+        private boolean addWasCalled;
+
+        public MockForTrackingPlayerMessageSenders(MessageSender expectedMessageSender, String expectedGameHandle, PlayerId expectedPlayerId) {
+            this.expectedMessageSender = expectedMessageSender;
+            this.expectedGameHandle = expectedGameHandle;
+            this.expectedPlayerId = expectedPlayerId;
+        }
+
         @Override
         public void add(MessageSender messageSender, String gameHandle, PlayerId playerId) {
-
+            addWasCalled = true;
+            actualMessageSender = messageSender;
+            actualGameHandle = gameHandle;
+            actualPlayerId = playerId;
         }
 
         @Override
-        public void remove(WebSocketSession webSocketSession) {
+        public void remove(WebSocketSession webSocketSession) {}
 
+        public void verify() {
+            assertThat(addWasCalled)
+                    .as("add() was never called")
+                    .isTrue();
+            assertThat(actualMessageSender)
+                    .as("MessageSender was not what we passed in")
+                    .isEqualTo(expectedMessageSender);
+            assertThat(actualGameHandle)
+                    .as("GameHandle was not what we passed in")
+                    .isEqualTo(expectedGameHandle);
+            assertThat(actualPlayerId)
+                    .as("PlayerId was not what we passed in")
+                    .isEqualTo(expectedPlayerId);
         }
+    }
+
+    private static class DummyMessageSender implements MessageSender {
+        @Override
+        public boolean isOpen() {
+            return false;
+        }
+
+        @Override
+        public void sendMessage(String message) {}
     }
 }
