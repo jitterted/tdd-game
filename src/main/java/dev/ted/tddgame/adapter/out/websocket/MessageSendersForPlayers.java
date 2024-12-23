@@ -20,9 +20,6 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
     private final Multimap<String, MessageSender> gameHandleToMessageSender = new Multimap<>();
     private final Map<GamePlayerCompositeKey, MessageSender> gamePlayerToMessageSender = new ConcurrentHashMap<>();
 
-    public MessageSendersForPlayers() {
-    }
-
     @Override
     public void add(MessageSender messageSender, String gameHandle, PlayerId playerId) {
         gamePlayerToMessageSender.put(new GamePlayerCompositeKey(gameHandle, playerId), messageSender);

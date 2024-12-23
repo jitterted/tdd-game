@@ -1,5 +1,6 @@
 package dev.ted.tddgame;
 
+import dev.ted.tddgame.adapter.out.websocket.MessageSendersForPlayers;
 import dev.ted.tddgame.application.GameCreator;
 import dev.ted.tddgame.application.GameFinder;
 import dev.ted.tddgame.application.GamePlay;
@@ -36,11 +37,14 @@ public class TddGameConfig {
     }
 
     @Bean
-    public PlayerConnector playerConnector(Broadcaster broadcaster, MemberStore memberStore, GameStore gameStore) {
+    public PlayerConnector playerConnector(Broadcaster broadcaster,
+                                           MemberStore memberStore,
+                                           GameStore gameStore,
+                                           MessageSendersForPlayers messageSendersForPlayers) {
         return new PlayerConnector(broadcaster,
                                    new MemberFinder(memberStore),
                                    new GameFinder(gameStore),
-                                   null);
+                                   messageSendersForPlayers);
     }
 
     @Bean
