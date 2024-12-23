@@ -8,7 +8,10 @@ public class PlayerViewComponent {
 
     public String generateHtmlFor(Player player) {
         return """
-               <swap id="your-hand" hx-swap-oob="innerHTML"></swap>
-               """;
+               <swap id="your-hand" hx-swap-oob="innerHTML">%s</swap>
+               """.formatted("""
+                             
+                                 <div class="card">PREDICT</div>
+                             """);
     }
 }

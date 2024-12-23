@@ -1,9 +1,12 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.EventEnqueuer;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
+import io.github.ulfs.assertj.jsoup.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +25,25 @@ class PlayerViewComponentTest {
         assertThat(generatedHtml)
                 .isEqualTo("""
                            <swap id="your-hand" hx-swap-oob="innerHTML"></swap>
+                           """);
+    }
+
+    @Test
+    void generateHtmlWithOneDivForPlayerWithOneCards() {
+        Player player = createPlayer(34L, "Player with one PREDICT card");
+        player.apply(new PlayerDrewActionCard(player.memberId(),
+                                              ActionCard.PREDICT));
+
+        String generatedHtml = new PlayerViewComponent().generateHtmlFor(player);
+
+        Assertions.assertThatDocument(generatedHtml)
+                          .elementContainsText("swap#your-hand > div.card", "PREDICT");
+
+        assertThat(generatedHtml)
+                .isEqualTo("""
+                           <swap id="your-hand" hx-swap-oob="innerHTML">
+                               <div class="card">PREDICT</div>
+                           </swap>
                            """);
     }
 
