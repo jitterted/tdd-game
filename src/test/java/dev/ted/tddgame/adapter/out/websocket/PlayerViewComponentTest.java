@@ -7,7 +7,6 @@ import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
 import io.github.ulfs.assertj.jsoup.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -24,7 +23,8 @@ class PlayerViewComponentTest {
 
         assertThat(generatedHtml)
                 .isEqualTo("""
-                           <swap id="your-hand" hx-swap-oob="innerHTML"></swap>
+                           <swap id="your-hand" hx-swap-oob="innerHTML">
+                           </swap>
                            """);
     }
 
@@ -37,7 +37,7 @@ class PlayerViewComponentTest {
         String generatedHtml = new PlayerViewComponent().generateHtmlFor(player);
 
         Assertions.assertThatDocument(generatedHtml)
-                          .elementContainsText("swap#your-hand > div.card", "less code");
+                  .elementContainsText("swap#your-hand > div.card", "less code");
 
         assertThat(generatedHtml)
                 .isEqualTo("""
@@ -47,21 +47,27 @@ class PlayerViewComponentTest {
                            """);
     }
 
-    @Disabled("First do zero and one, then this 'many'")
     @Test
     void generateHtmlForPlayerWithFiveCards() {
         Player player = createPlayer(56L, "Player Name");
+        player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
+        player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
+        player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.LESS_CODE));
+        player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
+        player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
 
         String generatedHtml = new PlayerViewComponent().generateHtmlFor(player);
 
-
-        String expectedHtml = """
-                              <div class="big-hand-card">PREDICT</div>
-                              <div class="big-hand-card">PREDICT</div>
-                              <div class="big-hand-card">LESS CODE</div>
-                              <div class="big-hand-card">WRITE CODE</div>
-                              <div class="big-hand-card">REFACTOR</div>
-                              """;
+        assertThat(generatedHtml)
+                .isEqualTo("""
+                           <swap id="your-hand" hx-swap-oob="innerHTML">
+                               <div class="card">predict</div>
+                               <div class="card">predict</div>
+                               <div class="card">less code</div>
+                               <div class="card">write code</div>
+                               <div class="card">refactor</div>
+                           </swap>
+                           """);
     }
 
     private Player createPlayer(long playerId, String playerName) {

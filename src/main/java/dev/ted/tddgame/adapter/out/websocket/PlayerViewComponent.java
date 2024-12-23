@@ -2,6 +2,8 @@ package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.domain.Player;
 
+import java.util.stream.Collectors;
+
 public class PlayerViewComponent {
 
     // Constructor takes the Player whose point of view we use when generating HTML
@@ -14,12 +16,10 @@ public class PlayerViewComponent {
 
     private String cardsAsHtml(Player player) {
         return player.hand()
-                     .findFirst()
                      .map(card -> """
-                                  
                                       <div class="card">%s</div>
                                   """.formatted(card.title()))
-                     .orElse("");
+                     .collect(Collectors.joining("", "\n", ""));
     }
 
 }
