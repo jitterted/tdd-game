@@ -16,7 +16,8 @@ public class PlayerConnector {
 
     public PlayerConnector(Broadcaster broadcaster,
                            MemberFinder memberFinder,
-                           GameFinder gameFinder, ForTrackingPlayerMessageSenders trackingPlayerMessageSenders) {
+                           GameFinder gameFinder,
+                           ForTrackingPlayerMessageSenders trackingPlayerMessageSenders) {
         this.broadcaster = broadcaster;
         this.memberFinder = memberFinder;
         this.gameFinder = gameFinder;
@@ -27,8 +28,7 @@ public class PlayerConnector {
         Game game = gameFinder.byHandle(gameHandle);
         MemberId memberId = memberFinder.byUsername(memberUsername).id();
         Player player = game.playerFor(memberId);
-        // TODO: caller needs to give us the WebSocketSession wrapped in a MessageSender
-//        trackingPlayerMessageSenders.add(messageSender, gameHandle, player.id());
+        trackingPlayerMessageSenders.add(messageSender, gameHandle, player.id());
         broadcaster.announcePlayerConnectedToGame(game, player);
     }
 }

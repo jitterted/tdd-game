@@ -1,10 +1,14 @@
 package dev.ted.tddgame.application;
 
+import dev.ted.tddgame.adapter.shared.MessageSender;
+import dev.ted.tddgame.application.port.ForTrackingPlayerMessageSenders;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import dev.ted.tddgame.domain.PlayerId;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.socket.WebSocketSession;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -19,10 +23,21 @@ class PlayerConnectorTest {
         game.join(member.id(), "Green Player Name");
         Player player = game.playerFor(member.id());
         MockBroadcaster mockBroadcaster = new MockBroadcaster(game, player);
+        ForTrackingPlayerMessageSenders dummyForTrackingPlayerMessageSenders = new ForTrackingPlayerMessageSenders() {
+            @Override
+            public void add(MessageSender messageSender, String gameHandle, PlayerId playerId) {
+
+            }
+
+            @Override
+            public void remove(WebSocketSession webSocketSession) {
+
+            }
+        };
         PlayerConnector playerConnector = new PlayerConnector(mockBroadcaster,
                                                               MemberFinder.createNull(member),
                                                               GameFinder.createNull(game),
-                                                              null);
+                                                              dummyForTrackingPlayerMessageSenders);
 
         playerConnector.connect(playerUsername, gameHandle, null);
 
