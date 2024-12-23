@@ -38,8 +38,10 @@ public class WebSocketBroadcaster implements Broadcaster {
         // FUTURE: we want to iterate through all connected View Components (that encapsulated the MessageSender)
         // so that way we can broadcast updates to Observers who are NOT Players in the game
         for (Player player : game.players()) {
-            messageSendersForPlayers.sendTo(game.handle(), player.id(),
-                                            playerViewComponent.generateHtmlFor(player));
+            messageSendersForPlayers.sendTo(
+                    game.handle(),
+                    player.id(),
+                    playerViewComponent.generateHtmlFor(player));
         }
     }
 

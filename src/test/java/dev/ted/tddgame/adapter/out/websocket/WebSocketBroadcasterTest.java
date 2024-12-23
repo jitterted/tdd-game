@@ -1,9 +1,11 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.shared.MessageSender;
+import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -12,7 +14,7 @@ class WebSocketBroadcasterTest {
 
     @Test
     void htmlSentToAllConnectedPlayersUponPlayerConnected() {
-        Fixture fixture = createGameWithTwoPlayersConnected();
+        Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
         fixture.game.start();
 
         fixture.broadcaster.announcePlayerConnectedToGame(fixture.game,
@@ -31,25 +33,32 @@ class WebSocketBroadcasterTest {
 
     @Test
     void playerSpecificHtmlSentUponGameUpdate() {
-        Fixture fixture = createGameWithTwoPlayersConnected();
+        Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
 
         fixture.broadcaster.gameUpdate(fixture.game);
 
         assertThat(fixture.messageSenderForOliver.lastSentMessage())
-                .as("Oliver's HTML should not be the same as Samantha's")
+                .as("Oliver's HTML should not be the same as Samantha's (as they have different cards in their hands)")
                 .isNotEqualTo(fixture.messageSenderForSamantha.lastSentMessage());
     }
 
     // FIXTURE setup
 
-    private Fixture createGameWithTwoPlayersConnected() {
+    private Fixture createGameWithTwoPlayersConnectedHavingOneUniqueCard() {
         Game game = Game.create("irrelevant game name", "gameHandle");
         MemberId memberIdForOliver = new MemberId(78L);
         game.join(memberIdForOliver, "Oliver");
         MemberId memberIdForSamantha = new MemberId(63L);
         game.join(memberIdForSamantha, "Samantha");
+
         Player oliverPlayer = game.playerFor(memberIdForOliver);
+        oliverPlayer.apply(new PlayerDrewActionCard(memberIdForOliver,
+                                                    ActionCard.PREDICT));
+
         Player samanthaPlayer = game.playerFor(memberIdForSamantha);
+        samanthaPlayer.apply(new PlayerDrewActionCard(memberIdForSamantha,
+                                                      ActionCard.CODE_BLOAT));
+
         MessageSendersForPlayers messageSendersForPlayers = new MessageSendersForPlayers();
         MessageSenderSpy messageSenderForOliver = new MessageSenderSpy();
         messageSendersForPlayers.add(messageSenderForOliver, "gameHandle", oliverPlayer.id());
