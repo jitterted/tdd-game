@@ -43,12 +43,4 @@ public class WebSocketBroadcaster implements Broadcaster {
         }
     }
 
-    public static class PlayerViewComponent {
-        public PlayerViewComponent() {
-        }
-
-        private String generateHtmlFor(Player player) {
-            return player.playerName();
-        }
-    }
 }
