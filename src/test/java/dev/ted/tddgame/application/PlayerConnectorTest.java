@@ -24,7 +24,7 @@ class PlayerConnectorTest {
                                                               GameFinder.createNull(game),
                                                               null);
 
-        playerConnector.connect(playerUsername, gameHandle);
+        playerConnector.connect(playerUsername, gameHandle, null);
 
         mockBroadcaster.verify();
     }

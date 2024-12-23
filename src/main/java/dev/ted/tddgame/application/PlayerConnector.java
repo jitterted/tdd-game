@@ -1,5 +1,6 @@
 package dev.ted.tddgame.application;
 
+import dev.ted.tddgame.adapter.shared.MessageSender;
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.ForTrackingPlayerMessageSenders;
 import dev.ted.tddgame.domain.Game;
@@ -22,9 +23,9 @@ public class PlayerConnector {
         this.trackingPlayerMessageSenders = trackingPlayerMessageSenders;
     }
 
-    public void connect(String playerUsername, String gameHandle) {
+    public void connect(String memberUsername, String gameHandle, MessageSender messageSender) {
         Game game = gameFinder.byHandle(gameHandle);
-        MemberId memberId = memberFinder.byUsername(playerUsername).id();
+        MemberId memberId = memberFinder.byUsername(memberUsername).id();
         Player player = game.playerFor(memberId);
         // TODO: caller needs to give us the WebSocketSession wrapped in a MessageSender
 //        trackingPlayerMessageSenders.add(messageSender, gameHandle, player.id());

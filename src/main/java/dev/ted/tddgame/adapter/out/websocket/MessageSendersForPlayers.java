@@ -23,7 +23,7 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
     public MessageSendersForPlayers() {
     }
 
-    @Deprecated
+    @Deprecated // Use add() instead
     public void connect(MessageSender messageSender, String gameHandle) {
         gameHandleToMessageSender.put(gameHandle, messageSender);
     }
