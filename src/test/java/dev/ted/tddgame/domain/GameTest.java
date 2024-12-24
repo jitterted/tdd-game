@@ -1,5 +1,8 @@
 package dev.ted.tddgame.domain;
 
+import org.assertj.core.api.Condition;
+import org.assertj.core.api.WritableAssertionInfo;
+import org.assertj.core.internal.Failures;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -67,10 +70,9 @@ class GameTest {
 
         @Test
         void startGameEmitsGameStarted_DeckCreated_PlayerDrawCards_Events() {
-            MemberId memberId = new MemberId(1L);
             List<GameEvent> committedEvents = List.of(
                     new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
-                    new PlayerJoined(memberId, "player 1"));
+                    new PlayerJoined(new MemberId(1L), "player 1"));
             Game game = Game.reconstitute(committedEvents);
 
             game.start();
@@ -101,13 +103,55 @@ class GameTest {
             assertThat(actionCardDeckCreated.actionCards())
                     .as("Number of action cards in deck created event must be 63")
                     .hasSize(63);
-
         }
 
+        @Test
+        void withMultiplePlayers_AllPlayersHaveFullHands() {
+            List<GameEvent> committedEvents = List.of(
+                    new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
+                    new PlayerJoined(new MemberId(1L), "player 1"),
+                    new PlayerJoined(new MemberId(2L), "player 2")
+            );
+            Game game = Game.reconstitute(committedEvents);
+
+            game.start();
+
+            new EventAssertion(game.freshEvents())
+                    .hasExactly(PlayerDrewActionCard.class, 2 * 5);
+
+            new EventAssertion(game.freshEvents())
+                    .hasExactly(ActionCardDrawn.class, 2 * 5);
+        }
 
         private static Game createFreshGame() {
             return Game.reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
         }
+    }
+
+    static class EventAssertion {
+        private final List<GameEvent> actualEvents;
+        private final WritableAssertionInfo info = new WritableAssertionInfo();
+
+        public EventAssertion(Stream<GameEvent> actualEvents) {
+            this.actualEvents = actualEvents.toList();
+        }
+
+        public void hasExactly(Class<?> clazz, int expectedCount) {
+            Condition<Object> condition = new Condition<>(gameEvent -> gameEvent.getClass() == clazz,
+                                                          "GameEvent is " + clazz.getSimpleName());
+            int actualCount = Math.toIntExact(
+                    actualEvents.stream()
+                            .filter(condition::matches)
+                            .count());
+            if (actualCount != expectedCount) {
+                throw Failures
+                        .instance()
+                        .failure(info,
+                                 EventsShouldHaveExactly.eventsShouldHaveExactly(actualEvents, expectedCount, actualCount, condition));
+            }
+
+        }
+
     }
 
     @Nested

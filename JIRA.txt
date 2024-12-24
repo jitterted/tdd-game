@@ -127,6 +127,8 @@ Player's "State Machine":
 
 ==> WE ARE HERE:
 
+                [ ] Deal cards to all players
+                [ ] Shuffle the ActionCardDeck
                 [ ] Show other players' cards in their areas (requires all players initially drawing their hands to full, right now we only do this for the first player)
                 [ ] Player might have cards in the "Tech Neglect" area
                 [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
