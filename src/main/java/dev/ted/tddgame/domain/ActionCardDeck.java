@@ -52,8 +52,8 @@ public class ActionCardDeck extends Deck<ActionCard> {
                                   deckEventsReceiver);
     }
 
-    public static ActionCardDeck createForTest(EventEnqueuer eventEnqueuer,
-                                               List<ActionCard> actionCards) {
+    public static ActionCardDeck createForTest(List<ActionCard> actionCards,
+                                               EventEnqueuer eventEnqueuer) {
         return new ActionCardDeck(actionCards,
                                   new IdentityShuffler<>(),
                                   eventEnqueuer);
