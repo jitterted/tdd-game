@@ -11,9 +11,7 @@ public class PlayerViewComponent {
         this.player = player;
     }
 
-    // Constructor takes the Player whose point of view we use when generating HTML
-
-    public String generateHtmlFor(Player player) {
+    public String generateHtml() {
         return """
                <swap id="your-hand" hx-swap-oob="innerHTML">%s</swap>
                """.formatted(yourCardsAsHtml(this.player));

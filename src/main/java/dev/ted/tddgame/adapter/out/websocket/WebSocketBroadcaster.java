@@ -40,7 +40,7 @@ public class WebSocketBroadcaster implements Broadcaster {
             messageSendersForPlayers.sendTo(
                     game.handle(),
                     player.id(),
-                    new PlayerViewComponent(player).generateHtmlFor(player));
+                    new PlayerViewComponent(player).generateHtml());
         }
     }
 

@@ -19,7 +19,7 @@ class PlayerViewComponentTest {
     void generateHtmlWithSwapIdTargetForPlayerWithNoCards() {
         Player player = createPlayer(79L, "Player with no cards");
 
-        String generatedHtml = new PlayerViewComponent(player).generateHtmlFor(player);
+        String generatedHtml = new PlayerViewComponent(player).generateHtml();
 
         assertThat(generatedHtml)
                 .isEqualTo("""
@@ -34,7 +34,7 @@ class PlayerViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(),
                                               ActionCard.LESS_CODE));
 
-        String generatedHtml = new PlayerViewComponent(player).generateHtmlFor(player);
+        String generatedHtml = new PlayerViewComponent(player).generateHtml();
 
         Assertions.assertThatDocument(generatedHtml)
                   .elementContainsText("swap#your-hand > div.card", "less code");
@@ -56,7 +56,7 @@ class PlayerViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
 
-        String generatedHtml = new PlayerViewComponent(player).generateHtmlFor(player);
+        String generatedHtml = new PlayerViewComponent(player).generateHtml();
 
         assertThat(generatedHtml)
                 .isEqualTo("""
