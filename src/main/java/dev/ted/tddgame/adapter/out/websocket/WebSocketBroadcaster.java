@@ -10,7 +10,6 @@ import java.time.LocalTime;
 @Component
 public class WebSocketBroadcaster implements Broadcaster {
     private final MessageSendersForPlayers messageSendersForPlayers;
-    private final PlayerViewComponent playerViewComponent = new PlayerViewComponent();
 
     public WebSocketBroadcaster(MessageSendersForPlayers messageSendersForPlayers) {
         this.messageSendersForPlayers = messageSendersForPlayers;
@@ -41,7 +40,7 @@ public class WebSocketBroadcaster implements Broadcaster {
             messageSendersForPlayers.sendTo(
                     game.handle(),
                     player.id(),
-                    playerViewComponent.generateHtmlFor(player));
+                    new PlayerViewComponent(player).generateHtmlFor(player));
         }
     }
 
