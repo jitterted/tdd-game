@@ -34,6 +34,11 @@ public class WebSocketBroadcaster implements Broadcaster {
 
     @Override
     public void gameUpdate(Game game) {
+        sendCustomHtmlForEachPlayerOf(game);
+        // send "other player compact view" to all
+    }
+
+    private void sendCustomHtmlForEachPlayerOf(Game game) {
         // FUTURE: we want to iterate through all connected View Components (that encapsulated the MessageSender)
         // so that way we can broadcast updates to Observers who are NOT Players in the game
         for (Player player : game.players()) {
