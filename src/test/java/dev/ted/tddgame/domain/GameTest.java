@@ -34,6 +34,8 @@ class GameTest {
     @Nested
     class CommandsGenerateEvents {
 
+        private static final int PLAYER_HAND_FULL_SIZE = 5;
+
         @Test
         void creatingGameEmitsGameCreatedEvent() {
             Game game = Game.create("game name", "lovely-dog-23");
@@ -114,10 +116,10 @@ class GameTest {
             game.start();
 
             new EventsAssertion(game.freshEvents())
-                    .hasExactly(PlayerDrewActionCard.class, 2 * 5);
+                    .hasExactly(PlayerDrewActionCard.class, 2 * PLAYER_HAND_FULL_SIZE);
 
             new EventsAssertion(game.freshEvents())
-                    .hasExactly(ActionCardDrawn.class, 2 * 5);
+                    .hasExactly(ActionCardDrawn.class, 2 * PLAYER_HAND_FULL_SIZE);
         }
 
         private static Game createFreshGame() {
