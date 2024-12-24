@@ -1,6 +1,5 @@
 package dev.ted.tddgame;
 
-import dev.ted.tddgame.adapter.out.websocket.MessageSendersForPlayers;
 import dev.ted.tddgame.application.GameCreator;
 import dev.ted.tddgame.application.GameFinder;
 import dev.ted.tddgame.application.GamePlay;
@@ -8,6 +7,7 @@ import dev.ted.tddgame.application.MemberFinder;
 import dev.ted.tddgame.application.PlayerConnector;
 import dev.ted.tddgame.application.PlayerJoinsGame;
 import dev.ted.tddgame.application.port.Broadcaster;
+import dev.ted.tddgame.application.port.ForTrackingPlayerMessageSenders;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import org.springframework.context.annotation.Bean;
@@ -40,11 +40,11 @@ public class TddGameConfig {
     public PlayerConnector playerConnector(Broadcaster broadcaster,
                                            MemberStore memberStore,
                                            GameStore gameStore,
-                                           MessageSendersForPlayers messageSendersForPlayers) {
+                                           ForTrackingPlayerMessageSenders forTrackingPlayerMessageSenders) {
         return new PlayerConnector(broadcaster,
                                    new MemberFinder(memberStore),
                                    new GameFinder(gameStore),
-                                   messageSendersForPlayers);
+                                   forTrackingPlayerMessageSenders);
     }
 
     @Bean
