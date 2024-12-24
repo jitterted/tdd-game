@@ -117,11 +117,7 @@ public class Game extends EventSourcedAggregate {
         enqueue(new GameStarted());
         enqueue(new ActionCardDeckCreated(deckFactory.createStandardActionCards()));
 
-        MemberId firstMemberId = players().stream().findFirst()
-                                          .orElseThrow(() -> new IllegalStateException("Must be at least 1 player to start game"))
-                                          .memberId();
-        Player player = playerFor(firstMemberId);
-        player.drawToFullFrom(actionCardDeck);
+        players().forEach(player -> player.drawToFullFrom(actionCardDeck));
     }
 
     public Player playerFor(MemberId memberId) {
