@@ -38,7 +38,9 @@ public class EventsShouldHaveExactly extends BasicErrorMessageFactory {
   }
 
   private EventsShouldHaveExactly(Object actual, int expectedCount, int actualCount, Condition<?> condition) {
-    super("%nFound %s occurrences where %s, but expected %s in:%n  %s",
-          actualCount, condition, expectedCount, actual);
+    super("%nExpected %s, but found %s occurrences where %s in:%n  %s",
+          expectedCount, actualCount, condition, actual);
+//    super("%nFound %s occurrences where %s, but expected %s in:%n  %s",
+//          actualCount, condition, expectedCount, actual);
   }
 }

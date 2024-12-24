@@ -1,8 +1,5 @@
 package dev.ted.tddgame.domain;
 
-import org.assertj.core.api.Condition;
-import org.assertj.core.api.WritableAssertionInfo;
-import org.assertj.core.internal.Failures;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -116,42 +113,16 @@ class GameTest {
 
             game.start();
 
-            new EventAssertion(game.freshEvents())
+            new EventsAssertion(game.freshEvents())
                     .hasExactly(PlayerDrewActionCard.class, 2 * 5);
 
-            new EventAssertion(game.freshEvents())
+            new EventsAssertion(game.freshEvents())
                     .hasExactly(ActionCardDrawn.class, 2 * 5);
         }
 
         private static Game createFreshGame() {
             return Game.reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
         }
-    }
-
-    static class EventAssertion {
-        private final List<GameEvent> actualEvents;
-        private final WritableAssertionInfo info = new WritableAssertionInfo();
-
-        public EventAssertion(Stream<GameEvent> actualEvents) {
-            this.actualEvents = actualEvents.toList();
-        }
-
-        public void hasExactly(Class<?> clazz, int expectedCount) {
-            Condition<Object> condition = new Condition<>(gameEvent -> gameEvent.getClass() == clazz,
-                                                          "GameEvent is " + clazz.getSimpleName());
-            int actualCount = Math.toIntExact(
-                    actualEvents.stream()
-                            .filter(condition::matches)
-                            .count());
-            if (actualCount != expectedCount) {
-                throw Failures
-                        .instance()
-                        .failure(info,
-                                 EventsShouldHaveExactly.eventsShouldHaveExactly(actualEvents, expectedCount, actualCount, condition));
-            }
-
-        }
-
     }
 
     @Nested
