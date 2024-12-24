@@ -11,10 +11,10 @@ public class PlayerViewComponent {
     public String generateHtmlFor(Player player) {
         return """
                <swap id="your-hand" hx-swap-oob="innerHTML">%s</swap>
-               """.formatted(cardsAsHtml(player));
+               """.formatted(yourCardsAsHtml(player));
     }
 
-    private String cardsAsHtml(Player player) {
+    private String yourCardsAsHtml(Player player) {
         return player.hand()
                      .map(card -> """
                                       <div class="card">%s</div>

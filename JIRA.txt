@@ -99,7 +99,6 @@ Player's "State Machine":
         [X] Player draws to full hand from Action Card deck as part of start game
             [X] 5 events generated: 1 for each of 5 cards drawn
             [X] State of player's Hand: has 5 cards
-        [ ] Use real random shuffler for Deck
 
         [X] Deck event-sourcing
             [X] Draw (with no replenish) generates events
@@ -129,10 +128,15 @@ Player's "State Machine":
 
                 [X] Deal cards to all players
                 [X] Shuffle the ActionCardDeck
-                [ ] Show other players' cards in their areas (requires all players initially drawing their hands to full, right now we only do this for the first player)
+
+                [ ] Show other players' cards in their areas
+
                 [ ] Player might have cards in the "Tech Neglect" area
                 [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
-                ==> switch to working on UI display of Player hands, in-play areas, etc.
+
+                [ ] Display cards in "Your Hand" as Images instead of words
+                [ ] Display cards in Other Players' hands as Images instead of words
+                ==> more UI display of Player hands, in-play areas, etc.
             [ ] Broadcast Action Deck
                 [ ] Display a back of card in the draw pile if it's not empty
                 [ ] Display most recently discarded card in the discard pile if it's not empty
