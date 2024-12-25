@@ -1,3 +1,15 @@
+December 24, 2024 - Tuesday
+===========================
+
+* WebMvc slice tests don't do component scanning! Needed to manually pull in the MessageSenders into the TestConfig
+
+* Good that we did a "spike" for figuring out how we will send HTML/X to the front-end, as it turns out we can't generate a custom game.html as we don't yet know how many players are in the game until the game starts
+
+* Switching to shuffled/random deck didn't break any tests!
+
+* A bit cumbersome writing a custom assertion for checking number of events in a list, need to see how it might be done better?
+
+
 December 23, 2024 - Monday
 ==========================
 
