@@ -14,7 +14,7 @@
     height: fit-content;
 }
 
-.all-other-players-container {
+.other-players {
     display: grid;
     row-gap: 0.5em;
     /* grid-template-rows: repeat(3, 1fr); */
@@ -36,19 +36,19 @@
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
-.other-player-name-header {
+.other-player-container .name {
     font-weight: 700;
     font-size: 1.25rem;
     line-height: 1.75rem;
 }
 
-.other-player-cards-container {
+.titled-container {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto 1fr;
     row-gap: 0.5rem;
 }
 
-.other-player-workspace {
+.other-player-container .workspace {
     padding: 0.25rem;
     border-width: 1px;
     border-color: #D1D5DB;
@@ -56,7 +56,7 @@
     background-color: rgb(241 245 249 / var(--tw-bg-opacity))/* #f1f5f9 */;
 }
 
-.other-player-hand {
+.other-player-container .hand {
     font-size: .75rem;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -67,7 +67,7 @@
     background-color: rgb(241 245 249 / var(--tw-bg-opacity)) /* #f1f5f9 */;
 }
 
-.other-player-card {
+.other-player-container .card {
     border: 1px solid #999;
     background-color: #FFF;
     margin: 0.25rem;
@@ -98,6 +98,4 @@
     background-color: #FFF;
     margin: 0.25rem;
     padding: 0.25rem;
-    /* height is a placeholder until we use the images for the cards */
-    height: 200px;
 }

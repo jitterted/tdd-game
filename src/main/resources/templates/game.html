@@ -87,19 +87,18 @@
 </div>
 
 <div class="game-screen">
-    <div class="all-other-players-container">
+    <div class="other-players">
         <!-- HTMX TARGET for PLAYER with ID of 1  -->
-        <div id="other-player-container-1"
+        <div id="player-id-1"
              class="other-player-container">
-            <h2 id="other-player-name-1"
-                class="other-player-name-header">
+            <h2 class="name">
                 Player with ID of 1
             </h2>
             <div class="other-player-container">
-                <div class="other-player-workspace">
+                <div class="workspace">
                     Workspace
                 </div>
-                <div class="hand-container">
+                <div class="titled-container">
                     Hand
                     <div class="hand">
                         <div class="card">LESS CODE</div>
@@ -115,14 +114,14 @@
         <div id="other-player-container-23"
              class="other-player-container">
             <h2 id="other-player-name-23"
-                class="other-player-name-header">
+                class="name">
                 Player with ID of 23
             </h2>
             <div class="other-player-container">
-                <div class="other-player-workspace">
+                <div class="workspace">
                     Workspace
                 </div>
-                <div class="other-player-hand-container">
+                <div class="titled-container">
                     Hand
                     <div class="hand">
                         <div class="card">LESS CODE</div>
@@ -137,14 +136,14 @@
         <div id="other-player-container-3"
              class="other-player-container">
             <h2 id="other-player-name-3"
-                class="other-player-name-header">
+                class="name">
                 Player 3
             </h2>
             <div class="other-player-container">
-                <div class="other-player-workspace">
+                <div class="workspace">
                     Workspace
                 </div>
-                <div class="other-player-hand-container">
+                <div class="titled-container">
                     Hand
                     <div class="hand">
                         <div class="card">LESS CODE</div>
@@ -167,18 +166,20 @@
                 <p>Test Results Deck</p>
             </div>
         </div>
-        <div class="your-play-area">
+        <div id="you" class="your-play-area">
             <div class="workspace">
                 <h2>Workspace</h2>
                 (workspace coming soon)
             </div>
-            <div class="hand-title">Your Hand</div>
-            <div id="your-hand" class="hand">
-                <div class="card">predict</div>
-                <div class="card">predict</div>
-                <div class="card">less code</div>
-                <div class="card">write code</div>
-                <div class="card">refactor</div>
+            <div class="titled-container">
+                <div class="hand-title">Your Hand</div>
+                <div id="your-hand" class="hand">
+                    <div class="card">predict</div>
+                    <div class="card">predict</div>
+                    <div class="card">less code</div>
+                    <div class="card">write code</div>
+                    <div class="card">refactor</div>
+                </div>
             </div>
         </div>
     </div>
