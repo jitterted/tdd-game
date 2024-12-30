@@ -8,16 +8,21 @@
 
 .game-screen {
     display: grid;
-    padding: 0.5rem 1rem;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.5rem;
-    height: 100vh;
+    padding: 0.5rem 1rem;
+    height: fit-content;
 }
 
 .all-other-players-container {
     display: grid;
     row-gap: 0.5em;
     /* grid-template-rows: repeat(3, 1fr); */
+}
+
+.play-area {
+    display: grid;
+    grid-column: span 2;
 }
 
 .other-player-container {
@@ -73,24 +78,26 @@
     display: grid;
 }
 
-.big-hand {
+.your-play-area {
     grid-column: span 2;
     padding: 0.25rem;
     display: grid;
     grid-template-rows: auto 1fr;
 }
 
-.big-hand-card {
-    border: 1px solid #999;
-    background-color: #FFF;
-    margin: 0.25rem;
-    padding: 0.25rem;
-}
-
-.big-hand-container {
+.your-play-area .hand {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     padding: 0.25rem;
     border: 2px solid #D1D5DB;
     background-color: #999;
+}
+
+.your-play-area .card {
+    border: 1px solid #999;
+    background-color: #FFF;
+    margin: 0.25rem;
+    padding: 0.25rem;
+    /* height is a placeholder until we use the images for the cards */
+    height: 200px;
 }
