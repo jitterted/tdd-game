@@ -30,9 +30,9 @@ public class PlayerViewComponent {
     private String handAsHtml() {
         return player.hand()
                      .map(card -> """
-                                      <div class="card">%s</div>
-                                  """.formatted(card.title()))
-                     .collect(Collectors.joining());
+                                  <div class="card">%s</div>"""
+                             .formatted(card.title()))
+                     .collect(Collectors.joining("\n            "));
     }
 
 }

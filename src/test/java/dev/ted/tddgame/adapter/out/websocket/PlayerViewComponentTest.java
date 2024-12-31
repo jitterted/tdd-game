@@ -6,8 +6,6 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
-import io.github.ulfs.assertj.jsoup.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -39,27 +37,30 @@ class PlayerViewComponentTest {
     }
 
     @Test
-    @Disabled("Until no cards test passes")
     void generateHtmlWithOneDivForPlayerWithOneCards() {
-        Player player = createPlayer(34L, "Player with one PREDICT card");
+        Player player = createPlayer(34L, "Player with one LESS CODE card");
         player.apply(new PlayerDrewActionCard(player.memberId(),
                                               ActionCard.LESS_CODE));
 
         String generatedHtml = new PlayerViewComponent(player).generateHtmlAsYou();
 
-        Assertions.assertThatDocument(generatedHtml)
-                  .elementContainsText("swap#your-hand > div.card", "less code");
-
         assertThat(generatedHtml)
                 .isEqualTo("""
-                           <swap id="your-hand" hx-swap-oob="innerHTML">
-                               <div class="card">less code</div>
+                           <swap id="you" hx-swap-oob="innerHTML">
+                               <div class="workspace">
+                                   <h2>Workspace</h2>
+                               </div>
+                               <div class="titled-container">
+                                   Your Hand
+                                   <div class="hand">
+                                       <div class="card">less code</div>
+                                   </div>
+                               </div>
                            </swap>
                            """);
     }
 
     @Test
-    @Disabled("Until generate with one card passes")
     void generateHtmlForPlayerWithFiveCards() {
         Player player = createPlayer(56L, "Player Name");
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
@@ -72,12 +73,20 @@ class PlayerViewComponentTest {
 
         assertThat(generatedHtml)
                 .isEqualTo("""
-                           <swap id="your-hand" hx-swap-oob="innerHTML">
-                               <div class="card">predict</div>
-                               <div class="card">predict</div>
-                               <div class="card">less code</div>
-                               <div class="card">write code</div>
-                               <div class="card">refactor</div>
+                           <swap id="you" hx-swap-oob="innerHTML">
+                               <div class="workspace">
+                                   <h2>Workspace</h2>
+                               </div>
+                               <div class="titled-container">
+                                   Your Hand
+                                   <div class="hand">
+                                       <div class="card">predict</div>
+                                       <div class="card">predict</div>
+                                       <div class="card">less code</div>
+                                       <div class="card">write code</div>
+                                       <div class="card">refactor</div>
+                                   </div>
+                               </div>
                            </swap>
                            """);
     }
