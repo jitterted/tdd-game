@@ -29,7 +29,6 @@ class PlayerViewComponentTest {
                                <div class="titled-container">
                                    Your Hand
                                    <div class="hand">
-                                      \s
                                    </div>
                                </div>
                            </swap>

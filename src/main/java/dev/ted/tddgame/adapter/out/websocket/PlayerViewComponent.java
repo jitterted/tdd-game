@@ -12,27 +12,57 @@ public class PlayerViewComponent {
     }
 
     public String generateHtmlAsYou() {
-        return """
-               <swap id="you" hx-swap-oob="innerHTML">
-                   <div class="workspace">
-                       <h2>Workspace</h2>
-                   </div>
-                   <div class="titled-container">
-                       Your Hand
-                       <div class="hand">
-                           %s
-                       </div>
-                   </div>
-               </swap>
-               """.formatted(handAsHtml());
+        String html = """
+                      <div class="workspace">
+                          <h2>Workspace</h2>
+                      </div>
+                      <div class="titled-container">
+                          Your Hand
+                          %s
+                      </div>
+                      """.formatted(handAsHtml());
+        return new SwapComponent(() -> html).render();
     }
 
     private String handAsHtml() {
-        return player.hand()
+        return """
+               <div class="hand">
+               """ +
+               player.hand()
                      .map(card -> """
-                                  <div class="card">%s</div>"""
+                                          <div class="card">%s</div>
+                                  """
                              .formatted(card.title()))
-                     .collect(Collectors.joining("\n            "));
+                     .collect(Collectors.joining())
+               +
+               "    </div>";
     }
 
+    static class SwapComponent implements HtmlComponent {
+        private final HtmlComponent htmlComponent;
+
+        public SwapComponent(HtmlComponent htmlComponent) {
+            this.htmlComponent = htmlComponent;
+        }
+
+        @Override
+        public String render() {
+            return """
+                   <swap id="you" hx-swap-oob="innerHTML">
+                   """
+                   +
+                   htmlComponent.render()
+                                .lines()
+                                .map(s -> "    " + s + "\n")
+                                .collect(Collectors.joining())
+                   +
+                   """
+                   </swap>
+                   """;
+        }
+    }
+
+    public interface HtmlComponent {
+        String render();
+    }
 }
