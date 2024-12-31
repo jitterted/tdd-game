@@ -15,23 +15,27 @@ public class PlayerViewComponent {
     }
 
     public String generateHtmlAsYou() {
-        AbstractHtmlComponent divComponent = new DivHtmlComponent("workspace", new TextComponent("<h2>Workspace</h2>"));
-        String html = divComponent.render()
-                      +
-                      """
-                      <div class="titled-container">
-                          Your Hand
-                          %s
-                      </div>
-                      """.formatted(new HandComponent(player.hand()).render());
-        return new SwapComponent(() -> html).render();
+        HtmlComponent workspaceDiv = new DivHtmlComponent("workspace",
+                                                          new TextComponent("<h2>Workspace</h2>"));
+        HtmlComponent handContainerDiv = new DivHtmlComponent("titled-container",
+                                                              new TextComponent("Your Hand"),
+                                                              new HandComponent(player.hand()));
+        return new SwapComponent(workspaceDiv, handContainerDiv)
+                .render();
     }
 
     static class HandComponent extends AbstractHtmlComponent {
-        private final Stream<ActionCard> actionCards;
 
         public HandComponent(Stream<ActionCard> actionCards) {
-            this.actionCards = actionCards;
+            super(convert(actionCards));
+        }
+
+        private static HtmlComponent[] convert(Stream<ActionCard> actionCards) {
+            return actionCards
+                    .map(card -> new DivHtmlComponent("card",
+                                                      new TextComponent(card.title())))
+                    .toList()
+                    .toArray(new HtmlComponent[0]);
         }
 
         @Override
@@ -40,20 +44,15 @@ public class PlayerViewComponent {
                    <div class="hand">
                    """
                    +
-                   actionCards
-                           .map(card -> """
-                                                <div class="card">%s</div>
-                                        """
-                                   .formatted(card.title()))
-                           .collect(Collectors.joining())
+                   renderNested()
                    +
-                   "    </div>";
+                   "</div>";
         }
     }
 
     static class SwapComponent extends AbstractHtmlComponent {
 
-        public SwapComponent(HtmlComponent htmlComponent) {
+        public SwapComponent(HtmlComponent... htmlComponent) {
             super(htmlComponent);
         }
 

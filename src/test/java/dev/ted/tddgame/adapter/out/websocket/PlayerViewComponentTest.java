@@ -52,7 +52,9 @@ class PlayerViewComponentTest {
                                <div class="titled-container">
                                    Your Hand
                                    <div class="hand">
-                                       <div class="card">less code</div>
+                                       <div class="card">
+                                           less code
+                                       </div>
                                    </div>
                                </div>
                            </swap>
@@ -79,11 +81,21 @@ class PlayerViewComponentTest {
                                <div class="titled-container">
                                    Your Hand
                                    <div class="hand">
-                                       <div class="card">predict</div>
-                                       <div class="card">predict</div>
-                                       <div class="card">less code</div>
-                                       <div class="card">write code</div>
-                                       <div class="card">refactor</div>
+                                       <div class="card">
+                                           predict
+                                       </div>
+                                       <div class="card">
+                                           predict
+                                       </div>
+                                       <div class="card">
+                                           less code
+                                       </div>
+                                       <div class="card">
+                                           write code
+                                       </div>
+                                       <div class="card">
+                                           refactor
+                                       </div>
                                    </div>
                                </div>
                            </swap>
