@@ -17,67 +17,92 @@ public class PlayerViewComponent {
     public String generateHtmlAsYou() {
         HtmlComponent workspaceDiv = new DivHtmlComponent("workspace",
                                                           new TextComponent("<h2>Workspace</h2>"));
+        HtmlComponent handComponent = new DivHtmlComponent("hand",
+                                                           createDivsForEach(player.hand()));
         HtmlComponent handContainerDiv = new DivHtmlComponent("titled-container",
                                                               new TextComponent("Your Hand"),
-                                                              new HandComponent(player.hand()));
+                                                              handComponent);
         return new SwapComponent(workspaceDiv, handContainerDiv)
                 .render();
     }
 
-    static class HandComponent extends AbstractHtmlComponent {
-
-        public HandComponent(Stream<ActionCard> actionCards) {
-            super(convert(actionCards));
-        }
-
-        private static HtmlComponent[] convert(Stream<ActionCard> actionCards) {
-            return actionCards
-                    .map(card -> new DivHtmlComponent("card",
-                                                      new TextComponent(card.title())))
-                    .toList()
-                    .toArray(new HtmlComponent[0]);
-        }
-
-        @Override
-        public String render() {
-            return """
-                   <div class="hand">
-                   """
-                   +
-                   renderNested()
-                   +
-                   "</div>";
-        }
+    static HtmlComponent[] createDivsForEach(Stream<ActionCard> actionCards) {
+        return actionCards
+                .map(card -> new DivHtmlComponent("card",
+                                                  new TextComponent(card.title())))
+                .toList()
+                .toArray(new HtmlComponent[0]);
     }
 
-    static class SwapComponent extends AbstractHtmlComponent {
+    static class SwapComponent extends HtmlComponent {
 
         public SwapComponent(HtmlComponent... htmlComponent) {
             super(htmlComponent);
         }
 
         @Override
-        public String render() {
+        protected String renderTagOpen() {
             return """
                    <swap id="you" hx-swap-oob="innerHTML">
-                   """
-                   +
-                   renderNested()
-                   +
-                   """
-                   </swap>
                    """;
+        }
+
+        @Override
+        protected String renderTagClose() {
+            return "</swap>\n";
         }
     }
 
-    public interface HtmlComponent {
-        String render();
+    private static class DivHtmlComponent extends HtmlComponent {
+
+        private final String htmlClass;
+
+        public DivHtmlComponent(String htmlClass, HtmlComponent... htmlComponents) {
+            super(htmlComponents);
+            this.htmlClass = htmlClass;
+        }
+
+        @Override
+        protected String renderTagOpen() {
+            return """
+                   <div class="%s">
+                   """.formatted(htmlClass);
+        }
+
+        @Override
+        protected String renderTagClose() {
+            return "</div>";
+        }
+
     }
 
-    public abstract static class AbstractHtmlComponent implements HtmlComponent {
+    private static class TextComponent extends HtmlComponent {
+
+        private final String text;
+
+        public TextComponent(String text) {
+            this.text = text;
+        }
+
+        public String render() {
+            return text;
+        }
+
+        @Override
+        protected String renderTagClose() {
+            return "";
+        }
+
+        @Override
+        protected String renderTagOpen() {
+            return "";
+        }
+    }
+
+    public abstract static class HtmlComponent {
         protected final List<HtmlComponent> htmlComponent;
 
-        public AbstractHtmlComponent(HtmlComponent... htmlComponent) {
+        public HtmlComponent(HtmlComponent... htmlComponent) {
             this.htmlComponent = List.of(htmlComponent);
         }
 
@@ -93,43 +118,18 @@ public class PlayerViewComponent {
                             .map(s -> "    " + s + "\n")
                             .collect(Collectors.joining());
         }
-    }
 
-    private static class DivHtmlComponent extends AbstractHtmlComponent {
-
-        private final String htmlClass;
-
-        public DivHtmlComponent(String htmlClass, HtmlComponent... htmlComponents) {
-            super(htmlComponents);
-            this.htmlClass = htmlClass;
-        }
-
-        @Override
         public String render() {
-            return """
-                   <div class="%s">
-                   """.formatted(htmlClass)
+            return renderTagOpen()
                    +
                    renderNested()
                    +
-                   """
-                   </div>
-                   """;
+                   renderTagClose();
         }
 
+        protected abstract String renderTagClose();
+
+        protected abstract String renderTagOpen();
     }
 
-    private static class TextComponent implements HtmlComponent {
-
-        private final String text;
-
-        public TextComponent(String text) {
-            this.text = text;
-        }
-
-        @Override
-        public String render() {
-            return text;
-        }
-    }
 }
