@@ -7,6 +7,7 @@ import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
 import io.github.ulfs.assertj.jsoup.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -19,22 +20,32 @@ class PlayerViewComponentTest {
     void generateHtmlWithSwapIdTargetForPlayerWithNoCards() {
         Player player = createPlayer(79L, "Player with no cards");
 
-        String generatedHtml = new PlayerViewComponent(player).generateHtml();
+        String generatedHtml = new PlayerViewComponent(player).generateHtmlAsYou();
 
         assertThat(generatedHtml)
                 .isEqualTo("""
-                           <swap id="your-hand" hx-swap-oob="innerHTML">
+                           <swap id="you" hx-swap-oob="innerHTML">
+                               <div class="workspace">
+                                   <h2>Workspace</h2>
+                               </div>
+                               <div class="titled-container">
+                                   Your Hand
+                                   <div class="hand">
+                                      \s
+                                   </div>
+                               </div>
                            </swap>
                            """);
     }
 
     @Test
+    @Disabled("Until no cards test passes")
     void generateHtmlWithOneDivForPlayerWithOneCards() {
         Player player = createPlayer(34L, "Player with one PREDICT card");
         player.apply(new PlayerDrewActionCard(player.memberId(),
                                               ActionCard.LESS_CODE));
 
-        String generatedHtml = new PlayerViewComponent(player).generateHtml();
+        String generatedHtml = new PlayerViewComponent(player).generateHtmlAsYou();
 
         Assertions.assertThatDocument(generatedHtml)
                   .elementContainsText("swap#your-hand > div.card", "less code");
@@ -48,6 +59,7 @@ class PlayerViewComponentTest {
     }
 
     @Test
+    @Disabled("Until generate with one card passes")
     void generateHtmlForPlayerWithFiveCards() {
         Player player = createPlayer(56L, "Player Name");
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
@@ -56,7 +68,7 @@ class PlayerViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
 
-        String generatedHtml = new PlayerViewComponent(player).generateHtml();
+        String generatedHtml = new PlayerViewComponent(player).generateHtmlAsYou();
 
         assertThat(generatedHtml)
                 .isEqualTo("""

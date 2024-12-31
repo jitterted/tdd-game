@@ -1,3 +1,11 @@
+December 30, 2024 - Monday
+===========================
+
+* CSS is hard for me - watch out for grid and nesting
+
+* It's getting annoying to generate the HTML with nested blocks in a way that's testable, the indentation is fiddly
+
+
 December 24, 2024 - Tuesday
 ===========================
 
