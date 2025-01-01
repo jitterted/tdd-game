@@ -18,8 +18,12 @@ public abstract class HtmlComponent {
         return new Div(cssClass, htmlComponents);
     }
 
-    static Swap swapInnerHtml(String targetId) {
-        return new Swap(targetId, "innerHTML");
+    static Swap swapInnerHtml(String targetId, HtmlComponent... htmlComponents) {
+        return new Swap(targetId, "innerHTML", htmlComponents);
+    }
+
+    static Swap swapAfterBegin(String targetId, HtmlComponent... htmlComponents) {
+        return new Swap(targetId, "afterbegin", htmlComponents);
     }
 
     protected String renderNested() {

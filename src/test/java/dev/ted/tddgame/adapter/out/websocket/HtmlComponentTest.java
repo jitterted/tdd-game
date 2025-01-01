@@ -82,4 +82,21 @@ class HtmlComponentTest {
                            """);
     }
 
+    @Test
+    void swapWithTextAndDivComponentRendersCorrectly() {
+        HtmlComponent swap = HtmlComponent.swapAfterBegin("swapId", new HtmlComponent[]{HtmlComponent.text("Heading for div"),
+                HtmlComponent.div("class of second nested",
+                                  HtmlComponent.text("Inside DIV"))});
+
+        assertThat(swap.render())
+                .isEqualTo("""
+                           <swap id="swapId" hx-swap-oob="afterbegin">
+                               Heading for div
+                               <div class="class of second nested">
+                                   Inside DIV
+                               </div>
+                           </swap>
+                           """);
+    }
+
 }

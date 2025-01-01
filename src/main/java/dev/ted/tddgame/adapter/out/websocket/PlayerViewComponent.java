@@ -24,7 +24,7 @@ public class PlayerViewComponent {
                      new HtmlComponent.Text("Your Hand"),
                      handComponent);
         String targetId = "you";
-        return new HtmlComponent.Swap(targetId, "innerHTML", workspaceDiv, handContainerDiv)
+        return HtmlComponent.swapInnerHtml(targetId, workspaceDiv, handContainerDiv)
                 .render();
     }
 
