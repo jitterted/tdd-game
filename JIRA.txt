@@ -137,6 +137,8 @@ Player's "State Machine":
                 [ ] Display cards in "Your Hand" as Images instead of words
                 [ ] Display cards in Other Players' hands as Images instead of words
 
+                [ ] Convert PlayerViewComponentTest to be structural instead of raw string comparisons
+
                 ==> more UI display of Player hands, in-play areas, etc.
 
 

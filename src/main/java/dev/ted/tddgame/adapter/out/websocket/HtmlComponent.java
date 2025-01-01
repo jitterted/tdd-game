@@ -26,6 +26,10 @@ public abstract class HtmlComponent {
         return new Swap(targetId, "afterbegin", htmlComponents);
     }
 
+    static Swap swapDelete(String targetId) {
+        return new Swap(targetId, "delete");
+    }
+
     protected String renderNested() {
         return htmlComponent.stream()
                             .map(this::render)
@@ -56,7 +60,7 @@ public abstract class HtmlComponent {
         private final String targetId;
         private final String swapStrategy;
 
-        public Swap(String targetId, String swapStrategy, HtmlComponent... htmlComponents) {
+        Swap(String targetId, String swapStrategy, HtmlComponent... htmlComponents) {
             super(htmlComponents);
             this.targetId = targetId;
             this.swapStrategy = swapStrategy;
@@ -79,7 +83,7 @@ public abstract class HtmlComponent {
 
         private final String htmlClass;
 
-        public Div(String htmlClass, HtmlComponent... htmlComponents) {
+        Div(String htmlClass, HtmlComponent... htmlComponents) {
             super(htmlComponents);
             this.htmlClass = htmlClass;
         }

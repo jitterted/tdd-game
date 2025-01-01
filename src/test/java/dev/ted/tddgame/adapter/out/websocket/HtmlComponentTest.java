@@ -99,4 +99,15 @@ class HtmlComponentTest {
                            """);
     }
 
+    @Test
+    void deletingSwapRenderedAsEmptySwapWithDeleteStrategy() {
+        HtmlComponent deleteSwap = HtmlComponent.swapDelete("deletionTarget");
+
+        assertThat(deleteSwap.render())
+                .isEqualTo("""
+                           <swap id="deletionTarget" hx-swap-oob="delete">
+                           </swap>
+                           """);
+    }
+
 }
