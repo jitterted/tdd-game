@@ -45,15 +45,20 @@ public abstract class HtmlComponent {
 
     static class Swap extends HtmlComponent {
 
-        public Swap(HtmlComponent... htmlComponent) {
-            super(htmlComponent);
+        private final String targetId;
+        private final String swapStrategy;
+
+        public Swap(String targetId, String swapStrategy, HtmlComponent... htmlComponents) {
+            super(htmlComponents);
+            this.targetId = targetId;
+            this.swapStrategy = swapStrategy;
         }
 
         @Override
         protected String renderTagOpen() {
             return """
-                   <swap id="you" hx-swap-oob="innerHTML">
-                   """;
+                   <swap id="%s" hx-swap-oob="%s">
+                   """.formatted(targetId, swapStrategy);
         }
 
         @Override

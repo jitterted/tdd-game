@@ -23,7 +23,8 @@ public class PlayerViewComponent {
                 .Div("titled-container",
                      new HtmlComponent.Text("Your Hand"),
                      handComponent);
-        return new HtmlComponent.Swap(workspaceDiv, handContainerDiv)
+        String targetId = "you";
+        return new HtmlComponent.Swap(targetId, "innerHTML", workspaceDiv, handContainerDiv)
                 .render();
     }
 

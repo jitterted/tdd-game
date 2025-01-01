@@ -51,4 +51,23 @@ class HtmlComponentTest {
                            </div>
                            """);
     }
+
+    @Test
+    void divWithTwoNestedDivsRendersBothNestedAtSameLevelInOrder() {
+        HtmlComponent div = HtmlComponent.div(
+                "class of parent",
+                HtmlComponent.div("class of first nested"),
+                HtmlComponent.div("class of second nested")
+        );
+
+        assertThat(div.render())
+                .isEqualTo("""
+                           <div class="class of parent">
+                               <div class="class of first nested">
+                               </div>
+                               <div class="class of second nested">
+                               </div>
+                           </div>
+                           """);
+    }
 }
