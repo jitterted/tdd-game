@@ -14,6 +14,10 @@ public abstract class HtmlComponent {
         return new Text(textComponentContents);
     }
 
+    static Div div(String cssClass, HtmlComponent... htmlComponents) {
+        return new Div(cssClass, htmlComponents);
+    }
+
     protected String renderNested() {
         return htmlComponent.stream()
                             .map(this::render)
@@ -76,7 +80,7 @@ public abstract class HtmlComponent {
 
         @Override
         protected String renderTagClose() {
-            return "</div>";
+            return "</div>\n";
         }
 
     }
