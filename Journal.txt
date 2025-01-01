@@ -1,3 +1,10 @@
+December 31, 2024 - Tuesday
+===========================
+
+* Did lots of refactoring towards a nested component model for HTML generation, there were long periods where tests were failing, but mostly they were failing in the predicted way, so it wasn't a big deal
+
+* If we need HTML escaping, we can put it in the TextComponent, once we ensure that we're not passing in HTML tags as content (e.g., <h2>Workspace</h2>)
+
 December 30, 2024 - Monday
 ===========================
 
