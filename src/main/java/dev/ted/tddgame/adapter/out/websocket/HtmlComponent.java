@@ -10,6 +10,10 @@ public abstract class HtmlComponent {
         this.htmlComponent = List.of(htmlComponent);
     }
 
+    static Text text(String textComponentContents) {
+        return new Text(textComponentContents);
+    }
+
     protected String renderNested() {
         return htmlComponent.stream()
                             .map(this::render)
@@ -23,7 +27,7 @@ public abstract class HtmlComponent {
                         .collect(Collectors.joining());
     }
 
-    public String render() {
+    String render() {
         return renderTagOpen()
                +
                renderNested()
@@ -31,9 +35,9 @@ public abstract class HtmlComponent {
                renderTagClose();
     }
 
-    protected abstract String renderTagClose();
-
     protected abstract String renderTagOpen();
+
+    protected abstract String renderTagClose();
 
     static class Swap extends HtmlComponent {
 
@@ -81,11 +85,12 @@ public abstract class HtmlComponent {
 
         private final String text;
 
-        public Text(String text) {
+        Text(String text) {
             this.text = text;
         }
 
-        public String render() {
+        @Override
+        protected String renderNested() {
             return text;
         }
 

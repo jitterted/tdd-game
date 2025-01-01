@@ -1,3 +1,33 @@
+January 1, 2025 - Wednesday
+===========================
+
+* Thought about this, but not doing it as it seems much easier just to build the expected tree structure and compare that directly
+
+            /*
+            assertThat(htmlComponent)
+                .withTag(SWAP)
+                    .withId("you")
+                    .withAttribute("hx-swap-oob", "innerHTML")
+                .has(DIV)
+                    .withClass("workspace")
+                    .containsText("Workspace")
+                .has(DIV)
+                    .withClass("titled-container")
+                    .has(DIV)
+                        .withClass("hand")
+                        .containsText("less code")
+             */
+
+* Probably going with this style for the creation of the HTML tree structure:
+
+            HtmlComponent.Text nestedTextComponent = HtmlComponent
+                    .div(HtmlComponent.text("text component contents"),
+                         HtmlComponent.div(stuff))
+                    .div(HtmlComponent.para("paragraph text"))
+
+  * Has discoverability (HtmlComponent [dot] auto-completion)
+
+
 December 31, 2024 - Tuesday
 ===========================
 
