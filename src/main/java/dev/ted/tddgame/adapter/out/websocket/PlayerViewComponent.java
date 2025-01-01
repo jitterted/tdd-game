@@ -13,14 +13,17 @@ public class PlayerViewComponent {
     }
 
     public String generateHtmlAsYou() {
-        HtmlComponent workspaceDiv = new HtmlComponent.Div("workspace",
-                                                           new HtmlComponent.Text("<h2>Workspace</h2>"));
-        HtmlComponent handComponent = new HtmlComponent.Div("hand",
-                                                            createDivsForEach(player.hand()));
-        HtmlComponent handContainerDiv = new HtmlComponent.Div("titled-container",
-                                                               new HtmlComponent.Text("Your Hand"),
-                                                               handComponent);
-        return new HtmlComponent.SwapComponent(workspaceDiv, handContainerDiv)
+        HtmlComponent workspaceDiv = new HtmlComponent
+                .Div("workspace",
+                     new HtmlComponent.Text("<h2>Workspace</h2>"));
+        HtmlComponent handComponent = new HtmlComponent
+                .Div("hand",
+                     createDivsForEach(player.hand()));
+        HtmlComponent handContainerDiv = new HtmlComponent
+                .Div("titled-container",
+                     new HtmlComponent.Text("Your Hand"),
+                     handComponent);
+        return new HtmlComponent.Swap(workspaceDiv, handContainerDiv)
                 .render();
     }
 

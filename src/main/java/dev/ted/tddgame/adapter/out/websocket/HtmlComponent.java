@@ -35,9 +35,9 @@ public abstract class HtmlComponent {
 
     protected abstract String renderTagOpen();
 
-    static class SwapComponent extends HtmlComponent {
+    static class Swap extends HtmlComponent {
 
-        public SwapComponent(HtmlComponent... htmlComponent) {
+        public Swap(HtmlComponent... htmlComponent) {
             super(htmlComponent);
         }
 
