@@ -13,21 +13,21 @@ public class PlayerViewComponent {
     }
 
     public String generateHtmlAsYou() {
-        HtmlComponent workspaceDiv = new HtmlComponent.DivHtmlComponent("workspace",
-                                                                        new HtmlComponent.TextComponent("<h2>Workspace</h2>"));
-        HtmlComponent handComponent = new HtmlComponent.DivHtmlComponent("hand",
-                                                                         createDivsForEach(player.hand()));
-        HtmlComponent handContainerDiv = new HtmlComponent.DivHtmlComponent("titled-container",
-                                                                            new HtmlComponent.TextComponent("Your Hand"),
-                                                                            handComponent);
+        HtmlComponent workspaceDiv = new HtmlComponent.Div("workspace",
+                                                           new HtmlComponent.Text("<h2>Workspace</h2>"));
+        HtmlComponent handComponent = new HtmlComponent.Div("hand",
+                                                            createDivsForEach(player.hand()));
+        HtmlComponent handContainerDiv = new HtmlComponent.Div("titled-container",
+                                                               new HtmlComponent.Text("Your Hand"),
+                                                               handComponent);
         return new HtmlComponent.SwapComponent(workspaceDiv, handContainerDiv)
                 .render();
     }
 
     static HtmlComponent[] createDivsForEach(Stream<ActionCard> actionCards) {
         return actionCards
-                .map(card -> new HtmlComponent.DivHtmlComponent("card",
-                                                                new HtmlComponent.TextComponent(card.title())))
+                .map(card -> new HtmlComponent.Div("card",
+                                                   new HtmlComponent.Text(card.title())))
                 .toList()
                 .toArray(new HtmlComponent[0]);
     }

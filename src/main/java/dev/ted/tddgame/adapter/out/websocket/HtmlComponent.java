@@ -54,11 +54,11 @@ public abstract class HtmlComponent {
         }
     }
 
-    static class DivHtmlComponent extends HtmlComponent {
+    static class Div extends HtmlComponent {
 
         private final String htmlClass;
 
-        public DivHtmlComponent(String htmlClass, HtmlComponent... htmlComponents) {
+        public Div(String htmlClass, HtmlComponent... htmlComponents) {
             super(htmlComponents);
             this.htmlClass = htmlClass;
         }
@@ -77,11 +77,11 @@ public abstract class HtmlComponent {
 
     }
 
-    static class TextComponent extends HtmlComponent {
+    static class Text extends HtmlComponent {
 
         private final String text;
 
-        public TextComponent(String text) {
+        public Text(String text) {
             this.text = text;
         }
 
