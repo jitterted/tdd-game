@@ -70,4 +70,16 @@ class HtmlComponentTest {
                            </div>
                            """);
     }
+
+    @Test
+    void emptySwapInnerHtmlRendersWithIdAndStrategy() {
+        HtmlComponent swap = HtmlComponent.swapInnerHtml("targetId");
+
+        assertThat(swap.render())
+                .isEqualTo("""
+                           <swap id="targetId" hx-swap-oob="innerHTML">
+                           </swap>
+                           """);
+    }
+
 }

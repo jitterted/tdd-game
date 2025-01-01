@@ -18,6 +18,10 @@ public abstract class HtmlComponent {
         return new Div(cssClass, htmlComponents);
     }
 
+    static Swap swapInnerHtml(String targetId) {
+        return new Swap(targetId, "innerHTML");
+    }
+
     protected String renderNested() {
         return htmlComponent.stream()
                             .map(this::render)
