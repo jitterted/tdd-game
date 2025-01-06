@@ -134,18 +134,18 @@ public abstract class HtmlComponent {
 
     static class Div extends HtmlComponent {
 
-        private final String htmlClass;
+        private final String cssClass;
         private final String htmlId;
 
-        Div(String htmlClass, HtmlComponent... childComponents) {
-            this(null, htmlClass, childComponents);
+        Div(String cssClass, HtmlComponent... childComponents) {
+            this(null, cssClass, childComponents);
         }
 
         public Div(String htmlId, String cssClass, HtmlComponent... childComponents) {
             super(childComponents);
             Objects.requireNonNull(cssClass);
 //            Objects.requireNonNull(htmlId);
-            this.htmlClass = cssClass;
+            this.cssClass = cssClass;
             this.htmlId = htmlId;
         }
 
@@ -155,7 +155,7 @@ public abstract class HtmlComponent {
             if (htmlId != null) {
                 attributes += "id=\"" + htmlId + "\" ";
             }
-            attributes += "class=\"" + htmlClass + "\"";
+            attributes += "class=\"" + cssClass + "\"";
             return """
                    <div %s>
                    """.formatted(attributes);
@@ -175,20 +175,20 @@ public abstract class HtmlComponent {
                 return false;
             }
 
-            return htmlClass.equals(div.htmlClass);
+            return cssClass.equals(div.cssClass);
         }
 
         @Override
         public int hashCode() {
             int result = super.hashCode();
-            result = 31 * result + htmlClass.hashCode();
+            result = 31 * result + cssClass.hashCode();
             return result;
         }
 
         @Override
         public String toString() {
             return new StringJoiner(", ", Div.class.getSimpleName() + "[", "]")
-                    .add("htmlClass='" + htmlClass + "'")
+                    .add("htmlClass='" + cssClass + "'")
                     .add("Nested HTML Components=" + childComponents)
                     .toString();
         }
