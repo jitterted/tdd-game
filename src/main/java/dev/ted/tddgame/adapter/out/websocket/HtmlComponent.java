@@ -134,6 +134,7 @@ public abstract class HtmlComponent {
 
         Div(String htmlClass, HtmlComponent... htmlComponents) {
             super(htmlComponents);
+            Objects.requireNonNull(htmlClass);
             this.htmlClass = htmlClass;
         }
 
@@ -149,6 +150,32 @@ public abstract class HtmlComponent {
             return "</div>\n";
         }
 
+        @Override
+        public final boolean equals(Object o) {
+            if (!(o instanceof Div div)) {
+                return false;
+            }
+            if (!super.equals(o)) {
+                return false;
+            }
+
+            return htmlClass.equals(div.htmlClass);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = super.hashCode();
+            result = 31 * result + htmlClass.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Div.class.getSimpleName() + "[", "]")
+                    .add("htmlClass='" + htmlClass + "'")
+                    .add("Nested HTML Components=" + htmlComponents)
+                    .toString();
+        }
     }
 
     static final class Text extends HtmlComponent {
