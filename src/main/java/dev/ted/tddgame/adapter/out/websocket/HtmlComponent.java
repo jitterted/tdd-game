@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -134,8 +135,7 @@ public abstract class HtmlComponent {
 
     static class Div extends HtmlComponent {
 
-        private final String cssClass;
-        private final String htmlId;
+        private final List<HtmlAttribute> attributes = new ArrayList<>();
 
         Div(String cssClass, HtmlComponent... childComponents) {
             this(null, cssClass, childComponents);
@@ -145,20 +145,20 @@ public abstract class HtmlComponent {
             super(childComponents);
             Objects.requireNonNull(cssClass);
 //            Objects.requireNonNull(htmlId);
-            this.cssClass = cssClass;
-            this.htmlId = htmlId;
+            if (htmlId != null) {
+                attributes.add(new HtmlAttribute("id", htmlId));
+            }
+            attributes.add(new HtmlAttribute("class", cssClass));
         }
 
         @Override
         protected String renderTagOpen() {
-            String attributes = "";
-            if (htmlId != null) {
-                attributes += "id=\"" + htmlId + "\" ";
-            }
-            attributes += "class=\"" + cssClass + "\"";
+            String attr = attributes.stream()
+                    .map(HtmlAttribute::render)
+                    .collect(Collectors.joining(" "));
             return """
                    <div %s>
-                   """.formatted(attributes);
+                   """.formatted(attr);
         }
 
         @Override
@@ -175,21 +175,62 @@ public abstract class HtmlComponent {
                 return false;
             }
 
-            return cssClass.equals(div.cssClass);
+            return attributes.equals(div.attributes);
         }
 
         @Override
         public int hashCode() {
             int result = super.hashCode();
-            result = 31 * result + cssClass.hashCode();
+            result = 31 * result + attributes.hashCode();
             return result;
         }
 
         @Override
         public String toString() {
             return new StringJoiner(", ", Div.class.getSimpleName() + "[", "]")
-                    .add("htmlClass='" + cssClass + "'")
-                    .add("Nested HTML Components=" + childComponents)
+                    .add("attributes=" + attributes)
+                    .add("childComponents=" + childComponents)
+                    .toString();
+        }
+    }
+
+    static class HtmlAttribute {
+        private final String name;
+        private final String value;
+
+        public HtmlAttribute(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        String render() {
+            if (value == null) {
+                return "";
+            }
+            return name + "=\"" + value + "\"";
+        }
+
+        @Override
+        public final boolean equals(Object o) {
+            if (!(o instanceof HtmlAttribute that)) {
+                return false;
+            }
+
+            return name.equals(that.name) && value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = name.hashCode();
+            result = 31 * result + value.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", HtmlAttribute.class.getSimpleName() + "[", "]")
+                    .add("name='" + name + "'")
+                    .add("value='" + value + "'")
                     .toString();
         }
     }
