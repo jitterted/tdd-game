@@ -20,6 +20,12 @@
     grid-template-rows: repeat(3, 1fr);
 }
 
+.name {
+    font-family: "Avenir Next", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
 .play-area {
     display: grid;
     grid-column: span 2;

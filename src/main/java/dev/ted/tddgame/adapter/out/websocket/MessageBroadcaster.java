@@ -6,12 +6,13 @@ import dev.ted.tddgame.domain.Player;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+import java.util.stream.Collectors;
 
 @Component
-public class WebSocketBroadcaster implements Broadcaster {
+public class MessageBroadcaster implements Broadcaster {
     private final MessageSendersForPlayers messageSendersForPlayers;
 
-    public WebSocketBroadcaster(MessageSendersForPlayers messageSendersForPlayers) {
+    public MessageBroadcaster(MessageSendersForPlayers messageSendersForPlayers) {
         this.messageSendersForPlayers = messageSendersForPlayers;
     }
 
@@ -26,10 +27,26 @@ public class WebSocketBroadcaster implements Broadcaster {
 
     @Override
     public void clearStartGameModal(Game game) {
-        String html = """
-                      <swap id="modal-container" hx-swap-oob="delete" />
-                      """;
+        String html = HtmlComponent.swapDelete("modal-container").render();
         messageSendersForPlayers.sendToAll(game.handle(), html);
+
+        // SPIKE TO UPDATE VIEWS OF OTHER PLAYERS
+        String otherPlayersHtml = game.players()
+                                      .stream()
+                                      .map(player -> """
+                                                     <div id="player-id-%s" class="other-player-container">
+                                                         <h2 class="name">
+                                                             Player Named: %s
+                                                         </h2>
+                                                     </div>
+                                                     """.formatted(player.id().id(), player.playerName()))
+                                              .collect(Collectors.joining());
+        String swap = """
+                      <swap id="other-players" hx-swap-oob="innerHTML">
+                      %s
+                      </swap>
+                      """.formatted(otherPlayersHtml);
+        messageSendersForPlayers.sendToAll(game.handle(), swap);
     }
 
     @Override
@@ -45,7 +62,7 @@ public class WebSocketBroadcaster implements Broadcaster {
             messageSendersForPlayers.sendTo(
                     game.handle(),
                     player.id(),
-                    new PlayerViewComponent(player).generateHtml());
+                    new PlayerViewComponent(player).generateHtmlAsYou());
         }
     }
 

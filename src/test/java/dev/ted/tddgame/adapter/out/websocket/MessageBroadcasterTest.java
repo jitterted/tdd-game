@@ -10,9 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-class WebSocketBroadcasterTest {
+class MessageBroadcasterTest {
 
     @Test
+    // OBSOLETE: we want to check in a bit more detail what HTML was sent?
     void htmlSentToAllConnectedPlayersUponPlayerConnected() {
         Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
         fixture.game.start();
@@ -29,6 +30,18 @@ class WebSocketBroadcasterTest {
                 .as("Last sent message should not be null, i.e., was never called")
                 .isNotNull()
                 .isNotEmpty();
+    }
+
+    @Test
+    void startGameSendsHtmlContainersForOtherPlayersThatAreNotYou() {
+        Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
+
+        fixture.broadcaster.clearStartGameModal(fixture.game);
+
+        // message text received for Samantha must not contain div with player-id-[samantha's ID]
+        assertThat(fixture.messageSenderForSamantha.lastSentMessage())
+                .contains("player-id-" + fixture.oliverPlayer.id().id())
+                .doesNotContain("player-id-" + fixture.samanthaPlayer.id().id());
     }
 
     @Test
@@ -64,8 +77,8 @@ class WebSocketBroadcasterTest {
         messageSendersForPlayers.add(messageSenderForOliver, "gameHandle", oliverPlayer.id());
         MessageSenderSpy messageSenderForSamantha = new MessageSenderSpy();
         messageSendersForPlayers.add(messageSenderForSamantha, "gameHandle", samanthaPlayer.id());
-        WebSocketBroadcaster broadcaster = new WebSocketBroadcaster(messageSendersForPlayers);
-        return new Fixture(game, memberIdForOliver, messageSenderForOliver, oliverPlayer, messageSenderForSamantha, broadcaster);
+        MessageBroadcaster broadcaster = new MessageBroadcaster(messageSendersForPlayers);
+        return new Fixture(game, memberIdForOliver, messageSenderForOliver, oliverPlayer, messageSenderForSamantha, samanthaPlayer, broadcaster);
     }
 
     private record Fixture(Game game,
@@ -73,7 +86,8 @@ class WebSocketBroadcasterTest {
                            MessageSenderSpy messageSenderForOliver,
                            Player oliverPlayer,
                            MessageSenderSpy messageSenderForSamantha,
-                           WebSocketBroadcaster broadcaster) {
+                           Player samanthaPlayer,
+                           MessageBroadcaster broadcaster) {
     }
 
     private static class MessageSenderSpy implements MessageSender {

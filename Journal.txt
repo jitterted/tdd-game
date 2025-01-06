@@ -27,6 +27,8 @@ January 1, 2025 - Wednesday
 
   * Has discoverability (HtmlComponent [dot] auto-completion)
 
+* Decided to create the empty (placeholder) DIVs for "Other Players" (filtering out "you") upon game start, so that later we broadcast to everyone the same content that targets those DIVs, without having to filter out the "you" player (since that DIV's target will be ignored)
+
 
 December 31, 2024 - Tuesday
 ===========================
