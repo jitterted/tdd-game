@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -110,70 +111,74 @@ class HtmlComponentTest {
                            """);
     }
 
-    @Test
-    void swapEqualsWithoutNestedComponents() {
-        assertThat(HtmlComponent.swapDelete("delete-me"))
-                .isEqualTo(HtmlComponent.swapDelete("delete-me"));
+    @Nested
+    class EqualsVerification {
+        @Test
+        void swapEqualsWithoutNestedComponents() {
+            assertThat(HtmlComponent.swapDelete("delete-me"))
+                    .isEqualTo(HtmlComponent.swapDelete("delete-me"));
 
-        assertThat(HtmlComponent.swapDelete("red"))
-                .isNotEqualTo(HtmlComponent.swapDelete("blue"));
-    }
+            assertThat(HtmlComponent.swapDelete("red"))
+                    .isNotEqualTo(HtmlComponent.swapDelete("blue"));
+        }
 
-    @Test
-    void textComponentEquals() {
-        assertThat(HtmlComponent.text("text contents"))
-                .as("Text contents are the same, so should be Equal")
-                .isEqualTo(HtmlComponent.text("text contents"));
+        @Test
+        void textComponentEquals() {
+            assertThat(HtmlComponent.text("text contents"))
+                    .as("Text contents are the same, so should be Equal")
+                    .isEqualTo(HtmlComponent.text("text contents"));
 
-        assertThat(HtmlComponent.text("text contents"))
-                .as("Text contents are DIFFERENT, so should NOT be equal")
-                .isNotEqualTo(HtmlComponent.text("different text"));
-    }
+            assertThat(HtmlComponent.text("text contents"))
+                    .as("Text contents are DIFFERENT, so should NOT be equal")
+                    .isNotEqualTo(HtmlComponent.text("different text"));
+        }
 
-    @Test
-    void swapEqualsWithNestedComponentsOneLevel() {
-        assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
-                .isEqualTo(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")));
+        @Test
+        void swapEqualsWithNestedComponentsOneLevel() {
+            assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
+                    .isEqualTo(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")));
 
-        assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
-                .as("Different targetId, but same nested component contents")
-                .isNotEqualTo(HtmlComponent.swapInnerHtml("differentTargetId", HtmlComponent.text("Text inside Swap")));
+            assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
+                    .as("Different targetId, but same nested component contents")
+                    .isNotEqualTo(HtmlComponent.swapInnerHtml("differentTargetId", HtmlComponent.text("Text inside Swap")));
 
-        assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
-                .as("Same targetId, but different nested component contents")
-                .isNotEqualTo(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Different Text inside")));
-    }
+            assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
+                    .as("Same targetId, but different nested component contents")
+                    .isNotEqualTo(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Different Text inside")));
+        }
 
-    @Test
-    void divEqualsWithoutNestedComponents() {
-        assertThat(HtmlComponent.div("html-class"))
-                .isEqualTo(HtmlComponent.div("html-class"));
+        @Test
+        void divEqualsWithoutNestedComponents() {
+            assertThat(HtmlComponent.div("html-class"))
+                    .isEqualTo(HtmlComponent.div("html-class"));
 
-        assertThat(HtmlComponent.div("html-class"))
-                .isNotEqualTo(HtmlComponent.div("different-html-class"));
-    }
+            assertThat(HtmlComponent.div("html-class"))
+                    .isNotEqualTo(HtmlComponent.div("different-html-class"));
+        }
 
-    @Test
-    void divEqualsWithTwoLevelsOfChildComponents() {
-        assertThat(HtmlComponent.div("has-two-children",
-                                     HtmlComponent.div("first-child",
-                                                       HtmlComponent.text("Text of Leaf component"))))
-                .isEqualTo(HtmlComponent.div("has-two-children",
-                                             HtmlComponent.div("first-child",
-                                                               HtmlComponent.text("Text of Leaf component"))));
+        @Test
+        void divEqualsWithTwoLevelsOfChildComponents() {
+            assertThat(HtmlComponent.div("has-two-children",
+                                         HtmlComponent.div("first-child",
+                                                           HtmlComponent.text("Text of Leaf component"))))
+                    .isEqualTo(HtmlComponent.div("has-two-children",
+                                                 HtmlComponent.div("first-child",
+                                                                   HtmlComponent.text("Text of Leaf component"))));
 
-        assertThat(HtmlComponent.div("has-two-children",
-                                     HtmlComponent.div("first-child",
-                                                       HtmlComponent.text("Text of Leaf component"))))
-                .isNotEqualTo(HtmlComponent.div("has-two-children",
-                                             HtmlComponent.div("first-child",
-                                                               HtmlComponent.text("Leaf Text component text is different"))));
+            assertThat(HtmlComponent.div("has-two-children",
+                                         HtmlComponent.div("first-child",
+                                                           HtmlComponent.text("Text of Leaf component"))))
+                    .isNotEqualTo(HtmlComponent.div("has-two-children",
+                                                    HtmlComponent.div("first-child",
+                                                                      HtmlComponent.text("Leaf Text component text is different"))));
 
-        assertThat(HtmlComponent.div("has-two-children",
-                                     HtmlComponent.div("first-child",
-                                                       HtmlComponent.text("Text of Leaf component"))))
-                .isNotEqualTo(HtmlComponent.div("has-two-children",
-                                             HtmlComponent.div("different-first-child",
-                                                               HtmlComponent.text("Text of Leaf component"))));
+            assertThat(HtmlComponent.div("has-two-children",
+                                         HtmlComponent.div("first-child",
+                                                           HtmlComponent.text("Text of Leaf component"))))
+                    .isNotEqualTo(HtmlComponent.div("has-two-children",
+                                                    HtmlComponent.div("different-first-child",
+                                                                      HtmlComponent.text("Text of Leaf component"))));
+        }
+
     }
 }
