@@ -6,7 +6,10 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -99,6 +102,26 @@ class PlayerViewComponentTest {
                                    </div>
                                </div>
                            </swap>
+                           """);
+    }
+
+    @Test
+    @Disabled("until equals is tested for HtmlComponent")
+    void createsPlaceholderDivForOnlyOtherPlayers() {
+        Player you = createPlayer(99L, "You as Player 99");
+        List<Player> players = List.of(createPlayer(3L, "Player 3"),
+                                       you,
+                                       createPlayer(5L, "Player 5"));
+
+        HtmlComponent htmlComponent = new PlayerViewComponent(you).htmlForOtherPlayers();
+
+        assertThat(htmlComponent)
+                .isEqualTo("""
+                           swap target "other-players"
+                           div with id="player-id-3" class="other-player-container"
+                               h2 with class="name" and Player 3
+                           div with id="player-id-5" class="other-player-container"
+                               h2 with class="name" and Player 5
                            """);
     }
 

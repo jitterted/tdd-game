@@ -110,4 +110,37 @@ class HtmlComponentTest {
                            """);
     }
 
+    @Test
+    void swapEqualsWithoutNestedComponentsTest() {
+        assertThat(HtmlComponent.swapDelete("delete-me"))
+                .isEqualTo(HtmlComponent.swapDelete("delete-me"));
+
+        assertThat(HtmlComponent.swapDelete("red"))
+                .isNotEqualTo(HtmlComponent.swapDelete("blue"));
+    }
+
+    @Test
+    void textComponentEqualsTest() {
+        assertThat(HtmlComponent.text("text contents"))
+                .as("Text contents are the same, so should be Equal")
+                .isEqualTo(HtmlComponent.text("text contents"));
+
+        assertThat(HtmlComponent.text("text contents"))
+                .as("Text contents are DIFFERENT, so should NOT be equal")
+                .isNotEqualTo(HtmlComponent.text("different text"));
+    }
+
+    @Test
+    void swapEqualsWithNestedComponentsTest() {
+        assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
+                .isEqualTo(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")));
+
+        assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
+                .as("Different targetId, but same nested component contents")
+                .isEqualTo(HtmlComponent.swapInnerHtml("differentTargetId", HtmlComponent.text("Text inside Swap")));
+
+        assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
+                .as("Same targetId, but different nested component contents")
+                .isNotEqualTo(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Different Text inside")));
+    }
 }

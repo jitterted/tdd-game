@@ -18,7 +18,7 @@ public class PlayerViewComponent {
                      new HtmlComponent.Text("<h2>Workspace</h2>"));
         HtmlComponent handComponent = new HtmlComponent
                 .Div("hand",
-                     createDivsForEach(player.hand()));
+                     createDivsForEachCardIn(player.hand()));
         HtmlComponent handContainerDiv = new HtmlComponent
                 .Div("titled-container",
                      new HtmlComponent.Text("Your Hand"),
@@ -28,7 +28,7 @@ public class PlayerViewComponent {
                 .render();
     }
 
-    static HtmlComponent[] createDivsForEach(Stream<ActionCard> actionCards) {
+    static HtmlComponent[] createDivsForEachCardIn(Stream<ActionCard> actionCards) {
         return actionCards
                 .map(card -> new HtmlComponent.Div("card",
                                                    new HtmlComponent.Text(card.title())))
@@ -36,4 +36,7 @@ public class PlayerViewComponent {
                 .toArray(new HtmlComponent[0]);
     }
 
+    public HtmlComponent htmlForOtherPlayers() {
+        return null;
+    }
 }

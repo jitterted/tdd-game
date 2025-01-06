@@ -1,13 +1,15 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public abstract class HtmlComponent {
-    protected final List<HtmlComponent> htmlComponent;
+    protected final List<HtmlComponent> htmlComponents;
 
-    public HtmlComponent(HtmlComponent... htmlComponent) {
-        this.htmlComponent = List.of(htmlComponent);
+    public HtmlComponent(HtmlComponent... htmlComponents) {
+        this.htmlComponents = List.of(htmlComponents);
     }
 
     static Text text(String textComponentContents) {
@@ -31,9 +33,9 @@ public abstract class HtmlComponent {
     }
 
     protected String renderNested() {
-        return htmlComponent.stream()
-                            .map(this::render)
-                            .collect(Collectors.joining());
+        return htmlComponents.stream()
+                             .map(this::render)
+                             .collect(Collectors.joining());
     }
 
     private String render(HtmlComponent component) {
@@ -55,13 +57,31 @@ public abstract class HtmlComponent {
 
     protected abstract String renderTagClose();
 
-    static class Swap extends HtmlComponent {
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        HtmlComponent that = (HtmlComponent) o;
+        return htmlComponents.equals(that.htmlComponents);
+    }
+
+    @Override
+    public int hashCode() {
+        return htmlComponents.hashCode();
+    }
+
+    static final class Swap extends HtmlComponent {
 
         private final String targetId;
         private final String swapStrategy;
 
         Swap(String targetId, String swapStrategy, HtmlComponent... htmlComponents) {
             super(htmlComponents);
+            Objects.requireNonNull(targetId);
+            Objects.requireNonNull(swapStrategy);
+            Objects.requireNonNull(htmlComponents);
             this.targetId = targetId;
             this.swapStrategy = swapStrategy;
         }
@@ -76,6 +96,35 @@ public abstract class HtmlComponent {
         @Override
         protected String renderTagClose() {
             return "</swap>\n";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Swap swap)) {
+                return false;
+            }
+            if (!super.equals(o)) {
+                return false;
+            }
+
+            return targetId.equals(swap.targetId) && swapStrategy.equals(swap.swapStrategy);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = super.hashCode();
+            result = 31 * result + targetId.hashCode();
+            result = 31 * result + swapStrategy.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Swap.class.getSimpleName() + "[", "]")
+                    .add("htmlComponents=" + htmlComponents)
+                    .add("swapStrategy='" + swapStrategy + "'")
+                    .add("targetId='" + targetId + "'")
+                    .toString();
         }
     }
 
@@ -102,11 +151,12 @@ public abstract class HtmlComponent {
 
     }
 
-    static class Text extends HtmlComponent {
+    static final class Text extends HtmlComponent {
 
         private final String text;
 
         Text(String text) {
+            Objects.requireNonNull(text);
             this.text = text;
         }
 
@@ -123,6 +173,27 @@ public abstract class HtmlComponent {
         @Override
         protected String renderTagOpen() {
             return "";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Text text1)) {
+                return false;
+            }
+
+            return text.equals(text1.text);
+        }
+
+        @Override
+        public int hashCode() {
+            return text.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Text.class.getSimpleName() + "[", "]")
+                    .add("text='" + text + "'")
+                    .toString();
         }
     }
 }
