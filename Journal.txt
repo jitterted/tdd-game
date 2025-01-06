@@ -12,6 +12,8 @@ January 6, 2025 - Monday
 
   Documentation doesn't provide implementations of `Foo` and `Bar` in the explanation for the error we originally got: https://jqno.nl/equalsverifier/errormessages/recursive-datastructure/
 
+* For multiple HtmlAttribute, where is the order of rendering defined (e.g., does "id=myId" come before or after "class=myClass")? Currently, it's only used in the DIV and the constructor defines the order of id first then class. Would be good to push this into a new "container" class (HtmlAttributes, plural) that has the List<HtmlAttribute>, a defined order, and knows how to render all of them in that order. [YAGNI]
+
 
 
 January 1, 2025 - Wednesday

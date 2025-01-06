@@ -153,12 +153,12 @@ public abstract class HtmlComponent {
 
         @Override
         protected String renderTagOpen() {
-            String attr = attributes.stream()
-                    .map(HtmlAttribute::render)
-                    .collect(Collectors.joining(" "));
+            String renderedAttributes = attributes.stream()
+                                                  .map(HtmlAttribute::render)
+                                                  .collect(Collectors.joining(" "));
             return """
                    <div %s>
-                   """.formatted(attr);
+                   """.formatted(renderedAttributes);
         }
 
         @Override
