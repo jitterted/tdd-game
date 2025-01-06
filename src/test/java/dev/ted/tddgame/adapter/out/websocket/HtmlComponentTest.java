@@ -137,7 +137,7 @@ class HtmlComponentTest {
 
         assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
                 .as("Different targetId, but same nested component contents")
-                .isEqualTo(HtmlComponent.swapInnerHtml("differentTargetId", HtmlComponent.text("Text inside Swap")));
+                .isNotEqualTo(HtmlComponent.swapInnerHtml("differentTargetId", HtmlComponent.text("Text inside Swap")));
 
         assertThat(HtmlComponent.swapInnerHtml("text-swap", HtmlComponent.text("Text inside Swap")))
                 .as("Same targetId, but different nested component contents")

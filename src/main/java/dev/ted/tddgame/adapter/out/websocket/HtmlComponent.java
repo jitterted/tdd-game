@@ -180,13 +180,18 @@ public abstract class HtmlComponent {
             if (!(o instanceof Text text1)) {
                 return false;
             }
+            if (!super.equals(o)) {
+                return false;
+            }
 
             return text.equals(text1.text);
         }
 
         @Override
         public int hashCode() {
-            return text.hashCode();
+            int result = super.hashCode();
+            result = 31 * result + text.hashCode();
+            return result;
         }
 
         @Override
