@@ -1,6 +1,6 @@
 # JitterTed's TDD Game
 
-This is the online version of JitterTed's TDD Game (buy a copy at https://tdd.cards!), a fun way to learn the _Predictive Test-Driven Development_ process developed by [Ted M. Young](https://ted.dev/about) (aka JitterTed on social media).
+This is the online version of JitterTed's TDD Game (buy a copy at https://tdd.cards!), a fun way to learn the [_Predictive Test-Driven Development_ process](https://ted.dev/articles/2021/03/05/clarifying-the-goal-of-behavior-change/) developed by [Ted M. Young](https://ted.dev/about) (aka JitterTed on social media).
 
 ## Project Status
 
