@@ -27,6 +27,17 @@ class HtmlComponentTest {
     }
 
     @Test
+    void emptyDivComponentWithClassAndIdHasOnlyOpenAndCloseTagWithIdAndClass() {
+        HtmlComponent div = HtmlComponent.div("htmlId", "cssClass");
+
+        assertThat(div.render())
+                .isEqualTo("""
+                           <div id="htmlId" class="cssClass">
+                           </div>
+                           """);
+    }
+
+    @Test
     void divWithNestedTextComponentRendersTextAsIndentedOneLevel() {
         HtmlComponent textComponent = HtmlComponent.text("nested text");
 

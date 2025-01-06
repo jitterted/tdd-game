@@ -106,23 +106,26 @@ class PlayerViewComponentTest {
     }
 
     @Test
-    @Disabled("until equals is tested for HtmlComponent")
+    @Disabled("until div with ID is working")
     void createsPlaceholderDivForOnlyOtherPlayers() {
         Player you = createPlayer(99L, "You as Player 99");
         List<Player> players = List.of(createPlayer(3L, "Player 3"),
                                        you,
                                        createPlayer(5L, "Player 5"));
 
-        HtmlComponent htmlComponent = new PlayerViewComponent(you).htmlForOtherPlayers();
+        HtmlComponent htmlComponent = new PlayerViewComponent(you)
+                .htmlForOtherPlayers();
 
         assertThat(htmlComponent)
-                .isEqualTo("""
-                           swap target "other-players"
-                           div with id="player-id-3" class="other-player-container"
-                               h2 with class="name" and Player 3
-                           div with id="player-id-5" class="other-player-container"
-                               h2 with class="name" and Player 5
-                           """);
+                .isEqualTo(HtmlComponent.swapInnerHtml("other-players",
+HtmlComponent.div("other-player-container", "player-id-3", HtmlComponent.text(""))));
+//                .isEqualTo("""
+//                           swap innerHTML target "other-players"
+//                           div with id="player-id-3" class="other-player-container"
+//                               h2 with class="name" and Player 3
+//                           div with id="player-id-5" class="other-player-container"
+//                               h2 with class="name" and Player 5
+//                           """);
     }
 
     private Player createPlayer(long playerId, String playerName) {

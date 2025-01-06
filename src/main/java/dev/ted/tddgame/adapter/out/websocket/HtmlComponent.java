@@ -20,6 +20,10 @@ public abstract class HtmlComponent {
         return new Div(cssClass, childComponents);
     }
 
+    static Div div(String htmlId, String cssClass, HtmlComponent... childComponents) {
+        return new Div(htmlId, cssClass, childComponents);
+    }
+
     static Swap swapInnerHtml(String targetId, HtmlComponent... childComponents) {
         return new Swap(targetId, "innerHTML", childComponents);
     }
@@ -131,18 +135,30 @@ public abstract class HtmlComponent {
     static class Div extends HtmlComponent {
 
         private final String htmlClass;
+        private final String htmlId;
 
         Div(String htmlClass, HtmlComponent... childComponents) {
+            this(null, htmlClass, childComponents);
+        }
+
+        public Div(String htmlId, String cssClass, HtmlComponent... childComponents) {
             super(childComponents);
-            Objects.requireNonNull(htmlClass);
-            this.htmlClass = htmlClass;
+            Objects.requireNonNull(cssClass);
+//            Objects.requireNonNull(htmlId);
+            this.htmlClass = cssClass;
+            this.htmlId = htmlId;
         }
 
         @Override
         protected String renderTagOpen() {
+            String attributes = "";
+            if (htmlId != null) {
+                attributes += "id=\"" + htmlId + "\" ";
+            }
+            attributes += "class=\"" + htmlClass + "\"";
             return """
-                   <div class="%s">
-                   """.formatted(htmlClass);
+                   <div %s>
+                   """.formatted(attributes);
         }
 
         @Override

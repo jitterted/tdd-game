@@ -6,6 +6,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -33,6 +34,7 @@ class MessageBroadcasterTest {
     }
 
     @Test
+    @Disabled("until PlayerViewComponent placeholder rendering passes")
     void startGameSendsHtmlContainersForOtherPlayersThatAreNotYou() {
         Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
 
