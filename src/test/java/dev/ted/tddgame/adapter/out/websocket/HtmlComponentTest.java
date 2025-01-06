@@ -152,4 +152,28 @@ class HtmlComponentTest {
         assertThat(HtmlComponent.div("html-class"))
                 .isNotEqualTo(HtmlComponent.div("different-html-class"));
     }
+
+    @Test
+    void divEqualsWithTwoLevelsOfChildComponents() {
+        assertThat(HtmlComponent.div("has-two-children",
+                                     HtmlComponent.div("first-child",
+                                                       HtmlComponent.text("Text of Leaf component"))))
+                .isEqualTo(HtmlComponent.div("has-two-children",
+                                             HtmlComponent.div("first-child",
+                                                               HtmlComponent.text("Text of Leaf component"))));
+
+        assertThat(HtmlComponent.div("has-two-children",
+                                     HtmlComponent.div("first-child",
+                                                       HtmlComponent.text("Text of Leaf component"))))
+                .isNotEqualTo(HtmlComponent.div("has-two-children",
+                                             HtmlComponent.div("first-child",
+                                                               HtmlComponent.text("Leaf Text component text is different"))));
+
+        assertThat(HtmlComponent.div("has-two-children",
+                                     HtmlComponent.div("first-child",
+                                                       HtmlComponent.text("Text of Leaf component"))))
+                .isNotEqualTo(HtmlComponent.div("has-two-children",
+                                             HtmlComponent.div("different-first-child",
+                                                               HtmlComponent.text("Text of Leaf component"))));
+    }
 }

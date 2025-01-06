@@ -6,26 +6,26 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public abstract class HtmlComponent {
-    protected final List<HtmlComponent> htmlComponents;
+    protected final List<HtmlComponent> childComponents;
 
-    public HtmlComponent(HtmlComponent... htmlComponents) {
-        this.htmlComponents = List.of(htmlComponents);
+    public HtmlComponent(HtmlComponent... childComponents) {
+        this.childComponents = List.of(childComponents);
     }
 
     static Text text(String textComponentContents) {
         return new Text(textComponentContents);
     }
 
-    static Div div(String cssClass, HtmlComponent... htmlComponents) {
-        return new Div(cssClass, htmlComponents);
+    static Div div(String cssClass, HtmlComponent... childComponents) {
+        return new Div(cssClass, childComponents);
     }
 
-    static Swap swapInnerHtml(String targetId, HtmlComponent... htmlComponents) {
-        return new Swap(targetId, "innerHTML", htmlComponents);
+    static Swap swapInnerHtml(String targetId, HtmlComponent... childComponents) {
+        return new Swap(targetId, "innerHTML", childComponents);
     }
 
-    static Swap swapAfterBegin(String targetId, HtmlComponent... htmlComponents) {
-        return new Swap(targetId, "afterbegin", htmlComponents);
+    static Swap swapAfterBegin(String targetId, HtmlComponent... childComponents) {
+        return new Swap(targetId, "afterbegin", childComponents);
     }
 
     static Swap swapDelete(String targetId) {
@@ -33,9 +33,9 @@ public abstract class HtmlComponent {
     }
 
     protected String renderNested() {
-        return htmlComponents.stream()
-                             .map(this::render)
-                             .collect(Collectors.joining());
+        return childComponents.stream()
+                              .map(this::render)
+                              .collect(Collectors.joining());
     }
 
     private String render(HtmlComponent component) {
@@ -64,12 +64,12 @@ public abstract class HtmlComponent {
         }
 
         HtmlComponent that = (HtmlComponent) o;
-        return htmlComponents.equals(that.htmlComponents);
+        return childComponents.equals(that.childComponents);
     }
 
     @Override
     public int hashCode() {
-        return htmlComponents.hashCode();
+        return childComponents.hashCode();
     }
 
     static final class Swap extends HtmlComponent {
@@ -77,11 +77,11 @@ public abstract class HtmlComponent {
         private final String targetId;
         private final String swapStrategy;
 
-        Swap(String targetId, String swapStrategy, HtmlComponent... htmlComponents) {
-            super(htmlComponents);
+        Swap(String targetId, String swapStrategy, HtmlComponent... childComponents) {
+            super(childComponents);
             Objects.requireNonNull(targetId);
             Objects.requireNonNull(swapStrategy);
-            Objects.requireNonNull(htmlComponents);
+            Objects.requireNonNull(childComponents);
             this.targetId = targetId;
             this.swapStrategy = swapStrategy;
         }
@@ -121,7 +121,7 @@ public abstract class HtmlComponent {
         @Override
         public String toString() {
             return new StringJoiner(", ", Swap.class.getSimpleName() + "[", "]")
-                    .add("htmlComponents=" + htmlComponents)
+                    .add("childComponents=" + childComponents)
                     .add("swapStrategy='" + swapStrategy + "'")
                     .add("targetId='" + targetId + "'")
                     .toString();
@@ -132,8 +132,8 @@ public abstract class HtmlComponent {
 
         private final String htmlClass;
 
-        Div(String htmlClass, HtmlComponent... htmlComponents) {
-            super(htmlComponents);
+        Div(String htmlClass, HtmlComponent... childComponents) {
+            super(childComponents);
             Objects.requireNonNull(htmlClass);
             this.htmlClass = htmlClass;
         }
@@ -173,7 +173,7 @@ public abstract class HtmlComponent {
         public String toString() {
             return new StringJoiner(", ", Div.class.getSimpleName() + "[", "]")
                     .add("htmlClass='" + htmlClass + "'")
-                    .add("Nested HTML Components=" + htmlComponents)
+                    .add("Nested HTML Components=" + childComponents)
                     .toString();
         }
     }
