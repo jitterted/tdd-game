@@ -6,11 +6,13 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.div;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.swapInnerHtml;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.text;
 import static org.assertj.core.api.Assertions.*;
 
 class PlayerViewComponentTest {
@@ -106,7 +108,6 @@ class PlayerViewComponentTest {
     }
 
     @Test
-    @Disabled("until div with ID is working")
     void createsPlaceholderDivForOnlyOtherPlayers() {
         Player you = createPlayer(99L, "You as Player 99");
         List<Player> players = List.of(createPlayer(3L, "Player 3"),
@@ -114,18 +115,15 @@ class PlayerViewComponentTest {
                                        createPlayer(5L, "Player 5"));
 
         HtmlComponent htmlComponent = new PlayerViewComponent(you)
-                .htmlForOtherPlayers();
+                .htmlForOtherPlayers(players);
 
         assertThat(htmlComponent)
-                .isEqualTo(HtmlComponent.swapInnerHtml("other-players",
-HtmlComponent.div("other-player-container", "player-id-3", HtmlComponent.text(""))));
-//                .isEqualTo("""
-//                           swap innerHTML target "other-players"
-//                           div with id="player-id-3" class="other-player-container"
-//                               h2 with class="name" and Player 3
-//                           div with id="player-id-5" class="other-player-container"
-//                               h2 with class="name" and Player 5
-//                           """);
+                .isEqualTo(
+                        swapInnerHtml("other-players",
+                                      div("player-id-3", "other-player-container",
+                                          text("<h2 class=\"name\">Player 3</h2>")),
+                                      div("player-id-5", "other-player-container",
+                                          text("<h2 class=\"name\">Player 5</h2>"))));
     }
 
     private Player createPlayer(long playerId, String playerName) {

@@ -3,6 +3,7 @@ package dev.ted.tddgame.adapter.out.websocket;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Player;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public class PlayerViewComponent {
@@ -25,7 +26,7 @@ public class PlayerViewComponent {
                      handComponent);
         String targetId = "you";
         return HtmlComponent.swapInnerHtml(targetId, workspaceDiv, handContainerDiv)
-                .render();
+                            .render();
     }
 
     static HtmlComponent[] createDivsForEachCardIn(Stream<ActionCard> actionCards) {
@@ -36,7 +37,14 @@ public class PlayerViewComponent {
                 .toArray(new HtmlComponent[0]);
     }
 
-    public HtmlComponent htmlForOtherPlayers() {
-        return null;
+    public HtmlComponent htmlForOtherPlayers(List<Player> players) {
+        HtmlComponent[] otherDivs = players
+                .stream()
+                .filter(player -> !player.equals(this.player))
+                .map(player -> HtmlComponent.div("player-id-" + player.id().id(),
+                                                 "other-player-container",
+                                                 HtmlComponent.text("<h2 class=\"name\">Player " + player.id().id() + "</h2>")))
+                .toArray(HtmlComponent[]::new);
+        return HtmlComponent.swapInnerHtml("other-players", otherDivs);
     }
 }
