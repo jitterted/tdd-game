@@ -6,7 +6,6 @@ import dev.ted.tddgame.domain.Player;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
-import java.util.stream.Collectors;
 
 @Component
 public class MessageBroadcaster implements Broadcaster {
@@ -30,23 +29,13 @@ public class MessageBroadcaster implements Broadcaster {
         String html = HtmlComponent.swapDelete("modal-container").render();
         messageSendersForPlayers.sendToAll(game.handle(), html);
 
-        // SPIKE TO UPDATE VIEWS OF OTHER PLAYERS
-        String otherPlayersHtml = game.players()
-                                      .stream()
-                                      .map(player -> """
-                                                     <div id="player-id-%s" class="other-player-container">
-                                                         <h2 class="name">
-                                                             Player Named: %s
-                                                         </h2>
-                                                     </div>
-                                                     """.formatted(player.id().id(), player.playerName()))
-                                              .collect(Collectors.joining());
-        String swap = """
-                      <swap id="other-players" hx-swap-oob="innerHTML">
-                      %s
-                      </swap>
-                      """.formatted(otherPlayersHtml);
-        messageSendersForPlayers.sendToAll(game.handle(), swap);
+        for (Player player : game.players()) {
+            HtmlComponent htmlComponent = new PlayerViewComponent(player)
+                    .htmlForOtherPlayers(game.players());
+            messageSendersForPlayers.sendTo(game.handle(),
+                                            player.id(),
+                                            htmlComponent.render());
+        }
     }
 
     @Override
