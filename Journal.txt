@@ -1,3 +1,15 @@
+January 7, 2025 - Tuesday
+=========================
+
+[Decision]
+* Should "Component" things represent the "physical" way things are displayed on the screen (like GUI layouts), or is it more "logical"
+
+    * Advantage of representing the physical layout is easier to understand and map the objects to the screen
+    * Disadvantage is multiple objects representing the player's individual (personalized) view of things
+
+  I think the components should match the UI layout, which means at least two Components for custom rendering of a Player's view of their own hand+workspace, and the placeholder DIVs for the other-players view.
+
+
 January 6, 2025 - Monday
 ========================
 
