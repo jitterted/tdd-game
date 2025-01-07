@@ -26,9 +26,16 @@ public class MessageBroadcaster implements Broadcaster {
 
     @Override
     public void clearStartGameModal(Game game) {
+        sendHtmlToRemoveModalContainerForEveryone(game);
+        sendHtmlForOtherPlayerPlaceholderContainers(game);
+    }
+
+    private void sendHtmlToRemoveModalContainerForEveryone(Game game) {
         String html = HtmlComponent.swapDelete("modal-container").render();
         messageSendersForPlayers.sendToAll(game.handle(), html);
+    }
 
+    private void sendHtmlForOtherPlayerPlaceholderContainers(Game game) {
         for (Player player : game.players()) {
             HtmlComponent htmlComponent = new PlayerViewComponent(player)
                     .htmlForOtherPlayers(game.players());
