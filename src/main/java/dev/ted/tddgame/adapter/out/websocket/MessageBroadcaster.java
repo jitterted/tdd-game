@@ -25,7 +25,7 @@ public class MessageBroadcaster implements Broadcaster {
     }
 
     @Override
-    public void clearStartGameModal(Game game) {
+    public void prepareForGamePlay(Game game) {
         sendHtmlToRemoveModalContainerForEveryone(game);
         sendHtmlForOtherPlayerPlaceholderContainers(game);
     }
@@ -38,7 +38,7 @@ public class MessageBroadcaster implements Broadcaster {
     private void sendHtmlForOtherPlayerPlaceholderContainers(Game game) {
         for (Player player : game.players()) {
             HtmlComponent htmlComponent = new PlayerViewComponent(player)
-                    .htmlForOtherPlayers(game.players());
+                    .htmlPlaceholdersForOtherPlayers(game.players());
             messageSendersForPlayers.sendTo(game.handle(),
                                             player.id(),
                                             htmlComponent.render());
@@ -47,11 +47,12 @@ public class MessageBroadcaster implements Broadcaster {
 
     @Override
     public void gameUpdate(Game game) {
-        sendCustomHtmlForEachPlayerOf(game);
-        // send "other player compact view" to all
+        sendYourHtmlForEachPlayerOf(game);
+        messageSendersForPlayers.sendToAll(game.handle(),
+                                           HtmlComponent.swapInnerHtml("").render());
     }
 
-    private void sendCustomHtmlForEachPlayerOf(Game game) {
+    private void sendYourHtmlForEachPlayerOf(Game game) {
         // FUTURE: we want to iterate through all connected View Components (that encapsulated the MessageSender)
         // so that way we can broadcast updates to Observers who are NOT Players in the game
         for (Player player : game.players()) {

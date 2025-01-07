@@ -21,7 +21,7 @@ public class GamePlay {
                              .orElseThrow(() -> new RuntimeException(
                                      "Game '%s' not found".formatted(gameHandle)));
 
-        broadcaster.clearStartGameModal(game);
+        broadcaster.prepareForGamePlay(game);
 
         // start game (if not already started!)
         game.start();

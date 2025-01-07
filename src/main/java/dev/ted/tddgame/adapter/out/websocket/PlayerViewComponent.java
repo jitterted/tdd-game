@@ -38,7 +38,7 @@ public class PlayerViewComponent {
                 .toArray(new HtmlComponent[0]);
     }
 
-    public HtmlComponent htmlForOtherPlayers(List<Player> players) {
+    public HtmlComponent htmlPlaceholdersForOtherPlayers(List<Player> players) {
         HtmlComponent[] otherDivs = players
                 .stream()
                 .filter(onlyOtherPlayers())

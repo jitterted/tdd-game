@@ -115,7 +115,7 @@ class PlayerViewComponentTest {
                                        createPlayer(5L, "Player 5"));
 
         HtmlComponent htmlComponent = new PlayerViewComponent(you)
-                .htmlForOtherPlayers(players);
+                .htmlPlaceholdersForOtherPlayers(players);
 
         assertThat(htmlComponent)
                 .isEqualTo(

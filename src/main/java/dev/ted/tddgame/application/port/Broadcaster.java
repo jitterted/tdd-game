@@ -6,7 +6,7 @@ import dev.ted.tddgame.domain.Player;
 public interface Broadcaster {
     void announcePlayerConnectedToGame(Game game, Player player);
 
-    void clearStartGameModal(Game game);
+    void prepareForGamePlay(Game game);
 
     void gameUpdate(Game game);
 }

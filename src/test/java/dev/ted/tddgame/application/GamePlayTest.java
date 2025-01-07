@@ -88,7 +88,7 @@ public class GamePlayTest {
         }
 
         @Override
-        public void clearStartGameModal(Game game) {
+        public void prepareForGamePlay(Game game) {
             clearStartGameModalWasInvoked = true;
             lastGameCleared = game;
         }
@@ -115,7 +115,7 @@ public class GamePlayTest {
         }
 
         @Override
-        public void clearStartGameModal(Game game) {
+        public void prepareForGamePlay(Game game) {
             throw new IllegalArgumentException("clearStartGameModal should NOT have been invoked.");
         }
 
@@ -131,7 +131,7 @@ public class GamePlayTest {
         }
 
         @Override
-        public void clearStartGameModal(Game game) {
+        public void prepareForGamePlay(Game game) {
         }
 
         @Override

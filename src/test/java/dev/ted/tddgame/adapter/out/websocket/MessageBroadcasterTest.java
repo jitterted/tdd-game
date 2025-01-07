@@ -8,6 +8,9 @@ import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 class MessageBroadcasterTest {
@@ -36,7 +39,7 @@ class MessageBroadcasterTest {
     void startGameSendsHtmlContainersForOtherPlayersThatAreNotYou() {
         Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
 
-        fixture.broadcaster.clearStartGameModal(fixture.game);
+        fixture.broadcaster.prepareForGamePlay(fixture.game);
 
         // message text received for Samantha must not contain div with player-id-[samantha's ID]
         assertThat(fixture.messageSenderForSamantha.lastSentMessage())
@@ -45,14 +48,26 @@ class MessageBroadcasterTest {
     }
 
     @Test
-    void playerSpecificHtmlSentUponGameUpdate() {
+    void gameUpdateSendsPlayerSpecificHtml() {
         Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
 
         fixture.broadcaster.gameUpdate(fixture.game);
 
+        assertThat(fixture.messageSenderForOliver.sentMessages.size())
+                .as("Should have 2 messages sent to Oliver")
+                .isEqualTo(2);
+
+        assertThat(fixture.messageSenderForSamantha.sentMessages.size())
+                .as("Should have 2 messages sent to Samantha")
+                .isEqualTo(2);
+
+        assertThat(fixture.messageSenderForOliver.firstSentMessage())
+                .as("Oliver's custom HTML should not be the same as Samantha's (as they have different cards in their hands)")
+                .isNotEqualTo(fixture.messageSenderForSamantha.firstSentMessage());
+
         assertThat(fixture.messageSenderForOliver.lastSentMessage())
-                .as("Oliver's HTML should not be the same as Samantha's (as they have different cards in their hands)")
-                .isNotEqualTo(fixture.messageSenderForSamantha.lastSentMessage());
+                .as("Oliver's HTML for 'other players' should be the same for everyone")
+                .isEqualTo(fixture.messageSenderForSamantha.lastSentMessage());
     }
 
     // FIXTURE setup
@@ -91,11 +106,15 @@ class MessageBroadcasterTest {
     }
 
     private static class MessageSenderSpy implements MessageSender {
-        public String lastSentMessage() {
-            return sentMessage;
+        private final List<String> sentMessages = new ArrayList<>();
+
+        String firstSentMessage() {
+            return sentMessages.getFirst();
         }
 
-        private String sentMessage;
+        String lastSentMessage() {
+            return sentMessages.getLast();
+        }
 
         @Override
         public boolean isOpen() {
@@ -104,7 +123,7 @@ class MessageBroadcasterTest {
 
         @Override
         public void sendMessage(String message) {
-            sentMessage = message;
+            sentMessages.add(message);
         }
     }
 }
