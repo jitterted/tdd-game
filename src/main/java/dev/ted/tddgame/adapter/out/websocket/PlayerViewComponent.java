@@ -34,8 +34,7 @@ public class PlayerViewComponent {
         return actionCards
                 .map(card -> new HtmlComponent.Div("card",
                                                    new HtmlComponent.Text(card.title())))
-                .toList()
-                .toArray(new HtmlComponent[0]);
+                .toArray(HtmlComponent[]::new);
     }
 
     public HtmlComponent htmlPlaceholdersForOtherPlayers(List<Player> players) {
@@ -52,10 +51,8 @@ public class PlayerViewComponent {
     }
 
     private static HtmlComponent.Div createPlaceholderDiv(Player player) {
-        return HtmlComponent.div("player-id-" + player.id()
-                                                      .id(),
+        return HtmlComponent.div("player-id-" + player.id().id(),
                                  "other-player-container",
-                                 HtmlComponent.text("<h2 class=\"name\">Player " + player.id()
-                                                                                         .id() + "</h2>"));
+                                 HtmlComponent.text("<h2 class=\"name\">" + player.playerName() + "</h2>"));
     }
 }

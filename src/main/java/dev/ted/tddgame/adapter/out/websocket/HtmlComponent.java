@@ -285,4 +285,30 @@ public abstract class HtmlComponent {
                     .toString();
         }
     }
+
+    // container of components that doesn't render itself
+    static final class Forest extends HtmlComponent {
+
+        public Forest(HtmlComponent... childComponents) {
+            super(childComponents);
+        }
+
+        @Override
+        protected String renderTagOpen() {
+            return null;
+        }
+
+        @Override
+        protected String renderTagClose() {
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", Forest.class.getSimpleName() + "[", "]")
+                    .add("childComponents=" + childComponents)
+                    .toString();
+        }
+    }
+
 }

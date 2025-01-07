@@ -9,6 +9,13 @@ January 7, 2025 - Tuesday
 
   I think the components should match the UI layout, which means at least two Components for custom rendering of a Player's view of their own hand+workspace, and the placeholder DIVs for the other-players view.
 
+[Open Question]
+* Should there be a ViewComponent tree that gets translated into an HtmlComponent tree, which can then be rendered into HTML text?
+
+  e.g., GameVC contains BoardVC, YouPlayerVC, OtherPlayersVC, etc., and OtherPlayersVC contains HandVC, which contains cards.
+
+* "ForestHtmlComponent" is an HtmlComponent that does not render itself, only renders its children, which is useful for returning multiple HtmlComponents that are at the same level, i.e., multiple tree roots.
+
 
 January 6, 2025 - Monday
 ========================

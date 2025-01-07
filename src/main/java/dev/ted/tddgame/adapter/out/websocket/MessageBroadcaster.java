@@ -49,7 +49,8 @@ public class MessageBroadcaster implements Broadcaster {
     public void gameUpdate(Game game) {
         sendYourHtmlForEachPlayerOf(game);
         messageSendersForPlayers.sendToAll(game.handle(),
-                                           HtmlComponent.swapInnerHtml("").render());
+                                           new OtherPlayersViewComponent(game)
+                                                   .htmlForOtherPlayers().render());
     }
 
     private void sendYourHtmlForEachPlayerOf(Game game) {

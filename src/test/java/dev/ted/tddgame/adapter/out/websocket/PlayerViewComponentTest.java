@@ -110,9 +110,9 @@ class PlayerViewComponentTest {
     @Test
     void createsPlaceholderDivForOnlyOtherPlayers() {
         Player you = createPlayer(99L, "You as Player 99");
-        List<Player> players = List.of(createPlayer(3L, "Player 3"),
+        List<Player> players = List.of(createPlayer(3L, "Name of Player 3"),
                                        you,
-                                       createPlayer(5L, "Player 5"));
+                                       createPlayer(5L, "Name of Player 5"));
 
         HtmlComponent htmlComponent = new PlayerViewComponent(you)
                 .htmlPlaceholdersForOtherPlayers(players);
@@ -121,9 +121,9 @@ class PlayerViewComponentTest {
                 .isEqualTo(
                         swapInnerHtml("other-players",
                                       div("player-id-3", "other-player-container",
-                                          text("<h2 class=\"name\">Player 3</h2>")),
+                                          text("<h2 class=\"name\">Name of Player 3</h2>")),
                                       div("player-id-5", "other-player-container",
-                                          text("<h2 class=\"name\">Player 5</h2>"))));
+                                          text("<h2 class=\"name\">Name of Player 5</h2>"))));
     }
 
     private Player createPlayer(long playerId, String playerName) {
