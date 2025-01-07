@@ -4,6 +4,7 @@ import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Player;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class PlayerViewComponent {
@@ -40,11 +41,21 @@ public class PlayerViewComponent {
     public HtmlComponent htmlForOtherPlayers(List<Player> players) {
         HtmlComponent[] otherDivs = players
                 .stream()
-                .filter(player -> !player.equals(this.player))
-                .map(player -> HtmlComponent.div("player-id-" + player.id().id(),
-                                                 "other-player-container",
-                                                 HtmlComponent.text("<h2 class=\"name\">Player " + player.id().id() + "</h2>")))
+                .filter(onlyOtherPlayers())
+                .map(PlayerViewComponent::createPlaceholderDiv)
                 .toArray(HtmlComponent[]::new);
         return HtmlComponent.swapInnerHtml("other-players", otherDivs);
+    }
+
+    private Predicate<Player> onlyOtherPlayers() {
+        return player -> !player.equals(this.player);
+    }
+
+    private static HtmlComponent.Div createPlaceholderDiv(Player player) {
+        return HtmlComponent.div("player-id-" + player.id()
+                                                      .id(),
+                                 "other-player-container",
+                                 HtmlComponent.text("<h2 class=\"name\">Player " + player.id()
+                                                                                         .id() + "</h2>"));
     }
 }
