@@ -18,11 +18,11 @@ public abstract class HtmlComponent {
     }
 
     static HtmlComponent div(String cssClass, HtmlComponent... childComponents) {
-        return new Div(cssClass, childComponents);
+        return new GenericElement("div", null, cssClass, childComponents);
     }
 
     static HtmlComponent div(String htmlId, String cssClass, HtmlComponent... childComponents) {
-        return new Div(htmlId, cssClass, childComponents);
+        return new GenericElement("div", htmlId, cssClass, childComponents);
     }
 
     static HtmlComponent swapInnerHtml(String targetId, HtmlComponent... childComponents) {
@@ -131,18 +131,6 @@ public abstract class HtmlComponent {
                     .add("targetId='" + targetId + "'")
                     .toString();
         }
-    }
-
-    private static class Div extends GenericElement {
-
-        Div(String cssClass, HtmlComponent... childComponents) {
-            super("div", null, cssClass, childComponents);
-        }
-
-        Div(String htmlId, String cssClass, HtmlComponent... childComponents) {
-            super("div", htmlId, cssClass, childComponents);
-        }
-
     }
 
     static final class Text extends HtmlComponent {
