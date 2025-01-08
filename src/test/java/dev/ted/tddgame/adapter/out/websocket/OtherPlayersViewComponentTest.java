@@ -46,7 +46,7 @@ class OtherPlayersViewComponentTest {
         //         </div>
         //     </div>
         // </div>
-        HtmlComponent.Swap oliverSwap =
+        HtmlComponent oliverSwap =
                 swapInnerHtml("player-id-" + oliverPlayer.id().id(),
                               text("<h2 class=\"name\">Oliver</h2>"),
                               div("other-player-container",
@@ -54,7 +54,7 @@ class OtherPlayersViewComponentTest {
                                       text("Hand"),
                                       new HandViewComponent(oliverPlayer).handDiv())
                               ));
-        HtmlComponent.Swap samanthaSwap =
+        HtmlComponent samanthaSwap =
                 swapInnerHtml("player-id-" + samanthaPlayer.id().id(),
                               text("<h2 class=\"name\">Samantha</h2>"),
                               div("other-player-container",

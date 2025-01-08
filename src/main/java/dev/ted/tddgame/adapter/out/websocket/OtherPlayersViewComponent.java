@@ -23,7 +23,7 @@ public class OtherPlayersViewComponent {
         return new HtmlComponent.Forest(htmlComponents);
     }
 
-    private static HtmlComponent.Swap createSwapInnerHtml(Player player) {
+    private static HtmlComponent createSwapInnerHtml(Player player) {
         HtmlComponent nameH2 = text("<h2 class=\"name\">%s</h2>"
                                             .formatted(player.playerName()));
         HtmlComponent divContainer = div("other-player-container",

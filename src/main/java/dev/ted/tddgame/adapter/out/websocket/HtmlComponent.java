@@ -17,23 +17,23 @@ public abstract class HtmlComponent {
         return new Text(textComponentContents);
     }
 
-    static Div div(String cssClass, HtmlComponent... childComponents) {
+    static HtmlComponent div(String cssClass, HtmlComponent... childComponents) {
         return new Div(cssClass, childComponents);
     }
 
-    static Div div(String htmlId, String cssClass, HtmlComponent... childComponents) {
+    static HtmlComponent div(String htmlId, String cssClass, HtmlComponent... childComponents) {
         return new Div(htmlId, cssClass, childComponents);
     }
 
-    static Swap swapInnerHtml(String targetId, HtmlComponent... childComponents) {
+    static HtmlComponent swapInnerHtml(String targetId, HtmlComponent... childComponents) {
         return new Swap(targetId, "innerHTML", childComponents);
     }
 
-    static Swap swapAfterBegin(String targetId, HtmlComponent... childComponents) {
+    static HtmlComponent swapAfterBegin(String targetId, HtmlComponent... childComponents) {
         return new Swap(targetId, "afterbegin", childComponents);
     }
 
-    static Swap swapDelete(String targetId) {
+    static HtmlComponent swapDelete(String targetId) {
         return new Swap(targetId, "delete");
     }
 
@@ -77,7 +77,7 @@ public abstract class HtmlComponent {
         return childComponents.hashCode();
     }
 
-    static final class Swap extends HtmlComponent {
+    private static final class Swap extends HtmlComponent {
 
         private final String targetId;
         private final String swapStrategy;
@@ -133,34 +133,14 @@ public abstract class HtmlComponent {
         }
     }
 
-    static class Div extends GenericElement {
+    private static class Div extends GenericElement {
 
         Div(String cssClass, HtmlComponent... childComponents) {
-            super(null, cssClass, childComponents);
+            super("div", null, cssClass, childComponents);
         }
 
-        public Div(String htmlId, String cssClass, HtmlComponent... childComponents) {
-            super(htmlId, cssClass, childComponents);
-        }
-
-
-        @Override
-        public final boolean equals(Object o) {
-            if (!(o instanceof Div div)) {
-                return false;
-            }
-            if (!super.equals(o)) {
-                return false;
-            }
-
-            return attributes.equals(div.attributes);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + attributes.hashCode();
-            return result;
+        Div(String htmlId, String cssClass, HtmlComponent... childComponents) {
+            super("div", htmlId, cssClass, childComponents);
         }
 
     }
@@ -282,21 +262,18 @@ public abstract class HtmlComponent {
         }
     }
 
-    public static class GenericElement extends HtmlComponent {
+    private static class GenericElement extends HtmlComponent {
         protected final List<HtmlAttribute> attributes = new ArrayList<>();
-        protected final String tag = "div";
+        protected final String tag;
 
-        public GenericElement(HtmlComponent... childComponents) {
-            super(childComponents);
-        }
-
-        public GenericElement(String htmlId, String cssClass, HtmlComponent... childComponents) {
+        GenericElement(String tagName, String htmlId, String cssClass, HtmlComponent... childComponents) {
             super(childComponents);
             Objects.requireNonNull(cssClass);
             if (htmlId != null) {
                 attributes.add(new HtmlAttribute("id", htmlId));
             }
             attributes.add(new HtmlAttribute("class", cssClass));
+            tag = tagName;
         }
 
 
@@ -313,6 +290,27 @@ public abstract class HtmlComponent {
         @Override
         protected String renderTagClose() {
             return "</" + tag + ">\n";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            if (!super.equals(o)) {
+                return false;
+            }
+
+            GenericElement that = (GenericElement) o;
+            return attributes.equals(that.attributes) && tag.equals(that.tag);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = super.hashCode();
+            result = 31 * result + attributes.hashCode();
+            result = 31 * result + tag.hashCode();
+            return result;
         }
 
         @Override

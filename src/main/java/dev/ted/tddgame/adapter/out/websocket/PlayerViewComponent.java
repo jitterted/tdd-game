@@ -13,13 +13,13 @@ public class PlayerViewComponent {
     }
 
     HtmlComponent htmlForYou() {
-        HtmlComponent workspaceDiv = new HtmlComponent
-                .Div("workspace",
-                     new HtmlComponent.Text("<h2>Workspace</h2>"));
+        HtmlComponent workspaceDiv =HtmlComponent
+                .div("workspace",
+                     HtmlComponent.text("<h2>Workspace</h2>"));
         HtmlComponent handComponent = new HandViewComponent(player).handDiv();
-        HtmlComponent handContainerDiv = new HtmlComponent
-                .Div("titled-container",
-                     new HtmlComponent.Text("Your Hand"),
+        HtmlComponent handContainerDiv = HtmlComponent
+                .div("titled-container",
+                     HtmlComponent.text("Your Hand"),
                      handComponent);
         String targetId = "you";
         return HtmlComponent.swapInnerHtml(targetId, workspaceDiv, handContainerDiv);
@@ -38,7 +38,7 @@ public class PlayerViewComponent {
         return player -> !player.equals(this.player);
     }
 
-    private static HtmlComponent.Div createPlaceholderDiv(Player player) {
+    private static HtmlComponent createPlaceholderDiv(Player player) {
         return HtmlComponent.div("player-id-" + player.id().id(),
                                  "other-player-container",
                                  HtmlComponent.text("<h2 class=\"name\">" + player.playerName() + "</h2>"));
