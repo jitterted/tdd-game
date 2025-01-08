@@ -43,6 +43,10 @@ public abstract class HtmlElement {
         return new Swap(targetId, "delete");
     }
 
+    static HtmlElement img(String src, String altText) {
+        return new ImgElement("img", src, altText);
+    }
+
     protected String renderNested() {
         return childComponents.stream()
                               .map(this::render)

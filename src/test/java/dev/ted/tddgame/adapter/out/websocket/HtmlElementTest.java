@@ -125,7 +125,7 @@ class HtmlElementTest {
 
     @Test
     void imgElementHasSrcAttribute() {
-        HtmlElement img = new HtmlElement.ImgElement("img", "image-name.png", "alt text");
+        HtmlElement img = HtmlElement.img("image-name.png", "alt text");
 
         assertThat(img.render())
                 .isEqualTo("""
