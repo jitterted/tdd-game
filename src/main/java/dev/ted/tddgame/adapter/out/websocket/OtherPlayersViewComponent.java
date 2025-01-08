@@ -29,7 +29,7 @@ public class OtherPlayersViewComponent {
         HtmlComponent divContainer = div("other-player-container",
                                          div("titled-container",
                                              text("Hand"),
-                                             HandViewComponent.handDivFor(player)
+                                             new HandViewComponent(player).handDiv()
                                          ));
         return swapInnerHtml("player-id-" + player.id().id(),
                              nameH2,

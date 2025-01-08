@@ -16,7 +16,7 @@ public class PlayerViewComponent {
         HtmlComponent workspaceDiv = new HtmlComponent
                 .Div("workspace",
                      new HtmlComponent.Text("<h2>Workspace</h2>"));
-        HtmlComponent handComponent = HandViewComponent.handDivFor(player);
+        HtmlComponent handComponent = new HandViewComponent(player).handDiv();
         HtmlComponent handContainerDiv = new HtmlComponent
                 .Div("titled-container",
                      new HtmlComponent.Text("Your Hand"),

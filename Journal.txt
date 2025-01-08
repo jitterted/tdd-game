@@ -1,3 +1,16 @@
+January 8, 2025 - Wednesday
+===========================
+
+* Refactoring a static method with parameter to instance method with field (~2:00 mark)
+
+    1. Create the private final field matching the method parameter
+    2. [auto] Generated constructor with field as parameter
+    3. Copy the static method to an instance method, dropping the parameter (so it uses the field)
+    4. In the static method, call the constructor with the parameter and then call the new instance method (from #3)
+    5. [auto] inline the static method into callers
+
+
+
 January 7, 2025 - Tuesday
 =========================
 
