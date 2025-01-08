@@ -29,18 +29,11 @@ public class OtherPlayersViewComponent {
         HtmlComponent divContainer = div("other-player-container",
                                          div("titled-container",
                                              text("Hand"),
-                                             handDivFor(player)
+                                             HandViewComponent.handDivFor(player)
                                          ));
         return swapInnerHtml("player-id-" + player.id().id(),
                              nameH2,
                              divContainer);
     }
 
-    private static HtmlComponent.Div handDivFor(Player player) {
-        HtmlComponent[] cardDivs = player.hand()
-                                         .map(actionCard -> div("card", text(actionCard.title())))
-                                         .toArray(HtmlComponent[]::new);
-        return div("hand", cardDivs);
-
-    }
 }

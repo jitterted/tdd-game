@@ -1,11 +1,9 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
-import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Player;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public class PlayerViewComponent {
     private final Player player;
@@ -18,9 +16,7 @@ public class PlayerViewComponent {
         HtmlComponent workspaceDiv = new HtmlComponent
                 .Div("workspace",
                      new HtmlComponent.Text("<h2>Workspace</h2>"));
-        HtmlComponent handComponent = new HtmlComponent
-                .Div("hand",
-                     createDivsForEachCardIn(player.hand()));
+        HtmlComponent handComponent = HandViewComponent.handDivFor(player);
         HtmlComponent handContainerDiv = new HtmlComponent
                 .Div("titled-container",
                      new HtmlComponent.Text("Your Hand"),
@@ -28,13 +24,6 @@ public class PlayerViewComponent {
         String targetId = "you";
         return HtmlComponent.swapInnerHtml(targetId, workspaceDiv, handContainerDiv)
                             .render();
-    }
-
-    static HtmlComponent[] createDivsForEachCardIn(Stream<ActionCard> actionCards) {
-        return actionCards
-                .map(card -> new HtmlComponent.Div("card",
-                                                   new HtmlComponent.Text(card.title())))
-                .toArray(HtmlComponent[]::new);
     }
 
     public HtmlComponent htmlPlaceholdersForOtherPlayers(List<Player> players) {
