@@ -52,11 +52,7 @@ class PlayerViewComponentTest {
                                           text("<h2>Workspace</h2>")),
                                       div("titled-container",
                                           text("Your Hand"),
-                                          div("hand",
-                                              div("card",
-                                                  text("less code")
-                                              )
-                                          )
+                                          HandViewComponent.handDivFor(player)
                                       )
                         )
                 );
@@ -80,13 +76,7 @@ class PlayerViewComponentTest {
                                           text("<h2>Workspace</h2>")),
                                       div("titled-container",
                                           text("Your Hand"),
-                                          div("hand",
-                                              div("card", text("predict")),
-                                              div("card", text("predict")),
-                                              div("card", text("less code")),
-                                              div("card", text("write code")),
-                                              div("card", text("refactor"))
-                                          )
+                                          HandViewComponent.handDivFor(player)
                                       )
                         )
                 );

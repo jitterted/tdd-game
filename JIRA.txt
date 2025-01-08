@@ -133,7 +133,7 @@ Player's "State Machine":
 
 ==> WE ARE HERE:
 
-                [ ] Convert PlayerViewComponentTest to be structural instead of raw string comparisons
+                [X] Convert PlayerViewComponentTest to be structural instead of raw string comparisons
 
                 [ ] Display cards in "Your Hand" as Images instead of words
                 [ ] Display cards in Other Players' hands as Images instead of words
