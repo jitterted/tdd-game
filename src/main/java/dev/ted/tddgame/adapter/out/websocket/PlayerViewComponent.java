@@ -12,7 +12,7 @@ public class PlayerViewComponent {
         this.player = player;
     }
 
-    public String generateHtmlAsYou() {
+    HtmlComponent htmlForYou() {
         HtmlComponent workspaceDiv = new HtmlComponent
                 .Div("workspace",
                      new HtmlComponent.Text("<h2>Workspace</h2>"));
@@ -22,11 +22,10 @@ public class PlayerViewComponent {
                      new HtmlComponent.Text("Your Hand"),
                      handComponent);
         String targetId = "you";
-        return HtmlComponent.swapInnerHtml(targetId, workspaceDiv, handContainerDiv)
-                            .render();
+        return HtmlComponent.swapInnerHtml(targetId, workspaceDiv, handContainerDiv);
     }
 
-    public HtmlComponent htmlPlaceholdersForOtherPlayers(List<Player> players) {
+    HtmlComponent htmlPlaceholdersForOtherPlayers(List<Player> players) {
         HtmlComponent[] otherDivs = players
                 .stream()
                 .filter(onlyOtherPlayers())
