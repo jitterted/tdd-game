@@ -133,38 +133,16 @@ public abstract class HtmlComponent {
         }
     }
 
-    static class Div extends HtmlComponent {
-
-        private final List<HtmlAttribute> attributes = new ArrayList<>();
+    static class Div extends GenericElement {
 
         Div(String cssClass, HtmlComponent... childComponents) {
-            this(null, cssClass, childComponents);
+            super(null, cssClass, childComponents);
         }
 
         public Div(String htmlId, String cssClass, HtmlComponent... childComponents) {
-            super(childComponents);
-            Objects.requireNonNull(cssClass);
-//            Objects.requireNonNull(htmlId);
-            if (htmlId != null) {
-                attributes.add(new HtmlAttribute("id", htmlId));
-            }
-            attributes.add(new HtmlAttribute("class", cssClass));
+            super(htmlId, cssClass, childComponents);
         }
 
-        @Override
-        protected String renderTagOpen() {
-            String renderedAttributes = attributes.stream()
-                                                  .map(HtmlAttribute::render)
-                                                  .collect(Collectors.joining(" "));
-            return """
-                   <div %s>
-                   """.formatted(renderedAttributes);
-        }
-
-        @Override
-        protected String renderTagClose() {
-            return "</div>\n";
-        }
 
         @Override
         public final boolean equals(Object o) {
@@ -185,54 +163,6 @@ public abstract class HtmlComponent {
             return result;
         }
 
-        @Override
-        public String toString() {
-            return new StringJoiner(", ", Div.class.getSimpleName() + "[", "]")
-                    .add("attributes=" + attributes)
-                    .add("childComponents=" + childComponents)
-                    .toString();
-        }
-    }
-
-    static class HtmlAttribute {
-        private final String name;
-        private final String value;
-
-        public HtmlAttribute(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        String render() {
-            if (value == null) {
-                return "";
-            }
-            return name + "=\"" + value + "\"";
-        }
-
-        @Override
-        public final boolean equals(Object o) {
-            if (!(o instanceof HtmlAttribute that)) {
-                return false;
-            }
-
-            return name.equals(that.name) && value.equals(that.value);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = name.hashCode();
-            result = 31 * result + value.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return new StringJoiner(", ", HtmlAttribute.class.getSimpleName() + "[", "]")
-                    .add("name='" + name + "'")
-                    .add("value='" + value + "'")
-                    .toString();
-        }
     }
 
     static final class Text extends HtmlComponent {
@@ -311,4 +241,87 @@ public abstract class HtmlComponent {
         }
     }
 
+    static class HtmlAttribute {
+        private final String name;
+        private final String value;
+
+        public HtmlAttribute(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        String render() {
+            if (value == null) {
+                return "";
+            }
+            return name + "=\"" + value + "\"";
+        }
+
+        @Override
+        public final boolean equals(Object o) {
+            if (!(o instanceof HtmlAttribute that)) {
+                return false;
+            }
+
+            return name.equals(that.name) && value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = name.hashCode();
+            result = 31 * result + value.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", HtmlAttribute.class.getSimpleName() + "[", "]")
+                    .add("name='" + name + "'")
+                    .add("value='" + value + "'")
+                    .toString();
+        }
+    }
+
+    public static class GenericElement extends HtmlComponent {
+        protected final List<HtmlAttribute> attributes = new ArrayList<>();
+        protected final String tag = "div";
+
+        public GenericElement(HtmlComponent... childComponents) {
+            super(childComponents);
+        }
+
+        public GenericElement(String htmlId, String cssClass, HtmlComponent... childComponents) {
+            super(childComponents);
+            Objects.requireNonNull(cssClass);
+            if (htmlId != null) {
+                attributes.add(new HtmlAttribute("id", htmlId));
+            }
+            attributes.add(new HtmlAttribute("class", cssClass));
+        }
+
+
+        @Override
+        protected String renderTagOpen() {
+            String renderedAttributes = attributes.stream()
+                                                  .map(HtmlAttribute::render)
+                                                  .collect(Collectors.joining(" "));
+            return """
+                   <%s %s>
+                   """.formatted(tag, renderedAttributes);
+        }
+
+        @Override
+        protected String renderTagClose() {
+            return "</" + tag + ">\n";
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", this.getClass().getSimpleName() + "[", "]")
+                    .add("tag=" + tag)
+                    .add("attributes=" + attributes)
+                    .add("childComponents=" + childComponents)
+                    .toString();
+        }
+    }
 }
