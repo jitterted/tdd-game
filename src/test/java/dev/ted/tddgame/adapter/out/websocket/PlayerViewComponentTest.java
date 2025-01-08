@@ -24,21 +24,17 @@ class PlayerViewComponentTest {
         Player player = createPlayer(79L, "Player with no cards");
 
         HtmlComponent htmlComponent = new PlayerViewComponent(player).htmlForYou();
-        String generatedHtml = htmlComponent.render();
-
-        assertThat(generatedHtml)
-                .isEqualTo("""
-                           <swap id="you" hx-swap-oob="innerHTML">
-                               <div class="workspace">
-                                   <h2>Workspace</h2>
-                               </div>
-                               <div class="titled-container">
-                                   Your Hand
-                                   <div class="hand">
-                                   </div>
-                               </div>
-                           </swap>
-                           """);
+        assertThat(htmlComponent)
+                .isEqualTo(
+                        swapInnerHtml("you",
+                                      div("workspace",
+                                          text("<h2>Workspace</h2>")),
+                                      div("titled-container",
+                                          text("Your Hand"),
+                                          div("hand")
+                                      )
+                        )
+                );
     }
 
     @Test
@@ -48,24 +44,22 @@ class PlayerViewComponentTest {
                                               ActionCard.LESS_CODE));
 
         HtmlComponent htmlComponent = new PlayerViewComponent(player).htmlForYou();
-        String generatedHtml = htmlComponent.render();
 
-        assertThat(generatedHtml)
-                .isEqualTo("""
-                           <swap id="you" hx-swap-oob="innerHTML">
-                               <div class="workspace">
-                                   <h2>Workspace</h2>
-                               </div>
-                               <div class="titled-container">
-                                   Your Hand
-                                   <div class="hand">
-                                       <div class="card">
-                                           less code
-                                       </div>
-                                   </div>
-                               </div>
-                           </swap>
-                           """);
+        assertThat(htmlComponent)
+                .isEqualTo(
+                        swapInnerHtml("you",
+                                      div("workspace",
+                                          text("<h2>Workspace</h2>")),
+                                      div("titled-container",
+                                          text("Your Hand"),
+                                          div("hand",
+                                              div("card",
+                                                  text("less code")
+                                              )
+                                          )
+                                      )
+                        )
+                );
     }
 
     @Test
@@ -78,36 +72,25 @@ class PlayerViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
 
         HtmlComponent htmlComponent = new PlayerViewComponent(player).htmlForYou();
-        String generatedHtml = htmlComponent.render();
 
-        assertThat(generatedHtml)
-                .isEqualTo("""
-                           <swap id="you" hx-swap-oob="innerHTML">
-                               <div class="workspace">
-                                   <h2>Workspace</h2>
-                               </div>
-                               <div class="titled-container">
-                                   Your Hand
-                                   <div class="hand">
-                                       <div class="card">
-                                           predict
-                                       </div>
-                                       <div class="card">
-                                           predict
-                                       </div>
-                                       <div class="card">
-                                           less code
-                                       </div>
-                                       <div class="card">
-                                           write code
-                                       </div>
-                                       <div class="card">
-                                           refactor
-                                       </div>
-                                   </div>
-                               </div>
-                           </swap>
-                           """);
+        assertThat(htmlComponent)
+                .isEqualTo(
+                        swapInnerHtml("you",
+                                      div("workspace",
+                                          text("<h2>Workspace</h2>")),
+                                      div("titled-container",
+                                          text("Your Hand"),
+                                          div("hand",
+                                              div("card", text("predict")),
+                                              div("card", text("predict")),
+                                              div("card", text("less code")),
+                                              div("card", text("write code")),
+                                              div("card", text("refactor"))
+                                          )
+                                      )
+                        )
+                );
+
     }
 
     @Test

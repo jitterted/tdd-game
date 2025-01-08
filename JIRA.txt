@@ -133,10 +133,13 @@ Player's "State Machine":
 
 ==> WE ARE HERE:
 
+                [ ] Convert PlayerViewComponentTest to be structural instead of raw string comparisons
+
                 [ ] Display cards in "Your Hand" as Images instead of words
                 [ ] Display cards in Other Players' hands as Images instead of words
 
-                [ ] Convert PlayerViewComponentTest to be structural instead of raw string comparisons
+                [ ] Stop using Text HtmlComponent for H2 and other tags, by creating a generic HtmlTag component, and then escape the text
+
 
                 ==> more UI display of Player hands, in-play areas, etc.
 
