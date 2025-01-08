@@ -6,34 +6,40 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-public abstract class HtmlComponent {
-    protected final List<HtmlComponent> childComponents;
+// https://html.spec.whatwg.org/multipage/infrastructure.html#html-elements
+public abstract class HtmlElement {
+    protected final List<HtmlElement> childComponents;
+    protected final List<HtmlAttribute> attributes = new ArrayList<>();
+    protected final String tag;
 
-    public HtmlComponent(HtmlComponent... childComponents) {
+    public HtmlElement(String tag, HtmlElement... childComponents) {
+        Objects.requireNonNull(tag);
+
         this.childComponents = List.of(childComponents);
+        this.tag = tag;
     }
 
     static Text text(String textComponentContents) {
         return new Text(textComponentContents);
     }
 
-    static HtmlComponent div(String cssClass, HtmlComponent... childComponents) {
-        return new GenericElement("div", null, cssClass, childComponents);
+    static HtmlElement div(String cssClass, HtmlElement... childComponents) {
+        return new NormalElement("div", null, cssClass, childComponents);
     }
 
-    static HtmlComponent div(String htmlId, String cssClass, HtmlComponent... childComponents) {
-        return new GenericElement("div", htmlId, cssClass, childComponents);
+    static HtmlElement div(String htmlId, String cssClass, HtmlElement... childComponents) {
+        return new NormalElement("div", htmlId, cssClass, childComponents);
     }
 
-    static HtmlComponent swapInnerHtml(String targetId, HtmlComponent... childComponents) {
+    static HtmlElement swapInnerHtml(String targetId, HtmlElement... childComponents) {
         return new Swap(targetId, "innerHTML", childComponents);
     }
 
-    static HtmlComponent swapAfterBegin(String targetId, HtmlComponent... childComponents) {
+    static HtmlElement swapAfterBegin(String targetId, HtmlElement... childComponents) {
         return new Swap(targetId, "afterbegin", childComponents);
     }
 
-    static HtmlComponent swapDelete(String targetId) {
+    static HtmlElement swapDelete(String targetId) {
         return new Swap(targetId, "delete");
     }
 
@@ -43,7 +49,7 @@ public abstract class HtmlComponent {
                               .collect(Collectors.joining());
     }
 
-    private String render(HtmlComponent component) {
+    private String render(HtmlElement component) {
         return component.render()
                         .lines()
                         .map(s -> "    " + s + "\n")
@@ -60,6 +66,12 @@ public abstract class HtmlComponent {
 
     protected abstract String renderTagOpen();
 
+    protected String renderAttributes() {
+        return attributes.stream()
+                         .map(HtmlAttribute::render)
+                         .collect(Collectors.joining(" "));
+    }
+
     protected abstract String renderTagClose();
 
     @Override
@@ -68,7 +80,7 @@ public abstract class HtmlComponent {
             return false;
         }
 
-        HtmlComponent that = (HtmlComponent) o;
+        HtmlElement that = (HtmlElement) o;
         return childComponents.equals(that.childComponents);
     }
 
@@ -77,13 +89,13 @@ public abstract class HtmlComponent {
         return childComponents.hashCode();
     }
 
-    private static final class Swap extends HtmlComponent {
+    private static final class Swap extends HtmlElement {
 
         private final String targetId;
         private final String swapStrategy;
 
-        Swap(String targetId, String swapStrategy, HtmlComponent... childComponents) {
-            super(childComponents);
+        Swap(String targetId, String swapStrategy, HtmlElement... childComponents) {
+            super("", childComponents);
             Objects.requireNonNull(targetId);
             Objects.requireNonNull(swapStrategy);
             Objects.requireNonNull(childComponents);
@@ -133,11 +145,12 @@ public abstract class HtmlComponent {
         }
     }
 
-    static final class Text extends HtmlComponent {
+    static final class Text extends HtmlElement {
 
         private final String text;
 
         Text(String text) {
+            super("");
             Objects.requireNonNull(text);
             this.text = text;
         }
@@ -185,10 +198,10 @@ public abstract class HtmlComponent {
     }
 
     // container of components that doesn't render itself
-    static final class Forest extends HtmlComponent {
+    static final class Forest extends HtmlElement {
 
-        public Forest(HtmlComponent... childComponents) {
-            super(childComponents);
+        public Forest(HtmlElement... childComponents) {
+            super("forest", childComponents);
         }
 
         @Override
@@ -250,29 +263,24 @@ public abstract class HtmlComponent {
         }
     }
 
-    private static class GenericElement extends HtmlComponent {
-        protected final List<HtmlAttribute> attributes = new ArrayList<>();
-        protected final String tag;
+    // https://html.spec.whatwg.org/multipage/syntax.html#normal-elements
+    static class NormalElement extends HtmlElement {
 
-        GenericElement(String tagName, String htmlId, String cssClass, HtmlComponent... childComponents) {
-            super(childComponents);
-            Objects.requireNonNull(cssClass);
+        NormalElement(String tag, String htmlId, String cssClass, HtmlElement... childComponents) {
+            super(tag, childComponents);
             if (htmlId != null) {
                 attributes.add(new HtmlAttribute("id", htmlId));
             }
-            attributes.add(new HtmlAttribute("class", cssClass));
-            tag = tagName;
+            if (cssClass != null) {
+                attributes.add(new HtmlAttribute("class", cssClass));
+            }
         }
-
 
         @Override
         protected String renderTagOpen() {
-            String renderedAttributes = attributes.stream()
-                                                  .map(HtmlAttribute::render)
-                                                  .collect(Collectors.joining(" "));
             return """
                    <%s %s>
-                   """.formatted(tag, renderedAttributes);
+                   """.formatted(tag, renderAttributes());
         }
 
         @Override
@@ -289,7 +297,7 @@ public abstract class HtmlComponent {
                 return false;
             }
 
-            GenericElement that = (GenericElement) o;
+            NormalElement that = (NormalElement) o;
             return attributes.equals(that.attributes) && tag.equals(that.tag);
         }
 
@@ -308,6 +316,29 @@ public abstract class HtmlComponent {
                     .add("attributes=" + attributes)
                     .add("childComponents=" + childComponents)
                     .toString();
+        }
+    }
+
+    // could become VoidElement: https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+    static class ImgElement extends HtmlElement {
+        public ImgElement(String tag, String src, String altText) {
+            super(tag);
+            Objects.requireNonNull(src);
+            Objects.requireNonNull(altText);
+            attributes.add(new HtmlAttribute("src", src));
+            attributes.add(new HtmlAttribute("alt", altText));
+        }
+
+        @Override
+        protected String renderTagOpen() {
+            return """
+                   <%s %s>
+                   """.formatted(tag, renderAttributes());
+        }
+
+        @Override
+        protected String renderTagClose() {
+            return "";
         }
     }
 }

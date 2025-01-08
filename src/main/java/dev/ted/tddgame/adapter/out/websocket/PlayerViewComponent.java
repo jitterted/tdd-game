@@ -12,35 +12,35 @@ public class PlayerViewComponent {
         this.player = player;
     }
 
-    HtmlComponent htmlForYou() {
-        HtmlComponent workspaceDiv =HtmlComponent
+    HtmlElement htmlForYou() {
+        HtmlElement workspaceDiv = HtmlElement
                 .div("workspace",
-                     HtmlComponent.text("<h2>Workspace</h2>"));
-        HtmlComponent handComponent = new HandViewComponent(player).handDiv();
-        HtmlComponent handContainerDiv = HtmlComponent
+                     HtmlElement.text("<h2>Workspace</h2>"));
+        HtmlElement handComponent = new HandViewComponent(player).handDiv();
+        HtmlElement handContainerDiv = HtmlElement
                 .div("titled-container",
-                     HtmlComponent.text("Your Hand"),
+                     HtmlElement.text("Your Hand"),
                      handComponent);
         String targetId = "you";
-        return HtmlComponent.swapInnerHtml(targetId, workspaceDiv, handContainerDiv);
+        return HtmlElement.swapInnerHtml(targetId, workspaceDiv, handContainerDiv);
     }
 
-    HtmlComponent htmlPlaceholdersForOtherPlayers(List<Player> players) {
-        HtmlComponent[] otherDivs = players
+    HtmlElement htmlPlaceholdersForOtherPlayers(List<Player> players) {
+        HtmlElement[] otherDivs = players
                 .stream()
                 .filter(onlyOtherPlayers())
                 .map(PlayerViewComponent::createPlaceholderDiv)
-                .toArray(HtmlComponent[]::new);
-        return HtmlComponent.swapInnerHtml("other-players", otherDivs);
+                .toArray(HtmlElement[]::new);
+        return HtmlElement.swapInnerHtml("other-players", otherDivs);
     }
 
     private Predicate<Player> onlyOtherPlayers() {
         return player -> !player.equals(this.player);
     }
 
-    private static HtmlComponent createPlaceholderDiv(Player player) {
-        return HtmlComponent.div("player-id-" + player.id().id(),
-                                 "other-player-container",
-                                 HtmlComponent.text("<h2 class=\"name\">" + player.playerName() + "</h2>"));
+    private static HtmlElement createPlaceholderDiv(Player player) {
+        return HtmlElement.div("player-id-" + player.id().id(),
+                               "other-player-container",
+                               HtmlElement.text("<h2 class=\"name\">" + player.playerName() + "</h2>"));
     }
 }

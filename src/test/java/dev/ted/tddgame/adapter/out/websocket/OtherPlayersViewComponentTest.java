@@ -5,9 +5,9 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
 
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.div;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.swapInnerHtml;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.text;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.swapInnerHtml;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
 
 class OtherPlayersViewComponentTest {
@@ -24,7 +24,7 @@ class OtherPlayersViewComponentTest {
 
         game.start();
 
-        HtmlComponent htmlComponentActual = new OtherPlayersViewComponent(game)
+        HtmlElement htmlElementActual = new OtherPlayersViewComponent(game)
                 .htmlForOtherPlayers();
         // actual is a ForestHtmlComponent that contains:
         // 2 swap-innerHTML components, 1 for each player's hand
@@ -46,7 +46,7 @@ class OtherPlayersViewComponentTest {
         //         </div>
         //     </div>
         // </div>
-        HtmlComponent oliverSwap =
+        HtmlElement oliverSwap =
                 swapInnerHtml("player-id-" + oliverPlayer.id().id(),
                               text("<h2 class=\"name\">Oliver</h2>"),
                               div("other-player-container",
@@ -54,7 +54,7 @@ class OtherPlayersViewComponentTest {
                                       text("Hand"),
                                       new HandViewComponent(oliverPlayer).handDiv())
                               ));
-        HtmlComponent samanthaSwap =
+        HtmlElement samanthaSwap =
                 swapInnerHtml("player-id-" + samanthaPlayer.id().id(),
                               text("<h2 class=\"name\">Samantha</h2>"),
                               div("other-player-container",
@@ -63,8 +63,8 @@ class OtherPlayersViewComponentTest {
                                       new HandViewComponent(samanthaPlayer).handDiv())
                               ));
 
-        assertThat(htmlComponentActual)
-                .isEqualTo(new HtmlComponent.Forest(
+        assertThat(htmlElementActual)
+                .isEqualTo(new HtmlElement.Forest(
                         oliverSwap,
                         samanthaSwap
                 ));

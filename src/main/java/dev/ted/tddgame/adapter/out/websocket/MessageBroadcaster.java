@@ -31,17 +31,17 @@ public class MessageBroadcaster implements Broadcaster {
     }
 
     private void sendHtmlToRemoveModalContainerForEveryone(Game game) {
-        String html = HtmlComponent.swapDelete("modal-container").render();
+        String html = HtmlElement.swapDelete("modal-container").render();
         messageSendersForPlayers.sendToAll(game.handle(), html);
     }
 
     private void sendHtmlForOtherPlayerPlaceholderContainers(Game game) {
         for (Player player : game.players()) {
-            HtmlComponent htmlComponent = new PlayerViewComponent(player)
+            HtmlElement htmlElement = new PlayerViewComponent(player)
                     .htmlPlaceholdersForOtherPlayers(game.players());
             messageSendersForPlayers.sendTo(game.handle(),
                                             player.id(),
-                                            htmlComponent.render());
+                                            htmlElement.render());
         }
     }
 
@@ -57,11 +57,11 @@ public class MessageBroadcaster implements Broadcaster {
         // FUTURE: we want to iterate through all connected View Components (that encapsulated the MessageSender)
         // so that way we can broadcast updates to Observers who are NOT Players in the game
         for (Player player : game.players()) {
-            HtmlComponent htmlComponent = new PlayerViewComponent(player).htmlForYou();
+            HtmlElement htmlElement = new PlayerViewComponent(player).htmlForYou();
             messageSendersForPlayers.sendTo(
                     game.handle(),
                     player.id(),
-                    htmlComponent.render());
+                    htmlElement.render());
         }
     }
 

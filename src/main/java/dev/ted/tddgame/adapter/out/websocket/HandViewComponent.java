@@ -5,7 +5,7 @@ import dev.ted.tddgame.domain.Player;
 
 import java.util.stream.Stream;
 
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.div;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
 
 public class HandViewComponent {
 
@@ -15,13 +15,13 @@ public class HandViewComponent {
         this.player = player;
     }
 
-    HtmlComponent handDiv() {
+    HtmlElement handDiv() {
         return div("hand", divsForEachCardIn(player.hand()));
     }
 
-    private HtmlComponent[] divsForEachCardIn(Stream<ActionCard> actionCards) {
+    private HtmlElement[] divsForEachCardIn(Stream<ActionCard> actionCards) {
         return actionCards
-                .map(card -> div("card", HtmlComponent.text(card.title())))
-                .toArray(HtmlComponent[]::new);
+                .map(card -> div("card", HtmlElement.text(card.title())))
+                .toArray(HtmlElement[]::new);
     }
 }

@@ -7,8 +7,8 @@ import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
 import org.junit.jupiter.api.Test;
 
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.div;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.text;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
 
 class HandViewComponentTest {
@@ -25,9 +25,9 @@ class HandViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
 
-        HtmlComponent htmlComponent = new HandViewComponent(player).handDiv();
+        HtmlElement htmlElement = new HandViewComponent(player).handDiv();
 
-        assertThat(htmlComponent)
+        assertThat(htmlElement)
                 .isEqualTo(
                         div("hand",
                             div("card", text("predict")),

@@ -54,7 +54,7 @@ January 1, 2025 - Wednesday
 * Thought about this, but not doing it as it seems much easier just to build the expected tree structure and compare that directly
 
             /*
-            assertThat(htmlComponent)
+            assertThat(htmlElement)
                 .withTag(SWAP)
                     .withId("you")
                     .withAttribute("hx-swap-oob", "innerHTML")

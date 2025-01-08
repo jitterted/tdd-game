@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.div;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.swapInnerHtml;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlComponent.text;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.swapInnerHtml;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
 
 class PlayerViewComponentTest {
@@ -23,8 +23,8 @@ class PlayerViewComponentTest {
     void generateHtmlWithSwapIdTargetForPlayerWithNoCards() {
         Player player = createPlayer(79L, "Player with no cards");
 
-        HtmlComponent htmlComponent = new PlayerViewComponent(player).htmlForYou();
-        assertThat(htmlComponent)
+        HtmlElement htmlElement = new PlayerViewComponent(player).htmlForYou();
+        assertThat(htmlElement)
                 .isEqualTo(
                         swapInnerHtml("you",
                                       div("workspace",
@@ -43,9 +43,9 @@ class PlayerViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(),
                                               ActionCard.LESS_CODE));
 
-        HtmlComponent htmlComponent = new PlayerViewComponent(player).htmlForYou();
+        HtmlElement htmlElement = new PlayerViewComponent(player).htmlForYou();
 
-        assertThat(htmlComponent)
+        assertThat(htmlElement)
                 .isEqualTo(
                         swapInnerHtml("you",
                                       div("workspace",
@@ -67,9 +67,9 @@ class PlayerViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
 
-        HtmlComponent htmlComponent = new PlayerViewComponent(player).htmlForYou();
+        HtmlElement htmlElement = new PlayerViewComponent(player).htmlForYou();
 
-        assertThat(htmlComponent)
+        assertThat(htmlElement)
                 .isEqualTo(
                         swapInnerHtml("you",
                                       div("workspace",
@@ -90,10 +90,10 @@ class PlayerViewComponentTest {
                                        you,
                                        createPlayer(5L, "Name of Player 5"));
 
-        HtmlComponent htmlComponent = new PlayerViewComponent(you)
+        HtmlElement htmlElement = new PlayerViewComponent(you)
                 .htmlPlaceholdersForOtherPlayers(players);
 
-        assertThat(htmlComponent)
+        assertThat(htmlElement)
                 .isEqualTo(
                         swapInnerHtml("other-players",
                                       div("player-id-3", "other-player-container",
