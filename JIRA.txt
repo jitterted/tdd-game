@@ -125,14 +125,13 @@ Player's "State Machine":
                 [X] Player has cards in the "Your Hand" area
                 [X] Deal cards to all players
                 [X] Shuffle the ActionCardDeck
+                [X] Show other players' cards in their areas:
+                    [X] Update game.html to only have the <div class="all-other-players-container">, which will be empty, and filled in only once the game starts
+                        (This is because when the game.html loads, we don't yet know how many players are in the game)
+                    [X] In WebSocketBroadcaster, when we do a gameUpdate(), send the same "other players' cards" HTML content to everyone
 
 
 ==> WE ARE HERE:
-
-                [ ] Show other players' cards in their areas:
-                    [ ] Update game.html to only have the <div class="all-other-players-container">, which will be empty, and filled in only once the game starts
-                        (This is because when the game.html loads, we don't yet know how many players are in the game)
-                    [ ] In WebSocketBroadcaster, when we do a gameUpdate(), send the same "other players' cards" HTML content to everyone
 
                 [ ] Display cards in "Your Hand" as Images instead of words
                 [ ] Display cards in Other Players' hands as Images instead of words
