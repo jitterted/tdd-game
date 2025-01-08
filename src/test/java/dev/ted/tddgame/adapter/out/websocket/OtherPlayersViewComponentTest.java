@@ -52,7 +52,7 @@ class OtherPlayersViewComponentTest {
                               div("other-player-container",
                                   div("titled-container",
                                       text("Hand"),
-                                      cardsAsDivFor(oliverPlayer))
+                                      HandViewComponent.handDivFor(oliverPlayer))
                               ));
         HtmlComponent.Swap samanthaSwap =
                 swapInnerHtml("player-id-" + samanthaPlayer.id().id(),
@@ -60,7 +60,7 @@ class OtherPlayersViewComponentTest {
                               div("other-player-container",
                                   div("titled-container",
                                       text("Hand"),
-                                      cardsAsDivFor(samanthaPlayer))
+                                      HandViewComponent.handDivFor(samanthaPlayer))
                               ));
 
         assertThat(htmlComponentActual)
@@ -70,10 +70,4 @@ class OtherPlayersViewComponentTest {
                 ));
     }
 
-    private HtmlComponent cardsAsDivFor(Player player) {
-        HtmlComponent[] cardDivs = player.hand()
-                                         .map(actionCard -> div("card", text(actionCard.title())))
-                                         .toArray(HtmlComponent[]::new);
-        return div("hand", cardDivs);
-    }
 }
