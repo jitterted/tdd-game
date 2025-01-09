@@ -8,7 +8,7 @@ import dev.ted.tddgame.domain.PlayerId;
 import org.junit.jupiter.api.Test;
 
 import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.text;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.img;
 import static org.assertj.core.api.Assertions.*;
 
 class HandViewComponentTest {
@@ -20,7 +20,7 @@ class HandViewComponentTest {
     void htmlForPlayerWithFiveCardsGeneratesCorrectDiv() {
         Player player = new Player(IRRELEVANT_PLAYER_ID, IRRELEVANT_MEMBER_ID, "IRRELEVANT PLAYER NAME", _ -> {});
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
-        player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
+        player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.CANT_ASSERT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.LESS_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
@@ -30,11 +30,11 @@ class HandViewComponentTest {
         assertThat(htmlElement)
                 .isEqualTo(
                         div("hand",
-                            div("card", text("predict")),
-                            div("card", text("predict")),
-                            div("card", text("less code")),
-                            div("card", text("write code")),
-                            div("card", text("refactor"))
+                            div("card", img("/static/predict.png", "Predict")),
+                            div("card", img("/static/cant-assert.png", "Can't Assert")),
+                            div("card", img("/static/less-code.png", "Less Code")),
+                            div("card", img("/static/write-code.png", "Write Code")),
+                            div("card", img("/static/refactor.png", "Refactor"))
                         )
                 );
     }

@@ -85,12 +85,15 @@ public abstract class HtmlElement {
         }
 
         HtmlElement that = (HtmlElement) o;
-        return childComponents.equals(that.childComponents);
+        return childComponents.equals(that.childComponents) && attributes.equals(that.attributes) && tag.equals(that.tag);
     }
 
     @Override
     public int hashCode() {
-        return childComponents.hashCode();
+        int result = childComponents.hashCode();
+        result = 31 * result + attributes.hashCode();
+        result = 31 * result + tag.hashCode();
+        return result;
     }
 
     private static final class Swap extends HtmlElement {
@@ -343,6 +346,15 @@ public abstract class HtmlElement {
         @Override
         protected String renderTagClose() {
             return "";
+        }
+
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", ImgElement.class.getSimpleName() + "[", "]")
+                    .add("tag='" + tag + "'")
+                    .add("attributes=" + attributes)
+                    .toString();
         }
     }
 }

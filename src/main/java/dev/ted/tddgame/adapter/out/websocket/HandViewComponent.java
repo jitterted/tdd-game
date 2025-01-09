@@ -21,7 +21,13 @@ public class HandViewComponent {
 
     private HtmlElement[] divsForEachCardIn(Stream<ActionCard> actionCards) {
         return actionCards
-                .map(card -> div("card", HtmlElement.text(card.title())))
+                .map(card -> div("card", HtmlElement.img("/" + baseImageFilenameOf(card.title()) + ".png", card.title())))
                 .toArray(HtmlElement[]::new);
+    }
+
+    private String baseImageFilenameOf(String cardTitle) {
+        return cardTitle.toLowerCase()
+                        .replace(" ", "-")
+                        .replace("'", "");
     }
 }

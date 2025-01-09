@@ -1,14 +1,14 @@
 package dev.ted.tddgame.domain;
 
 public enum ActionCard {
-    LESS_CODE("less code"),
-    WRITE_CODE("write code"),
-    REFACTOR("refactor"),
-    PREDICT("predict"),
+    LESS_CODE("Less Code"),
+    WRITE_CODE("Write Code"),
+    REFACTOR("Refactor"),
+    PREDICT("Predict"),
 
     // "tech debt/neglect" (aka "red") cards
-    CODE_BLOAT("code bloat"),
-    CANT_ASSERT("can't assert"),
+    CODE_BLOAT("Code Bloat"),
+    CANT_ASSERT("Can't Assert"),
     ;
 
     private final String title;

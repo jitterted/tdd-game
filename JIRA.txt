@@ -109,6 +109,8 @@ Player's "State Machine":
         [ ] Player discards card, which adds to Discard Pile
             [ ] Represented in UI by checkboxes?
 
+        [ ] Display the hex board with pawns for each player
+
     [ ] The association of Member (and their logged-in username) vs. the Player's name in the context of a Game needs to be resolved. When we're sending Player-tailored HTML, we need to know: for which `Player` we're generating the HTML (we know this because we iterate through all Players from the Game, i.e., game.players()), and THEN, we need to send that HTML to the correct WebSocketSession, which has to be associated (mapped) with the Game + PlayerId.
 
         [X] PlayerConnections needs to have a sendTo(GameId, PlayerId, HTML): the Game that the Player is in, used to identify the target websocket to which we send the customized HTML
@@ -130,13 +132,13 @@ Player's "State Machine":
                         (This is because when the game.html loads, we don't yet know how many players are in the game)
                     [X] In WebSocketBroadcaster, when we do a gameUpdate(), send the same "other players' cards" HTML content to everyone
 
-
-==> WE ARE HERE:
-
                 [X] Convert PlayerViewComponentTest to be structural instead of raw string comparisons
 
-                [ ] Display cards in "Your Hand" as Images instead of words
-                [ ] Display cards in Other Players' hands as Images instead of words
+                [X] Display cards in "Your Hand" as Images instead of words
+                [X] Display cards in Other Players' hands as Images instead of words
+
+
+==> WE ARE HERE:
 
                 [ ] Stop using Text HtmlComponent for H2 and other tags, by creating a generic HtmlTag component, and then escape the text
 
