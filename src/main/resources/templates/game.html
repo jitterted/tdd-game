@@ -36,7 +36,7 @@
 </div>
 
 <!-- Waiting for Game to Begin modal dialog -->
-<div id="modal-container">
+<div id="modal-container" style="display: none;">
 <div id="waiting-room-modal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"></div>
 
@@ -112,7 +112,44 @@
         </div>
     </div>
     <div class="play-area">
-        <div>Board Placeholder</div>
+        <div class="board-grid">
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%201%20-%20What%20Should%20It%20Do.png"
+                th:src="@{'/Hex%20Tile%201%20-%20What%20Should%20It%20Do.png'}">
+            </div>
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%202%20-%20How%20Will%20You%20Know%20It%20Did%20It.png"
+                th:src="@{'/Hex%20Tile%202%20-%20How%20Will%20You%20Know%20It%20Did%20It.png'}">
+            </div>
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%203%20-%20Write%20Code%20for%20Test.png"
+                th:src="@{'/Hex%20Tile%203%20-%20Write%20Code%20for%20Test.png'}">
+            </div>
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%204%20-%20Predict%20Test%20Fail%20Compile.png"
+                th:src="@{'/Hex%20Tile%204%20-%20Predict%20Test%20Fail%20Compile.png'}">
+            </div>
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%205%20-%20Write%20Code%20So%20Test%20Compiles.png"
+                th:src="@{'/Hex%20Tile%205%20-%20Write%20Code%20So%20Test%20Compiles.png'}">
+            </div>
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%206%20-%20Predict%20Test%20Will%20Fail.png"
+                th:src="@{'/Hex%20Tile%206%20-%20Predict%20Test%20Will%20Fail.png'}">
+            </div>
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%207%20-%20Write%20Code%20For%20Feature.png"
+                th:src="@{'/Hex%20Tile%207%20-%20Write%20Code%20For%20Feature.png'}">
+            </div>
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%208%20-%20Predict%20Test%20Now%20Passes.png"
+                th:src="@{'/Hex%20Tile%208%20-%20Predict%20Test%20Now%20Passes.png'}">
+            </div>
+            <div class="grid-item">
+                <img src="/static/Hex%20Tile%209%20-%20Commit%20Code.png"
+                th:src="@{'/Hex%20Tile%209%20-%20Commit%20Code.png'}">
+            </div>
+        </div>
         <div class="last-column">
             <div>
                 <p>Action Deck</p>
@@ -129,11 +166,11 @@
             <div class="titled-container">
                 Your Hand
                 <div class="hand">
-                    <div class="card"><img src="/cant-assert.png"></div>
-                    <div class="card"><img src="/code-bloat.png"></div>
-                    <div class="card"><img src="/less-code.png"></div>
-                    <div class="card"><img src="/predict.png"></div>
-                    <div class="card"><img src="/write-code.png"></div>
+                    <div class="card"><img src="/static/cant-assert.png"></div>
+                    <div class="card"><img src="/static/code-bloat.png"></div>
+                    <div class="card"><img src="/static/less-code.png"></div>
+                    <div class="card"><img src="/static/predict.png"></div>
+                    <div class="card"><img src="/static/write-code.png"></div>
                 </div>
             </div>
         </div>

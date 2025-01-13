@@ -30,6 +30,44 @@ Per Player:
 Player's "State Machine":
     Player's "TURN" is complete when either: play/discard 3 cards OR explicitly END TURN
 
+## Board Layout
+
+1. One large images vs. individual Hex Tiles: leaning towards individual tiles, easier to determine pawn placement and more flexible
+
+### Hex Tiles
+
+Workspace1: belongs to a single player, or group of players
+
+exit(Workspace1): moves pawn from Tile 1 to Tile 2
+exit(Workspace1): moves pawn from Tile 2 to Tile 3
+exit(Workspace1): moves pawn from Tile 3 to Tile 4
+skip(Workspace1): moves pawn from tile 4 to Tile 7
+
+Ensemble Mode:   Player <4:1> Workspace <1..4:1> Tile
+Pairing Mode:    Player <2:1> Workspace <1..4:1> Tile
+Individual Mode: Player <1:1> Workspace <1..4:1> Tile
+
+Board has Map<WorkspaceId, BoardTile>, BoardTile is an Enum? Record? There are two "types" of tiles: those with Exit-Only and those with Exit+Skip
+
+?? Do we want a reverse multi-map? <BoardTile, List<WorkspaceId>>
+
+Exit: via Discard, play Write Code card, or Successful Prediction
+Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that can't be skipped. Otherwise skip() associates the new Tile with the Player
+
+### Pawns
+
+* Associate players with their pawns via colors (except when in Ensemble Game Mode, then use a separate color?
+
+    ?? In Ensemble Mode: Does the pawn retain its own color, or does it take on the color of the current "Driver" (player whose turn it is)
+
+* Turn indicator
+
+* ?? Where to place pawn tokens on each hex tile: define 4 locations where pawns can appear
+
+* [Later] Tap/click on item (hex tile or card) to zoom in
+
+* Player-Pawn is 1:1, except when playing as a group/cooperative game ("Ensemble Game Mode")
+
 ## Need
 
 [ ] Structure for the BOARD as 9 separate TILEs,
