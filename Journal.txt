@@ -1,3 +1,21 @@
+January 13, 2025 - Wednesday
+============================
+
+[Decision]
+* Board layout: decided to use individual hex "tiles" laid out in a grid with overlapping rows (still need to figure out how to do that reliably in CSS)
+    * Has the advantage of easier layout adjustments, easier to determine where to put (draw) player pawns, etc.
+
+[Design Decision]
+* Relationship from Player to Tile is through the Workspace (see tldraw diagram for more details)
+    * Game knows Player -> Workspace is a 1..4:1 relationship: each player can have their own workspace, or can Pair/Ensemble to have multiple players for a single workspace, and therefore multiple players controlling a single pawn
+        * Game has Map<PlayerId, Workspace>: dispatches command from Player to their Workspace
+    * Actions flow from the Player+Hand to the Workspace, which then interacts with the Board, which then forwards the action on the Workspace's tile, that then does the necessary state change
+    * Workspace -> Pawn is a 1:1 relationship
+        * Workspace "owns" the Pawn (as well as Commit and Risk tracking)
+    * Board has Map of WorkspaceId->BoardTile
+    * Board has MultiMap of BoardTile->List<WorkspaceId> - this is so we can query a tile (for rendering) and ask for the workspaces (pawns) on it
+
+
 January 8, 2025 - Wednesday
 ===========================
 
