@@ -56,11 +56,18 @@ public class Player {
     }
 
     private void drawCardFrom(ActionCardDeck actionCardDeck) {
-        PlayerDrewActionCard event =
+        // constraint: Player's Hand must have room for an additional card
+        PlayerEvent event =
                 new PlayerDrewActionCard(memberId, actionCardDeck.draw());
         eventEnqueuer.enqueue(event);
     }
 
+    void discard(ActionCard actionCardToDiscard) {
+        // check constraint: actionCardToDiscard MUST be in the Player's Hand
+        PlayerEvent playerEvent =
+                new PlayerDiscardedActionCard(memberId, actionCardToDiscard);
+        eventEnqueuer.enqueue(playerEvent);
+    }
 
     @Override
     public final boolean equals(Object o) {

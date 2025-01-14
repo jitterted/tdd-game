@@ -1,5 +1,10 @@
-January 13, 2025 - Wednesday
-============================
+January 14, 2025 - Tuesday
+==========================
+
+
+
+January 13, 2025 - Monday
+=========================
 
 [Decision]
 * Board layout: decided to use individual hex "tiles" laid out in a grid with overlapping rows (still need to figure out how to do that reliably in CSS)
@@ -14,6 +19,8 @@ January 13, 2025 - Wednesday
         * Workspace "owns" the Pawn (as well as Commit and Risk tracking)
     * Board has Map of WorkspaceId->BoardTile
     * Board has MultiMap of BoardTile->List<WorkspaceId> - this is so we can query a tile (for rendering) and ask for the workspaces (pawns) on it
+
+* Nice little prepare refactoring in Player to support multiple events that are being played back (via the apply() method)
 
 
 January 8, 2025 - Wednesday
