@@ -60,6 +60,7 @@ public abstract class Deck<CARD> {
                 }
             }
             case ActionCardDiscarded actionCardDiscarded -> {
+                discardPile.add((CARD) actionCardDiscarded.card());
             }
         }
     }

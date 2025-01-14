@@ -1,6 +1,5 @@
 package dev.ted.tddgame.domain;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -240,25 +239,25 @@ class GameTest {
         }
 
         @Test
-        @Disabled("Until we have the deck-related event created")
         void playerDiscardedCardResultsInCardMovedFromPlayerHandToDeckDiscardPile() {
             MemberId memberId = new MemberId(71L);
             List<GameEvent> events = gameCreatedAndTheseEvents(
-                    new PlayerJoined(memberId, "Member 71 Name"),
-                    new GameStarted(),
-                    new ActionCardDeckCreated(List.of(
+                    new PlayerJoined(memberId, "Member 71 Name")
+                    , new GameStarted()
+                    , new ActionCardDeckCreated(List.of(
                             ActionCard.WRITE_CODE,
                             ActionCard.PREDICT,
-                            ActionCard.REFACTOR)),
-                    new ActionCardDeckReplenished(List.of(
+                            ActionCard.REFACTOR))
+                    , new ActionCardDeckReplenished(List.of(
                             ActionCard.WRITE_CODE,
                             ActionCard.PREDICT,
-                            ActionCard.REFACTOR)),
-                    new ActionCardDrawn(ActionCard.WRITE_CODE),
-                    new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE),
-                    new ActionCardDrawn(ActionCard.PREDICT),
-                    new PlayerDrewActionCard(memberId, ActionCard.PREDICT),
-                    new PlayerDiscardedActionCard(memberId, ActionCard.WRITE_CODE)
+                            ActionCard.REFACTOR))
+                    , new ActionCardDrawn(ActionCard.WRITE_CODE)
+                    , new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE)
+                    , new ActionCardDrawn(ActionCard.PREDICT)
+                    , new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
+                    , new PlayerDiscardedActionCard(memberId, ActionCard.WRITE_CODE)
+                    , new ActionCardDiscarded(ActionCard.WRITE_CODE)
             );
             Game game = Game.reconstitute(events);
 
