@@ -235,6 +235,38 @@ class GameTest {
                     .isEmpty();
         }
 
+        @Test
+        void playerDiscardedCardResultsInCardMovedFromPlayerHandToDeckDiscardPile() {
+            MemberId memberId = new MemberId(71L);
+            List<GameEvent> events = gameCreatedAndTheseEvents(
+                    new PlayerJoined(memberId, "Member 71 Name"),
+                    new GameStarted(),
+                    new ActionCardDeckCreated(List.of(
+                            ActionCard.WRITE_CODE,
+                            ActionCard.PREDICT,
+                            ActionCard.REFACTOR)),
+                    new ActionCardDeckReplenished(List.of(
+                            ActionCard.WRITE_CODE,
+                            ActionCard.PREDICT,
+                            ActionCard.REFACTOR)),
+                    new ActionCardDrawn(ActionCard.WRITE_CODE),
+                    new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE),
+                    new ActionCardDrawn(ActionCard.PREDICT),
+                    new PlayerDrewActionCard(memberId, ActionCard.PREDICT),
+                    new PlayerDiscardedActionCard(memberId, ActionCard.WRITE_CODE)
+            );
+            Game game = Game.reconstitute(events);
+
+            Player player = game.playerFor(memberId);
+            assertThat(player.hand())
+                    .as("Hand should have discarded the WRITE_CODE card")
+                    .containsExactly(ActionCard.PREDICT);
+            assertThat(game.actionCardDeck()
+                           .discardPile())
+                    .as("Action Deck Discard pile should contain only discarded WRITE_CODE cards")
+                    .containsExactly(ActionCard.WRITE_CODE);
+        }
+
         private static List<GameEvent> gameCreatedAndTheseEvents(GameEvent... freshEvents) {
             List<GameEvent> events = new ArrayList<>();
             events.add(new GameCreated("jitterted", "breezy-cat-85"));
