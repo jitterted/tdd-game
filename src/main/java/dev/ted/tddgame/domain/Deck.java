@@ -64,6 +64,12 @@ public abstract class Deck<CARD> {
         }
     }
 
+    void acceptDiscard(CARD discardedCard) {
+        eventEnqueuer.enqueue(createCardDiscardedEvent(discardedCard));
+    }
+
+    protected abstract ActionCardDiscarded createCardDiscardedEvent(CARD discardedCard);
+
     // -- EMBEDDED STUB for Nullable Shuffler --
 
     protected static class IdentityShuffler<CARD> implements Shuffler<CARD> {

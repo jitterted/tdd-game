@@ -52,20 +52,14 @@ public class ActionCardDeck extends Deck<ActionCard> {
                                   deckEventsReceiver);
     }
 
-    public static ActionCardDeck createForTest(List<ActionCard> actionCards,
-                                               EventEnqueuer eventEnqueuer) {
-        return new ActionCardDeck(actionCards,
-                                  new IdentityShuffler<>(),
-                                  eventEnqueuer);
-    }
-
     @Override
     protected ActionCardDrawn createCardDrawnEvent(ActionCard drawnCard) {
         return new ActionCardDrawn((ActionCard) drawnCard);
     }
 
-    void acceptDiscard(ActionCard discardedCard) {
-        eventEnqueuer.enqueue(new ActionCardDiscarded(discardedCard));
+    @Override
+    protected ActionCardDiscarded createCardDiscardedEvent(ActionCard discardedCard) {
+        return new ActionCardDiscarded(discardedCard);
     }
 
 }
