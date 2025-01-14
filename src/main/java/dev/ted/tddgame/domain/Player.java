@@ -38,7 +38,12 @@ public class Player {
     }
 
     public void apply(PlayerEvent event) {
-        actionCards.add(((PlayerDrewActionCard) event).actionCard());
+        switch (event) {
+            case PlayerDiscardedActionCard playerDiscardedActionCard -> {
+            }
+            case PlayerDrewActionCard playerDrewActionCard ->
+                    actionCards.add(playerDrewActionCard.actionCard());
+        }
     }
 
     public void drawToFullFrom(ActionCardDeck actionCardDeck) {

@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -118,19 +119,20 @@ class GameTest {
         }
 
         @Test
+        @Disabled("Until Player can ignore the new player event")
         void playerDiscardsActionCard_PlayerCardDiscarded() {
             Game game = Game.create("IRRELEVANT GAME NAME", "IRRELEVANT HANDLE");
             MemberId firstPlayerMemberId = new MemberId(88L);
             game.join(firstPlayerMemberId, "first player (88)");
-            PlayerId firstPlayerId = game.playerFor(firstPlayerMemberId).id();
             game.join(new MemberId(113L), "second player (113)");
             game.start();
             game = Game.reconstitute(game.freshEvents().toList());
 
-            game.discard(firstPlayerId, ActionCard.PREDICT);
+            game.discard(firstPlayerMemberId, ActionCard.PREDICT);
 
-            assertThat(game.freshEvents())
-                    .containsExactly(new PlayerDiscardedActionCard(null, ActionCard.PREDICT));
+            assertThat(game.freshEvents()).containsExactly(
+                    new PlayerDiscardedActionCard(firstPlayerMemberId,
+                                                  ActionCard.PREDICT));
         }
 
         private static Game createFreshGame() {

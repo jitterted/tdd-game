@@ -118,8 +118,8 @@ public class Game extends EventSourcedAggregate {
         players().forEach(player -> player.drawToFullFrom(actionCardDeck));
     }
 
-    public void discard(PlayerId playerId, ActionCard actionCardToDiscard) {
-
+    public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
+        enqueue(new PlayerDiscardedActionCard(memberId, actionCardToDiscard));
     }
 
     public Player playerFor(MemberId memberId) {
