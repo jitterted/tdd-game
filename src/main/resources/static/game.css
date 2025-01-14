@@ -165,3 +165,21 @@
     grid-column: 4 / span 2;
     grid-row: 4;
 }
+
+dialog {
+    background-color: darkgrey;
+    border: black solid 2px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.25rem;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+dialog button {
+    margin: 1rem;
+    padding: 0.25rem 0.75rem;
+    background-color: darkslategray;
+    border: lightgray solid 2px;
+}

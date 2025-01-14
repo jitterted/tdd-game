@@ -36,7 +36,7 @@
 </div>
 
 <!-- Waiting for Game to Begin modal dialog -->
-<div id="modal-container" style="display: inherit;">
+<div id="modal-container" style="display: none;">
 <div id="waiting-room-modal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"></div>
 
@@ -159,6 +159,14 @@
             </div>
         </div>
         <div id="you" class="your-play-area">
+            <dialog id="dialog">
+                <div>
+                    <button autofocus hx-post="/game/{gameHandle}/cards/play/CANT_ASSERT">Play Card into Workspace</button>
+                </div>
+                <div>
+                    <button hx-post="/game/{gameHandle}/cards/discard/CANT_ASSERT">Discard Card to Discard Pile</button>
+                </div>
+            </dialog>
             <div class="workspace">
                 <h2>Workspace</h2>
                 (workspace coming soon)
@@ -166,25 +174,26 @@
             <div class="titled-container">
                 Your Hand
                 <div class="hand">
-                    <div class="card">
+                    <button hx-get="/game/{gameHandle}/card-menu/CANT_ASSERT"
+                            class="card">
                         <img src="/static/cant-assert.png"
-                        th:src="@{/cant-assert.png}">
-                    </div>
+                             th:src="@{/cant-assert.png}">
+                    </button>
                     <div class="card">
                         <img src="/static/code-bloat.png"
-                        th:src="@{/code-bloat.png}">
+                             th:src="@{/code-bloat.png}">
                     </div>
                     <div class="card">
                         <img src="/static/less-code.png"
-                        th:src="@{/less-code.png}">
+                             th:src="@{/less-code.png}">
                     </div>
                     <div class="card">
                         <img src="/static/predict.png"
-                        th:src="@{/predict.png}">
+                             th:src="@{/predict.png}">
                     </div>
                     <div class="card">
                         <img src="/static/write-code.png"
-                        th:src="@{/write-code.png}">
+                             th:src="@{/write-code.png}">
                     </div>
                 </div>
             </div>

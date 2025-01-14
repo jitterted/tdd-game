@@ -41,4 +41,8 @@ public class PlayingGame {
     public void startGame(@PathVariable("gameHandle") String gameHandle) {
          gamePlay.start(gameHandle);
     }
+
+    // GET menu
+
+    // POST execute command from menu
 }
