@@ -81,16 +81,11 @@ class GameTest {
                             GameStarted.class,
                             ActionCardDeckCreated.class,
                             ActionCardDeckReplenished.class,
-                            ActionCardDrawn.class,
-                            PlayerDrewActionCard.class,
-                            ActionCardDrawn.class,
-                            PlayerDrewActionCard.class,
-                            ActionCardDrawn.class,
-                            PlayerDrewActionCard.class,
-                            ActionCardDrawn.class,
-                            PlayerDrewActionCard.class,
-                            ActionCardDrawn.class,
-                            PlayerDrewActionCard.class);
+                            ActionCardDrawn.class, PlayerDrewActionCard.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class);
 
             ActionCardDeckCreated actionCardDeckCreated =
                     game.freshEvents()
@@ -120,6 +115,22 @@ class GameTest {
 
             new EventsAssertion(game.freshEvents())
                     .hasExactly(ActionCardDrawn.class, 2 * PLAYER_HAND_FULL_SIZE);
+        }
+
+        @Test
+        void playerDiscardsActionCard_PlayerCardDiscarded() {
+            Game game = Game.create("IRRELEVANT GAME NAME", "IRRELEVANT HANDLE");
+            MemberId firstPlayerMemberId = new MemberId(88L);
+            game.join(firstPlayerMemberId, "first player (88)");
+            PlayerId firstPlayerId = game.playerFor(firstPlayerMemberId).id();
+            game.join(new MemberId(113L), "second player (113)");
+            game.start();
+            game = Game.reconstitute(game.freshEvents().toList());
+
+            game.discard(firstPlayerId, ActionCard.PREDICT);
+
+            assertThat(game.freshEvents())
+                    .containsExactly(new PlayerDiscardedActionCard(null, ActionCard.PREDICT));
         }
 
         private static Game createFreshGame() {

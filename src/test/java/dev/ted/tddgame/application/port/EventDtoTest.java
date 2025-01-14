@@ -8,6 +8,7 @@ import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.MemberId;
+import dev.ted.tddgame.domain.PlayerDiscardedActionCard;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 import org.junit.jupiter.api.Test;
@@ -88,6 +89,7 @@ class EventDtoTest {
                                 ActionCard.LESS_CODE,
                                 ActionCard.CANT_ASSERT)
                 ))
+                , Arguments.of(new PlayerDiscardedActionCard(memberId, ActionCard.PREDICT))
         );
     }
 }

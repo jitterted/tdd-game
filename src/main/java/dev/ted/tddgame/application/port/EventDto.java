@@ -8,6 +8,7 @@ import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
+import dev.ted.tddgame.domain.PlayerDiscardedActionCard;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 
@@ -41,6 +42,7 @@ public class EventDto {
             , "GameStarted", GameStarted.class
             , "ActionCardDeckCreated", ActionCardDeckCreated.class
             , "PlayerDrewActionCard", PlayerDrewActionCard.class
+            , "PlayerDiscardedActionCard", PlayerDiscardedActionCard.class
             , "ActionCardDrawn", ActionCardDrawn.class
             , "ActionCardDeckReplenished", ActionCardDeckReplenished.class
     );

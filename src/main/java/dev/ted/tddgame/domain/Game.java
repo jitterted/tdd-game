@@ -118,6 +118,10 @@ public class Game extends EventSourcedAggregate {
         players().forEach(player -> player.drawToFullFrom(actionCardDeck));
     }
 
+    public void discard(PlayerId playerId, ActionCard actionCardToDiscard) {
+
+    }
+
     public Player playerFor(MemberId memberId) {
         return playerMap.get(memberId);
     }
@@ -151,5 +155,4 @@ public class Game extends EventSourcedAggregate {
                 .add("playerMap=" + playerMap)
                 .toString();
     }
-
 }
