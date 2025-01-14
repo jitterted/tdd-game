@@ -63,11 +63,12 @@ public class Player {
         eventEnqueuer.enqueue(event);
     }
 
-    void discard(ActionCard actionCardToDiscard) {
+    void discard(ActionCard actionCardToDiscard, ActionCardDeck actionCardDeck) {
         // check constraint: actionCardToDiscard MUST be in the Player's Hand
         PlayerEvent playerEvent =
                 new PlayerDiscardedActionCard(memberId, actionCardToDiscard);
         eventEnqueuer.enqueue(playerEvent);
+        actionCardDeck.acceptDiscard(actionCardToDiscard);
     }
 
     @Override

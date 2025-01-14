@@ -63,4 +63,9 @@ public class ActionCardDeck extends Deck<ActionCard> {
     protected ActionCardDrawn createCardDrawnEvent(ActionCard drawnCard) {
         return new ActionCardDrawn((ActionCard) drawnCard);
     }
+
+    void acceptDiscard(ActionCard discardedCard) {
+        eventEnqueuer.enqueue(new ActionCardDiscarded(discardedCard));
+    }
+
 }
