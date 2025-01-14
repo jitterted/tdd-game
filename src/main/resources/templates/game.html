@@ -36,7 +36,7 @@
 </div>
 
 <!-- Waiting for Game to Begin modal dialog -->
-<div id="modal-container" style="display: none;">
+<div id="modal-container" style="display: inherit;">
 <div id="waiting-room-modal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"></div>
 
@@ -168,23 +168,23 @@
                 <div class="hand">
                     <div class="card">
                         <img src="/static/cant-assert.png"
-                        th:src="/cant-assert.png">
+                        th:src="@{/cant-assert.png}">
                     </div>
                     <div class="card">
                         <img src="/static/code-bloat.png"
-                        th:src="/code-bloat.png">
+                        th:src="@{/code-bloat.png}">
                     </div>
                     <div class="card">
                         <img src="/static/less-code.png"
-                        th:src="/less-code.png">
+                        th:src="@{/less-code.png}">
                     </div>
                     <div class="card">
                         <img src="/static/predict.png"
-                        th:src="/predict.png">
+                        th:src="@{/predict.png}">
                     </div>
                     <div class="card">
                         <img src="/static/write-code.png"
-                        th:src="/write-code.png">
+                        th:src="@{/write-code.png}">
                     </div>
                 </div>
             </div>
