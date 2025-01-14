@@ -3,6 +3,7 @@ package dev.ted.tddgame.application.port;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
 import dev.ted.tddgame.domain.ActionCardDeckReplenished;
+import dev.ted.tddgame.domain.ActionCardDiscarded;
 import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
@@ -84,6 +85,7 @@ class EventDtoTest {
                 , Arguments.of(new ActionCardDeckCreated(List.of(ActionCard.PREDICT)))
                 , Arguments.of(new PlayerDrewActionCard(memberId, ActionCard.REFACTOR))
                 , Arguments.of(new ActionCardDrawn(ActionCard.PREDICT))
+                , Arguments.of(new ActionCardDiscarded(ActionCard.LESS_CODE))
                 , Arguments.of(new ActionCardDeckReplenished(
                         List.of(ActionCard.WRITE_CODE,
                                 ActionCard.LESS_CODE,

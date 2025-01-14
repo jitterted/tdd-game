@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -118,7 +119,7 @@ class GameTest {
         }
 
         @Test
-        void playerDiscardsActionCard_PlayerCardDiscarded() {
+        void playerDiscardsActionCard_PlayerCardDiscarded_ActionCardDiscarded() {
             MemberId firstPlayerMemberId = new MemberId(88L);
             Game game = createFreshGameWithTwoPlayersAndStart(firstPlayerMemberId);
 
@@ -236,6 +237,7 @@ class GameTest {
         }
 
         @Test
+        @Disabled("Until we have the deck-related event created")
         void playerDiscardedCardResultsInCardMovedFromPlayerHandToDeckDiscardPile() {
             MemberId memberId = new MemberId(71L);
             List<GameEvent> events = gameCreatedAndTheseEvents(

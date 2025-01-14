@@ -1,7 +1,7 @@
 January 14, 2025 - Tuesday
 ==========================
 
-
+* Card-related actions may require a pair of events, for example: to modify the Deck along with modifying the Player's Hand when discarding a card
 
 January 13, 2025 - Monday
 =========================

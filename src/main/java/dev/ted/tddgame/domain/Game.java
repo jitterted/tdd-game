@@ -120,6 +120,7 @@ public class Game extends EventSourcedAggregate {
 
     public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
         playerFor(memberId).discard(actionCardToDiscard);
+
     }
 
     public Player playerFor(MemberId memberId) {

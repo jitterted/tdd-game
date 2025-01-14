@@ -43,6 +43,7 @@ public class Player {
                     actionCards.add(playerDrewActionCard.actionCard());
 
             case PlayerDiscardedActionCard playerDiscardedActionCard -> {
+                actionCards.remove(playerDiscardedActionCard.actionCard());
             }
         }
     }
