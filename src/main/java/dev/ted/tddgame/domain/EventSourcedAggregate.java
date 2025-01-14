@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 public abstract class EventSourcedAggregate {
 
-    protected List<GameEvent> freshEvents = new ArrayList<>();
+    private final List<GameEvent> freshEvents = new ArrayList<>();
 
     protected void enqueue(GameEvent event) {
         freshEvents.add(event);
