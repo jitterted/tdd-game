@@ -39,10 +39,11 @@ public class Player {
 
     public void apply(PlayerEvent event) {
         switch (event) {
-            case PlayerDiscardedActionCard playerDiscardedActionCard -> {
-            }
             case PlayerDrewActionCard playerDrewActionCard ->
                     actionCards.add(playerDrewActionCard.actionCard());
+
+            case PlayerDiscardedActionCard playerDiscardedActionCard -> {
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 package dev.ted.tddgame.domain;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -119,7 +118,6 @@ class GameTest {
         }
 
         @Test
-        @Disabled("Until Player can ignore the new player event")
         void playerDiscardsActionCard_PlayerCardDiscarded() {
             Game game = Game.create("IRRELEVANT GAME NAME", "IRRELEVANT HANDLE");
             MemberId firstPlayerMemberId = new MemberId(88L);
