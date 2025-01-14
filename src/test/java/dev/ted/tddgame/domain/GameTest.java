@@ -125,9 +125,12 @@ class GameTest {
 
             game.discard(firstPlayerMemberId, ActionCard.PREDICT);
 
-            assertThat(game.freshEvents()).containsExactly(
-                    new PlayerDiscardedActionCard(firstPlayerMemberId,
-                                                  ActionCard.PREDICT));
+            assertThat(game.freshEvents())
+                    .containsExactly(
+                            new PlayerDiscardedActionCard(firstPlayerMemberId,
+                                                          ActionCard.PREDICT)
+                            , new ActionCardDiscarded(ActionCard.PREDICT)
+                    );
         }
 
         private static Game createFreshGameWithTwoPlayersAndStart(MemberId firstPlayerMemberId) {

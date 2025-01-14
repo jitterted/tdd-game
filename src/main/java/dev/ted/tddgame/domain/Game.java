@@ -120,7 +120,7 @@ public class Game extends EventSourcedAggregate {
 
     public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
         playerFor(memberId).discard(actionCardToDiscard);
-
+        enqueue(new ActionCardDiscarded(actionCardToDiscard));
     }
 
     public Player playerFor(MemberId memberId) {
