@@ -178,10 +178,12 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
 ==> WE ARE HERE:
 
+            [ ] HTML element hierarchy cleanup
                 [ ] Stop using Text HtmlComponent for H2 and other tags, by creating a generic HtmlTag component, and then escape the text
-
+                [ ] Move childComponents down to NormalElement (only NormalElement can have children)
 
             [ ] Popup menu for Card actions
+                [ ] Generalize NormalElement to accept arbitrary list of HtmlAttributes
                 [ ] Change "your hand" cards from DIV to BUTTON
                     Add htmx support:
                          hx-get="/game/{game handle}/card-menu/{card name}"
