@@ -52,7 +52,7 @@ class PlayerViewComponentTest {
                                           text("<h2>Workspace</h2>")),
                                       div("titled-container",
                                           text("Your Hand"),
-                                          new HandViewComponent(player).handDiv()
+                                          new HandViewComponent(player).handContainer()
                                       )
                         )
                 );
@@ -76,7 +76,7 @@ class PlayerViewComponentTest {
                                           text("<h2>Workspace</h2>")),
                                       div("titled-container",
                                           text("Your Hand"),
-                                          new HandViewComponent(player).handDiv()
+                                          new HandViewComponent(player).handContainer()
                                       )
                         )
                 );

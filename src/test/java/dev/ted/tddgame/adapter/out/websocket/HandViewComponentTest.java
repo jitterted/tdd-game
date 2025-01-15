@@ -27,7 +27,7 @@ class HandViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
 
-        HtmlElement htmlElement = new HandViewComponent(player).handDiv();
+        HtmlElement htmlElement = new HandViewComponent(player).handContainer();
 
         assertThat(htmlElement)
                 .isEqualTo(
