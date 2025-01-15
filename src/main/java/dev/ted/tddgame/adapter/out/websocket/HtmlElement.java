@@ -67,6 +67,14 @@ public abstract class HtmlElement {
         return new NormalElement("button", attributes, childElements);
     }
 
+    static HtmlElement button(Attributes attributes, HtmlElement... childElements) {
+        return button(attributes.get(), childElements);
+    }
+
+    static Attributes attributes() {
+        return new Attributes();
+    }
+
     protected String renderNested() {
         return childComponents.stream()
                               .map(this::render)
@@ -277,10 +285,6 @@ public abstract class HtmlElement {
             return List.of(new HtmlAttribute(name1, value1), new HtmlAttribute(name2, value2));
         }
 
-        static List<HtmlAttribute> cssClass(String classNames) {
-            return of("class", classNames);
-        }
-
         String render() {
             if (value == null) {
                 return "";
@@ -352,5 +356,23 @@ public abstract class HtmlElement {
             return "";
         }
 
+    }
+
+    static class Attributes {
+        private final List<HtmlAttribute> attributes = new ArrayList<>();
+
+        public Attributes cssClass(String cssClassName) {
+            attributes.addAll(HtmlAttribute.of("class", cssClassName));
+            return this;
+        }
+
+        public Attributes hxGet(String urlPath) {
+            attributes.addAll(HtmlAttribute.of("hx-get", urlPath));
+            return this;
+        }
+
+        public List<HtmlAttribute> get() {
+            return attributes;
+        }
     }
 }

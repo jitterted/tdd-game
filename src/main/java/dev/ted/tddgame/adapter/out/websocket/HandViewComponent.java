@@ -5,7 +5,6 @@ import dev.ted.tddgame.domain.Player;
 
 import java.util.stream.Stream;
 
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.button;
 import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
 
 public class HandViewComponent {
@@ -24,11 +23,15 @@ public class HandViewComponent {
 
     private HtmlElement[] buttonsForEachCardIn(Stream<ActionCard> actionCards) {
         return actionCards
-                .map(card -> button(HtmlElement.HtmlAttribute.of(
-                                            "class", "card",
-                                            "hx-get", "/game/" + gameHandle + "/card-menu/" + card.name()),
-                                    HtmlElement.img("/" + baseImageFilenameOf(card.title()) + ".png", card.title())))
+                .map(card -> HtmlElement.button(htmlAttributesFor(card),
+                                                HtmlElement.img("/" + baseImageFilenameOf(card.title()) + ".png", card.title())))
                 .toArray(HtmlElement[]::new);
+    }
+
+    private HtmlElement.Attributes htmlAttributesFor(ActionCard card) {
+        return HtmlElement.attributes()
+                          .cssClass("card")
+                          .hxGet("/game/" + gameHandle + "/card-menu/" + card.name());
     }
 
     private String baseImageFilenameOf(String cardTitle) {
@@ -36,4 +39,5 @@ public class HandViewComponent {
                         .replace(" ", "-")
                         .replace("'", "");
     }
+
 }
