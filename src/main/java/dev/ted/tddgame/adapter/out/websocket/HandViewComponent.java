@@ -11,8 +11,10 @@ import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
 public class HandViewComponent {
 
     private final Player player;
+    private final String gameHandle;
 
-    public HandViewComponent(Player player) {
+    public HandViewComponent(String gameHandle, Player player) {
+        this.gameHandle = gameHandle;
         this.player = player;
     }
 
@@ -22,7 +24,9 @@ public class HandViewComponent {
 
     private HtmlElement[] buttonsForEachCardIn(Stream<ActionCard> actionCards) {
         return actionCards
-                .map(card -> button(HtmlElement.HtmlAttribute.cssClass("card"),
+                .map(card -> button(HtmlElement.HtmlAttribute.of(
+                                            "class", "card",
+                                            "hx-get", "/game/" + gameHandle + "/card-menu/" + card.name()),
                                     HtmlElement.img("/" + baseImageFilenameOf(card.title()) + ".png", card.title())))
                 .toArray(HtmlElement[]::new);
     }

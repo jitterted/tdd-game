@@ -52,7 +52,7 @@ class OtherPlayersViewComponentTest {
                               div("other-player-container",
                                   div("titled-container",
                                       text("Hand"),
-                                      new HandViewComponent(oliverPlayer).handContainer())
+                                      new HandViewComponent("ZZZ-game-handle", oliverPlayer).handContainer())
                               ));
         HtmlElement samanthaSwap =
                 swapInnerHtml("player-id-" + samanthaPlayer.id().id(),
@@ -60,7 +60,7 @@ class OtherPlayersViewComponentTest {
                               div("other-player-container",
                                   div("titled-container",
                                       text("Hand"),
-                                      new HandViewComponent(samanthaPlayer).handContainer())
+                                      new HandViewComponent("ZZZ-game-handle", samanthaPlayer).handContainer())
                               ));
 
         assertThat(htmlElementActual)

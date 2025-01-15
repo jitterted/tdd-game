@@ -16,7 +16,7 @@ public class PlayerViewComponent {
         HtmlElement workspaceDiv = HtmlElement
                 .div("workspace",
                      HtmlElement.text("<h2>Workspace</h2>"));
-        HtmlElement handComponent = new HandViewComponent(player).handContainer();
+        HtmlElement handComponent = new HandViewComponent("ZZZ-game-handle", player).handContainer();
         HtmlElement handContainerDiv = HtmlElement
                 .div("titled-container",
                      HtmlElement.text("Your Hand"),

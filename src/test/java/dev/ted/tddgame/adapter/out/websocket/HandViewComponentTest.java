@@ -27,16 +27,31 @@ class HandViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
 
-        HtmlElement htmlElement = new HandViewComponent(player).handContainer();
+        HtmlElement htmlElement = new HandViewComponent("some-game-handle", player).handContainer();
 
         assertThat(htmlElement)
                 .isEqualTo(
                         div("hand",
-                            button(HtmlAttribute.cssClass("card"), img("/predict.png", "Predict")),
-                            button(HtmlAttribute.cssClass("card"), img("/cant-assert.png", "Can't Assert")),
-                            button(HtmlAttribute.cssClass("card"), img("/less-code.png", "Less Code")),
-                            button(HtmlAttribute.cssClass("card"), img("/write-code.png", "Write Code")),
-                            button(HtmlAttribute.cssClass("card"), img("/refactor.png", "Refactor"))
+                            button(HtmlAttribute.of(
+                                           "class", "card",
+                                           "hx-get", "/game/some-game-handle/card-menu/PREDICT"),
+                                   img("/predict.png", "Predict")),
+                            button(HtmlAttribute.of(
+                                           "class", "card",
+                                           "hx-get", "/game/some-game-handle/card-menu/CANT_ASSERT"),
+                                   img("/cant-assert.png", "Can't Assert")),
+                            button(HtmlAttribute.of(
+                                           "class", "card",
+                                           "hx-get", "/game/some-game-handle/card-menu/LESS_CODE"),
+                                   img("/less-code.png", "Less Code")),
+                            button(HtmlAttribute.of(
+                                           "class", "card",
+                                           "hx-get", "/game/some-game-handle/card-menu/WRITE_CODE"),
+                                   img("/write-code.png", "Write Code")),
+                            button(HtmlAttribute.of(
+                                           "class", "card",
+                                           "hx-get", "/game/some-game-handle/card-menu/REFACTOR"),
+                                   img("/refactor.png", "Refactor"))
                         )
                 );
     }
