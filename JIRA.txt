@@ -189,7 +189,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                          hx-get="/game/{game handle}/card-menu/{card name}"
                          hx-on::after-settle="document.querySelector('dialog').showModal()"
                          hx-swap="none"
-                [ ] Implement GET request that returns HTMX:
+                [X] Implement GET request that returns HTMX:
                     @GetMapping("/game/{gameHandle}/card-menu/{cardName}")
                     @ResponseBody
                    """
