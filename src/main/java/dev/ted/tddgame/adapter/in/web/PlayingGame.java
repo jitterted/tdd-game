@@ -49,7 +49,8 @@ public class PlayingGame {
 
     @GetMapping("/game/{gameHandle}/card-menu/{cardName}")
     @ResponseBody
-    public String cardMenu(@PathVariable String gameHandle, @PathVariable String cardName) {
+    public String cardMenu(@PathVariable String gameHandle,
+                           @PathVariable String cardName) {
         String playUrlPath = "/game/" + gameHandle + "/cards/play/" + cardName;
         String discardUrlPath = "/game/" + gameHandle + "/cards/discard/" + cardName;
         return HtmlElement.swapInnerHtml(
