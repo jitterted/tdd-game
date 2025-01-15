@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Player;

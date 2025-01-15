@@ -1,4 +1,4 @@
-package dev.ted.tddgame.adapter.out.websocket;
+package dev.ted.tddgame.adapter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,47 +31,47 @@ public abstract class HtmlElement {
         this.attributes.addAll(htmlAttributes);
     }
 
-    static Text text(String textComponentContents) {
+    public static Text text(String textComponentContents) {
         return new Text(textComponentContents);
     }
 
-    static HtmlElement div(String cssClass, HtmlElement... childComponents) {
+    public static HtmlElement div(String cssClass, HtmlElement... childComponents) {
         return new NormalElement("div",
                                  HtmlAttribute.of("class", cssClass),
                                  childComponents);
     }
 
-    static HtmlElement div(String htmlId, String cssClass, HtmlElement... childComponents) {
+    public static HtmlElement div(String htmlId, String cssClass, HtmlElement... childComponents) {
         return new NormalElement("div",
                                  HtmlAttribute.of("id", htmlId, "class", cssClass),
                                  childComponents);
     }
 
-    static HtmlElement swapInnerHtml(String targetId, HtmlElement... childComponents) {
+    public static HtmlElement swapInnerHtml(String targetId, HtmlElement... childComponents) {
         return new Swap(targetId, "innerHTML", childComponents);
     }
 
-    static HtmlElement swapAfterBegin(String targetId, HtmlElement... childComponents) {
+    public static HtmlElement swapAfterBegin(String targetId, HtmlElement... childComponents) {
         return new Swap(targetId, "afterbegin", childComponents);
     }
 
-    static HtmlElement swapDelete(String targetId) {
+    public static HtmlElement swapDelete(String targetId) {
         return new Swap(targetId, "delete");
     }
 
-    static HtmlElement img(String src, String altText) {
+    public static HtmlElement img(String src, String altText) {
         return new ImgElement("img", src, altText);
     }
 
-    static HtmlElement button(List<HtmlAttribute> attributes, HtmlElement... childElements) {
+    public static HtmlElement button(List<HtmlAttribute> attributes, HtmlElement... childElements) {
         return new NormalElement("button", attributes, childElements);
     }
 
-    static HtmlElement button(Attributes attributes, HtmlElement... childElements) {
+    public static HtmlElement button(Attributes attributes, HtmlElement... childElements) {
         return button(attributes.get(), childElements);
     }
 
-    static Attributes attributes() {
+    public static Attributes attributes() {
         return new Attributes();
     }
 
@@ -88,7 +88,7 @@ public abstract class HtmlElement {
                         .collect(Collectors.joining());
     }
 
-    String render() {
+    public String render() {
         return renderTagOpen()
                +
                renderNested()
@@ -191,7 +191,7 @@ public abstract class HtmlElement {
         }
     }
 
-    static final class Text extends HtmlElement {
+    public static final class Text extends HtmlElement {
 
         private final String text;
 
@@ -244,7 +244,7 @@ public abstract class HtmlElement {
     }
 
     // container of components that doesn't render itself
-    static final class Forest extends HtmlElement {
+    public static final class Forest extends HtmlElement {
 
         public Forest(HtmlElement... childComponents) {
             super("forest", childComponents);
@@ -268,7 +268,7 @@ public abstract class HtmlElement {
         }
     }
 
-    static class HtmlAttribute {
+    public static class HtmlAttribute {
         private final String name;
         private final String value;
 
@@ -318,7 +318,7 @@ public abstract class HtmlElement {
     }
 
     // https://html.spec.whatwg.org/multipage/syntax.html#normal-elements
-    static class NormalElement extends HtmlElement {
+    public static class NormalElement extends HtmlElement {
 
         public NormalElement(String tag, List<@NotNull HtmlAttribute> htmlAttributes, HtmlElement... childComponents) {
             super(tag, htmlAttributes, childComponents);
@@ -339,7 +339,7 @@ public abstract class HtmlElement {
     }
 
     // could become VoidElement: https://html.spec.whatwg.org/multipage/syntax.html#void-elements
-    static class ImgElement extends HtmlElement {
+    public static class ImgElement extends HtmlElement {
         public ImgElement(String tag, String src, String altText) {
             super(tag, HtmlAttribute.of("src", src, "alt", altText));
         }
@@ -358,7 +358,7 @@ public abstract class HtmlElement {
 
     }
 
-    static class Attributes {
+    public static class Attributes {
         private final List<HtmlAttribute> attributes = new ArrayList<>();
 
         public Attributes cssClass(String cssClassName) {

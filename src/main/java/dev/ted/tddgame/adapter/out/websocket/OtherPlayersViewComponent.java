@@ -1,11 +1,12 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Player;
 
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.swapInnerHtml;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.text;
+import static dev.ted.tddgame.adapter.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.swapInnerHtml;
+import static dev.ted.tddgame.adapter.HtmlElement.text;
 
 public class OtherPlayersViewComponent {
 

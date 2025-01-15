@@ -1,19 +1,16 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.HtmlAttribute;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.button;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.img;
+import static dev.ted.tddgame.adapter.HtmlElement.button;
+import static dev.ted.tddgame.adapter.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.img;
 import static org.assertj.core.api.Assertions.*;
 
 class HandViewComponentTest {
@@ -44,13 +41,12 @@ class HandViewComponentTest {
                 );
     }
 
-    static List<@NotNull HtmlAttribute> buttonAttributes(String hxGetUrlPath) {
+    static HtmlElement.Attributes buttonAttributes(String hxGetUrlPath) {
         return HtmlElement.attributes()
                           .cssClass("card")
                           .hxGet(hxGetUrlPath)
                           .hxSwap("none")
-                          .hxOn("after-settle", "document.querySelector('dialog').showModal()")
-                          .get();
+                          .hxOn("after-settle", "document.querySelector('dialog').showModal()");
     }
 
 }

@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.EventEnqueuer;
 import dev.ted.tddgame.domain.MemberId;
@@ -10,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.swapInnerHtml;
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.text;
+import static dev.ted.tddgame.adapter.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.swapInnerHtml;
+import static dev.ted.tddgame.adapter.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
 
 class PlayerViewComponentTest {

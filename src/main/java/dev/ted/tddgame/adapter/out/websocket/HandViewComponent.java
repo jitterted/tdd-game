@@ -1,11 +1,12 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Player;
 
 import java.util.stream.Stream;
 
-import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.div;
 
 public class HandViewComponent {
 

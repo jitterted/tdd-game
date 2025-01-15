@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.domain.Player;
 
 import java.util.List;

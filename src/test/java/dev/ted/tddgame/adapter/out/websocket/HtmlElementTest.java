@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

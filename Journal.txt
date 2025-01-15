@@ -5,6 +5,7 @@ January 15, 2025 - Wednesday
 
     * If the spring-boot-starter-validation is in the POM, then it'll get initialized, which takes over 400ms!
 
+* IntelliJ IDEA Move Class refactoring doesn't offer to change visibility of methods/inner classes, unlike Move Method which does offer to "escalate" it
 
 
 January 14, 2025 - Tuesday
