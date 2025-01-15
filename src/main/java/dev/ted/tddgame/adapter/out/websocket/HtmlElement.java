@@ -37,7 +37,7 @@ public abstract class HtmlElement {
 
     static HtmlElement div(String cssClass, HtmlElement... childComponents) {
         return new NormalElement("div",
-                                 HtmlAttribute.of("class", cssClass),
+                                 HtmlAttribute.cssClass(cssClass),
                                  childComponents);
     }
 
@@ -275,6 +275,10 @@ public abstract class HtmlElement {
 
         static List<@NotNull HtmlAttribute> of(String name1, String value1, String name2, String value2) {
             return List.of(new HtmlAttribute(name1, value1), new HtmlAttribute(name2, value2));
+        }
+
+        static List<HtmlAttribute> cssClass(String classNames) {
+            return of("class", classNames);
         }
 
         String render() {

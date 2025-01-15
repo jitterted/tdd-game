@@ -22,7 +22,7 @@ public class HandViewComponent {
 
     private HtmlElement[] buttonsForEachCardIn(Stream<ActionCard> actionCards) {
         return actionCards
-                .map(card -> button(HtmlElement.HtmlAttribute.of("class", "card"),
+                .map(card -> button(HtmlElement.HtmlAttribute.cssClass("card"),
                                     HtmlElement.img("/" + baseImageFilenameOf(card.title()) + ".png", card.title())))
                 .toArray(HtmlElement[]::new);
     }

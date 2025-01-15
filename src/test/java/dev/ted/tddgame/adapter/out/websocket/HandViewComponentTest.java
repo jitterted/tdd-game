@@ -32,11 +32,11 @@ class HandViewComponentTest {
         assertThat(htmlElement)
                 .isEqualTo(
                         div("hand",
-                            button(HtmlAttribute.of("class", "card"), img("/predict.png", "Predict")),
-                            button(HtmlAttribute.of("class", "card"), img("/cant-assert.png", "Can't Assert")),
-                            button(HtmlAttribute.of("class", "card"), img("/less-code.png", "Less Code")),
-                            button(HtmlAttribute.of("class", "card"), img("/write-code.png", "Write Code")),
-                            button(HtmlAttribute.of("class", "card"), img("/refactor.png", "Refactor"))
+                            button(HtmlAttribute.cssClass("card"), img("/predict.png", "Predict")),
+                            button(HtmlAttribute.cssClass("card"), img("/cant-assert.png", "Can't Assert")),
+                            button(HtmlAttribute.cssClass("card"), img("/less-code.png", "Less Code")),
+                            button(HtmlAttribute.cssClass("card"), img("/write-code.png", "Write Code")),
+                            button(HtmlAttribute.cssClass("card"), img("/refactor.png", "Refactor"))
                         )
                 );
     }
