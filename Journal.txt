@@ -1,3 +1,12 @@
+January 15, 2025 - Wednesday
+============================
+
+* Learned about MockMvcTester and that it does not require Spring test annotations, so is much faster [h/t NotBjoggisAtAll]
+
+    * If the spring-boot-starter-validation is in the POM, then it'll get initialized, which takes over 400ms!
+
+
+
 January 14, 2025 - Tuesday
 ==========================
 
