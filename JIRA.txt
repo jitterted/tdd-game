@@ -185,7 +185,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [ ] Popup menu for Card actions
                 [X] Generalize NormalElement to accept arbitrary list of HtmlAttributes
                 [X] Change "your hand" cards from DIV to BUTTON
-                [ ] Add htmx support:
+                [X] Add htmx support:
                          hx-get="/game/{game handle}/card-menu/{card name}"
                          hx-on::after-settle="document.querySelector('dialog').showModal()"
                          hx-swap="none"

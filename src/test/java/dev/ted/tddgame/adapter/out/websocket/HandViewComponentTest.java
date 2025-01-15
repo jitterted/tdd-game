@@ -49,6 +49,7 @@ class HandViewComponentTest {
                           .cssClass("card")
                           .hxGet(hxGetUrlPath)
                           .hxSwap("none")
+                          .hxOn("after-settle", "document.querySelector('dialog').showModal()")
                           .get();
     }
 

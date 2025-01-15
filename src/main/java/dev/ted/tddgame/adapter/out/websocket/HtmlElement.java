@@ -376,6 +376,11 @@ public abstract class HtmlElement {
             return this;
         }
 
+        public Attributes hxOn(String htmxEventName, String value) {
+            attributes.addAll(HtmlAttribute.of("hx-on::" + htmxEventName, value));
+            return this;
+        }
+
         public List<HtmlAttribute> get() {
             return attributes;
         }

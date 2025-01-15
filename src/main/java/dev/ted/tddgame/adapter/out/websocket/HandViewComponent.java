@@ -32,7 +32,8 @@ public class HandViewComponent {
         return HtmlElement.attributes()
                           .cssClass("card")
                           .hxGet("/game/" + gameHandle + "/card-menu/" + card.name())
-                          .hxSwap("none");
+                          .hxSwap("none")
+                          .hxOn("after-settle", "document.querySelector('dialog').showModal()");
     }
 
     private String baseImageFilenameOf(String cardTitle) {
