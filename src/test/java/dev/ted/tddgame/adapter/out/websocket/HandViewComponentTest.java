@@ -7,6 +7,8 @@ import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
 import org.junit.jupiter.api.Test;
 
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.HtmlAttribute;
+import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.button;
 import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.div;
 import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.img;
 import static org.assertj.core.api.Assertions.*;
@@ -30,11 +32,11 @@ class HandViewComponentTest {
         assertThat(htmlElement)
                 .isEqualTo(
                         div("hand",
-                            div("card", img("/predict.png", "Predict")),
-                            div("card", img("/cant-assert.png", "Can't Assert")),
-                            div("card", img("/less-code.png", "Less Code")),
-                            div("card", img("/write-code.png", "Write Code")),
-                            div("card", img("/refactor.png", "Refactor"))
+                            button(HtmlAttribute.of("class", "card"), img("/predict.png", "Predict")),
+                            button(HtmlAttribute.of("class", "card"), img("/cant-assert.png", "Can't Assert")),
+                            button(HtmlAttribute.of("class", "card"), img("/less-code.png", "Less Code")),
+                            button(HtmlAttribute.of("class", "card"), img("/write-code.png", "Write Code")),
+                            button(HtmlAttribute.of("class", "card"), img("/refactor.png", "Refactor"))
                         )
                 );
     }
