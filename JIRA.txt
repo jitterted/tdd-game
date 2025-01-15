@@ -181,11 +181,34 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [ ] Stop using Text HtmlComponent for H2 and other tags, by creating a generic HtmlTag component, and then escape the text
 
 
-                ==> more UI display of Player hands, in-play areas, etc.
+            [ ] Popup menu for Card actions
+                [ ] Change "your hand" cards from DIV to BUTTON
+                    Add htmx support:
+                         hx-get="/game/{game handle}/card-menu/{card name}"
+                         hx-on::after-settle="document.querySelector('dialog').showModal()"
+                         hx-swap="none"
+                [ ] Implement GET request that returns HTMX:
+                    @GetMapping("/game/{gameHandle}/card-menu/{cardName}")
+                    @ResponseBody
+                   """
+                   <swap hx-swap-oob="innerHTML" id="dialog">
+                       <div>
+                           <button autofocus hx-post="/game/%s/cards/play/%s">Play Card into Workspace</button>
+                       </div>
+                       <div>
+                           <button hx-post="/game/%s/cards/discard/%s">Discard Card to Discard Pile</button>
+                       </div>
+                   </swap>
+                   """.formatted(gameHandle, cardName, gameHandle, cardName);
+                [ ] Implement POST request to handle DISCARD command
+
+                [ ] Implement POST request to handle PLAY command
+                    [ ] Implement the PLAY command
+                        [ ] Create Workspace
 
 
-                [ ] Player might have cards in the "Tech Neglect" area
-                [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
+            [ ] Player might have cards in the "Tech Neglect" area
+            [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
 
             [ ] Broadcast Action Deck
                 [ ] Display a back of card in the draw pile if it's not empty

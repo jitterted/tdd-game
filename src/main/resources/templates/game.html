@@ -161,10 +161,7 @@
         <div id="you" class="your-play-area">
             <dialog id="dialog">
                 <div>
-                    <button autofocus hx-post="/game/{gameHandle}/cards/play/CANT_ASSERT">Play Card into Workspace</button>
-                </div>
-                <div>
-                    <button hx-post="/game/{gameHandle}/cards/discard/CANT_ASSERT">Discard Card to Discard Pile</button>
+                    <h1>Dialog Contents Will Go Here</h1>
                 </div>
             </dialog>
             <div class="workspace">
@@ -175,6 +172,8 @@
                 Your Hand
                 <div class="hand">
                     <button hx-get="/game/{gameHandle}/card-menu/CANT_ASSERT"
+                            hx-on::after-settle="document.querySelector('dialog').showModal()"
+                            hx-swap="none"
                             class="card">
                         <img src="/static/cant-assert.png"
                              th:src="@{/cant-assert.png}">

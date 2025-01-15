@@ -39,10 +39,7 @@ public class PlayingGame {
     @PostMapping("/game/{gameHandle}/start-game")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void startGame(@PathVariable("gameHandle") String gameHandle) {
-         gamePlay.start(gameHandle);
+        gamePlay.start(gameHandle);
     }
 
-    // GET menu
-
-    // POST execute command from menu
 }
