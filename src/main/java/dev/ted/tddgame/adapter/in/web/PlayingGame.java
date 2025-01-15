@@ -77,4 +77,9 @@ public class PlayingGame {
         ).render();
     }
 
+    @PostMapping("/game/{gameHandle}/cards/discard/{cardName}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void discardCardFromHand(@PathVariable String gameHandle,
+                                    @PathVariable String cardName) {
+    }
 }

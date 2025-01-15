@@ -18,9 +18,7 @@ class PlayingGameMvcTest {
         GameStore gameStore = GameStore.createEmpty();
         gameStore.save(Game.create("Game Name", "get-game-handle"));
 
-        MockMvcTester mvc = MockMvcTester.of(
-                new PlayingGame(gameStore, new GamePlay(
-                        gameStore, new GamePlayTest.NoOpDummyBroadcaster())));
+        MockMvcTester mvc = mvcTesterFor(gameStore);
 
         mvc.get()
            .uri("/game/get-game-handle")
@@ -29,15 +27,11 @@ class PlayingGameMvcTest {
     }
 
     @Test
-    void postToStartEndpointReturns204() throws Exception {
-        GameStore gameStore = GameStore.createEmpty();
-        Game game = Game.create("Game to be Started", "game2start");
-        game.join(new MemberId(1L), "Player 1");
-        gameStore.save(game);
+    void postToStartEndpointReturns204NoContent() {
+        String gameHandle = "game2start";
+        Fixture fixture = createFixture(gameHandle);
 
-        MockMvcTester mvc = MockMvcTester.of(
-                new PlayingGame(gameStore, new GamePlay(
-                        gameStore, new GamePlayTest.NoOpDummyBroadcaster())));
+        MockMvcTester mvc = mvcTesterFor(fixture.gameStore);
 
         mvc.post()
            .uri("/game/game2start/start-game")
@@ -47,20 +41,51 @@ class PlayingGameMvcTest {
 
     @Test
     void getToCardMenuEndpointReturns200StatusOk() {
-        GameStore gameStore = GameStore.createEmpty();
-        Game game = Game.create("Game to be Started", "handle-of-game");
-        game.join(new MemberId(1L), "Player 1");
-        game.start();
-        gameStore.save(game);
+        String handle = "handle-of-game";
+        Fixture fixture = createFixture(handle);
+        fixture.game.start();
 
-        MockMvcTester mvc = MockMvcTester.of(
-                new PlayingGame(gameStore, new GamePlay(
-                        gameStore, new GamePlayTest.NoOpDummyBroadcaster())));
+        MockMvcTester mvc = mvcTesterFor(fixture.gameStore);
 
         mvc.get()
            .uri("/game/handle-of-game/card-menu/PREDICT")
            .assertThat()
            .hasStatus2xxSuccessful();
     }
+
+    @Test
+    void postToDiscardEndpointReturns204NoContent() {
+        String gameHandle = "game4discard";
+        Fixture fixture = createFixture(gameHandle);
+        fixture.game.start();
+
+        MockMvcTester mvc = mvcTesterFor(fixture.gameStore);
+
+        mvc.post()
+           .uri("/game/game4discard/cards/discard/LESS_CODE")
+           .assertThat()
+           .hasStatus(HttpStatus.NO_CONTENT);
+    }
+
+
+    // -- FIXTURE
+
+    private static MockMvcTester mvcTesterFor(GameStore fixture) {
+        return MockMvcTester.of(
+                new PlayingGame(fixture, new GamePlay(
+                        fixture, new GamePlayTest.NoOpDummyBroadcaster()
+                ))
+        );
+    }
+
+    private static Fixture createFixture(String handle) {
+        GameStore gameStore = GameStore.createEmpty();
+        Game game = Game.create("Game to be Started", handle);
+        game.join(new MemberId(1L), "Player 1");
+        gameStore.save(game);
+        return new Fixture(gameStore, game);
+    }
+
+    private record Fixture(GameStore gameStore, Game game) {}
 
 }
