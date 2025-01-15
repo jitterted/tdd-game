@@ -37,7 +37,7 @@ public abstract class HtmlElement {
 
     static HtmlElement div(String cssClass, HtmlElement... childComponents) {
         return new NormalElement("div",
-                                 HtmlAttribute.cssClass(cssClass),
+                                 HtmlAttribute.of("class", cssClass),
                                  childComponents);
     }
 
