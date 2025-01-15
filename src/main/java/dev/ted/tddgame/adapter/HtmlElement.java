@@ -381,6 +381,16 @@ public abstract class HtmlElement {
             return this;
         }
 
+        public Attributes autofocus() {
+            attributes.addAll(HtmlAttribute.of("autofocus", ""));
+            return this;
+        }
+
+        public Attributes hxPost(String urlPath) {
+            attributes.addAll(HtmlAttribute.of("hx-post", urlPath));
+            return this;
+        }
+
         public List<HtmlAttribute> get() {
             return attributes;
         }

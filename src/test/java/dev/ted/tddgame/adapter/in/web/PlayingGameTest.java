@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.in.web;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.GamePlayTest;
 import dev.ted.tddgame.application.port.Broadcaster;
@@ -13,6 +14,8 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
+import static dev.ted.tddgame.adapter.HtmlElement.attributes;
+import static dev.ted.tddgame.adapter.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
 
 class PlayingGameTest {
@@ -35,33 +38,69 @@ class PlayingGameTest {
 
     @Test
     void gameReturnsGameViewWithPlayerViews() {
-        Fixture fixture = createFixture();
-        Broadcaster dummyBroadcaster = new GamePlayTest.NoOpDummyBroadcaster();
-
-        GamePlay gamePlay = new GamePlay(fixture.gameStore(), dummyBroadcaster);
-        PlayingGame playingGame = new PlayingGame(fixture.gameStore(), gamePlay);
+        String gameHandle = "wily-coyote-77";
+        Fixture fixture = createGameWithPlayingGameController(gameHandle);
 
         Model model = new ConcurrentModel();
-        playingGame.game(model, fixture.gameHandle());
+        fixture.playingGame().game(model, gameHandle);
 
         GameView gameView = (GameView) model.getAttribute("gameView");
 
         assertThat(gameView)
-                .isEqualTo(new GameView(fixture.game().handle(),
+                .isEqualTo(new GameView(gameHandle,
                                         PlayerView.from(fixture.game().players())));
     }
 
-    private Fixture createFixture() {
+    @Test
+    void cardMenuPopulatedWithButtonsForDiscardAndPlay() {
+        String gameHandle = "bugs-bunny-33";
+        String cardName = "CODE_BLOAT";
+        Fixture fixture = createGameWithPlayingGameController(gameHandle);
+
+        String html = fixture.playingGame.cardMenu(gameHandle, cardName);
+
+        assertThat(html)
+                .isEqualTo(
+                        HtmlElement.swapInnerHtml(
+                                "dialog",
+                                HtmlElement.div(
+                                        "",
+                                        HtmlElement.button(
+                                                attributes()
+                                                        .autofocus()
+                                                        .hxPost("/game/bugs-bunny-33/cards/play/CODE_BLOAT")
+                                                        .hxOn("before-request", "document.querySelector('dialog').close()"),
+                                                text("Play Card into Workspace")
+                                        )
+                                ),
+                                HtmlElement.div(
+                                        "",
+                                        HtmlElement.button(
+                                                attributes()
+                                                        .hxPost("/game/bugs-bunny-33/cards/discard/CODE_BLOAT")
+                                                        .hxOn("before-request", "document.querySelector('dialog').close()"),
+                                                text("Discard Card to Discard Pile")
+                                        )
+                                )
+                        ).render()
+                );
+    }
+
+    // ---- FIXTURE
+
+    private static Fixture createGameWithPlayingGameController(String gameHandle) {
         GameStore gameStore = GameStore.createEmpty();
-        String gameHandle = "wily-coyote-77";
         Game game = Game.create("Only Game In Progress", gameHandle);
         MemberStore memberStore = new MemberStore();
         memberStore.save(new Member(new MemberId(32L), "BlueNickName", "blueauth"));
         game.join(new MemberId(32L), "BlueNickName");
         gameStore.save(game);
-        return new Fixture(gameStore, gameHandle, game);
+        Broadcaster dummyBroadcaster = new GamePlayTest.NoOpDummyBroadcaster();
+        GamePlay gamePlay = new GamePlay(gameStore, dummyBroadcaster);
+        PlayingGame playingGame = new PlayingGame(gameStore, gamePlay);
+        return new Fixture(game, playingGame);
     }
 
-    private record Fixture(GameStore gameStore, String gameHandle, Game game) {
-    }
+    private record Fixture(Game game, PlayingGame playingGame) {}
+
 }

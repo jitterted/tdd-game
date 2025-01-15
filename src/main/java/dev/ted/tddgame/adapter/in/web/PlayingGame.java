@@ -1,5 +1,6 @@
 package dev.ted.tddgame.adapter.in.web;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.Player;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
+
+import static dev.ted.tddgame.adapter.HtmlElement.attributes;
+import static dev.ted.tddgame.adapter.HtmlElement.text;
 
 @Controller
 public class PlayingGame {
@@ -31,7 +35,7 @@ public class PlayingGame {
         List<Player> playerViews = gameStore
                 .findByHandle(gameHandle)
                 .orElseThrow(() -> new RuntimeException("Game '%s' not found"
-                        .formatted(gameHandle)))
+                                                                .formatted(gameHandle)))
                 .players();
         model.addAttribute("gameView", new GameView(gameHandle, PlayerView.from(playerViews)));
         return "game";
@@ -46,7 +50,30 @@ public class PlayingGame {
     @GetMapping("/game/{gameHandle}/card-menu/{cardName}")
     @ResponseBody
     public String cardMenu(@PathVariable String gameHandle, @PathVariable String cardName) {
-        return "";
+        String playUrlPath = "/game/" + gameHandle + "/cards/play/" + cardName;
+        String discardUrlPath = "/game/" + gameHandle + "/cards/discard/" + cardName;
+        return HtmlElement.swapInnerHtml(
+                "dialog",
+                HtmlElement.div(
+                        "",
+                        HtmlElement.button(
+                                attributes()
+                                        .autofocus()
+                                        .hxPost(playUrlPath)
+                                        .hxOn("before-request", "document.querySelector('dialog').close()"),
+                                text("Play Card into Workspace")
+                        )
+                ),
+                HtmlElement.div(
+                        "",
+                        HtmlElement.button(
+                                attributes()
+                                        .hxPost(discardUrlPath)
+                                        .hxOn("before-request", "document.querySelector('dialog').close()"),
+                                text("Discard Card to Discard Pile")
+                        )
+                )
+        ).render();
     }
 
 }
