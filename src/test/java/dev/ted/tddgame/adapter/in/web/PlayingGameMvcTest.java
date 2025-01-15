@@ -46,4 +46,5 @@ class PlayingGameMvcTest {
         mockMvc.perform(post("/game/game2start/start-game"))
                .andExpect(status().isNoContent());
     }
+
 }

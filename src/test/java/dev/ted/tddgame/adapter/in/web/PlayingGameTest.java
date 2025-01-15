@@ -9,12 +9,29 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
 import static org.assertj.core.api.Assertions.*;
 
 class PlayingGameTest {
+
+    @Test
+    void getToCardMenuEndpointReturns200StatusOk() {
+        GameStore gameStore = GameStore.createEmpty();
+        Game game = Game.create("Game to be Started", "handle-of-game");
+        game.join(new MemberId(1L), "Player 1");
+        game.start();
+        gameStore.save(game);
+
+        MockMvcTester mvc = MockMvcTester.of(new PlayingGame(gameStore, new GamePlay(gameStore, new GamePlayTest.NoOpDummyBroadcaster())));
+
+        mvc.get()
+           .uri("/game/handle-of-game/card-menu/PREDICT")
+           .assertThat()
+           .hasStatus2xxSuccessful();
+    }
 
     @Test
     void gameReturnsGameViewWithPlayerViews() {

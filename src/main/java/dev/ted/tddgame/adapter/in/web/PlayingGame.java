@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
@@ -40,6 +41,12 @@ public class PlayingGame {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void startGame(@PathVariable("gameHandle") String gameHandle) {
         gamePlay.start(gameHandle);
+    }
+
+    @GetMapping("/game/{gameHandle}/card-menu/{cardName}")
+    @ResponseBody
+    public String cardMenu(@PathVariable String gameHandle, @PathVariable String cardName) {
+        return "";
     }
 
 }

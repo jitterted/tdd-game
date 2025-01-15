@@ -185,7 +185,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [ ] Popup menu for Card actions
                 [X] Generalize NormalElement to accept arbitrary list of HtmlAttributes
                 [X] Change "your hand" cards from DIV to BUTTON
-                [X] Add htmx support:
+                [X] Add htmx support to hand BUTTON:
                          hx-get="/game/{game handle}/card-menu/{card name}"
                          hx-on::after-settle="document.querySelector('dialog').showModal()"
                          hx-swap="none"
@@ -195,13 +195,21 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                    """
                    <swap hx-swap-oob="innerHTML" id="dialog">
                        <div>
-                           <button autofocus hx-post="/game/%s/cards/play/%s">Play Card into Workspace</button>
+                           <button autofocus
+                                hx-post="/game/%s/cards/play/%s"
+                                hx-on::before-request="document.querySelector('dialog').close()">
+                               Play Card into Workspace
+                           </button>
                        </div>
                        <div>
-                           <button hx-post="/game/%s/cards/discard/%s">Discard Card to Discard Pile</button>
+                           <button hx-post="/game/%s/cards/discard/%s"
+                                 hx-on::before-request="document.querySelector('dialog').close()">
+                               Discard Card to Discard Pile
+                           </button>
                        </div>
                    </swap>
                    """.formatted(gameHandle, cardName, gameHandle, cardName);
+
                 [ ] Implement POST request to handle DISCARD command
                     [ ] Broadcast state change to everyone
 
