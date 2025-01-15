@@ -3,6 +3,8 @@ package dev.ted.tddgame.adapter.out.websocket;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SuppressWarnings("HtmlUnknownTarget")
@@ -130,6 +132,25 @@ class HtmlElementTest {
         assertThat(img.render())
                 .isEqualTo("""
                            <img src="image-name.png" alt="alt text">
+                           """);
+    }
+
+    @Test
+    void htmxButtonHasAllSpecifiedAttributes() {
+        List<HtmlElement.HtmlAttribute> attributes = List.of(
+                new HtmlElement.HtmlAttribute("hx-get", "/game/testy-spider-83/card-menu/CANT_ASSERT")
+                , new HtmlElement.HtmlAttribute("hx-on::after-settle", "document.querySelector('dialog').showModal()")
+                , new HtmlElement.HtmlAttribute("hx-swap", "none")
+                , new HtmlElement.HtmlAttribute("class", "card")
+        );
+        HtmlElement img = HtmlElement.img("/cant-assert.png", "Can't Assert");
+        HtmlElement button = HtmlElement.button(attributes, img);
+
+        assertThat(button.render())
+                .isEqualTo("""
+                           <button hx-get="/game/testy-spider-83/card-menu/CANT_ASSERT" hx-on::after-settle="document.querySelector('dialog').showModal()" hx-swap="none" class="card">
+                               <img src="/cant-assert.png" alt="Can't Assert">
+                           </button>
                            """);
     }
 

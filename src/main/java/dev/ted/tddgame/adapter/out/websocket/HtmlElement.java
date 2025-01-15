@@ -63,6 +63,10 @@ public abstract class HtmlElement {
         return new ImgElement("img", src, altText);
     }
 
+    static HtmlElement button(List<HtmlAttribute> attributes, HtmlElement... childElements) {
+        return new NormalElement("button", attributes, childElements);
+    }
+
     protected String renderNested() {
         return childComponents.stream()
                               .map(this::render)
