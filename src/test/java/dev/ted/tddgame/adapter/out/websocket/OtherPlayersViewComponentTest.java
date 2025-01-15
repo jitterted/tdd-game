@@ -14,7 +14,7 @@ class OtherPlayersViewComponentTest {
 
     @Test
     void otherPlayersHandsHtmlForAllPlayersInStartedGame() {
-        Game game = Game.create("irrelevant game name", "gameHandle");
+        Game game = Game.create("irrelevant game name", "other-game-handle");
         MemberId memberIdForOliver = new MemberId(78L);
         game.join(memberIdForOliver, "Oliver");
         MemberId memberIdForSamantha = new MemberId(63L);
@@ -52,7 +52,7 @@ class OtherPlayersViewComponentTest {
                               div("other-player-container",
                                   div("titled-container",
                                       text("Hand"),
-                                      new HandViewComponent("ZZZ-game-handle", oliverPlayer).handContainer())
+                                      new HandViewComponent("other-game-handle", oliverPlayer).handContainer())
                               ));
         HtmlElement samanthaSwap =
                 swapInnerHtml("player-id-" + samanthaPlayer.id().id(),
@@ -60,7 +60,7 @@ class OtherPlayersViewComponentTest {
                               div("other-player-container",
                                   div("titled-container",
                                       text("Hand"),
-                                      new HandViewComponent("ZZZ-game-handle", samanthaPlayer).handContainer())
+                                      new HandViewComponent("other-game-handle", samanthaPlayer).handContainer())
                               ));
 
         assertThat(htmlElementActual)

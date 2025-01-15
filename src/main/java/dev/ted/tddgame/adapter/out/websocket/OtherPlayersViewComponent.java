@@ -18,18 +18,19 @@ public class OtherPlayersViewComponent {
     public HtmlElement htmlForOtherPlayers() {
         HtmlElement[] htmlElements = game.players()
                                          .stream()
-                                         .map(OtherPlayersViewComponent::createSwapInnerHtml)
+                                         .map(this::createSwapInnerHtml)
                                          .toArray(HtmlElement[]::new);
         return new HtmlElement.Forest(htmlElements);
     }
 
-    private static HtmlElement createSwapInnerHtml(Player player) {
+    private HtmlElement createSwapInnerHtml(Player player) {
         HtmlElement nameH2 = text("<h2 class=\"name\">%s</h2>"
                                             .formatted(player.playerName()));
         HtmlElement divContainer = div("other-player-container",
                                        div("titled-container",
                                              text("Hand"),
-                                             new HandViewComponent("ZZZ-game-handle", player).handContainer()
+                                             new HandViewComponent(game.handle(), player)
+                                                   .handContainer()
                                          ));
         return swapInnerHtml("player-id-" + player.id().id(),
                              nameH2,

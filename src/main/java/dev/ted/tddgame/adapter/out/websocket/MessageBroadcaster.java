@@ -37,7 +37,7 @@ public class MessageBroadcaster implements Broadcaster {
 
     private void sendHtmlForOtherPlayerPlaceholderContainers(Game game) {
         for (Player player : game.players()) {
-            HtmlElement htmlElement = new PlayerViewComponent(player)
+            HtmlElement htmlElement = new PlayerViewComponent(game.handle(), player)
                     .htmlPlaceholdersForOtherPlayers(game.players());
             messageSendersForPlayers.sendTo(game.handle(),
                                             player.id(),
@@ -57,7 +57,7 @@ public class MessageBroadcaster implements Broadcaster {
         // FUTURE: we want to iterate through all connected View Components (that encapsulated the MessageSender)
         // so that way we can broadcast updates to Observers who are NOT Players in the game
         for (Player player : game.players()) {
-            HtmlElement htmlElement = new PlayerViewComponent(player).htmlForYou();
+            HtmlElement htmlElement = new PlayerViewComponent(game.handle(), player).htmlForYou();
             messageSendersForPlayers.sendTo(
                     game.handle(),
                     player.id(),

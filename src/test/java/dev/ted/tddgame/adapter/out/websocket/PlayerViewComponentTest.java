@@ -23,7 +23,7 @@ class PlayerViewComponentTest {
     void generateHtmlWithSwapIdTargetForPlayerWithNoCards() {
         Player player = createPlayer(79L, "Player with no cards");
 
-        HtmlElement htmlElement = new PlayerViewComponent(player).htmlForYou();
+        HtmlElement htmlElement = new PlayerViewComponent("ZZZ-game-handle", player).htmlForYou();
         assertThat(htmlElement)
                 .isEqualTo(
                         swapInnerHtml("you",
@@ -42,8 +42,9 @@ class PlayerViewComponentTest {
         Player player = createPlayer(34L, "Player with one LESS CODE card");
         player.apply(new PlayerDrewActionCard(player.memberId(),
                                               ActionCard.LESS_CODE));
+        String gameHandle = "test-game-handle";
 
-        HtmlElement htmlElement = new PlayerViewComponent(player).htmlForYou();
+        HtmlElement htmlElement = new PlayerViewComponent(gameHandle, player).htmlForYou();
 
         assertThat(htmlElement)
                 .isEqualTo(
@@ -52,7 +53,7 @@ class PlayerViewComponentTest {
                                           text("<h2>Workspace</h2>")),
                                       div("titled-container",
                                           text("Your Hand"),
-                                          new HandViewComponent("ZZZ-game-handle", player).handContainer()
+                                          new HandViewComponent(gameHandle, player).handContainer()
                                       )
                         )
                 );
@@ -66,8 +67,9 @@ class PlayerViewComponentTest {
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.LESS_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.WRITE_CODE));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.REFACTOR));
+        String gameHandle = "test-game-handle";
 
-        HtmlElement htmlElement = new PlayerViewComponent(player).htmlForYou();
+        HtmlElement htmlElement = new PlayerViewComponent(gameHandle, player).htmlForYou();
 
         assertThat(htmlElement)
                 .isEqualTo(
@@ -76,7 +78,7 @@ class PlayerViewComponentTest {
                                           text("<h2>Workspace</h2>")),
                                       div("titled-container",
                                           text("Your Hand"),
-                                          new HandViewComponent("ZZZ-game-handle", player).handContainer()
+                                          new HandViewComponent(gameHandle, player).handContainer()
                                       )
                         )
                 );
@@ -90,7 +92,7 @@ class PlayerViewComponentTest {
                                        you,
                                        createPlayer(5L, "Name of Player 5"));
 
-        HtmlElement htmlElement = new PlayerViewComponent(you)
+        HtmlElement htmlElement = new PlayerViewComponent("ZZZ-game-handle", you)
                 .htmlPlaceholdersForOtherPlayers(players);
 
         assertThat(htmlElement)

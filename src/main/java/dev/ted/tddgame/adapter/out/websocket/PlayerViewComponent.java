@@ -7,16 +7,18 @@ import java.util.function.Predicate;
 
 public class PlayerViewComponent {
     private final Player player;
+    private final String gameHandle;
 
-    public PlayerViewComponent(Player player) {
+    public PlayerViewComponent(String gameHandle, Player player) {
         this.player = player;
+        this.gameHandle = gameHandle;
     }
 
     HtmlElement htmlForYou() {
         HtmlElement workspaceDiv = HtmlElement
                 .div("workspace",
                      HtmlElement.text("<h2>Workspace</h2>"));
-        HtmlElement handComponent = new HandViewComponent("ZZZ-game-handle", player).handContainer();
+        HtmlElement handComponent = new HandViewComponent(gameHandle, player).handContainer();
         HtmlElement handContainerDiv = HtmlElement
                 .div("titled-container",
                      HtmlElement.text("Your Hand"),
