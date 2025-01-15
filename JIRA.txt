@@ -183,7 +183,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [ ] Move childComponents down to NormalElement (only NormalElement can have children)
 
             [ ] Popup menu for Card actions
-                [ ] Generalize NormalElement to accept arbitrary list of HtmlAttributes
+                [X] Generalize NormalElement to accept arbitrary list of HtmlAttributes
                 [ ] Change "your hand" cards from DIV to BUTTON
                     Add htmx support:
                          hx-get="/game/{game handle}/card-menu/{card name}"
@@ -203,6 +203,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                    </swap>
                    """.formatted(gameHandle, cardName, gameHandle, cardName);
                 [ ] Implement POST request to handle DISCARD command
+                    [ ] Broadcast state change to everyone
 
                 [ ] Implement POST request to handle PLAY command
                     [ ] Implement the PLAY command
