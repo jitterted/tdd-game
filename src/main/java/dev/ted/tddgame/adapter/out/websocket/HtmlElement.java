@@ -37,13 +37,13 @@ public abstract class HtmlElement {
 
     static HtmlElement div(String cssClass, HtmlElement... childComponents) {
         return new NormalElement("div",
-                                 List.of(new HtmlAttribute("class", cssClass)),
+                                 HtmlAttribute.of("class", cssClass),
                                  childComponents);
     }
 
     static HtmlElement div(String htmlId, String cssClass, HtmlElement... childComponents) {
         return new NormalElement("div",
-                                 List.of(new HtmlAttribute("id", htmlId), new HtmlAttribute("class", cssClass)),
+                                 HtmlAttribute.of("id", htmlId, "class", cssClass),
                                  childComponents);
     }
 
@@ -269,6 +269,14 @@ public abstract class HtmlElement {
             this.value = value;
         }
 
+        static List<HtmlAttribute> of(String name, String value) {
+            return List.of(new HtmlAttribute(name, value));
+        }
+
+        static List<@NotNull HtmlAttribute> of(String name1, String value1, String name2, String value2) {
+            return List.of(new HtmlAttribute(name1, value1), new HtmlAttribute(name2, value2));
+        }
+
         String render() {
             if (value == null) {
                 return "";
@@ -325,8 +333,7 @@ public abstract class HtmlElement {
     // could become VoidElement: https://html.spec.whatwg.org/multipage/syntax.html#void-elements
     static class ImgElement extends HtmlElement {
         public ImgElement(String tag, String src, String altText) {
-            super(tag, List.of(new HtmlAttribute("src", src),
-                               new HtmlAttribute("alt", altText)));
+            super(tag, HtmlAttribute.of("src", src, "alt", altText));
         }
 
         @Override
