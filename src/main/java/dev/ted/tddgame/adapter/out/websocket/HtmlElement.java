@@ -371,6 +371,11 @@ public abstract class HtmlElement {
             return this;
         }
 
+        public Attributes hxSwap(String swapStrategy) {
+            attributes.addAll(HtmlAttribute.of("hx-swap", swapStrategy));
+            return this;
+        }
+
         public List<HtmlAttribute> get() {
             return attributes;
         }

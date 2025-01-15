@@ -5,7 +5,10 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.HtmlAttribute;
 import static dev.ted.tddgame.adapter.out.websocket.HtmlElement.button;
@@ -32,28 +35,21 @@ class HandViewComponentTest {
         assertThat(htmlElement)
                 .isEqualTo(
                         div("hand",
-                            button(HtmlAttribute.of(
-                                           "class", "card",
-                                           "hx-get", "/game/some-game-handle/card-menu/PREDICT"),
-                                   img("/predict.png", "Predict")),
-                            button(HtmlAttribute.of(
-                                           "class", "card",
-                                           "hx-get", "/game/some-game-handle/card-menu/CANT_ASSERT"),
-                                   img("/cant-assert.png", "Can't Assert")),
-                            button(HtmlAttribute.of(
-                                           "class", "card",
-                                           "hx-get", "/game/some-game-handle/card-menu/LESS_CODE"),
-                                   img("/less-code.png", "Less Code")),
-                            button(HtmlAttribute.of(
-                                           "class", "card",
-                                           "hx-get", "/game/some-game-handle/card-menu/WRITE_CODE"),
-                                   img("/write-code.png", "Write Code")),
-                            button(HtmlAttribute.of(
-                                           "class", "card",
-                                           "hx-get", "/game/some-game-handle/card-menu/REFACTOR"),
-                                   img("/refactor.png", "Refactor"))
+                            button(buttonAttributes("/game/some-game-handle/card-menu/PREDICT"), img("/predict.png", "Predict")),
+                            button(buttonAttributes("/game/some-game-handle/card-menu/CANT_ASSERT"), img("/cant-assert.png", "Can't Assert")),
+                            button(buttonAttributes("/game/some-game-handle/card-menu/LESS_CODE"), img("/less-code.png", "Less Code")),
+                            button(buttonAttributes("/game/some-game-handle/card-menu/WRITE_CODE"), img("/write-code.png", "Write Code")),
+                            button(buttonAttributes("/game/some-game-handle/card-menu/REFACTOR"), img("/refactor.png", "Refactor"))
                         )
                 );
+    }
+
+    static List<@NotNull HtmlAttribute> buttonAttributes(String hxGetUrlPath) {
+        return HtmlElement.attributes()
+                          .cssClass("card")
+                          .hxGet(hxGetUrlPath)
+                          .hxSwap("none")
+                          .get();
     }
 
 }

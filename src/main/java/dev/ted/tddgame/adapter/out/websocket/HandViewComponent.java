@@ -31,7 +31,8 @@ public class HandViewComponent {
     private HtmlElement.Attributes htmlAttributesFor(ActionCard card) {
         return HtmlElement.attributes()
                           .cssClass("card")
-                          .hxGet("/game/" + gameHandle + "/card-menu/" + card.name());
+                          .hxGet("/game/" + gameHandle + "/card-menu/" + card.name())
+                          .hxSwap("none");
     }
 
     private String baseImageFilenameOf(String cardTitle) {
