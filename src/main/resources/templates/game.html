@@ -86,7 +86,7 @@
 </div>
 </div>
 
-<dialog id="dialog">
+<dialog id="dialog" class="p-8">
     <div>
         <h1>Dialog Contents Will Go Here</h1>
     </div>
@@ -157,11 +157,25 @@
             </div>
         </div>
         <div class="last-column">
-            <div>
-                <p>Action Deck</p>
+            <div id="action-card-deck" class="card-deck action-cards">
+                <div id="action-card-draw-pile" class="draw-pile">
+                    <img src="/static/action-card-back.png"
+                    th:src="@{'/action-card-back.png'}">
+                </div>
+                <div id="action-card-discard-pile" class="draw-pile">
+                    <img src="/static/refactor.png"
+                    th:src="@{'/refactor.png'}">
+                </div>
             </div>
-            <div>
-                <p>Test Results Deck</p>
+            <div id="test-results-deck" class="card-deck">
+                <div id="test-results-draw-pile" class="draw-pile">
+                    <img src="/static/test-results-back.png"
+                         th:src="@{'/test-results-back.png'}">
+                </div>
+                <div id="test-results-discard-pile" class="draw-pile">
+                    <img src="/static/test-results-2-or-more.png"
+                         th:src="@{'/test-results-2-or-more.png'}">
+                </div>
             </div>
         </div>
         <div id="you" class="your-play-area">

@@ -15,7 +15,7 @@ January 14, 2025 - Tuesday
 
 * Card-related actions may require a pair of events, for example: to modify the Deck along with modifying the Player's Hand when discarding a card
 
-?? Why isn't padding working on Dialog's CSS (but works for the child?)
+!! Why isn't padding working on Dialog's CSS (but works for the child?) --> because Tailwind is overriding it (with a "CSS reset")
 
 [Decision]
 * "popup menu" when clicking on a Card in YOUR HAND does a GET request against an endpoint which returns a <dialog open ...> with buttons pre-filled with HX-POST attributes configured with the correct card name

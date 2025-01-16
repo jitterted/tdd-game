@@ -213,11 +213,16 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [X] Implement POST request to handle DISCARD command
                     [X] Create POST endpoint
                     [X] Wire the endpoint to the Use Case command
-                    [ ] Broadcast updated hand view now that the card has been discarded
+                    [X] Broadcast updated hand view now that the card has been discarded
+
+                [ ] Remove Tailwind
 
                 [ ] Display Action Card deck draw and discard piles
                     [ ] HTML+CSS for the draw/discard piles
+                    [ ] Display a back of card in the draw pile if it's not empty
                     [ ] Broadcast deck state changes to everyone
+                        [ ] Display most recently discarded card in the discard pile if it's not empty
+
 
                 [ ] Implement POST request to handle PLAY command
                     [ ] Implement the PLAY command
@@ -227,9 +232,6 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [ ] Player might have cards in the "Tech Neglect" area
             [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
 
-            [ ] Broadcast Action Deck
-                [ ] Display a back of card in the draw pile if it's not empty
-                [ ] Display most recently discarded card in the discard pile if it's not empty
             [ ] Split the Broadcaster interface into two:
                 (1) All events before the game has started (e.g., announce player joined)
                 (2) All events while the game is being played
