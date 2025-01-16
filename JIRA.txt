@@ -210,10 +210,14 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                    </swap>
                    """.formatted(gameHandle, cardName, gameHandle, cardName);
 
-                [ ] Implement POST request to handle DISCARD command
+                [X] Implement POST request to handle DISCARD command
                     [X] Create POST endpoint
-                    [ ] Wire the endpoint to the Use Case command
-                    [ ] Broadcast state change to everyone
+                    [X] Wire the endpoint to the Use Case command
+                    [ ] Broadcast updated hand view now that the card has been discarded
+
+                [ ] Display Action Card deck draw and discard piles
+                    [ ] HTML+CSS for the draw/discard piles
+                    [ ] Broadcast deck state changes to everyone
 
                 [ ] Implement POST request to handle PLAY command
                     [ ] Implement the PLAY command

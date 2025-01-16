@@ -43,7 +43,7 @@ public class GamePlay {
 
         gameStore.save(game);
 
-        // broadcast game update
+        broadcaster.gameUpdate(game);
     }
 
 }

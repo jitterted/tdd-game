@@ -2,6 +2,7 @@ package dev.ted.tddgame.application;
 
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
+import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
@@ -20,26 +21,26 @@ public class GamePlayTest {
     @Test
     void startSendsClearModalViaBroadcaster() {
         GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
-        ClearStartGameModalMockBroadcaster mockBroadcaster = new ClearStartGameModalMockBroadcaster(gameFixture.game());
-        GamePlay gamePlay = new GamePlay(gameFixture.gameStore(), mockBroadcaster);
+        ClearStartGameModalMockBroadcaster mockBroadcaster = new ClearStartGameModalMockBroadcaster();
+        GamePlay gamePlay = new GamePlay(gameFixture.gameStore, mockBroadcaster);
 
-        gamePlay.start(gameFixture.gameHandle());
+        gamePlay.start(gameFixture.gameHandle);
 
-        mockBroadcaster.verify();
+        mockBroadcaster.verify(gameFixture.game);
     }
 
     @Test
     void startTellsGameToStart() {
         GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
 
-        GamePlay gamePlay = new GamePlay(gameFixture.gameStore(),
+        GamePlay gamePlay = new GamePlay(gameFixture.gameStore,
                                          new NoOpDummyBroadcaster());
 
         gamePlay.start(gameFixture.gameHandle);
 
         List<GameEvent> gameEvents = gameFixture
                 .gameStore()
-                .allEventsFor(gameFixture.gameHandle());
+                .allEventsFor(gameFixture.gameHandle);
         assertThat(gameEvents)
                 .contains(new GameStarted());
     }
@@ -53,15 +54,28 @@ public class GamePlayTest {
     @Test
     void startGameBroadcastsGameStartedInformation() {
         GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
-        GameUpdateMockBroadcaster mockBroadcaster =
-                new GameUpdateMockBroadcaster(gameFixture.game());
-        GamePlay gamePlay = new GamePlay(gameFixture.gameStore(), mockBroadcaster);
+        GameUpdateMockBroadcaster mockBroadcaster = new GameUpdateMockBroadcaster();
+        GamePlay gamePlay = new GamePlay(gameFixture.gameStore, mockBroadcaster);
 
-        gamePlay.start(gameFixture.gameHandle());
+        gamePlay.start(gameFixture.gameHandle);
 
-        mockBroadcaster.verify();
-
+        mockBroadcaster.verifyGameMatches(gameFixture.game);
     }
+
+    @Test
+    void discardCardBroadcastsUpdatedGameState() {
+        GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
+        GameUpdateMockBroadcaster mockBroadcaster = new GameUpdateMockBroadcaster();
+        GamePlay gamePlay = new GamePlay(gameFixture.gameStore, mockBroadcaster);
+        gamePlay.start(gameFixture.gameHandle);
+        mockBroadcaster.reset();
+
+        gamePlay.discard(gameFixture.gameHandle, gameFixture.memberId, ActionCard.LESS_CODE);
+
+        mockBroadcaster.verifyGameMatches(gameFixture.game);
+    }
+
+    // -- FIXTURE
 
     private static GameFixture createGameStoreWithGameWithOnePlayer() {
         Member member = new Member(new MemberId(17L), "Green Member Name", "green-username");
@@ -71,21 +85,19 @@ public class GamePlayTest {
 
         GameStore gameStore = GameStore.createEmpty();
         gameStore.save(game);
-        return new GameFixture(gameHandle, game, gameStore);
+        return new GameFixture(gameHandle, game, gameStore, member.id());
     }
 
-    private record GameFixture(String gameHandle, Game game, GameStore gameStore) {
+    private record GameFixture(String gameHandle,
+                               Game game,
+                               GameStore gameStore,
+                               MemberId memberId) {
     }
 
     static class ClearStartGameModalMockBroadcaster extends CrashTestDummyBroadcaster {
 
-        private final Game expectedGame;
         private Game lastGameCleared = null;
         private boolean clearStartGameModalWasInvoked = false;
-
-        public ClearStartGameModalMockBroadcaster(Game expectedGame) {
-            this.expectedGame = expectedGame;
-        }
 
         @Override
         public void prepareForGamePlay(Game game) {
@@ -98,7 +110,7 @@ public class GamePlayTest {
             // this is fine if it's called
         }
 
-        public void verify() {
+        public void verify(Game expectedGame) {
             assertThat(clearStartGameModalWasInvoked)
                     .as("Expected the clearStartGameModal() to be invoked")
                     .isTrue();
@@ -140,14 +152,9 @@ public class GamePlayTest {
     }
 
     private static class GameUpdateMockBroadcaster extends NoOpDummyBroadcaster {
-        private final Game expectedGame;
         private Game actualGameFromUpdate;
 
-        public GameUpdateMockBroadcaster(Game expectedGame) {
-            this.expectedGame = expectedGame;
-        }
-
-        public void verify() {
+        public void verifyGameMatches(Game expectedGame) {
             assertThat(actualGameFromUpdate)
                     .as("Game from update was not the expected Game that was started")
                     .isEqualTo(expectedGame);
@@ -156,6 +163,10 @@ public class GamePlayTest {
         @Override
         public void gameUpdate(Game game) {
             actualGameFromUpdate = game;
+        }
+
+        public void reset() {
+            actualGameFromUpdate = null;
         }
     }
 }
