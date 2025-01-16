@@ -4,7 +4,7 @@ import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Game;
-import dev.ted.tddgame.domain.PlayerId;
+import dev.ted.tddgame.domain.MemberId;
 
 // Application-level Use Case (aka Inbound Port)
 // aka COMMAND
@@ -33,15 +33,17 @@ public class GamePlay {
         broadcaster.gameUpdate(game);
     }
 
-    // sketch: we think this is what we want
     public void discard(String gameHandle,
-                        PlayerId playerId,
+                        MemberId memberId,
                         ActionCard cardToDiscard) {
-        // find the game
-        // DOMAIN: game.discard(playerId, cardToDiscard)
-        // save the game state
+        Game game = gameStore.findByHandle(gameHandle)
+                             .orElseThrow(() -> new RuntimeException(
+                                     "Game '%s' not found".formatted(gameHandle)));
+        game.discard(memberId, cardToDiscard);
+
+        gameStore.save(game);
+
         // broadcast game update
     }
-
 
 }

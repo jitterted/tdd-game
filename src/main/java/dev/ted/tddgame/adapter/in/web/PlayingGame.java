@@ -3,6 +3,9 @@ package dev.ted.tddgame.adapter.in.web;
 import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.port.GameStore;
+import dev.ted.tddgame.application.port.MemberStore;
+import dev.ted.tddgame.domain.ActionCard;
+import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.Player;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.security.Principal;
 import java.util.List;
 
 import static dev.ted.tddgame.adapter.HtmlElement.attributes;
@@ -23,10 +27,12 @@ public class PlayingGame {
 
     private final GameStore gameStore;
     private final GamePlay gamePlay;
+    private final MemberStore memberStore;
 
-    public PlayingGame(GameStore gameStore, GamePlay gamePlay) {
+    public PlayingGame(GameStore gameStore, GamePlay gamePlay, MemberStore memberStore) {
         this.gameStore = gameStore;
         this.gamePlay = gamePlay;
+        this.memberStore = memberStore;
     }
 
     @GetMapping("/game/{gameHandle}")
@@ -79,7 +85,10 @@ public class PlayingGame {
 
     @PostMapping("/game/{gameHandle}/cards/discard/{cardName}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void discardCardFromHand(@PathVariable String gameHandle,
+    public void discardCardFromHand(Principal principal,
+                                    @PathVariable String gameHandle,
                                     @PathVariable String cardName) {
+        Member member = memberStore.findByAuthName(principal.getName()).orElseThrow();
+        gamePlay.discard(gameHandle, member.id(), ActionCard.valueOf(cardName));
     }
 }

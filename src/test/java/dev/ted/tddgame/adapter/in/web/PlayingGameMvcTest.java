@@ -3,6 +3,7 @@ package dev.ted.tddgame.adapter.in.web;
 import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.GamePlayTest;
 import dev.ted.tddgame.application.port.GameStore;
+import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 import org.junit.jupiter.api.Tag;
@@ -74,7 +75,7 @@ class PlayingGameMvcTest {
         return MockMvcTester.of(
                 new PlayingGame(fixture, new GamePlay(
                         fixture, new GamePlayTest.NoOpDummyBroadcaster()
-                ))
+                ), new MemberStore())
         );
     }
 

@@ -211,6 +211,8 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                    """.formatted(gameHandle, cardName, gameHandle, cardName);
 
                 [ ] Implement POST request to handle DISCARD command
+                    [X] Create POST endpoint
+                    [ ] Wire the endpoint to the Use Case command
                     [ ] Broadcast state change to everyone
 
                 [ ] Implement POST request to handle PLAY command

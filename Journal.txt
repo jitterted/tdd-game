@@ -7,6 +7,8 @@ January 15, 2025 - Wednesday
 
 * IntelliJ IDEA Move Class refactoring doesn't offer to change visibility of methods/inner classes, unlike Move Method which does offer to "escalate" it
 
+* Made the mistake (again!) of referencing a Game instance from a variable instead of retrieving it from the GameStore, so the Game I had was out of date
+
 
 January 14, 2025 - Tuesday
 ==========================
