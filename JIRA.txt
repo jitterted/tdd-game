@@ -218,16 +218,22 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [ ] Remove Tailwind
 
                 [ ] Display Action Card deck draw and discard piles
-                    [ ] HTML+CSS for the draw/discard piles
-                    [ ] Display a back of card in the draw pile if it's not empty
+                    [X] HTML+CSS for the draw/discard piles
                     [ ] Broadcast deck state changes to everyone
-                        [ ] Display most recently discarded card in the discard pile if it's not empty
+                        [ ] DRAW PILE: Display a back of card if it's not empty
+                            <swap id="action-card-draw-pile"> <img src="/action-card-back.png"> </swap>
+                        [ ] DISCARD PILE: Display most recently discarded card if it's not empty
+                            <swap id="action-card-discard-pile"> <img src=discarded card> </swap>
+                        [ ] If either pile is empty, the <swap> will be empty
 
 
                 [ ] Implement POST request to handle PLAY command
                     [ ] Implement the PLAY command
                         [ ] Create Workspace
 
+            [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page
+
+            [ ] HtmlElement.Forest currently indents its children, but it shouldn't as the Forest isn't really a container element
 
             [ ] Player might have cards in the "Tech Neglect" area
             [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)

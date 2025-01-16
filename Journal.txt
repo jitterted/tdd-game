@@ -1,3 +1,10 @@
+January 16, 2025 - Thursday
+===========================
+
+[Decision]
+* Keep Broadcaster#gameUpdate() at a high-level, with tests against it doing the minimal possible checking, and most of the transformation/rendering work is done by the individual ViewComponents
+
+
 January 15, 2025 - Wednesday
 ============================
 

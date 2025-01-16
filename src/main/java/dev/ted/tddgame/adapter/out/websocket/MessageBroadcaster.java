@@ -2,6 +2,8 @@ package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.application.port.Broadcaster;
+import dev.ted.tddgame.domain.ActionCard;
+import dev.ted.tddgame.domain.DeckView;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Player;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,47 @@ public class MessageBroadcaster implements Broadcaster {
         sendHtmlForOtherPlayerPlaceholderContainers(game);
     }
 
+    @Override
+    public void gameUpdate(Game game) {
+        sendYourHtmlForEachPlayerOf(game);
+        sendOtherPlayerHandsToAll(game);
+        // send Action Card deck update (sent as single "Forest" message):
+        // 1. send back of card for draw pile
+        // 2. send front of last discarded card for discard pile
+        messageSendersForPlayers.sendToAll(game.handle(),
+                                           createActionCardDeckHtmlElement(game.actionCardDeck())
+                                                      .render());
+
+        // send Test Results deck update
+        // send workspace update
+        // send commit & risk tracking updates
+    }
+
+    private HtmlElement createActionCardDeckHtmlElement(DeckView<ActionCard> actionCardDeckView) {
+        return HtmlElement.forest(actionCardDrawPile(),
+                                  actionCardDiscardPile(actionCardDeckView));
+    }
+
+    private HtmlElement actionCardDiscardPile(DeckView<ActionCard> actionCardDeckView) {
+        ActionCard topCardOnDiscardPile = actionCardDeckView.discardPile().getLast();
+        return HtmlElement.swapInnerHtml(
+                "action-card-discard-pile",
+                HandViewComponent.imgElementFor(topCardOnDiscardPile)
+        );
+    }
+
+    private HtmlElement actionCardDrawPile() {
+        return HtmlElement.swapInnerHtml(
+                "action-card-draw-pile",
+                HtmlElement.img("/action-card-back.png", "Action Card Draw Pile"));
+    }
+
+    private void sendOtherPlayerHandsToAll(Game game) {
+        messageSendersForPlayers.sendToAll(game.handle(),
+                                           new OtherPlayersViewComponent(game)
+                                                   .htmlForOtherPlayers().render());
+    }
+
     private void sendHtmlToRemoveModalContainerForEveryone(Game game) {
         String html = HtmlElement.swapDelete("modal-container").render();
         messageSendersForPlayers.sendToAll(game.handle(), html);
@@ -44,14 +87,6 @@ public class MessageBroadcaster implements Broadcaster {
                                             player.id(),
                                             htmlElement.render());
         }
-    }
-
-    @Override
-    public void gameUpdate(Game game) {
-        sendYourHtmlForEachPlayerOf(game);
-        messageSendersForPlayers.sendToAll(game.handle(),
-                                           new OtherPlayersViewComponent(game)
-                                                   .htmlForOtherPlayers().render());
     }
 
     private void sendYourHtmlForEachPlayerOf(Game game) {

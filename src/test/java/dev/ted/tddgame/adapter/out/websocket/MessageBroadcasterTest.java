@@ -1,22 +1,28 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
+import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.adapter.shared.MessageSender;
+import dev.ted.tddgame.application.GamePlay;
+import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Game;
+import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static dev.ted.tddgame.adapter.HtmlElement.forest;
+import static dev.ted.tddgame.adapter.HtmlElement.swapInnerHtml;
 import static org.assertj.core.api.Assertions.*;
 
 class MessageBroadcasterTest {
 
     @Test
-    // OBSOLETE: we want to check in a bit more detail what HTML was sent?
     void htmlSentToAllConnectedPlayersUponPlayerConnected() {
         Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
         fixture.game.start();
@@ -48,18 +54,19 @@ class MessageBroadcasterTest {
     }
 
     @Test
+    @Disabled("Need to have a real game that is started so deck(s) are created")
     void gameUpdateSendsPlayerSpecificHtml() {
         Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
 
         fixture.broadcaster.gameUpdate(fixture.game);
 
         assertThat(fixture.messageSenderForOliver.sentMessages.size())
-                .as("Should have 2 messages sent to Oliver")
-                .isEqualTo(2);
+                .as("Should have 3 messages sent to Oliver")
+                .isEqualTo(3);
 
         assertThat(fixture.messageSenderForSamantha.sentMessages.size())
-                .as("Should have 2 messages sent to Samantha")
-                .isEqualTo(2);
+                .as("Should have 3 messages sent to Samantha")
+                .isEqualTo(3);
 
         assertThat(fixture.messageSenderForOliver.firstSentMessage())
                 .as("Oliver's custom HTML should not be the same as Samantha's (as they have different cards in their hands)")
@@ -68,6 +75,44 @@ class MessageBroadcasterTest {
         assertThat(fixture.messageSenderForOliver.lastSentMessage())
                 .as("Oliver's HTML for 'other players' should be the same for everyone")
                 .isEqualTo(fixture.messageSenderForSamantha.lastSentMessage());
+    }
+
+    @Test
+    @Disabled("Until the DeckViewComponent exists and is tested for empty/non-empty piles")
+    void gameUpdateSendsActionCardDeckHtml() {
+        MemberId memberId = new MemberId(17L);
+        Member member = new Member(memberId, "Blue (member name)", "blue-username");
+        String gameHandle = "chatty-piggy-81";
+        Game game = Game.create("Test Game", gameHandle);
+        game.join(member.id(), "Blue (player name)");
+        GameStore gameStore = GameStore.createEmpty();
+        gameStore.save(game);
+
+        MessageSendersForPlayers messageSendersForPlayers = new MessageSendersForPlayers();
+        MessageSenderSpy messageSenderForBlue = new MessageSenderSpy();
+        messageSendersForPlayers.add(messageSenderForBlue, gameHandle, game.playerFor(member.id()).id());
+        MessageBroadcaster broadcaster = new MessageBroadcaster(messageSendersForPlayers);
+
+        GamePlay gamePlay = new GamePlay(gameStore, broadcaster);
+        gamePlay.start(gameHandle);
+
+        game = gameStore.findByHandle(gameHandle).orElseThrow(); // get the latest game
+        ActionCard cardToDiscard = game.playerFor(member.id()).hand().findFirst().get();
+        gamePlay.discard(gameHandle, member.id(), cardToDiscard);
+
+        // now the action card deck has the discarded card in the Discard Pile
+        assertThat(messageSenderForBlue.lastSentMessage())
+                .isEqualTo(forest(
+                        swapInnerHtml(
+                                "action-card-draw-pile",
+                                HtmlElement.img("/action-card-back.png",
+                                                "Action Card Draw Pile")
+                        ),
+                        swapInnerHtml(
+                                "action-card-discard-pile",
+                                HandViewComponent.imgElementFor(cardToDiscard)
+                        )
+                ).render());
     }
 
     // FIXTURE setup

@@ -24,8 +24,7 @@ public class HandViewComponent {
 
     private HtmlElement[] buttonsForEachCardIn(Stream<ActionCard> actionCards) {
         return actionCards
-                .map(card -> HtmlElement.button(htmlAttributesFor(card),
-                                                HtmlElement.img("/" + baseImageFilenameOf(card.title()) + ".png", card.title())))
+                .map(this::asButton)
                 .toArray(HtmlElement[]::new);
     }
 
@@ -37,7 +36,16 @@ public class HandViewComponent {
                           .hxOn("after-settle", "document.querySelector('dialog').showModal()");
     }
 
-    private String baseImageFilenameOf(String cardTitle) {
+    private HtmlElement asButton(ActionCard card) {
+        return HtmlElement.button(htmlAttributesFor(card),
+                                  imgElementFor(card));
+    }
+
+    static HtmlElement imgElementFor(ActionCard card) {
+        return HtmlElement.img("/" + baseImageFilenameOf(card.title()) + ".png", card.title());
+    }
+
+    static String baseImageFilenameOf(String cardTitle) {
         return cardTitle.toLowerCase()
                         .replace(" ", "-")
                         .replace("'", "");

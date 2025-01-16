@@ -31,28 +31,32 @@ public abstract class HtmlElement {
         this.attributes.addAll(htmlAttributes);
     }
 
-    public static Text text(String textComponentContents) {
-        return new Text(textComponentContents);
+    public static HtmlElement forest(HtmlElement... childElements) {
+        return new Forest(childElements);
     }
 
-    public static HtmlElement div(String cssClass, HtmlElement... childComponents) {
+    public static Text text(String textContents) {
+        return new Text(textContents);
+    }
+
+    public static HtmlElement div(String cssClass, HtmlElement... childElements) {
         return new NormalElement("div",
                                  HtmlAttribute.of("class", cssClass),
-                                 childComponents);
+                                 childElements);
     }
 
-    public static HtmlElement div(String htmlId, String cssClass, HtmlElement... childComponents) {
+    public static HtmlElement div(String htmlId, String cssClass, HtmlElement... childElements) {
         return new NormalElement("div",
                                  HtmlAttribute.of("id", htmlId, "class", cssClass),
-                                 childComponents);
+                                 childElements);
     }
 
-    public static HtmlElement swapInnerHtml(String targetId, HtmlElement... childComponents) {
-        return new Swap(targetId, "innerHTML", childComponents);
+    public static HtmlElement swapInnerHtml(String targetId, HtmlElement... childElements) {
+        return new Swap(targetId, "innerHTML", childElements);
     }
 
-    public static HtmlElement swapAfterBegin(String targetId, HtmlElement... childComponents) {
-        return new Swap(targetId, "afterbegin", childComponents);
+    public static HtmlElement swapAfterBegin(String targetId, HtmlElement... childElements) {
+        return new Swap(targetId, "afterbegin", childElements);
     }
 
     public static HtmlElement swapDelete(String targetId) {
@@ -252,12 +256,12 @@ public abstract class HtmlElement {
 
         @Override
         protected String renderTagOpen() {
-            return null;
+            return "";
         }
 
         @Override
         protected String renderTagClose() {
-            return null;
+            return "";
         }
 
         @Override
