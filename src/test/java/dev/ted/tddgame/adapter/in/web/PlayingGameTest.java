@@ -32,8 +32,7 @@ class PlayingGameTest {
 
         GameView gameView = (GameView) model.getAttribute("gameView");
 
-        Game game = fixture.gameStore.findByHandle(gameHandle)
-                                     .orElseThrow();
+        Game game = fixture.findGame(gameHandle);
         assertThat(gameView)
                 .isEqualTo(new GameView(gameHandle,
                                         PlayerView.from(game.players())));
@@ -79,17 +78,19 @@ class PlayingGameTest {
         String gameHandle = "discard-game-handle";
         Fixture fixture = createGameWithPlayingGameController(gameHandle);
         fixture.gamePlay.start(gameHandle);
-        Game game = fixture.gameStore.findByHandle(gameHandle)
-                                     .orElseThrow();
+        Game game = fixture.findGame(gameHandle);
 
-        ActionCard actionCard = game.players().getFirst().hand().findFirst().orElseThrow();
+        ActionCard cardFromFirstPlayerHand = game.players().getFirst()
+                                                 .hand().findFirst()
+                                                 .orElseThrow();
 
-        fixture.playingGame.discardCardFromHand(fixture.principal, gameHandle, actionCard.name());
+        fixture.playingGame.discardCardFromHand(fixture.principal,
+                                                gameHandle,
+                                                cardFromFirstPlayerHand.name());
 
-        game = fixture.gameStore.findByHandle(gameHandle)
-                                .orElseThrow();
+        game = fixture.findGame(gameHandle);
         assertThat(game.actionCardDeck().discardPile())
-                .containsExactly(actionCard);
+                .containsExactly(cardFromFirstPlayerHand);
     }
 
     // ---- FIXTURE
@@ -111,6 +112,10 @@ class PlayingGameTest {
     private record Fixture(GameStore gameStore,
                            PlayingGame playingGame,
                            GamePlay gamePlay,
-                           Principal principal) {}
+                           Principal principal) {
+        private Game findGame(String gameHandle) {
+            return gameStore.findByHandle(gameHandle).orElseThrow();
+        }
+    }
 
 }
