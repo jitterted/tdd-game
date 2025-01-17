@@ -133,9 +133,9 @@ public abstract class HtmlElement {
     @Override
     public String toString() {
         return new StringJoiner(", ", HtmlElement.class.getSimpleName() + "[", "]")
-                .add("childComponents=" + childComponents)
-                .add("attributes=" + attributes)
                 .add("tag='" + tag + "'")
+                .add("attributes=" + attributes)
+                .add("childComponents=" + childComponents)
                 .toString();
     }
 
