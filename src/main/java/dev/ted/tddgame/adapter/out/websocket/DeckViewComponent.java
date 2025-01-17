@@ -19,17 +19,15 @@ public class DeckViewComponent {
     }
 
     private HtmlElement drawPile() {
-        HtmlElement[] imgElement;
         if (actionCardDeckView.drawPile().isEmpty()) {
-            imgElement = new HtmlElement[0];
-        } else {
-            imgElement = new HtmlElement[]{
-                    HtmlElement.img("/action-card-back.png",
-                                    "Action Card Draw Pile")};
+            return HtmlElement.swapInnerHtml(
+                    "action-card-draw-pile");
         }
+
         return HtmlElement.swapInnerHtml(
                 "action-card-draw-pile",
-                imgElement
+                HtmlElement.img("/action-card-back.png",
+                                "Action Card Draw Pile")
         );
     }
 }
