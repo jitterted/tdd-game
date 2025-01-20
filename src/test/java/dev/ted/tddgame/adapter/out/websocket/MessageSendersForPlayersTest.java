@@ -46,11 +46,6 @@ class MessageSendersForPlayersTest {
         }
 
         @Override
-        public boolean isOpen() {
-            throw new IllegalStateException("Should not have called isOpen() for player: " + playerName);
-        }
-
-        @Override
         public void sendMessage(String message) {
             throw new IllegalStateException("Should not have called sendMessage(\"" + message + "\") for player: " + playerName);
         }
@@ -62,11 +57,6 @@ class MessageSendersForPlayersTest {
 
         public MockMessageSender(String expectedMessage) {
             this.expectedMessage = expectedMessage;
-        }
-
-        @Override
-        public boolean isOpen() {
-            return true;
         }
 
         @Override

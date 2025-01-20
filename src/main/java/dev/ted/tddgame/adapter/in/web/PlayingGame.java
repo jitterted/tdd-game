@@ -88,7 +88,8 @@ public class PlayingGame {
     public void discardCardFromHand(Principal principal,
                                     @PathVariable String gameHandle,
                                     @PathVariable String cardName) {
-        Member member = memberStore.findByAuthName(principal.getName()).orElseThrow();
+        Member member = memberStore.findByAuthName(principal.getName())
+                                   .orElseThrow(() -> new RuntimeException("Member with AuthN username '%s' was not found in the MemberStore".formatted(principal.getName())));
         gamePlay.discard(gameHandle, member.id(), ActionCard.valueOf(cardName));
     }
 }

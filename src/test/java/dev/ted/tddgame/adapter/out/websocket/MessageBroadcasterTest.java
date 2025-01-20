@@ -162,11 +162,6 @@ class MessageBroadcasterTest {
         }
 
         @Override
-        public boolean isOpen() {
-            return true;
-        }
-
-        @Override
         public void sendMessage(String message) {
             sentMessages.add(message);
         }

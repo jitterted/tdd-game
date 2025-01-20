@@ -115,10 +115,6 @@ class PlayerConnectorTest {
     }
 
     private static class DummyMessageSender implements MessageSender {
-        @Override
-        public boolean isOpen() {
-            return false;
-        }
 
         @Override
         public void sendMessage(String message) {}

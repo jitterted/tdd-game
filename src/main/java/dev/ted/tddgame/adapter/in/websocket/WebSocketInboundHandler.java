@@ -65,15 +65,14 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         }
 
         @Override
-        public boolean isOpen() {
-            return webSocketSession.isOpen();
-        }
-
-        @Override
         public void sendMessage(String message) {
             try {
-                // throw exception so this connection gets removed from the map
-                webSocketSession.sendMessage(new TextMessage(message));
+                if (webSocketSession.isOpen()) {
+                    // throw exception so this connection gets removed from the map
+                    webSocketSession.sendMessage(new TextMessage(message));
+                } else {
+
+                }
             } catch (IOException e) {
                 LOGGER.warn("Unable to send message to webSocketSession: " + webSocketSession.getId(), e);
             }
