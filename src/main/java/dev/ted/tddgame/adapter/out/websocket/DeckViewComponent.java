@@ -27,18 +27,10 @@ public class DeckViewComponent {
     }
 
     private HtmlElement swapForPile(List<ActionCard> pile, String targetId, Function<@NotNull ActionCard, HtmlElement> cardToHtmlMapper) {
-        return pile.stream()
-                   .findFirst()
-                   .map(cardToHtmlMapper)
-                   .orElse(HtmlElement.swapInnerHtml(targetId));
+        if (pile.isEmpty()) {
+            return HtmlElement.swapInnerHtml(targetId);
+        }
 
-//        if (pile.isEmpty()) {
-//            return HtmlElement.swapInnerHtml(targetId);
-//        }
-//
-//        return HtmlElement.swapInnerHtml(
-//                targetId,
-//                imgMapper.apply(pile)
-//        );
+        return cardToHtmlMapper.apply(pile.getLast());
     }
 }
