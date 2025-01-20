@@ -6,7 +6,6 @@ import dev.ted.tddgame.domain.PlayerId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -30,8 +29,8 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
      * this needs to look up the session in both maps and remove them from each
      */
     @Override
-    public void remove(WebSocketSession webSocketSession) {
-        // Remove this WebSocketSession from both Maps
+    public void remove(MessageSender messageSender) {
+        // Remove from both Maps
 
         // tell each Game that the player has disconnected:
         // by using a SessionToGameMap
@@ -50,11 +49,11 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
                 .sendMessage(message);
     }
 
-    private static class Multimap<K, V> {
+    static class Multimap<K, V> {
         private final Map<K, Set<V>> map = new ConcurrentHashMap<>();
 
         public void put(K key, V value) {
-            Set<V> values = map.computeIfAbsent(key, k -> new HashSet<>());
+            Set<V> values = map.computeIfAbsent(key, _ -> new HashSet<>());
             values.add(value);
         }
 
@@ -72,6 +71,10 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
                 return removed;
             }
             return false;
+        }
+
+        public void removeValue(V value) {
+            map.values().forEach(set -> set.remove(value));
         }
     }
 
