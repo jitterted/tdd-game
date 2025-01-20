@@ -144,12 +144,11 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [X] Replenish generates events
             [X] Applying replenish to deck
 
-        [ ] Player discards card, which adds to Discard Pile
-            [ ] Represented in UI by checkboxes?
+        [X] Player discards card, which adds to Discard Pile
 
         [ ] Display the hex board with pawns for each player
 
-    [ ] The association of Member (and their logged-in username) vs. the Player's name in the context of a Game needs to be resolved. When we're sending Player-tailored HTML, we need to know: for which `Player` we're generating the HTML (we know this because we iterate through all Players from the Game, i.e., game.players()), and THEN, we need to send that HTML to the correct WebSocketSession, which has to be associated (mapped) with the Game + PlayerId.
+    [X] The association of Member (and their logged-in username) vs. the Player's name in the context of a Game needs to be resolved. When we're sending Player-tailored HTML, we need to know: for which `Player` we're generating the HTML (we know this because we iterate through all Players from the Game, i.e., game.players()), and THEN, we need to send that HTML to the correct WebSocketSession, which has to be associated (mapped) with the Game + PlayerId.
 
         [X] PlayerConnections needs to have a sendTo(GameId, PlayerId, HTML): the Game that the Player is in, used to identify the target websocket to which we send the customized HTML
 
@@ -161,7 +160,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [X] The modal goes away (via broadcasting `hx-swap-oob="delete"`)
             [ ] If the game is not already started, call .start() (and persist this state change)
                 [ ] Implement this from the GameTest
-            [ ] Broadcast Players' cards (WebSocketBroadcaster.gameUpdate)
+            [X] Broadcast Players' cards (WebSocketBroadcaster.gameUpdate)
                 [X] Player has cards in the "Your Hand" area
                 [X] Deal cards to all players
                 [X] Shuffle the ActionCardDeck
@@ -215,21 +214,23 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                     [X] Wire the endpoint to the Use Case command
                     [X] Broadcast updated hand view now that the card has been discarded
 
-                [ ] Remove Tailwind
-
-                [ ] Display Action Card deck draw and discard piles
+                [X] Display Action Card deck draw and discard piles
                     [X] HTML+CSS for the draw/discard piles
-                    [ ] Broadcast deck state changes to everyone
-                        [ ] DRAW PILE: Display a back of card if it's not empty
+                    [X] Broadcast deck state changes to everyone
+                        [X] DRAW PILE: Display a back of card if it's not empty
                             <swap id="action-card-draw-pile"> <img src="/action-card-back.png"> </swap>
-                        [ ] DISCARD PILE: Display most recently discarded card if it's not empty
+                        [X] DISCARD PILE: Display most recently discarded card if it's not empty
                             <swap id="action-card-discard-pile"> <img src=discarded card> </swap>
-                        [ ] If either pile is empty, the <swap> will be empty
+                        [X] If either pile is empty, the <swap> will be empty
 
 
                 [ ] Implement POST request to handle PLAY command
                     [ ] Implement the PLAY command
                         [ ] Create Workspace
+
+                [ ] Remove Tailwind
+
+            [ ] Handle WebSocket disconnect/reconnection
 
             [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page
 
@@ -248,7 +249,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
     [ ] (Temporary) Constraint: players can't join once game is started
 
 
-[ ] Inbound HTTP Adapter
+[X] Inbound HTTP Adapter
     [X] Host create game: numeric-only textbox and "Create Game" button does POST
         [X] MVC part
         [X] Test to make sure hostNewGame has Game created and stored
