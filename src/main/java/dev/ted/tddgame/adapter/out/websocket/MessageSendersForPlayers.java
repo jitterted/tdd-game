@@ -30,7 +30,8 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
      */
     @Override
     public void remove(MessageSender messageSender) {
-        // Remove from both Maps
+        gameHandleToMessageSender.removeValue(messageSender);
+        gamePlayerToMessageSender.values().remove(messageSender);
 
         // tell each Game that the player has disconnected:
         // by using a SessionToGameMap
@@ -44,9 +45,14 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
     }
 
     public void sendTo(String gameHandle, PlayerId playerId, String message) {
-        gamePlayerToMessageSender
-                .get(new GamePlayerCompositeKey(gameHandle, playerId))
-                .sendMessage(message);
+        GamePlayerCompositeKey key = new GamePlayerCompositeKey(gameHandle, playerId);
+        if (gamePlayerToMessageSender.containsKey(key)) {
+            gamePlayerToMessageSender
+                    .get(key)
+                    .sendMessage(message);
+        } else {
+            LOGGER.warn("Attempted to send message directly to unknown Player '{}' (disconnected?) in Game '{}'", playerId, gameHandle);
+        }
     }
 
     static class Multimap<K, V> {

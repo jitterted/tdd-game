@@ -14,6 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 public class WebSocketInboundHandler extends TextWebSocketHandler {
@@ -52,7 +53,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-        messageSendersForPlayers.remove(session);
+        messageSendersForPlayers.remove(new WebSocketMessageSender(session));
     }
 
     private static class WebSocketMessageSender implements MessageSender {
@@ -61,6 +62,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         private final WebSocketSession webSocketSession;
 
         public WebSocketMessageSender(WebSocketSession webSocketSession) {
+            Objects.requireNonNull(webSocketSession);
             this.webSocketSession = webSocketSession;
         }
 
@@ -76,6 +78,21 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
             } catch (IOException e) {
                 LOGGER.warn("Unable to send message to webSocketSession: " + webSocketSession.getId(), e);
             }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            WebSocketMessageSender that = (WebSocketMessageSender) o;
+            return webSocketSession.equals(that.webSocketSession);
+        }
+
+        @Override
+        public int hashCode() {
+            return webSocketSession.hashCode();
         }
     }
 }

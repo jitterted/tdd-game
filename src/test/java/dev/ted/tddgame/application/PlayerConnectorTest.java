@@ -8,7 +8,6 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerId;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.socket.WebSocketSession;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -96,7 +95,7 @@ class PlayerConnectorTest {
         }
 
         @Override
-        public void remove(WebSocketSession webSocketSession) {}
+        public void remove(MessageSender messageSender) {}
 
         public void verify() {
             assertThat(addWasCalled)
@@ -114,9 +113,4 @@ class PlayerConnectorTest {
         }
     }
 
-    private static class DummyMessageSender implements MessageSender {
-
-        @Override
-        public void sendMessage(String message) {}
-    }
 }
