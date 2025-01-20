@@ -5,6 +5,7 @@ import dev.ted.tddgame.application.GamePlayTest;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
+import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -44,9 +45,8 @@ class PlayingGameMvcTest {
     void getToCardMenuEndpointReturns200StatusOk() {
         String handle = "handle-of-game";
         Fixture fixture = createFixture(handle);
-        fixture.game.start();
-
         MockMvcTester mvc = mvcTesterFor(fixture.gameStore);
+        mvc.post().uri("/game/game4discard/start-game").exchange();
 
         mvc.get()
            .uri("/game/handle-of-game/card-menu/PREDICT")
@@ -58,11 +58,11 @@ class PlayingGameMvcTest {
     void postToDiscardEndpointReturns204NoContent() {
         String gameHandle = "game4discard";
         Fixture fixture = createFixture(gameHandle);
-        fixture.game.start();
-
-        MockMvcTester mvc = mvcTesterFor(fixture.gameStore);
+        MockMvcTester mvc = mvcTesterFor(fixture.gameStore, fixture.memberStore);
+        mvc.post().uri("/game/game4discard/start-game").exchange();
 
         mvc.post()
+           .principal(() -> fixture.memberAuthName)
            .uri("/game/game4discard/cards/discard/LESS_CODE")
            .assertThat()
            .hasStatus(HttpStatus.NO_CONTENT);
@@ -72,21 +72,28 @@ class PlayingGameMvcTest {
     // -- FIXTURE
 
     private static MockMvcTester mvcTesterFor(GameStore fixture) {
+        return mvcTesterFor(fixture, new MemberStore());
+    }
+
+    private static MockMvcTester mvcTesterFor(GameStore fixture, MemberStore memberStore) {
         return MockMvcTester.of(
                 new PlayingGame(fixture, new GamePlay(
                         fixture, new GamePlayTest.NoOpDummyBroadcaster()
-                ), new MemberStore())
+                ), memberStore)
         );
     }
 
     private static Fixture createFixture(String handle) {
+        MemberStore memberStore = new MemberStore();
+        Member member = new Member(new MemberId(46L), "IRRELEVANT nickname", "test-auth-username");
+        memberStore.save(member);
         GameStore gameStore = GameStore.createEmpty();
         Game game = Game.create("Game to be Started", handle);
-        game.join(new MemberId(1L), "Player 1");
+        game.join(member.id(), "Player 1");
         gameStore.save(game);
-        return new Fixture(gameStore, game);
+        return new Fixture(gameStore, game, memberStore, member.authName());
     }
 
-    private record Fixture(GameStore gameStore, Game game) {}
+    private record Fixture(GameStore gameStore, Game game, MemberStore memberStore, String memberAuthName) {}
 
 }
