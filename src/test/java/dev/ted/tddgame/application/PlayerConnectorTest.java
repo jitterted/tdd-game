@@ -1,6 +1,7 @@
 package dev.ted.tddgame.application;
 
 import dev.ted.tddgame.adapter.out.websocket.MessageSendersForPlayers;
+import dev.ted.tddgame.adapter.out.websocket.MockMessageSender;
 import dev.ted.tddgame.adapter.shared.MessageSender;
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.ForTrackingPlayerMessageSenders;
@@ -10,6 +11,7 @@ import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerId;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -70,8 +72,30 @@ class PlayerConnectorTest {
     }
 
     @Test
-    void playerDisconnectsWhileWaitingForGameToStartSendsUpdates() {
+    void playerRedirectedToLobbyWhenConnectToGameTheyAreNotIn() {
+        String memberUsername = "greenusername";
+        Member member = new Member(new MemberId(17L), "Green Member Name", memberUsername);
+        String gameHandle = "sassy-dog-35";
+        Game game = Game.create("Name of Game", gameHandle);
+        ForTrackingPlayerMessageSenders forTrackingPlayerMessageSenders = new MessageSendersForPlayers();
+        MockMessageSender mockMessageSender = new MockMessageSender(
+                "<swap id='other-players'><script>document.location.href='/lobby';</script></swap>"
+        );
+        PlayerConnector playerConnector = new PlayerConnector(
+                new CrashTestDummyBroadcaster(),
+                MemberFinder.createNull(member),
+                GameFinder.createNull(game),
+                forTrackingPlayerMessageSenders);
 
+        playerConnector.connect(memberUsername, gameHandle, mockMessageSender);
+
+        mockMessageSender.verifyMessageSent();
+    }
+
+    @Test
+    @Disabled("Until the test above passes")
+    void playerDisconnectsWhileWaitingForGameToStartSendsUpdates() {
+        fail("Start here");
     }
 
     @Test
@@ -165,7 +189,8 @@ class PlayerConnectorTest {
         }
 
         @Override
-        public void remove(MessageSender messageSender) {}
+        public void remove(MessageSender messageSender) {
+        }
 
         public void verify() {
             assertThat(addWasCalled)

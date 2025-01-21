@@ -5,8 +5,6 @@ import dev.ted.tddgame.application.DummyMessageSender;
 import dev.ted.tddgame.domain.PlayerId;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-
 class MessageSendersForPlayersTest {
 
     @Test
@@ -69,37 +67,4 @@ class MessageSendersForPlayersTest {
         }
     }
 
-    private static class MockMessageSender implements MessageSender {
-        private String actualSentMessage;
-        private String expectedMessage;
-
-        public MockMessageSender() {
-        }
-
-        public MockMessageSender(String expectedMessage) {
-            this.expectedMessage = expectedMessage;
-        }
-
-        @Override
-        public void sendMessage(String message) {
-            actualSentMessage = message;
-        }
-
-        private void verifyMessageSent() {
-            assertThat(expectedMessage)
-                    .as("Expected Message was not set, can't verify against actual.")
-                    .isNotNull();
-            assertThat(actualSentMessage)
-                    .as("No message was sent, but expected: " + expectedMessage)
-                    .isNotNull()
-                    .as("Sent a different message than expected")
-                    .isEqualTo(expectedMessage);
-        }
-
-        public void verifyNoMessagesSent() {
-            assertThat(actualSentMessage)
-                    .as("Expected no messages sent, but was sent: " + actualSentMessage)
-                    .isNull();
-        }
-    }
 }

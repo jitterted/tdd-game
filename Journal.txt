@@ -1,3 +1,13 @@
+January 21, 2025 - Tuesday
+==========================
+
+* Turns out you can send a <script> tag to the client over the WebSocket as long as it is targeting some ID (e.g., wrapped in a <swap> tag):
+    ```
+    messageSender.sendMessage("<swap id='other-players'><script>document.location.href='/lobby';</script></swap>");
+    ```
+
+*
+
 January 20, 2025 - Monday
 =========================
 
