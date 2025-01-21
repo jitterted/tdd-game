@@ -175,8 +175,6 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [X] Display cards in Other Players' hands as Images instead of words
 
 
-==> WE ARE HERE:
-
             [ ] HTML element hierarchy cleanup
                 [ ] Stop using Text HtmlComponent for H2 and other tags, by creating a generic HtmlTag component, and then escape the text
                 [ ] Move childComponents down to NormalElement (only NormalElement can have children)
@@ -227,14 +225,23 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [X] Should happen upon the Websocket's "handleMessage" "connect" command
             [X] Kick user back to the lobby if they have a stale game page
 
+==> WE ARE HERE:
+
             [ ] Handle pawn placement
+                [X] Figure out how to display pawn in/on correct tile
+                    [ ] Use hexagon with player's number inside, or allow player to pick a "pawn" from a set of icons
+                [ ] At start of game, set all pawns to first hex tile: which object tracks the tile location of the pawn?
                 [ ] Create Workspace+Pawn+Scoring+Risk
-                [ ] Figure out how to display pawn in/on correct tile
                 [ ] Discard card causes Pawn to move
 
             [ ] Implement POST request to handle PLAY card command
                 [ ] Implement the PLAY command
+                [ ] Show played cards in the Workspace
+                    [ ] Player might have cards in the "Tech Neglect" area
+                    [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
 
+            [ ] Draw Action Card from the deck's draw pile
+                [ ] If it's a "tech neglect" card, move it to Workspace
 
             [ ] Remove Tailwind
 
@@ -249,9 +256,6 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page
 
             [ ] HtmlElement.Forest currently indents its children, but it shouldn't as the Forest isn't really a container element
-
-            [ ] Player might have cards in the "Tech Neglect" area
-            [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
 
             [ ] Split the Broadcaster interface into two:
                 (1) All events before the game has started (e.g., announce player joined)

@@ -121,7 +121,7 @@
     background-color: #efefef;
 }
 
-.grid-item > img {
+.hex-tile-stack-background > img {
     width: 100%;
     transform: translateY(16px) scale(1.2) rotate(30deg);
 }
@@ -217,4 +217,44 @@ dialog button {
     /* background-origin: border-box | padding-box | content-box; */
     /* background-clip: border-box | padding-box | content-box; */
     /* background-blend-mode: darken;*/
+}
+
+.hex-tile-stack {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-areas:
+    ". . . . . ."
+    ". p1 . . p2 ."
+    ". . . . . ."
+    ". . . . . ."
+    ". p3 . . p4 ."
+    ". . . . . .";
+    font-size: x-large;
+}
+
+.hex-tile-stack-background {
+    grid-column: 1 / span 6;
+    grid-row: 1 / span 6;
+}
+
+.hex-tile-stack-pawn {
+    z-index: 1;
+}
+
+.hex-tile-stack-pawn#player1-pawn {
+    grid-area: p1;
+}
+
+.hex-tile-stack-pawn#player2-pawn {
+    grid-area: p2;
+}
+
+.hex-tile-stack-pawn#player3-pawn {
+    grid-area: p3;
+}
+
+.hex-tile-stack-pawn#player4-pawn {
+    grid-area: p4;
 }
