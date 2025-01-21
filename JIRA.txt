@@ -223,11 +223,9 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                             <swap id="action-card-discard-pile"> <img src=discarded card> </swap>
                         [X] If either pile is empty, the <swap> will be empty
 
-        This should work now:
             [X] Refreshing the page should trigger a refresh of the state from the back-end
                 [X] Should happen upon the Websocket's "handleMessage" "connect" command
-            [ ] Kick user back to the lobby if they have a stale game page
-            [ ] When player disconnects, show the "disconnected" overlay on that player's container
+            [X] Kick user back to the lobby if they have a stale game page
 
             [ ] Handle pawn placement
                 [ ] Create Workspace+Pawn+Scoring+Risk
@@ -242,6 +240,11 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
             [X] Handle WebSocket disconnect
             [X] Handle reconnection and re-joining of the game
+
+            [ ] When player disconnects, show the "disconnected" overlay on that player's container
+                [ ] Show a "toast" message when they disconnect
+                [ ] Show a toast when they're reconnected
+                [ ] Show a "connected" status indicator in the player's container
 
             [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page
 

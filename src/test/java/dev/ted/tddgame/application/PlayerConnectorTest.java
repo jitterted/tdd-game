@@ -93,7 +93,7 @@ class PlayerConnectorTest {
     }
 
     @Test
-    @Disabled("Until the test above passes")
+    @Disabled("Until I decide to work on visually notifying when a player disconnects")
     void playerDisconnectsWhileWaitingForGameToStartSendsUpdates() {
         fail("Start here");
     }

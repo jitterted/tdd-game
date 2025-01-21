@@ -50,4 +50,8 @@ public class PlayerConnector {
             }
         }
     }
+
+    public void disconnect(MessageSender messageSender) {
+        trackingPlayerMessageSenders.remove(messageSender);
+    }
 }

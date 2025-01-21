@@ -21,13 +21,11 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketInboundHandler.class);
 
     private final PlayerConnector playerConnector;
-    private final MessageSendersForPlayers messageSendersForPlayers;
 
     @Autowired
     public WebSocketInboundHandler(PlayerConnector playerConnector,
                                    MessageSendersForPlayers messageSendersForPlayers) {
         this.playerConnector = playerConnector;
-        this.messageSendersForPlayers = messageSendersForPlayers;
     }
 
     @Override
@@ -54,7 +52,8 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         LOGGER.info("Websocket connection closed for Member '{}', session ID: {}", session.getPrincipal(), session.getId());
-        messageSendersForPlayers.remove(new WebSocketMessageSender(session));
+        WebSocketMessageSender messageSender = new WebSocketMessageSender(session);
+        playerConnector.disconnect(messageSender);
     }
 
     private static class WebSocketMessageSender implements MessageSender {
@@ -71,10 +70,9 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         public void sendMessage(String message) {
             try {
                 if (webSocketSession.isOpen()) {
-                    // throw exception so this connection gets removed from the map
                     webSocketSession.sendMessage(new TextMessage(message));
                 } else {
-
+                    // disconnect webSocketSession if it's not open (for whatever reason) 
                 }
             } catch (IOException e) {
                 LOGGER.warn("Unable to send message to webSocketSession: " + webSocketSession.getId(), e);

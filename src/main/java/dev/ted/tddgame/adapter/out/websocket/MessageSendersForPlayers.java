@@ -29,10 +29,6 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
     public void remove(MessageSender messageSender) {
         gameHandleToMessageSender.removeValue(messageSender);
         gamePlayerToMessageSender.values().remove(messageSender);
-
-        // tell each Game that the player has disconnected:
-        // by using a SessionToGameMap
-
     }
 
     public void sendToAll(String gameHandle, String html) {
