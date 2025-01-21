@@ -48,7 +48,7 @@ public class Game extends EventSourcedAggregate {
             case GameCreated(String name, String handle) -> {
                 this.name = name;
                 this.handle = handle;
-                this.state = State.CREATED;
+                this.state = State.WAITING_TO_START;
             }
 
             case PlayerJoined(MemberId memberId, String playerName) ->
@@ -163,7 +163,7 @@ public class Game extends EventSourcedAggregate {
     }
 
     public enum State {
-        CREATED,
+        WAITING_TO_START,
         IN_PROGRESS
     }
 }

@@ -41,7 +41,7 @@ public class PlayerConnector {
         }
         trackingPlayerMessageSenders.add(messageSender, gameHandle, player.id());
         switch (game.state()) {
-            case CREATED -> {
+            case WAITING_TO_START -> {
                 broadcaster.announcePlayerConnectedToGame(game, player);
             }
             case IN_PROGRESS -> {

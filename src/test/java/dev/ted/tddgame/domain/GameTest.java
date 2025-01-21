@@ -161,7 +161,7 @@ class GameTest {
             assertThat(game.handle())
                     .isEqualTo("breezy-cat-85");
             assertThat(game.state())
-                    .isEqualByComparingTo(Game.State.CREATED);
+                    .isEqualByComparingTo(Game.State.WAITING_TO_START);
         }
 
         @Test
