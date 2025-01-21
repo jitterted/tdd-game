@@ -1,0 +1,44 @@
+sequenceDiagram
+    actor Player
+    participant PlayingGame as PlayingGame<br/><<service>>
+    participant Game
+    participant Workspace
+    participant HexTile
+
+    Player ->> PlayingGame: start()
+    PlayingGame ->> Game: start()
+    Game ->> Workspace: createForPlayer()<br/>currentTile = StartingHexTile
+    Workspace -->> Game: workspace
+    PlayingGame ->> Broadcaster: gameUpdate()
+
+    Note over Player,Game: (time passes)
+
+    Player ->> PlayingGame: discard(card)
+    PlayingGame ->> Game: discard(card)
+    Note over Game: (other stuff happens, too)
+    Game ->> Workspace: discard()
+    Workspace ->> HexTile: discard()
+    HexTile -->> Workspace: next HexTile<br/>(based on state)
+    PlayingGame ->> Broadcaster: gameUpdate()
+
+    Note over Player,Game: (time passes)<br/>Player clicks on PREDICT card for menu
+
+    Player ->> PlayingGame: actionsFor(PREDICT)
+    PlayingGame ->> Game: actionsFor(PREDICT)
+    Game ->> Workspace: actionsFor(PREDICT)
+    Workspace ->> HexTile: actionsFor(PREDICT)
+    HexTile -->> Workspace: [Discard]
+    Workspace -->> Game: [Discard]
+    Game -->> PlayingGame: [Discard]
+    PlayingGame -->> Player: [Discard]
+
+    Player ->> PlayingGame: actionsFor(WRITE_CODE)
+    Note over Player,PlayingGame: stuff happens
+    PlayingGame -->> Player: [Discard, Play]
+
+
+    Player ->> PlayingGame: play(WRITE_CODE)
+    PlayingGame ->> Game: play(WRITE_CODE)
+    Game ->> Workspace: play(WRITE_CODE)
+    Workspace ->> HexTile: play(WRITE_CODE)<br/>throws exception if not allowed
+

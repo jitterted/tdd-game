@@ -132,6 +132,10 @@ public class Game extends EventSourcedAggregate {
         return actionCardDeck.view();
     }
 
+    public State state() {
+        return state;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) {
@@ -156,10 +160,6 @@ public class Game extends EventSourcedAggregate {
                 .add("handle='" + handle + "'")
                 .add("playerMap=" + playerMap)
                 .toString();
-    }
-
-    public State state() {
-        return state;
     }
 
     public enum State {
