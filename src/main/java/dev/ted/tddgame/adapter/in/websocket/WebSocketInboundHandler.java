@@ -32,13 +32,13 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        LOGGER.info("Websocket connection established, session ID: {}, session remote address: {}", session.getId(), session.getRemoteAddress());
+        LOGGER.info("Websocket connection established, session ID: {}, session remote address: {}, Principal: {}", session.getId(), session.getRemoteAddress(), session.getPrincipal());
         // can't tell the PlayerConnector that a new player has connected here, because we don't know which game they want
     }
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        LOGGER.info("WebSocket Text Message received from session: {}, with message: {}", session.toString(), message.toString());
+        LOGGER.info("WebSocket Text Message received from session: {}, Principal: {}, with message: {}", session.toString(), session.getPrincipal(), message.toString());
         String messagePayload = (String) message.getPayload();
         LOGGER.info("Payload details: {}", messagePayload);
         String gameHandle = messagePayload.split(":")[1]; // e.g. "join:sleepy-goose-78"
@@ -53,6 +53,7 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
+        LOGGER.info("Websocket connection closed for Member '{}', session ID: {}", session.getPrincipal(), session.getId());
         messageSendersForPlayers.remove(new WebSocketMessageSender(session));
     }
 

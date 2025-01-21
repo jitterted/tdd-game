@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Game extends EventSourcedAggregate {
     private static final int MAXIMUM_NUMBER_OF_PLAYERS = 4;
+    private State state;
     private String name;
     private String handle;
     private final Map<MemberId, Player> playerMap = new HashMap<>();
@@ -47,24 +48,22 @@ public class Game extends EventSourcedAggregate {
             case GameCreated(String name, String handle) -> {
                 this.name = name;
                 this.handle = handle;
+                this.state = State.CREATED;
             }
 
             case PlayerJoined(MemberId memberId, String playerName) ->
                     playerMap.computeIfAbsent(memberId,
                                               _ -> createPlayer(memberId, playerName));
 
-            case GameStarted _ -> {
-            }
+            case GameStarted _ -> this.state = State.IN_PROGRESS;
 
-            case PlayerEvent playerEvent ->
-                    playerFor(playerEvent.memberId())
-                            .apply(playerEvent);
+            case PlayerEvent playerEvent -> playerFor(playerEvent.memberId())
+                    .apply(playerEvent);
 
             case ActionCardDeckCreated(List<ActionCard> actionCards) ->
                     actionCardDeck = ActionCardDeck.create(actionCards, this::enqueue);
 
-            case DeckEvent deckEvent ->
-                    actionCardDeck.apply(deckEvent);
+            case DeckEvent deckEvent -> actionCardDeck.apply(deckEvent);
         }
     }
 
@@ -123,6 +122,9 @@ public class Game extends EventSourcedAggregate {
     }
 
     public Player playerFor(MemberId memberId) {
+        if (!playerMap.containsKey(memberId)) {
+            throw new IllegalStateException("Member ID " + memberId + " is not in the '" + handle + "' game.");
+        }
         return playerMap.get(memberId);
     }
 
@@ -154,5 +156,14 @@ public class Game extends EventSourcedAggregate {
                 .add("handle='" + handle + "'")
                 .add("playerMap=" + playerMap)
                 .toString();
+    }
+
+    public State state() {
+        return state;
+    }
+
+    enum State {
+        CREATED,
+        IN_PROGRESS
     }
 }

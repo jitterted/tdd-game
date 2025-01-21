@@ -25,9 +25,6 @@ public class MessageSendersForPlayers implements ForTrackingPlayerMessageSenders
         gameHandleToMessageSender.put(gameHandle, messageSender);
     }
 
-    /**
-     * this needs to look up the session in both maps and remove them from each
-     */
     @Override
     public void remove(MessageSender messageSender) {
         gameHandleToMessageSender.removeValue(messageSender);

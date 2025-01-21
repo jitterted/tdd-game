@@ -5,6 +5,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 
 // Application Use Case (aka Inbound Port) Command
+// Join = Member Selected Game from Lobby
 public class PlayerJoinsGame {
 
     private final GameStore gameStore;
@@ -23,6 +24,5 @@ public class PlayerJoinsGame {
         Game game = gameFinder.byHandle(gameHandle);
         game.join(memberId, playerName);
         gameStore.save(game);
-        // broadcast that the Member has joined the Game as a Player
     }
 }

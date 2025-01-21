@@ -120,23 +120,6 @@ public class GamePlayTest {
         }
     }
 
-    static class CrashTestDummyBroadcaster implements Broadcaster {
-        @Override
-        public void announcePlayerConnectedToGame(Game game, Player player) {
-            throw new IllegalStateException("announcePlayerConnectedToGame should NOT have been invoked.");
-        }
-
-        @Override
-        public void prepareForGamePlay(Game game) {
-            throw new IllegalArgumentException("clearStartGameModal should NOT have been invoked.");
-        }
-
-        @Override
-        public void gameUpdate(Game game) {
-            throw new IllegalArgumentException("gameUpdate should NOT have been invoked.");
-        }
-    }
-
     public static class NoOpDummyBroadcaster implements Broadcaster {
         @Override
         public void announcePlayerConnectedToGame(Game game, Player player) {

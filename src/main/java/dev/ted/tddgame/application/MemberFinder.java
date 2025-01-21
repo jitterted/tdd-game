@@ -10,9 +10,11 @@ public class MemberFinder {
         this.memberStore = memberStore;
     }
 
-    public static MemberFinder createNull(Member member) {
+    public static MemberFinder createNull(Member... members) {
         MemberStore memberStore = new MemberStore();
-        memberStore.save(member);
+        for (Member member : members) {
+            memberStore.save(member);
+        }
         return new MemberFinder(memberStore);
     }
 

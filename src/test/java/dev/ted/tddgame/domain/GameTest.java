@@ -151,7 +151,7 @@ class GameTest {
     class EventsProjectState {
 
         @Test
-        void newGameHasGameNameAndHandle() {
+        void newGameHasGameNameAndHandleAndStateIsCreated() {
             List<GameEvent> events = List.of(
                     new GameCreated("jitterted", "breezy-cat-85"));
             Game game = Game.reconstitute(events);
@@ -160,6 +160,8 @@ class GameTest {
                     .isEqualTo("jitterted");
             assertThat(game.handle())
                     .isEqualTo("breezy-cat-85");
+            assertThat(game.state())
+                    .isEqualByComparingTo(Game.State.CREATED);
         }
 
         @Test
@@ -206,6 +208,23 @@ class GameTest {
             events.add(new PlayerJoined(new MemberId(42L), "IRRELEVANT PLAYER NAME"));
             events.addAll(List.of(freshEvents));
             return events;
+        }
+
+        @Test
+        void gameStartedResultsInStateOfGameAsInProgress() {
+            Game game = gameCreatedAndReconstitutedWithTheseEvents(
+                    new PlayerJoined(new MemberId(96L), "Member 96 Name"),
+                    new PlayerJoined(new MemberId(52L), "Member 52 Name"),
+                    new GameStarted());
+
+            assertThat(game.state())
+                    .isEqualByComparingTo(Game.State.IN_PROGRESS);
+        }
+
+        private Game gameCreatedAndReconstitutedWithTheseEvents(GameEvent... newEvents) {
+            List<GameEvent> events = gameCreatedAndTheseEvents(
+                    newEvents);
+            return Game.reconstitute(events);
         }
 
         @Test

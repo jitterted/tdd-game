@@ -230,7 +230,8 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
                 [ ] Remove Tailwind
 
-            [ ] Handle WebSocket disconnect/reconnection
+            [X] Handle WebSocket disconnect
+            [ ] Handle reconnection and re-joining of the game
 
             [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page
 
