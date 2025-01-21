@@ -30,11 +30,15 @@ public class PlayerConnector {
         // ASSERT is this player still in the game? they should be!
         Player player = game.playerFor(memberId);
         trackingPlayerMessageSenders.add(messageSender, gameHandle, player.id());
-        // Is game in progress (already started)?
-        broadcaster.announcePlayerConnectedToGame(game, player);
-        if (false) {
-            broadcaster.prepareForGamePlay(game);
-            broadcaster.gameUpdate(game);
+        switch (game.state()) {
+            case CREATED -> {
+                broadcaster.announcePlayerConnectedToGame(game, player);
+            }
+            case IN_PROGRESS -> {
+                broadcaster.prepareForGamePlay(game);
+                broadcaster.gameUpdate(game);
+            }
+
         }
     }
 }

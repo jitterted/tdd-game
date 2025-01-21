@@ -162,7 +162,7 @@ public class Game extends EventSourcedAggregate {
         return state;
     }
 
-    enum State {
+    public enum State {
         CREATED,
         IN_PROGRESS
     }

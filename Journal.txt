@@ -1,3 +1,26 @@
+January 20, 2025 - Monday
+=========================
+
+* Nice Prepare refactoring at 3:50pm (4h50m)
+
+* Was able to pass in Security Principal via .post() in the MockMvcTester!
+
+* Deck discard pile now shows the proper "top" of pile card
+    * Decided not to make it a stack and just show the "last" card in the list (if there is any)
+
+* We now properly handle RECONNECT, which required:
+    * Game has (currently) TWO states: CREATED and IN_PROGRESS
+        * Probably want CREATED to be WAITING_TO_START
+        * Game has a state() query method that returns the state enum
+    * MessageSendersForPlayers handles removal of MessageSender (which wraps WebSocketSession)
+        * Required a new method in our custom Multimap implementation
+
+* Getting clunky to create tests at the application level, time for some Test Data Builders
+
+* Having to always save Game after state changes is prone to error, so as much as possible for tests at the Application (Use Case) Layer, use OTHER Use Cases to do what's needed
+
+
+
 January 16, 2025 - Thursday
 ===========================
 

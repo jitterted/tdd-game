@@ -10,7 +10,6 @@ import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerId;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -18,7 +17,7 @@ import static org.assertj.core.api.Assertions.*;
 class PlayerConnectorTest {
 
 
-    private static GameFixture createTwoMembersInMemberStoreAndGameStoreWithGameWithTwoPlayersThatStarted() {
+    private static GameFixture createTwoMembersInMemberStoreAndGameStoreWithGameWithTwoPlayers() {
         String member1authName = "member1-authname";
         Member member1 = new Member(new MemberId(17L), "Player 1 Member Name", member1authName);
         String member2authName = "member2-authname";
@@ -81,9 +80,8 @@ class PlayerConnectorTest {
     }
 
     @Test
-    @Disabled("Until we can query the Game's 'started' state")
     void playerReconnectsAfterGameStartedBroadcastRemoveModalAndGameUpdate() {
-        GameFixture fixture = createTwoMembersInMemberStoreAndGameStoreWithGameWithTwoPlayersThatStarted();
+        GameFixture fixture = createTwoMembersInMemberStoreAndGameStoreWithGameWithTwoPlayers();
 
         MockReconnectBroadcaster mockBroadcaster = new MockReconnectBroadcaster();
         ForTrackingPlayerMessageSenders forTrackingPlayerMessageSenders = new MessageSendersForPlayers();
@@ -96,10 +94,13 @@ class PlayerConnectorTest {
         MessageSender messageSender2 = new DummyMessageSender();
         playerConnector.connect(fixture.member1authName, fixture.gameHandle, messageSender1);
         playerConnector.connect(fixture.member2authName, fixture.gameHandle, messageSender2);
+        GamePlay gamePlay = new GamePlay(fixture.gameStore, mockBroadcaster);
+        gamePlay.start(fixture.gameHandle);
 
         forTrackingPlayerMessageSenders.remove(messageSender1);
 
         MessageSender reconnectedMessageSender1 = new DummyMessageSender();
+        mockBroadcaster.reset();
         playerConnector.connect(fixture.member1authName, fixture.gameHandle, reconnectedMessageSender1);
 
         mockBroadcaster.verify();
@@ -185,10 +186,11 @@ class PlayerConnectorTest {
     private static class MockReconnectBroadcaster implements Broadcaster {
         private boolean gameUpdateCalled;
         private boolean prepareForGamePlayCalled;
+        private boolean announcePlayerConnectedToGame;
 
         @Override
         public void announcePlayerConnectedToGame(Game game, Player player) {
-            fail("Upon RECONNECT, announcePlayerConnectedToGame() should not have been called for " + player + " in " + game);
+            announcePlayerConnectedToGame = true;
         }
 
         @Override
@@ -202,12 +204,21 @@ class PlayerConnectorTest {
         }
 
         void verify() {
+            assertThat(announcePlayerConnectedToGame)
+                    .as("Upon RECONNECT, announcePlayerConnectedToGame() should not have been called")
+                    .isFalse();
             assertThat(prepareForGamePlayCalled)
                     .as("prepareForGamePlay() should have been called after Player RECONNECTED, but was not")
                     .isTrue();
             assertThat(gameUpdateCalled)
                     .as("gameUpdate() should have been called after Player RECONNECTED, but was not")
                     .isTrue();
+        }
+
+        public void reset() {
+            announcePlayerConnectedToGame = false;
+            prepareForGamePlayCalled = false;
+            gameUpdateCalled = false;
         }
     }
 }
