@@ -3,6 +3,9 @@ January 22, 2025 - Wednesday
 
 * Maybe redo the hex tiles as pure HTML+CSS instead of images?
 
+[Refactoring]
+* 1:05pm (2h05m) - Refactored with Convert to Instance Method (to get it into the Fixture), then Move Method to Spy (and then remove unneeded Fixture parameter)
+
 
 January 21, 2025 - Tuesday
 ==========================

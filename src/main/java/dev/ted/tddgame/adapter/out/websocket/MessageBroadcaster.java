@@ -38,7 +38,10 @@ public class MessageBroadcaster implements Broadcaster {
         sendActionCardDeckToAll(game);
 
         // send workspace update: for all workspaces, show pawn on the workspaces' hex tile
-        // A. Delete HtmlElement for w
+        // A. (Swap) Delete HtmlElement for the pawn (e.g., id="workspace1-pawn")
+        // B. Swap insert "beforeend" of pawn with ID for the correct hex tile
+        messageSendersForPlayers.sendToAll(game.handle(),
+                                           "workspace1-pawn");
 
         // send Test Results deck update
         // send commit & risk tracking updates

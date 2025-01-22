@@ -32,7 +32,7 @@ class DeckViewComponentTest {
     }
 
     @Test
-    void drawPileWithCardsAndEmptyDiscardPileHasImageOnlyInsideDrawPileSwap() {
+    void drawPileHasCardsAndDiscardPileIsEmptyThenImageOnlyInsideDrawPileSwap() {
         DeckView<ActionCard> deckView = new DeckView<>(List.of(ActionCard.WRITE_CODE),
                                                        Collections.emptyList());
         DeckViewComponent deckViewComponent = new DeckViewComponent(deckView);
@@ -51,7 +51,7 @@ class DeckViewComponentTest {
     }
 
     @Test
-    void drawPileEmptyAndDiscardPileWithCardHasImageOfCardInDiscardPileSwap() {
+    void drawPileEmptyAndDiscardPileHasCardThenImageOfCardInDiscardPileSwap() {
         DeckView<ActionCard> deckView = new DeckView<>(Collections.emptyList(),
                                                        List.of(ActionCard.PREDICT));
         DeckViewComponent deckViewComponent = new DeckViewComponent(deckView);
