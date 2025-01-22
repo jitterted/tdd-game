@@ -6,7 +6,16 @@ January 21, 2025 - Tuesday
     messageSender.sendMessage("<swap id='other-players'><script>document.location.href='/lobby';</script></swap>");
     ```
 
-*
+[Decision]
+* Players have a Reference to Workspace. When collecting all Workspaces for Broadcasting a Game Update, I can either:
+
+    1. Ask Game for all Workspace (Game owns a List<Workspace>)
+    2. Ask Game for all Players, get Workspace from each Player, reduce to eliminate duplicates
+
+  ==> I choose 2, and when Workspaces are shared among Players, I'll deal with eliminating the duplicates at that point
+
+[Decision]
+* Pawns are identified in the HTML as a DIV with the id of 'workspaceN-pawn' where N is 1-4
 
 January 20, 2025 - Monday
 =========================

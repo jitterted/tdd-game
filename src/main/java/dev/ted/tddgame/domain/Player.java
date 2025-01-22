@@ -44,6 +44,7 @@ public class Player {
 
             case PlayerDiscardedActionCard playerDiscardedActionCard -> {
                 actionCards.remove(playerDiscardedActionCard.actionCard());
+                // tell Workspace.discard() // does not need to know the specific card
             }
         }
     }

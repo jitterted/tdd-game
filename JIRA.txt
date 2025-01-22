@@ -229,8 +229,14 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
             [ ] Handle pawn placement
                 [X] Figure out how to display pawn in/on correct tile
-                    [ ] Use hexagon with player's number inside, or allow player to pick a "pawn" from a set of icons
-                [ ] At start of game, set all pawns to first hex tile: which object tracks the tile location of the pawn?
+                    [ ] Pawn Icon: Use hexagon with player's number inside, or allow player to pick a "pawn" from a set of icons
+                [ ] At start of game, set all pawns to first hex tile via the Workspace
+                    [ ] in Game#createPlayer(), create a Workspace and pass it into the Player's constructor (Workspace's ID matches the Player's ID--until we get to Workspace sharing)
+                    [ ] In Workspace constructor, assign the WhatShouldItDo[HexTile] to its currentHexTile field
+                [ ] Render Workspace: for each workspace:
+                    [ ] Delete (any existing) pawn: swap="delete" for id="workspace1-pawn" (or whatever the workspace ID is)
+                    [ ] Render the pawn on the currentHexTile (e.g., id="what-should-it-do-hex-tile"), do a swap with "beforeend"
+
                 [ ] Create Workspace+Pawn+Scoring+Risk
                 [ ] Discard card causes Pawn to move
 

@@ -1,0 +1,21 @@
+classDiagram
+    class Game
+    class Player
+    class Workspace {
+        HexTile : currentHexTile
+    }
+    class HexTile {
+        <<interface>>
+        discard()
+        play()
+        skip()
+    }
+    HexTile --|> WhatShouldItDo
+    HexTile --|> HowWillYouKnowItDidIt
+    HexTile --|> WriteCodeForTest
+    HexTile --|> PredictTestWillFailToCompile
+
+    Game "1" --> "1..4" Player
+    Player "1..4" --> "1" Workspace
+    Workspace "1" --> "1" HexTile
+

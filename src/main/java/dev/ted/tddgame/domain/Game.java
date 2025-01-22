@@ -68,6 +68,7 @@ public class Game extends EventSourcedAggregate {
     }
 
     private Player createPlayer(MemberId memberId, String playerName) {
+        // create and pass Workspace to the Player constructor
         return new Player(
                 new PlayerId(playerIdGenerator.getAndIncrement()),
                 memberId,

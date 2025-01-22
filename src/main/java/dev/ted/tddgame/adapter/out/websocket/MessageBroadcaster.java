@@ -35,16 +35,19 @@ public class MessageBroadcaster implements Broadcaster {
     public void gameUpdate(Game game) {
         sendYourHtmlForEachPlayerOf(game);
         sendOtherPlayerHandsToAll(game);
-        // send Action Card deck update (sent as single "Forest" message):
-        // 1. send back of card for draw pile
-        // 2. send front of last discarded card for discard pile
+        sendActionCardDeckToAll(game);
+
+        // send workspace update: for all workspaces, show pawn on the workspaces' hex tile
+        // A. Delete HtmlElement for w
+
+        // send Test Results deck update
+        // send commit & risk tracking updates
+    }
+
+    private void sendActionCardDeckToAll(Game game) {
         messageSendersForPlayers.sendToAll(game.handle(),
                                            new DeckViewComponent(game.actionCardDeck())
                                                    .htmlForDiscardAndDrawPiles().render());
-
-        // send Test Results deck update
-        // send workspace update
-        // send commit & risk tracking updates
     }
 
     private void sendOtherPlayerHandsToAll(Game game) {

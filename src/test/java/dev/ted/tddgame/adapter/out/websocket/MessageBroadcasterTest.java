@@ -115,6 +115,11 @@ class MessageBroadcasterTest {
                 ).render());
     }
 
+    @Test
+    void whenGameStartedGameUpdateRendersWorkspacePawnOnFirstHexTile() {
+        fail("Fix disabled tests above, then start here");
+    }
+
     // FIXTURE setup
 
     private Fixture createGameWithTwoPlayersConnectedHavingOneUniqueCard() {

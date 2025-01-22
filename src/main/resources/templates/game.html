@@ -118,62 +118,76 @@
         </div>
     </div>
     <div class="play-area">
-        <div class="board-grid">
-            <div class="grid-item hex-tile-stack">
+        <div class="hex-tile-grid">
+            <div class="hex-tile hex-tile-stack" id="what-should-it-do-hex-tile">
                 <div class="hex-tile-stack-background">
                     <img src="/static/Hex%20Tile%201%20-%20What%20Should%20It%20Do.png"
-                          th:src="@{'/Hex%20Tile%201%20-%20What%20Should%20It%20Do.png'}">
+                         th:src="@{'/Hex%20Tile%201%20-%20What%20Should%20It%20Do.png'}">
                 </div>
-                <div class="hex-tile-stack-pawn" id="player1-pawn">
-                    <i class="fa-duotone fa-regular fa-chess-pawn"
-                        style="--fa-primary-color: #e9e325; --fa-secondary-color: #e9e325; --fa-secondary-opacity: 0.7; "></i>
-                </div>
-                <div class="hex-tile-stack-pawn" id="player3-pawn">
-                    <i class="fa-duotone fa-regular fa-chess-pawn"
-                        style="--fa-primary-color: #25c8e9; --fa-secondary-color: #2597e9; --fa-secondary-opacity: 0.7; "></i>
-                </div>
-            </div>
-            <div class="grid-item hex-tile-stack">
-                <div class="hex-tile-stack-background">
-                    <img src="/static/Hex%20Tile%202%20-%20How%20Will%20You%20Know%20It%20Did%20It.png"
-                        th:src="@{'/Hex%20Tile%202%20-%20How%20Will%20You%20Know%20It%20Did%20It.png'}">
-                </div>
-                <div class="hex-tile-stack-pawn" id="player1-pawn">
+                <div class="hex-tile-stack-pawn" id="workspace1-pawn">
                     <i class="fa-duotone fa-regular fa-chess-pawn"
                        style="--fa-primary-color: #e9e325; --fa-secondary-color: #e9e325; --fa-secondary-opacity: 0.7; "></i>
                 </div>
-                <div class="hex-tile-stack-pawn" id="player2-pawn">
+                <div class="hex-tile-stack-pawn" id="workspace3-pawn">
+                    <i class="fa-duotone fa-regular fa-chess-pawn"
+                       style="--fa-primary-color: #25c8e9; --fa-secondary-color: #2597e9; --fa-secondary-opacity: 0.7; "></i>
+                </div>
+            </div>
+            <div class="hex-tile hex-tile-stack">
+                <div class="hex-tile-stack-background">
+                    <img src="/static/Hex%20Tile%202%20-%20How%20Will%20You%20Know%20It%20Did%20It.png"
+                         th:src="@{'/Hex%20Tile%202%20-%20How%20Will%20You%20Know%20It%20Did%20It.png'}">
+                </div>
+                <div class="hex-tile-stack-pawn" id="workspace1-pawn">
+                    <i class="fa-duotone fa-regular fa-chess-pawn"
+                       style="--fa-primary-color: #e9e325; --fa-secondary-color: #e9e325; --fa-secondary-opacity: 0.7; "></i>
+                </div>
+            </div>
+            <div class="hex-tile hex-tile-stack">
+                <div class="hex-tile-stack-background">
+                    <img src="/static/Hex%20Tile%203%20-%20Write%20Code%20for%20Test.png"
+                         th:src="@{'/Hex%20Tile%203%20-%20Write%20Code%20for%20Test.png'}">
+                </div>
+            </div>
+            <div class="hex-tile hex-tile-stack">
+                <div class="hex-tile-stack-background">
+                    <img src="/static/Hex%20Tile%204%20-%20Predict%20Test%20Fail%20Compile.png"
+                         th:src="@{'/Hex%20Tile%204%20-%20Predict%20Test%20Fail%20Compile.png'}">
+                </div>
+            </div>
+            <div class="hex-tile hex-tile-stack">
+                <div class="hex-tile-stack-background">
+                    <img src="/static/Hex%20Tile%205%20-%20Write%20Code%20So%20Test%20Compiles.png"
+                         th:src="@{'/Hex%20Tile%205%20-%20Write%20Code%20So%20Test%20Compiles.png'}">
+                </div>
+                <div class="hex-tile-stack-pawn" id="workspace2-pawn">
                     <i class="fa-duotone fa-regular fa-chess-pawn"
                        style="--fa-primary-color: #4ce925; --fa-secondary-color: #8ee925; --fa-secondary-opacity: 0.7; "></i>
                 </div>
             </div>
-            <div class="grid-item">
-                <img src="/static/Hex%20Tile%203%20-%20Write%20Code%20for%20Test.png"
-                th:src="@{'/Hex%20Tile%203%20-%20Write%20Code%20for%20Test.png'}">
+            <div class="hex-tile hex-tile-stack">
+                <div class="hex-tile-stack-background">
+                    <img src="/static/Hex%20Tile%206%20-%20Predict%20Test%20Will%20Fail.png"
+                         th:src="@{'/Hex%20Tile%206%20-%20Predict%20Test%20Will%20Fail.png'}">
+                </div>
             </div>
-            <div class="grid-item">
-                <img src="/static/Hex%20Tile%204%20-%20Predict%20Test%20Fail%20Compile.png"
-                th:src="@{'/Hex%20Tile%204%20-%20Predict%20Test%20Fail%20Compile.png'}">
+            <div class="hex-tile hex-tile-stack">
+                <div class="hex-tile-stack-background">
+                    <img src="/static/Hex%20Tile%207%20-%20Write%20Code%20For%20Feature.png"
+                         th:src="@{'/Hex%20Tile%207%20-%20Write%20Code%20For%20Feature.png'}">
+                </div>
             </div>
-            <div class="grid-item">
-                <img src="/static/Hex%20Tile%205%20-%20Write%20Code%20So%20Test%20Compiles.png"
-                th:src="@{'/Hex%20Tile%205%20-%20Write%20Code%20So%20Test%20Compiles.png'}">
+            <div class="hex-tile hex-tile-stack">
+                <div class="hex-tile-stack-background">
+                    <img src="/static/Hex%20Tile%208%20-%20Predict%20Test%20Now%20Passes.png"
+                         th:src="@{'/Hex%20Tile%208%20-%20Predict%20Test%20Now%20Passes.png'}">
+                </div>
             </div>
-            <div class="grid-item">
-                <img src="/static/Hex%20Tile%206%20-%20Predict%20Test%20Will%20Fail.png"
-                th:src="@{'/Hex%20Tile%206%20-%20Predict%20Test%20Will%20Fail.png'}">
-            </div>
-            <div class="grid-item">
-                <img src="/static/Hex%20Tile%207%20-%20Write%20Code%20For%20Feature.png"
-                th:src="@{'/Hex%20Tile%207%20-%20Write%20Code%20For%20Feature.png'}">
-            </div>
-            <div class="grid-item">
-                <img src="/static/Hex%20Tile%208%20-%20Predict%20Test%20Now%20Passes.png"
-                th:src="@{'/Hex%20Tile%208%20-%20Predict%20Test%20Now%20Passes.png'}">
-            </div>
-            <div class="grid-item">
-                <img src="/static/Hex%20Tile%209%20-%20Commit%20Code.png"
-                th:src="@{'/Hex%20Tile%209%20-%20Commit%20Code.png'}">
+            <div class="hex-tile hex-tile-stack">
+                <div class="hex-tile-stack-background">
+                    <img src="/static/Hex%20Tile%209%20-%20Commit%20Code.png"
+                         th:src="@{'/Hex%20Tile%209%20-%20Commit%20Code.png'}">
+                </div>
             </div>
         </div>
         <div class="last-column">
