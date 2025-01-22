@@ -9,8 +9,6 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
-import dev.ted.tddgame.domain.PlayerDrewActionCard;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -54,7 +52,6 @@ class MessageBroadcasterTest {
     }
 
     @Test
-    @Disabled("Need to have a real game that is started so deck(s) are created")
     void gameUpdateSendsPlayerSpecificHtml() {
         Fixture fixture = createGameWithTwoPlayersConnectedHavingOneUniqueCard();
 
@@ -78,7 +75,6 @@ class MessageBroadcasterTest {
     }
 
     @Test
-    @Disabled("Until the DeckViewComponent exists and is tested for empty/non-empty piles")
     void gameUpdateSendsActionCardDeckHtml() {
         MemberId memberId = new MemberId(17L);
         Member member = new Member(memberId, "Blue (member name)", "blue-username");
@@ -128,14 +124,10 @@ class MessageBroadcasterTest {
         game.join(memberIdForOliver, "Oliver");
         MemberId memberIdForSamantha = new MemberId(63L);
         game.join(memberIdForSamantha, "Samantha");
+        game.start();
 
         Player oliverPlayer = game.playerFor(memberIdForOliver);
-        oliverPlayer.apply(new PlayerDrewActionCard(memberIdForOliver,
-                                                    ActionCard.PREDICT));
-
         Player samanthaPlayer = game.playerFor(memberIdForSamantha);
-        samanthaPlayer.apply(new PlayerDrewActionCard(memberIdForSamantha,
-                                                      ActionCard.CODE_BLOAT));
 
         MessageSendersForPlayers messageSendersForPlayers = new MessageSendersForPlayers();
         MessageSenderSpy messageSenderForOliver = new MessageSenderSpy();

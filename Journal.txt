@@ -1,3 +1,9 @@
+January 22, 2025 - Wednesday
+============================
+
+* Maybe redo the hex tiles as pure HTML+CSS instead of images?
+
+
 January 21, 2025 - Tuesday
 ==========================
 
