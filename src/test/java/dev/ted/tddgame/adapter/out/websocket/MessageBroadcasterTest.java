@@ -10,7 +10,6 @@ import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -118,7 +117,6 @@ class MessageBroadcasterTest {
     }
 
     @Test
-    @Disabled("Until above test passes")
     void whenGameStartedGameUpdateRendersWorkspacePawnOnFirstHexTile() {
         Fixture fixture = createGameWithTwoPlayersConnectedAndGameStarted();
 
@@ -142,10 +140,12 @@ class MessageBroadcasterTest {
                 .as("Did not see a message with \"workspace1-pawn\"")
                 .isPresent()
                 .get(InstanceOfAssertFactories.STRING)
-                .contains("swap id=\"workspace1-pawn\" hx-oob-swap=\"delete\"",
-                          "swap id=\"what-should-it-do-hex-tile\" hx-oob-swap=\"beforeend\"",
-                          "div class=\"hex-tile-stack-pawn\" id=\"workspace1-pawn\"",
-                          "i class");
+                .as("Could not find full swap HTML for pawn message")
+                .contains("swap id=\"workspace1-pawn\" hx-swap-oob=\"delete\""
+                        , "swap id=\"what-should-it-do-hex-tile\" hx-swap-oob=\"beforeend\""
+                        , "div id=\"workspace1-pawn\" class=\"hex-tile-stack-pawn\""
+                        , "i class"
+                );
     }
 
     // FIXTURE setup

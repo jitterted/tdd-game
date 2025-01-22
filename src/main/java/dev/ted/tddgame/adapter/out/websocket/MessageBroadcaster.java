@@ -41,7 +41,17 @@ public class MessageBroadcaster implements Broadcaster {
         // A. (Swap) Delete HtmlElement for the pawn (e.g., id="workspace1-pawn")
         // B. Swap insert "beforeend" of pawn with ID for the correct hex tile
         messageSendersForPlayers.sendToAll(game.handle(),
-                                           "workspace1-pawn");
+                                           HtmlElement.forest(
+                                                   HtmlElement.swapDelete("workspace1-pawn"),
+                                                   HtmlElement.swapBeforeEnd("what-should-it-do-hex-tile",
+                                                                             HtmlElement.div("workspace1-pawn", "hex-tile-stack-pawn",
+                                                                                             new HtmlElement.NormalElement("i",
+                                                                                                                           HtmlElement.HtmlAttribute.of("class", "")
+                                                                                             )
+                                                                             )
+                                                   )
+                                           ).render()
+        );
 
         // send Test Results deck update
         // send commit & risk tracking updates

@@ -59,6 +59,10 @@ public abstract class HtmlElement {
         return new Swap(targetId, "afterbegin", childElements);
     }
 
+    public static HtmlElement swapBeforeEnd(String targetId, HtmlElement... childElements) {
+        return new Swap(targetId, "beforeend", childElements);
+    }
+
     public static HtmlElement swapDelete(String targetId) {
         return new Swap(targetId, "delete");
     }
@@ -281,7 +285,7 @@ public abstract class HtmlElement {
             this.value = value;
         }
 
-        static List<HtmlAttribute> of(String name, String value) {
+        public static List<HtmlAttribute> of(String name, String value) {
             return List.of(new HtmlAttribute(name, value));
         }
 
