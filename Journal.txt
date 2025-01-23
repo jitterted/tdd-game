@@ -1,7 +1,15 @@
 January 23, 2025 - Thursday
 ===========================
 
-*
+[Refactoring: 3:30pm 2h30m]
+* Changed method parameter from workspaceElementsFor(long id) -> workspaceElementsFor(Player), where the caller is doing: workspaceElementsFor(player.id().id())
+    1. Change signature to add Player parameter, using "Any var" -- this will pick up the player reference from the calling scope
+    2. Inline the id parameter (IntelliJ IDEA will complain, but it's wrong, so ignore it)
+    3. That's it
+
+  Could inline first, in which case the warning is correct, but then we can add Player as a parameter.
+  Prefer adding the parameter first so we don't get into a non-compilable situation.
+
 
 January 22, 2025 - Wednesday
 ============================

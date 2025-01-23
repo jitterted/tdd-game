@@ -21,20 +21,24 @@ public class WorkspaceViewComponent {
 
     HtmlElement getHtmlForPawns() {
         return players.stream()
-                      .flatMap(player -> workspaceElementsFor(player.id().id()))
+                      .flatMap(this::workspaceElementsForPlayer)
                       .reduce(forest(), HtmlElement::addChildren);
     }
 
-    private static Stream<HtmlElement> workspaceElementsFor(long workspaceId) {
+    private Stream<HtmlElement> workspaceElementsForPlayer(Player player) {
+        long workspaceId = player.id().id();
+        String currentHexTile = "what-should-it-do-hex-tile";
+        String pawnTargetIdForSwap = "workspace" + workspaceId + "-pawn";
+        String classNamesForPawnIcon = "fa-regular fa-circle-1";
         return Stream.of(
-                swapDelete("workspace" + workspaceId + "-pawn"),
-                swapBeforeEnd("what-should-it-do-hex-tile")
+                swapDelete(pawnTargetIdForSwap),
+                swapBeforeEnd(currentHexTile)
                         .addChildren(
                                 div()
-                                        .id("workspace" + workspaceId + "-pawn")
+                                        .id(pawnTargetIdForSwap)
                                         .classNames("hex-tile-stack-pawn")
                                         .addChildren(
-                                                faIcon("fa-regular fa-circle-1")
+                                                faIcon(classNamesForPawnIcon)
                                         )
                         )
         );
