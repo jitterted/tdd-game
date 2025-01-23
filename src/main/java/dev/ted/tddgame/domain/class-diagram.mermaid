@@ -1,7 +1,11 @@
 classDiagram
     class Game
-    class Player
+    class Player {
+        PlayerId: id
+        Workspace: workspace
+    }
     class Workspace {
+        WorkspaceId: id
         HexTile : currentHexTile
     }
     class HexTile {
