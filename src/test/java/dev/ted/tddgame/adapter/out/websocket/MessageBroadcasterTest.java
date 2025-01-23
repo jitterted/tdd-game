@@ -137,7 +137,7 @@ class MessageBroadcasterTest {
         //         i class
         Optional<String> pawnMessage = fixture.messageSenderForSamantha.messageContaining("workspace1-pawn");
         assertThat(pawnMessage)
-                .as("Did not see a message with \"workspace1-pawn\"")
+                .as("Did not see a message with \"workspace0-pawn\"")
                 .isPresent()
                 .get(InstanceOfAssertFactories.STRING)
                 .as("Could not find full swap HTML for pawn message")
@@ -146,6 +146,10 @@ class MessageBroadcasterTest {
                         , "div id=\"workspace1-pawn\" class=\"hex-tile-stack-pawn\""
                         , "i class"
                 );
+        assertThat(fixture.messageSenderForOliver
+                           .messageContaining("workspace1-pawn"))
+                .as("Did not see HTML for player 2's pawn (workspace1)")
+                .isPresent();
     }
 
     // FIXTURE setup

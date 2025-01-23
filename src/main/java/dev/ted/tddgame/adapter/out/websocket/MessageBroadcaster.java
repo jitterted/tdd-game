@@ -36,25 +36,17 @@ public class MessageBroadcaster implements Broadcaster {
         sendYourHtmlForEachPlayerOf(game);
         sendOtherPlayerHandsToAll(game);
         sendActionCardDeckToAll(game);
-
-        // send workspace update: for all workspaces, show pawn on the workspaces' hex tile
-        // A. (Swap) Delete HtmlElement for the pawn (e.g., id="workspace1-pawn")
-        // B. Swap insert "beforeend" of pawn with ID for the correct hex tile
-        messageSendersForPlayers.sendToAll(game.handle(),
-                                           HtmlElement.forest(
-                                                   HtmlElement.swapDelete("workspace1-pawn"),
-                                                   HtmlElement.swapBeforeEnd("what-should-it-do-hex-tile",
-                                                                             HtmlElement.div("workspace1-pawn", "hex-tile-stack-pawn",
-                                                                                             new HtmlElement.NormalElement("i",
-                                                                                                                           HtmlElement.HtmlAttribute.of("class", "")
-                                                                                             )
-                                                                             )
-                                                   )
-                                           ).render()
-        );
+        sendWorkspacePawnsToAll(game);
 
         // send Test Results deck update
         // send commit & risk tracking updates
+    }
+
+    private void sendWorkspacePawnsToAll(Game game) {
+        messageSendersForPlayers.sendToAll(game.handle(),
+                                           new WorkspaceViewComponent(game.players())
+                                                   .getHtmlForPawns().render()
+        );
     }
 
     private void sendActionCardDeckToAll(Game game) {

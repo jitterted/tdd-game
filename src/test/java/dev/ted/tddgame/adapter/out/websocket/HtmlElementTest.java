@@ -6,6 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static dev.ted.tddgame.adapter.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.faIcon;
+import static dev.ted.tddgame.adapter.HtmlElement.forest;
+import static dev.ted.tddgame.adapter.HtmlElement.swapBeforeEnd;
+import static dev.ted.tddgame.adapter.HtmlElement.swapDelete;
 import static org.assertj.core.api.Assertions.*;
 
 @SuppressWarnings("HtmlUnknownTarget")
@@ -21,7 +26,7 @@ class HtmlElementTest {
 
     @Test
     void emptyDivComponentHasOnlyOpenAndCloseTagWithCssClass() {
-        HtmlElement div = HtmlElement.div("cssClass");
+        HtmlElement div = div("cssClass");
 
         assertThat(div.render())
                 .isEqualTo("""
@@ -32,7 +37,7 @@ class HtmlElementTest {
 
     @Test
     void emptyDivComponentWithClassAndIdHasOnlyOpenAndCloseTagWithIdAndClass() {
-        HtmlElement div = HtmlElement.div("htmlId", "cssClass");
+        HtmlElement div = div("htmlId", "cssClass");
 
         assertThat(div.render())
                 .isEqualTo("""
@@ -45,7 +50,7 @@ class HtmlElementTest {
     void divWithNestedTextComponentRendersTextAsIndentedOneLevel() {
         HtmlElement textComponent = HtmlElement.text("nested text");
 
-        HtmlElement div = HtmlElement.div("cssClass", textComponent);
+        HtmlElement div = div("cssClass", textComponent);
 
         assertThat(div.render())
                 .isEqualTo("""
@@ -57,8 +62,8 @@ class HtmlElementTest {
 
     @Test
     void divWithNestedDivRendersDivAsIndentedOneLevel() {
-        HtmlElement div = HtmlElement.div("class of parent",
-                                          HtmlElement.div("class of nested"));
+        HtmlElement div = div("class of parent",
+                              div("class of nested"));
         assertThat(div.render())
                 .isEqualTo("""
                            <div class="class of parent">
@@ -70,10 +75,10 @@ class HtmlElementTest {
 
     @Test
     void divWithTwoNestedDivsRendersBothNestedAtSameLevelInOrder() {
-        HtmlElement div = HtmlElement.div(
+        HtmlElement div = div(
                 "class of parent",
-                HtmlElement.div("class of first nested"),
-                HtmlElement.div("class of second nested")
+                div("class of first nested"),
+                div("class of second nested")
         );
 
         assertThat(div.render())
@@ -101,8 +106,8 @@ class HtmlElementTest {
     @Test
     void swapWithTextAndDivComponentRendersCorrectly() {
         HtmlElement swap = HtmlElement.swapAfterBegin("swapId", HtmlElement.text("Heading for div"),
-                                                      HtmlElement.div("class of second nested",
-                                                                      HtmlElement.text("Inside DIV")));
+                                                      div("class of second nested",
+                                                          HtmlElement.text("Inside DIV")));
 
         assertThat(swap.render())
                 .isEqualTo("""
@@ -155,6 +160,37 @@ class HtmlElementTest {
                            """);
     }
 
+    @Test
+    void builderGeneratesSameHtmlAsNonBuilderMethods() {
+        String builderRenderedHtml =
+                forest()
+                        .children(
+                                swapDelete("workspace1-pawn"),
+                                swapBeforeEnd("what-should-it-do-hex-tile")
+                                        .children(
+                                                div()
+                                                        .id("workspace1-pawn")
+                                                        .classNames("hex-tile-stack-pawn")
+                                                        .children(
+                                                                faIcon("fa-regular fa-circle-1")
+                                                        )
+                                        )
+                        ).render();
+
+        String parameterRenderedHtml =
+                forest(
+                        swapDelete("workspace1-pawn"),
+                        swapBeforeEnd("what-should-it-do-hex-tile",
+                                      div("workspace1-pawn", "hex-tile-stack-pawn",
+                                          faIcon("fa-regular fa-circle-1")
+                                      )
+                        ))
+                        .render();
+
+        assertThat(builderRenderedHtml)
+                .isEqualTo(parameterRenderedHtml);
+    }
+
     @Nested
     class EqualsVerification {
         @Test
@@ -193,35 +229,35 @@ class HtmlElementTest {
 
         @Test
         void divEqualsWithoutNestedComponents() {
-            assertThat(HtmlElement.div("html-class"))
-                    .isEqualTo(HtmlElement.div("html-class"));
+            assertThat(div("html-class"))
+                    .isEqualTo(div("html-class"));
 
-            assertThat(HtmlElement.div("html-class"))
-                    .isNotEqualTo(HtmlElement.div("different-html-class"));
+            assertThat(div("html-class"))
+                    .isNotEqualTo(div("different-html-class"));
         }
 
         @Test
         void divEqualsWithTwoLevelsOfChildComponents() {
-            assertThat(HtmlElement.div("has-two-children",
-                                       HtmlElement.div("first-child",
-                                                       HtmlElement.text("Text of Leaf component"))))
-                    .isEqualTo(HtmlElement.div("has-two-children",
-                                               HtmlElement.div("first-child",
-                                                               HtmlElement.text("Text of Leaf component"))));
+            assertThat(div("has-two-children",
+                           div("first-child",
+                               HtmlElement.text("Text of Leaf component"))))
+                    .isEqualTo(div("has-two-children",
+                                   div("first-child",
+                                       HtmlElement.text("Text of Leaf component"))));
 
-            assertThat(HtmlElement.div("has-two-children",
-                                       HtmlElement.div("first-child",
-                                                       HtmlElement.text("Text of Leaf component"))))
-                    .isNotEqualTo(HtmlElement.div("has-two-children",
-                                                  HtmlElement.div("first-child",
-                                                                  HtmlElement.text("Leaf Text component text is different"))));
+            assertThat(div("has-two-children",
+                           div("first-child",
+                               HtmlElement.text("Text of Leaf component"))))
+                    .isNotEqualTo(div("has-two-children",
+                                      div("first-child",
+                                          HtmlElement.text("Leaf Text component text is different"))));
 
-            assertThat(HtmlElement.div("has-two-children",
-                                       HtmlElement.div("first-child",
-                                                       HtmlElement.text("Text of Leaf component"))))
-                    .isNotEqualTo(HtmlElement.div("has-two-children",
-                                                  HtmlElement.div("different-first-child",
-                                                                  HtmlElement.text("Text of Leaf component"))));
+            assertThat(div("has-two-children",
+                           div("first-child",
+                               HtmlElement.text("Text of Leaf component"))))
+                    .isNotEqualTo(div("has-two-children",
+                                      div("different-first-child",
+                                          HtmlElement.text("Text of Leaf component"))));
         }
 
     }

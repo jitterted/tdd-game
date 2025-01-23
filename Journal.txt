@@ -1,3 +1,8 @@
+January 23, 2025 - Thursday
+===========================
+
+*
+
 January 22, 2025 - Wednesday
 ============================
 
@@ -5,6 +10,19 @@ January 22, 2025 - Wednesday
 
 [Refactoring]
 * 1:05pm (2h05m) - Refactored with Convert to Instance Method (to get it into the Fixture), then Move Method to Spy (and then remove unneeded Fixture parameter)
+
+[Refactoring]
+* (2:45pm | 3h45m) Did an alternative to the refactoring to extract a new ViewComponent:
+
+        1. Create new target class
+        2. Pass in the source of information to its constructor
+        3. Add temporary (immediately deprecated) getter for the info source
+        ??4. Reformulate method access to use the getter
+        4a. Run tests!
+        5. Extract new method that takes the TARGET class as a parameter
+        6. Inline the old method to use the method created in step 5
+        7. Use CONVERT TO INSTANCE METHOD to move it to the new target class (via its parameter)
+        8. Inline the deprecated getter
 
 
 January 21, 2025 - Tuesday
@@ -55,6 +73,7 @@ January 16, 2025 - Thursday
 [Decision]
 * Keep Broadcaster#gameUpdate() at a high-level, with tests against it doing the minimal possible checking, and most of the transformation/rendering work is done by the individual ViewComponents
 
+[Refactoring]
 * Extract Class refactoring of DeckViewComponent (4pm)
     * Created new target class
     * Passed in DeckView to its constructor

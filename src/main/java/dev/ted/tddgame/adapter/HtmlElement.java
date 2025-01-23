@@ -3,6 +3,7 @@ package dev.ted.tddgame.adapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -10,29 +11,30 @@ import java.util.stream.Collectors;
 
 // https://html.spec.whatwg.org/multipage/infrastructure.html#html-elements
 public abstract class HtmlElement {
-    protected final List<HtmlElement> childComponents;
+    protected final List<HtmlElement> childElements = new ArrayList<>();
     private final List<HtmlAttribute> attributes = new ArrayList<>();
     protected final String tag;
 
-    public HtmlElement(String tag, HtmlElement... childComponents) {
-        Objects.requireNonNull(tag);
-
-        this.tag = tag;
-        this.childComponents = List.of(childComponents);
+    public HtmlElement(String tag, HtmlElement... childElements) {
+        this(tag, Collections.emptyList(), childElements);
     }
 
     public HtmlElement(String tag,
                        List<HtmlAttribute> htmlAttributes,
-                       HtmlElement... childComponents) {
+                       HtmlElement... childElements) {
         Objects.requireNonNull(tag);
 
         this.tag = tag;
-        this.childComponents = List.of(childComponents);
+        Collections.addAll(this.childElements, childElements);
         this.attributes.addAll(htmlAttributes);
     }
 
     public static HtmlElement forest(HtmlElement... childElements) {
         return new Forest(childElements);
+    }
+
+    public static Forest forest() {
+        return new Forest();
     }
 
     public static Text text(String textContents) {
@@ -52,19 +54,27 @@ public abstract class HtmlElement {
     }
 
     public static HtmlElement swapInnerHtml(String targetId, HtmlElement... childElements) {
-        return new Swap(targetId, "innerHTML", childElements);
+        return new NormalElement("swap",
+                                 HtmlAttribute.of("id", targetId, "hx-swap-oob", "innerHTML"),
+                                 childElements);
     }
 
     public static HtmlElement swapAfterBegin(String targetId, HtmlElement... childElements) {
-        return new Swap(targetId, "afterbegin", childElements);
+        return new NormalElement("swap",
+                                 HtmlAttribute.of("id", targetId, "hx-swap-oob", "afterbegin"),
+                                 childElements);
     }
 
     public static HtmlElement swapBeforeEnd(String targetId, HtmlElement... childElements) {
-        return new Swap(targetId, "beforeend", childElements);
+        return new NormalElement("swap",
+                                 HtmlAttribute.of("id", targetId, "hx-swap-oob", "beforeend"),
+                                 childElements);
     }
 
     public static HtmlElement swapDelete(String targetId) {
-        return new Swap(targetId, "delete");
+        return new NormalElement("swap",
+                                 HtmlAttribute.of("id", targetId, "hx-swap-oob", "delete")
+        );
     }
 
     public static HtmlElement img(String src, String altText) {
@@ -79,21 +89,45 @@ public abstract class HtmlElement {
         return button(attributes.get(), childElements);
     }
 
+    public static HtmlElement faIcon(String classNames) {
+        return new NormalElement("i", HtmlAttribute.of("class", classNames));
+    }
+
     public static Attributes attributes() {
         return new Attributes();
     }
 
-    protected String renderNested() {
-        return childComponents.stream()
-                              .map(this::render)
-                              .collect(Collectors.joining());
+    public static HtmlElement div() {
+        return new NormalElement("div");
     }
 
-    private String render(HtmlElement component) {
-        return component.render()
-                        .lines()
-                        .map(s -> "    " + s + "\n")
-                        .collect(Collectors.joining());
+    public HtmlElement children(HtmlElement... childElements) {
+        Collections.addAll(this.childElements, childElements);
+        return this;
+    }
+
+    public HtmlElement id(String htmlId) {
+        attributes.add(new HtmlAttribute("id", htmlId));
+        return this;
+    }
+
+    public HtmlElement classNames(String classNames) {
+        attributes.add(new HtmlAttribute("class", classNames));
+        return this;
+    }
+
+
+    protected String renderNested() {
+        return childElements.stream()
+                            .map(this::render)
+                            .collect(Collectors.joining());
+    }
+
+    private String render(HtmlElement htmlElement) {
+        return htmlElement.render()
+                          .lines()
+                          .map(s -> "    " + s + "\n")
+                          .collect(Collectors.joining());
     }
 
     public String render() {
@@ -121,14 +155,14 @@ public abstract class HtmlElement {
         }
 
         HtmlElement that = (HtmlElement) o;
-        return childComponents.equals(that.childComponents)
+        return childElements.equals(that.childElements)
                && attributes.equals(that.attributes)
                && tag.equals(that.tag);
     }
 
     @Override
     public int hashCode() {
-        int result = childComponents.hashCode();
+        int result = childElements.hashCode();
         result = 31 * result + attributes.hashCode();
         result = 31 * result + tag.hashCode();
         return result;
@@ -139,64 +173,8 @@ public abstract class HtmlElement {
         return new StringJoiner(", ", HtmlElement.class.getSimpleName() + "[", "]")
                 .add("tag='" + tag + "'")
                 .add("attributes=" + attributes)
-                .add("childComponents=" + childComponents)
+                .add("childElements=" + childElements)
                 .toString();
-    }
-
-    private static final class Swap extends HtmlElement {
-
-        private final String targetId;
-        private final String swapStrategy;
-
-        Swap(String targetId, String swapStrategy, HtmlElement... childComponents) {
-            super("", childComponents);
-            Objects.requireNonNull(targetId);
-            Objects.requireNonNull(swapStrategy);
-            Objects.requireNonNull(childComponents);
-            this.targetId = targetId;
-            this.swapStrategy = swapStrategy;
-        }
-
-        @Override
-        protected String renderTagOpen() {
-            return """
-                   <swap id="%s" hx-swap-oob="%s">
-                   """.formatted(targetId, swapStrategy);
-        }
-
-        @Override
-        protected String renderTagClose() {
-            return "</swap>\n";
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof Swap swap)) {
-                return false;
-            }
-            if (!super.equals(o)) {
-                return false;
-            }
-
-            return targetId.equals(swap.targetId) && swapStrategy.equals(swap.swapStrategy);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + targetId.hashCode();
-            result = 31 * result + swapStrategy.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return new StringJoiner(", ", Swap.class.getSimpleName() + "[", "]")
-                    .add("childComponents=" + childComponents)
-                    .add("swapStrategy='" + swapStrategy + "'")
-                    .add("targetId='" + targetId + "'")
-                    .toString();
-        }
     }
 
     public static final class Text extends HtmlElement {
@@ -251,11 +229,11 @@ public abstract class HtmlElement {
         }
     }
 
-    // container of components that doesn't render itself
+    // container of elements that doesn't render itself
     public static final class Forest extends HtmlElement {
 
-        public Forest(HtmlElement... childComponents) {
-            super("forest", childComponents);
+        public Forest(HtmlElement... childElements) {
+            super("forest", childElements);
         }
 
         @Override
@@ -271,9 +249,10 @@ public abstract class HtmlElement {
         @Override
         public String toString() {
             return new StringJoiner(", ", Forest.class.getSimpleName() + "[", "]")
-                    .add("childComponents=" + childComponents)
+                    .add("childElements=" + childElements)
                     .toString();
         }
+
     }
 
     public static class HtmlAttribute {
@@ -328,8 +307,12 @@ public abstract class HtmlElement {
     // https://html.spec.whatwg.org/multipage/syntax.html#normal-elements
     public static class NormalElement extends HtmlElement {
 
-        public NormalElement(String tag, List<@NotNull HtmlAttribute> htmlAttributes, HtmlElement... childComponents) {
-            super(tag, htmlAttributes, childComponents);
+        public NormalElement(String tag, List<@NotNull HtmlAttribute> htmlAttributes, HtmlElement... childElements) {
+            super(tag, htmlAttributes, childElements);
+        }
+
+        public NormalElement(String tag) {
+            super(tag);
         }
 
         @Override

@@ -234,8 +234,9 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                     [ ] in Game#createPlayer(), create a Workspace and pass it into the Player's constructor (Workspace's ID matches the Player's ID--until we get to Workspace sharing)
                     [ ] In Workspace constructor, assign the WhatShouldItDo[HexTile] to its currentHexTile field
                 [ ] Render Workspace: for each workspace:
-                    [ ] Delete (any existing) pawn: swap="delete" for id="workspace1-pawn" (or whatever the workspace ID is)
-                    [ ] Render the pawn on the currentHexTile (e.g., id="what-should-it-do-hex-tile"), do a swap with "beforeend"
+                    [X] Delete (any existing) pawn: swap="delete" for id="workspace1-pawn" (or whatever the workspace ID is)
+                    [X] Render the pawn on the currentHexTile (e.g., id="what-should-it-do-hex-tile"), do a swap with "beforeend"
+                    [ ] Render using the "real" Workspace object instead of faking it with Player's ID
 
                 [ ] Create Workspace+Pawn+Scoring+Risk
                 [ ] Discard card causes Pawn to move
@@ -262,6 +263,9 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page
 
             [ ] HtmlElement.Forest currently indents its children, but it shouldn't as the Forest isn't really a container element
+
+            [ ] Replace List<HtmlAttribute> with HtmlAttributes that can render itself (fixes Primitive [Collection] Obsession)
+                e.g.: HtmlAttributes.id(targetId).hxSwap("afterbegin")
 
             [ ] Split the Broadcaster interface into two:
                 (1) All events before the game has started (e.g., announce player joined)
