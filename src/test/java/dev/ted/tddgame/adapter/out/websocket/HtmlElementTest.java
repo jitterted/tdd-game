@@ -164,14 +164,14 @@ class HtmlElementTest {
     void builderGeneratesSameHtmlAsNonBuilderMethods() {
         String builderRenderedHtml =
                 forest()
-                        .children(
+                        .addChildren(
                                 swapDelete("workspace1-pawn"),
                                 swapBeforeEnd("what-should-it-do-hex-tile")
-                                        .children(
+                                        .addChildren(
                                                 div()
                                                         .id("workspace1-pawn")
                                                         .classNames("hex-tile-stack-pawn")
-                                                        .children(
+                                                        .addChildren(
                                                                 faIcon("fa-regular fa-circle-1")
                                                         )
                                         )

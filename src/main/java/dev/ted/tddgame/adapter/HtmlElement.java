@@ -101,7 +101,7 @@ public abstract class HtmlElement {
         return new NormalElement("div");
     }
 
-    public HtmlElement children(HtmlElement... childElements) {
+    public HtmlElement addChildren(HtmlElement... childElements) {
         Collections.addAll(this.childElements, childElements);
         return this;
     }
