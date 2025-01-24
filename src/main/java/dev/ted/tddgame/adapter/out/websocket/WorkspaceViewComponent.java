@@ -22,17 +22,15 @@ public class WorkspaceViewComponent {
 
     HtmlElement getHtmlForPawns() {
         return players.stream()
-                      .flatMap(this::workspaceElementsForPlayer)
+                      .flatMap(player -> workspaceElementsOf(player.workspace()))
                       .reduce(forest(), HtmlElement::addChildren);
     }
 
-    private Stream<HtmlElement> workspaceElementsForPlayer(Player player) {
-        Workspace workspace = new Workspace(player);
-        long workspaceId = workspace.id().id();
-        String hexTileName = "what-should-it-do"; // take the title of the Hex Tile and do something like: .toLowerCase().replace(" ", "-").replace("'", "")
-        String currentHexTileHtmlId = hexTileName + "-hex-tile";
-        String pawnTargetIdForSwap = "workspace" + workspaceId + "-pawn";
-        String classNamesForPawnIcon = "fa-regular fa-circle-1";
+    private Stream<HtmlElement> workspaceElementsOf(Workspace workspace) {
+        String hexTileName = workspace.currentHexTile().title().toLowerCase().replace(" ", "-").replace("'", "").replace("?", "");
+        String currentHexTileHtmlId = "%s-hex-tile".formatted(hexTileName);
+        String pawnTargetIdForSwap = "workspace%d-pawn".formatted(workspace.id().id() + 1);
+        String classNamesForPawnIcon = "fa-solid fa-circle-%d".formatted(workspace.id().id() + 1);
         return Stream.of(
                 swapDelete(pawnTargetIdForSwap),
                 swapBeforeEnd(currentHexTileHtmlId)

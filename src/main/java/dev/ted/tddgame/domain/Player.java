@@ -12,6 +12,7 @@ public class Player {
     private final String playerName;
     private final List<ActionCard> actionCards = new ArrayList<>();
     private final EventEnqueuer eventEnqueuer;
+    private final Workspace workspace;
 
     public Player(PlayerId playerId, MemberId memberId,
                   String playerName, EventEnqueuer eventEnqueuer) {
@@ -19,6 +20,7 @@ public class Player {
         this.memberId = memberId;
         this.playerName = playerName;
         this.eventEnqueuer = eventEnqueuer;
+        workspace = new Workspace(this);
     }
 
     public PlayerId id() {
@@ -27,6 +29,10 @@ public class Player {
 
     public MemberId memberId() {
         return memberId;
+    }
+
+    public Workspace workspace() {
+        return workspace;
     }
 
     public String playerName() {

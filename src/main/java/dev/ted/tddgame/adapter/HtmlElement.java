@@ -85,16 +85,19 @@ public abstract class HtmlElement {
         return new NormalElement("button", attributes, childElements);
     }
 
-    public static HtmlElement button(Attributes attributes, HtmlElement... childElements) {
-        return button(attributes.get(), childElements);
+    public static HtmlElement button(HtmlAttributes htmlAttributes, HtmlElement... childElements) {
+        return button(htmlAttributes.get(), childElements);
     }
 
     public static HtmlElement faIcon(String classNames) {
-        return new NormalElement("i", HtmlAttribute.of("class", classNames));
+        return new NormalElement("i",
+                                 attributes().cssClass(classNames)
+                                             .style("color: #63E6BE;")
+                                             .get());
     }
 
-    public static Attributes attributes() {
-        return new Attributes();
+    public static HtmlAttributes attributes() {
+        return new HtmlAttributes();
     }
 
     public static HtmlElement div() {
@@ -349,36 +352,41 @@ public abstract class HtmlElement {
 
     }
 
-    public static class Attributes {
+    public static class HtmlAttributes {
         private final List<HtmlAttribute> attributes = new ArrayList<>();
 
-        public Attributes cssClass(String cssClassName) {
+        public HtmlAttributes cssClass(String cssClassName) {
             attributes.addAll(HtmlAttribute.of("class", cssClassName));
             return this;
         }
 
-        public Attributes hxGet(String urlPath) {
+        public HtmlAttributes hxGet(String urlPath) {
             attributes.addAll(HtmlAttribute.of("hx-get", urlPath));
             return this;
         }
 
-        public Attributes hxSwap(String swapStrategy) {
+        public HtmlAttributes hxSwap(String swapStrategy) {
             attributes.addAll(HtmlAttribute.of("hx-swap", swapStrategy));
             return this;
         }
 
-        public Attributes hxOn(String htmxEventName, String value) {
+        public HtmlAttributes hxOn(String htmxEventName, String value) {
             attributes.addAll(HtmlAttribute.of("hx-on::" + htmxEventName, value));
             return this;
         }
 
-        public Attributes autofocus() {
+        public HtmlAttributes autofocus() {
             attributes.addAll(HtmlAttribute.of("autofocus", ""));
             return this;
         }
 
-        public Attributes hxPost(String urlPath) {
+        public HtmlAttributes hxPost(String urlPath) {
             attributes.addAll(HtmlAttribute.of("hx-post", urlPath));
+            return this;
+        }
+
+        public HtmlAttributes style(String styles) {
+            attributes.addAll(HtmlAttribute.of("style", styles));
             return this;
         }
 

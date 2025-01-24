@@ -28,7 +28,7 @@ public class HandViewComponent {
                 .toArray(HtmlElement[]::new);
     }
 
-    private HtmlElement.Attributes htmlAttributesFor(ActionCard card) {
+    private HtmlElement.HtmlAttributes htmlAttributesFor(ActionCard card) {
         return HtmlElement.attributes()
                           .cssClass("card")
                           .hxGet("/game/" + gameHandle + "/card-menu/" + card.name())

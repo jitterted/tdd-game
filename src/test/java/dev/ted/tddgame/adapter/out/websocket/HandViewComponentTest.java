@@ -41,7 +41,7 @@ class HandViewComponentTest {
                 );
     }
 
-    static HtmlElement.Attributes buttonAttributes(String hxGetUrlPath) {
+    static HtmlElement.HtmlAttributes buttonAttributes(String hxGetUrlPath) {
         return HtmlElement.attributes()
                           .cssClass("card")
                           .hxGet(hxGetUrlPath)
