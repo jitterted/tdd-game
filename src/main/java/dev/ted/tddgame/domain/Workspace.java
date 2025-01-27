@@ -6,10 +6,11 @@ public class Workspace {
 
     /**
      * Assign the Workspace ID from the Player's ID
-     * @param player the player associated with this workspace
+     * (This is temporary: it should have its own ID)
+     * @param playerId the "owner" of this workspace
      */
-    public Workspace(Player player) {
-        id = new WorkspaceId(player.id().id());
+    public Workspace(PlayerId playerId) {
+        id = new WorkspaceId(playerId.id());
         currentHexTile = HexTile.WHAT_SHOULD_IT_DO;
     }
 

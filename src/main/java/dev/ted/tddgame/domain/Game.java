@@ -68,12 +68,13 @@ public class Game extends EventSourcedAggregate {
     }
 
     private Player createPlayer(MemberId memberId, String playerName) {
-        // create and pass Workspace to the Player constructor
+        final PlayerId playerId = new PlayerId(playerIdGenerator.getAndIncrement());
         return new Player(
-                new PlayerId(playerIdGenerator.getAndIncrement()),
+                playerId,
                 memberId,
                 playerName,
-                this::enqueue);
+                this::enqueue,
+                new Workspace(playerId));
     }
 
     public String name() {

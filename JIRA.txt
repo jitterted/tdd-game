@@ -225,18 +225,19 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [X] Should happen upon the Websocket's "handleMessage" "connect" command
             [X] Kick user back to the lobby if they have a stale game page
 
-==> WE ARE HERE:
-
             [ ] Handle pawn placement
                 [X] Figure out how to display pawn in/on correct tile
                     [ ] Pawn Icon: Use hexagon with player's number inside, or allow player to pick a "pawn" from a set of icons
                 [X] At start of game, set all pawns to first hex tile via the Workspace
-                    [ ] in Game#createPlayer(), create a Workspace and pass it into the Player's constructor (Workspace's ID matches the Player's ID--until we get to Workspace sharing)
+
+==> WE ARE HERE:
+
+                    [X] in Game#createPlayer(), create a Workspace and pass it into the Player's constructor (Workspace's ID matches the Player's ID--until we get to Workspace sharing)
                     [X] In Workspace constructor, assign the WhatShouldItDo[HexTile] to its currentHexTile field
-                [ ] Render Workspace: for each workspace:
+                [X] Render Workspace: for each workspace:
                     [X] Delete (any existing) pawn: swap="delete" for id="workspace1-pawn" (or whatever the workspace ID is)
                     [X] Render the pawn on the currentHexTile (e.g., id="what-should-it-do-hex-tile"), do a swap with "beforeend"
-                    [ ] Render using the "real" Workspace object instead of faking it with Player's ID
+                    [X] Render using the "real" Workspace object instead of faking it with Player's ID
 
                 [ ] Create Workspace+Pawn+Scoring+Risk
                 [ ] Discard card causes Pawn to move

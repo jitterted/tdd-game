@@ -1,3 +1,8 @@
+January 27, 2025 - Monday
+=========================
+
+
+
 January 23, 2025 - Thursday
 ===========================
 
@@ -9,6 +14,8 @@ January 23, 2025 - Thursday
 
   Could inline first, in which case the warning is correct, but then we can add Player as a parameter.
   Prefer adding the parameter first so we don't get into a non-compilable situation.
+
+* WATCH OUT for mismatch between 0-based things (like Workspace and Player IDs) and 1-based CSS IDs
 
 
 January 22, 2025 - Wednesday

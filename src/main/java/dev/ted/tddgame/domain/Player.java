@@ -15,12 +15,13 @@ public class Player {
     private final Workspace workspace;
 
     public Player(PlayerId playerId, MemberId memberId,
-                  String playerName, EventEnqueuer eventEnqueuer) {
+                  String playerName, EventEnqueuer eventEnqueuer,
+                  Workspace workspace) {
         this.playerId = playerId;
         this.memberId = memberId;
         this.playerName = playerName;
         this.eventEnqueuer = eventEnqueuer;
-        workspace = new Workspace(this);
+        this.workspace = workspace;
     }
 
     public PlayerId id() {

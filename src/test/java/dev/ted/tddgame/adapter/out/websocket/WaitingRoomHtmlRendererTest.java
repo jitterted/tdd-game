@@ -3,6 +3,7 @@ package dev.ted.tddgame.adapter.out.websocket;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerId;
+import dev.ted.tddgame.domain.Workspace;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -46,9 +47,11 @@ class WaitingRoomHtmlRendererTest {
     @Test
     void htmlGeneratedCorrectlyForMultipleJoinedPlayers() {
         String firstPlayerName = "Murf";
-        Player firstPlayer = new Player(new PlayerId(2L), new MemberId(3L), firstPlayerName, null);
+        final PlayerId playerId = new PlayerId(2L);
+        Player firstPlayer = new Player(playerId, new MemberId(3L), firstPlayerName, null, new Workspace(playerId));
         String secondPlayerName = "Drednok";
-        Player secondPlayer = new Player(new PlayerId(4L), new MemberId(5L), secondPlayerName, null);
+        final PlayerId playerId1 = new PlayerId(4L);
+        Player secondPlayer = new Player(playerId1, new MemberId(5L), secondPlayerName, null, new Workspace(playerId1));
         String expectedHtml = """
                <swap id="joined-players-container" hx-swap-oob="innerHTML">
                    <li class="flex items-center">

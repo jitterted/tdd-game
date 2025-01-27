@@ -7,6 +7,7 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
+import dev.ted.tddgame.domain.Workspace;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -106,6 +107,7 @@ class PlayerViewComponentTest {
     }
 
     private Player createPlayer(long playerId, String playerName) {
-        return new Player(new PlayerId(playerId), new MemberId(42L), playerName, DUMMY_EVENT_ENQUEUER);
+        final PlayerId playerId1 = new PlayerId(playerId);
+        return new Player(playerId1, new MemberId(42L), playerName, DUMMY_EVENT_ENQUEUER, new Workspace(playerId1));
     }
 }

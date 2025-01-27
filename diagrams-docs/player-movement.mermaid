@@ -1,43 +1,45 @@
 sequenceDiagram
-    actor Player
-    participant GamePlay as GamePlay<br/><<service>>
+    actor PlayerActor as Player<br/><<actor>>
+    participant GamePlay as GamePlay (Use Case)<br/><<service>>
     participant Game
+    participant Player
     participant Workspace
     participant HexTile
 
-    Player ->> GamePlay: start()
+    PlayerActor ->> GamePlay: start()
     GamePlay ->> Game: start()
     Game ->> Workspace: createForPlayer()<br/>currentTile = StartingHexTile
     Workspace -->> Game: workspace
     GamePlay ->> Broadcaster: gameUpdate()
 
-    Note over Player,Game: (time passes)
+    Note over PlayerActor,Game: (time passes)
 
-    Player ->> GamePlay: discard(card)
+    PlayerActor ->> GamePlay: discard(card)
     GamePlay ->> Game: discard(card)
     Note over Game: (other stuff happens, too)
-    Game ->> Workspace: discard()
+    Game ->> Player: discard(card)
+    Player ->> Workspace: discard()
     Workspace ->> HexTile: discard()
     HexTile -->> Workspace: next HexTile<br/>(based on state)
     GamePlay ->> Broadcaster: gameUpdate()
 
-    Note over Player,Game: (time passes)<br/>Player clicks on PREDICT card for menu
+    Note over PlayerActor,Game: (time passes)<br/>Player clicks on PREDICT card for menu
 
-    Player ->> GamePlay: actionsFor(PREDICT)
+    PlayerActor ->> GamePlay: actionsFor(PREDICT)
     GamePlay ->> Game: actionsFor(PREDICT)
     Game ->> Workspace: actionsFor(PREDICT)
     Workspace ->> HexTile: actionsFor(PREDICT)
     HexTile -->> Workspace: [Discard]
     Workspace -->> Game: [Discard]
     Game -->> GamePlay: [Discard]
-    GamePlay -->> Player: [Discard]
+    GamePlay -->> PlayerActor: [Discard]
 
-    Player ->> GamePlay: actionsFor(WRITE_CODE)
-    Note over Player,GamePlay: stuff happens
-    GamePlay -->> Player: [Discard, Play]
+    PlayerActor ->> GamePlay: actionsFor(WRITE_CODE)
+    Note over PlayerActor,GamePlay: stuff happens
+    GamePlay -->> PlayerActor: [Discard, Play]
 
 
-    Player ->> GamePlay: play(WRITE_CODE)
+    PlayerActor ->> GamePlay: play(WRITE_CODE)
     GamePlay ->> Game: play(WRITE_CODE)
     Game ->> Workspace: play(WRITE_CODE)
     Workspace ->> HexTile: play(WRITE_CODE)<br/>throws exception if not allowed

@@ -6,6 +6,7 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerId;
+import dev.ted.tddgame.domain.Workspace;
 import org.junit.jupiter.api.Test;
 
 import static dev.ted.tddgame.adapter.HtmlElement.button;
@@ -20,7 +21,7 @@ class HandViewComponentTest {
 
     @Test
     void htmlForPlayerWithFiveCardsGeneratesCorrectDiv() {
-        Player player = new Player(IRRELEVANT_PLAYER_ID, IRRELEVANT_MEMBER_ID, "IRRELEVANT PLAYER NAME", _ -> {});
+        Player player = new Player(IRRELEVANT_PLAYER_ID, IRRELEVANT_MEMBER_ID, "IRRELEVANT PLAYER NAME", _ -> {}, new Workspace(IRRELEVANT_PLAYER_ID));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.CANT_ASSERT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.LESS_CODE));

@@ -56,9 +56,10 @@ class PlayerTest {
 
 
     private static Player createPlayer(long memberId) {
-        return new Player(new PlayerId(IRRELEVANT_PLAYER_ID),
+        final PlayerId playerId = new PlayerId(IRRELEVANT_PLAYER_ID);
+        return new Player(playerId,
                           new MemberId(memberId),
                           "Player 1",
-                          null);
+                          null, new Workspace(playerId));
     }
 }
