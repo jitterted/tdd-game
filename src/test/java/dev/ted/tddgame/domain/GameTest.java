@@ -212,13 +212,21 @@ class GameTest {
 
         @Test
         void gameStartedResultsInStateOfGameAsInProgress() {
+            MemberId firstPlayerMemberId = new MemberId(96L);
+            MemberId secondPlayerMemberId = new MemberId(52L);
             Game game = gameCreatedAndReconstitutedWithTheseEvents(
-                    new PlayerJoined(new MemberId(96L), "Member 96 Name"),
-                    new PlayerJoined(new MemberId(52L), "Member 52 Name"),
+                    new PlayerJoined(firstPlayerMemberId, "Member 96 Name"),
+                    new PlayerJoined(secondPlayerMemberId, "Member 52 Name"),
                     new GameStarted());
+            Player firstPlayer = game.playerFor(firstPlayerMemberId);
+            Player secondPlayer = game.playerFor(secondPlayerMemberId);
 
             assertThat(game.state())
                     .isEqualByComparingTo(Game.State.IN_PROGRESS);
+            assertThat(firstPlayer.workspace().currentHexTile())
+                    .as("Both players should be on the first Hex Tile (What Should It Do?)")
+                    .isEqualByComparingTo(secondPlayer.workspace().currentHexTile())
+                    .isEqualByComparingTo(HexTile.WHAT_SHOULD_IT_DO);
         }
 
         private Game gameCreatedAndReconstitutedWithTheseEvents(GameEvent... newEvents) {
@@ -288,6 +296,9 @@ class GameTest {
                            .discardPile())
                     .as("Action Deck Discard pile should contain only discarded WRITE_CODE cards")
                     .containsExactly(ActionCard.WRITE_CODE);
+            assertThat(player.workspace().currentHexTile())
+                    .as("Player should be on the 2nd tile after the Discard Card action")
+                    .isEqualByComparingTo(HexTile.HOW_WILL_YOU_KNOW_IT_DID_IT);
         }
 
         private static List<GameEvent> gameCreatedAndTheseEvents(GameEvent... freshEvents) {

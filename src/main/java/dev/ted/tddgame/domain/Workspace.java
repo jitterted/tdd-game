@@ -2,7 +2,7 @@ package dev.ted.tddgame.domain;
 
 public class Workspace {
     private final WorkspaceId id;
-    protected final HexTile currentHexTile;
+    private HexTile currentHexTile;
 
     /**
      * Assign the Workspace ID from the Player's ID
@@ -20,5 +20,9 @@ public class Workspace {
 
     public HexTile currentHexTile() {
         return currentHexTile;
+    }
+
+    public void discardCard() {
+        currentHexTile = currentHexTile.discardCard();
     }
 }
