@@ -21,4 +21,13 @@ class HexTileTest {
         assertThat(howWillYouKnowItDidIt.discardCard())
             .isEqualByComparingTo(HexTile.WRITE_CODE_FOR_TEST);
     }
+
+    @Test
+    void exceptionThrownWhenDiscardCardOnWriteCodeForTest() {
+        HexTile writeCodeForTest = HexTile.WRITE_CODE_FOR_TEST;
+
+        assertThatExceptionOfType(UnsupportedOperationException.class)
+                .isThrownBy(writeCodeForTest::discardCard)
+                .withMessage("Probably want to return itself, but not sure yet");
+    }
 }

@@ -15,7 +15,7 @@ public enum HexTile {
     }, WRITE_CODE_FOR_TEST("Write Code for Test") {
         @Override
         public HexTile discardCard() {
-            return null;
+            throw new UnsupportedOperationException("Probably want to return itself, but not sure yet");
         }
     };
 
