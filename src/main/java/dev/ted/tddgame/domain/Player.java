@@ -56,15 +56,8 @@ public class Player {
         }
     }
 
-    public void drawToFullFrom(ActionCardDeck actionCardDeck) {
-        drawCardFrom(actionCardDeck);
-        drawCardFrom(actionCardDeck);
-        drawCardFrom(actionCardDeck);
-        drawCardFrom(actionCardDeck);
-        drawCardFrom(actionCardDeck);
-    }
 
-    private void drawCardFrom(ActionCardDeck actionCardDeck) {
+    void drawCardFrom(ActionCardDeck actionCardDeck) {
         // constraint: Player's Hand must have room for an additional card
         PlayerEvent event =
                 new PlayerDrewActionCard(memberId, actionCardDeck.draw());

@@ -145,7 +145,14 @@ public class Game extends EventSourcedAggregate {
         enqueue(new GameStarted());
         enqueue(new ActionCardDeckCreated(cardsFactory.createStandardActionCards()));
 
-        players().forEach(player -> player.drawToFullFrom(actionCardDeck));
+        initialDealCardsToAllPlayers();
+    }
+
+    // Deal cards in round-robin fashion
+    private void initialDealCardsToAllPlayers() {
+        for (int i = 0; i < 5; i++) {
+            players().forEach(player -> player.drawCardFrom(actionCardDeck));
+        }
     }
 
     public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
