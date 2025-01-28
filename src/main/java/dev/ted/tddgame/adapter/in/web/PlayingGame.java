@@ -97,4 +97,12 @@ public class PlayingGame {
                                    .orElseThrow(() -> new RuntimeException("Member with AuthN username '%s' was not found in the MemberStore".formatted(principal.getName())));
         gamePlay.discard(gameHandle, member.id(), ActionCard.valueOf(cardName));
     }
+
+    @PostMapping(PLAY_CARD_URI_TEMPLATE_STRING)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void playCard(Principal principal,
+                         @PathVariable String gameHandle,
+                         @PathVariable String cardName) {
+
+    }
 }

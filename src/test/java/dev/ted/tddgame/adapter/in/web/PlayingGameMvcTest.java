@@ -68,6 +68,19 @@ class PlayingGameMvcTest {
            .hasStatus(HttpStatus.NO_CONTENT);
     }
 
+    @Test
+    void postToPlayCardEndpointReturns204NoContent() {
+        String gameHandle = "game4play";
+        Fixture fixture = createFixture(gameHandle);
+        MockMvcTester mvc = mvcTesterFor(fixture.gameStore, fixture.memberStore);
+        mvc.post().uri("/game/game4play/start-game").exchange();
+
+        mvc.post()
+           .principal(() -> fixture.memberAuthName)
+           .uri("/game/game4play/cards/play/LESS_CODE")
+           .assertThat()
+           .hasStatus(HttpStatus.NO_CONTENT);
+    }
 
     // -- FIXTURE
 
