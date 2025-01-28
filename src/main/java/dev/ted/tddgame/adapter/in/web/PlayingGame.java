@@ -103,6 +103,6 @@ public class PlayingGame {
     public void playCard(Principal principal,
                          @PathVariable String gameHandle,
                          @PathVariable String cardName) {
-
+        throw new UnsupportedOperationException();
     }
 }

@@ -10,6 +10,8 @@ import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
+import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -80,9 +82,7 @@ class PlayingGameTest {
         fixture.gamePlay.start(gameHandle);
         Game game = fixture.findGame(gameHandle);
 
-        ActionCard cardFromFirstPlayerHand = game.players().getFirst()
-                                                 .hand().findFirst()
-                                                 .orElseThrow();
+        ActionCard cardFromFirstPlayerHand = firstCardFromFirstPlayerHand(game);
 
         fixture.playingGame.discardCardFromHand(fixture.principal,
                                                 gameHandle,
@@ -92,6 +92,29 @@ class PlayingGameTest {
         assertThat(game.actionCardDeck().discardPile())
                 .containsExactly(cardFromFirstPlayerHand);
     }
+
+    @Test
+    @Disabled("Until Game has implemented the playCard")
+    void nothingHappensUponPlayCardAfterGameStartsAndOnFirstTile() {
+        String gameHandle = "play-game-handle";
+        Fixture fixture = createGameWithPlayingGameController(gameHandle);
+        fixture.gamePlay.start(gameHandle);
+        Game game = fixture.findGame(gameHandle);
+
+        ActionCard cardFromFirstPlayerHand = firstPlayerOf(game)
+                                                 .hand().findFirst()
+                                                 .orElseThrow();
+
+        fixture.playingGame.playCard(fixture.principal,
+                                     gameHandle,
+                                     cardFromFirstPlayerHand.name());
+
+        game = fixture.findGame(gameHandle);
+        assertThat(firstPlayerOf(game).hand())
+                .as("Player's Hand should still have the initial 5 cards dealt")
+                .hasSize(5);
+    }
+
 
     // ---- FIXTURE
 
@@ -113,9 +136,20 @@ class PlayingGameTest {
                            PlayingGame playingGame,
                            GamePlay gamePlay,
                            Principal principal) {
+
         private Game findGame(String gameHandle) {
             return gameStore.findByHandle(gameHandle).orElseThrow();
         }
+    }
+
+    private static Player firstPlayerOf(Game game) {
+        return game.players().getFirst();
+    }
+
+    private static ActionCard firstCardFromFirstPlayerHand(Game game) {
+        return firstPlayerOf(game)
+                .hand().findFirst()
+                .orElseThrow();
     }
 
 }

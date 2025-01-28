@@ -25,8 +25,9 @@ public class ActionCardDeck extends Deck<ActionCard> {
     // TODO: for production usage, uses random shuffler
     // TODO: must never accept a list of cards that is empty
     public static ActionCardDeck create(List<ActionCard> cards,
-                                        EventEnqueuer eventEnqueuer) {
-        return new ActionCardDeck(cards, new RandomShuffler<>(), eventEnqueuer);
+                                        EventEnqueuer eventEnqueuer,
+                                        Shuffler<ActionCard> shuffler) {
+        return new ActionCardDeck(cards, shuffler, eventEnqueuer);
     }
 
     public static ActionCardDeck createForTest(ActionCard... actionCards) {

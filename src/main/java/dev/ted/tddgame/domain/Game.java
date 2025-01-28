@@ -15,26 +15,51 @@ public class Game extends EventSourcedAggregate {
     private final AtomicLong playerIdGenerator = new AtomicLong();
     private final CardsFactory cardsFactory = new CardsFactory();
     private ActionCardDeck actionCardDeck;
-
-    private Game() {
-    }
+    private final Deck.Shuffler<ActionCard> actionCardShuffler;
 
     // Rebuilds Game (and its entities) state
     // Public production code should use #reconstitute()
     private Game(List<GameEvent> events) {
+        actionCardShuffler = new Deck.RandomShuffler<>();
         for (GameEvent event : events) {
             apply(event);
         }
     }
 
+    // Allows control of the shuffler used for the ActionCard deck replenishment
+    private Game(Deck.Shuffler<ActionCard> actionCardShuffler) {
+        this.actionCardShuffler = actionCardShuffler;
+    }
+
+    /**
+     * Create a Game for Production, using a Random shuffler
+     *
+     * @param gameName title of the game
+     * @param handle unique handle for the game
+     */
     public static Game create(String gameName, String handle) {
-        Game game = new Game();
+        Game game = new Game(new Deck.RandomShuffler<>());
         game.initialize(gameName, handle);
         return game;
     }
 
+    /**
+     * Create a Game by playing back all of the events and applying them.
+     * MUST only be called by the repository (store), or tests
+     *
+     * @param events GameEvents to play back
+     */
     public static Game reconstitute(List<GameEvent> events) {
         return new Game(events);
+    }
+
+    /**
+     * Create a Game with the specified shuffler to be used when shuffling the discard pile into the draw pile
+     */
+    public static Game createNull(Deck.Shuffler<ActionCard> shuffler, String gameName, String gameHandle) {
+        Game game = new Game(shuffler);
+        game.initialize(gameName, gameHandle);
+        return game;
     }
 
     private void initialize(String gameName, String handle) {
@@ -61,7 +86,11 @@ public class Game extends EventSourcedAggregate {
                     .apply(playerEvent);
 
             case ActionCardDeckCreated(List<ActionCard> actionCards) ->
-                    actionCardDeck = ActionCardDeck.create(actionCards, this::enqueue);
+                    actionCardDeck = ActionCardDeck.create(
+                            actionCards,
+                            this::enqueue,
+                            actionCardShuffler
+                    );
 
             case DeckEvent deckEvent -> actionCardDeck.apply(deckEvent);
         }

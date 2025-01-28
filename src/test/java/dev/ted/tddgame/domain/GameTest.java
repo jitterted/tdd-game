@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,6 +30,24 @@ class GameTest {
 
         assertThat(reconstituted.freshEvents())
                 .isEmpty();
+    }
+
+    @Test
+    void createGameWithDefinedShufflerForActionCardDeck() {
+        Deck.Shuffler<ActionCard> refactorCardsOnlyShuffler =
+                _ -> new ArrayList<>(Collections.nCopies(12, ActionCard.REFACTOR));
+        Game game = Game.createNull(refactorCardsOnlyShuffler, "Name of Game", "game-handle");
+        MemberId firstPlayerMemberId = new MemberId(23L);
+        game.join(firstPlayerMemberId, "First Player");
+        MemberId secondPlayerMemberId = new MemberId(24L);
+        game.join(secondPlayerMemberId, "Second Player");
+
+        game.start();
+
+        assertThat(game.playerFor(firstPlayerMemberId).hand())
+                .containsOnly(ActionCard.REFACTOR);
+        assertThat(game.playerFor(secondPlayerMemberId).hand())
+                .containsOnly(ActionCard.REFACTOR);
     }
 
     @Nested
