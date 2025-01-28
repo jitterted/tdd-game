@@ -19,7 +19,7 @@ public class Game extends EventSourcedAggregate {
 
     // Rebuilds Game (and its entities) state
     // Public production code should use #reconstitute()
-    private Game(List<GameEvent> events) {
+    Game(List<GameEvent> events) {
         actionCardShuffler = new Deck.RandomShuffler<>();
         for (GameEvent event : events) {
             apply(event);
@@ -41,16 +41,6 @@ public class Game extends EventSourcedAggregate {
         Game game = new Game(new Deck.RandomShuffler<>());
         game.initialize(gameName, handle);
         return game;
-    }
-
-    /**
-     * Create a Game by playing back all of the events and applying them.
-     * MUST only be called by the repository (store), or tests
-     *
-     * @param events GameEvents to play back
-     */
-    public static Game reconstitute(List<GameEvent> events) {
-        return new Game(events);
     }
 
     /**

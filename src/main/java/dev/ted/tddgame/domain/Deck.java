@@ -89,7 +89,7 @@ public abstract class Deck<CARD> {
         }
     }
 
-    protected interface Shuffler<CARD> {
+    public interface Shuffler<CARD> {
         List<CARD> shuffleCards(List<CARD> discardPile);
     }
 }

@@ -1,9 +1,13 @@
 package dev.ted.tddgame.application.port;
 
 import dev.ted.tddgame.domain.Game;
+import dev.ted.tddgame.domain.GameEvent;
+import dev.ted.tddgame.domain.GameFactory;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -50,6 +54,26 @@ class GameStoreTest {
                 .containsExactly(
                         tuple(new MemberId(12L), "Alice"),
                         tuple(new MemberId(13L), "Bob")
-                        );
+                );
     }
+
+    @Test
+    void findUsesGameFactoryToReconstituteGame() {
+        GameStore gameStore = GameStore.createEmpty(new GameFactory() {
+            @Override
+            public Game reconstitute(List<GameEvent> events) {
+                return Game.create("This Game Was Created by the GameFactory",
+                                   "game-as-saved");
+            }
+        });
+        Game game = Game.create("This Game Was Saved", "game-as-saved");
+        gameStore.save(game);
+
+        assertThat(gameStore.findByHandle("game-as-saved"))
+                .isPresent()
+                .get()
+                .extracting(Game::name, STRING)
+                .isEqualTo("This Game Was Created by the GameFactory");
+    }
+
 }

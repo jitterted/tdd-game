@@ -17,6 +17,7 @@ import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
+import java.util.List;
 
 import static dev.ted.tddgame.adapter.HtmlElement.attributes;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
@@ -94,25 +95,20 @@ class PlayingGameTest {
     }
 
     @Test
-    @Disabled("Until Game has implemented the playCard")
-    void nothingHappensUponPlayCardAfterGameStartsAndOnFirstTile() {
+    @Disabled("Until confirm that injected shuffler is working properly")
+    void writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile() {
         String gameHandle = "play-game-handle";
         Fixture fixture = createGameWithPlayingGameController(gameHandle);
         fixture.gamePlay.start(gameHandle);
-        Game game = fixture.findGame(gameHandle);
-
-        ActionCard cardFromFirstPlayerHand = firstPlayerOf(game)
-                                                 .hand().findFirst()
-                                                 .orElseThrow();
 
         fixture.playingGame.playCard(fixture.principal,
                                      gameHandle,
-                                     cardFromFirstPlayerHand.name());
+                                     ActionCard.WRITE_CODE.name());
 
-        game = fixture.findGame(gameHandle);
+        Game game = fixture.findGame(gameHandle);
         assertThat(firstPlayerOf(game).hand())
-                .as("Player's Hand should still have the initial 5 cards dealt")
-                .hasSize(5);
+                .as("Write Code card was played, so should not be in their hand")
+                .doesNotContain(ActionCard.WRITE_CODE);
     }
 
 
@@ -120,12 +116,17 @@ class PlayingGameTest {
 
     private static Fixture createGameWithPlayingGameController(String gameHandle) {
         GameStore gameStore = GameStore.createEmpty();
-        Game game = Game.create("Only Game In Progress", gameHandle);
+
+        Game game = Game.createNull(_ -> List.of(),
+                                    "Only Game In Progress", gameHandle);
+
         MemberStore memberStore = new MemberStore();
         memberStore.save(new Member(new MemberId(32L), "BlueNickName", "blueauth"));
         Principal principal = () -> "blueauth"; // implements Principal.getName() = authName
         game.join(new MemberId(32L), "BlueNickName");
+
         gameStore.save(game);
+
         Broadcaster dummyBroadcaster = new GamePlayTest.NoOpDummyBroadcaster();
         GamePlay gamePlay = new GamePlay(gameStore, dummyBroadcaster);
         PlayingGame playingGame = new PlayingGame(gameStore, gamePlay, memberStore);

@@ -10,6 +10,13 @@ January 28, 2025 - Tuesday
     [Decision]
     Going with option 2a as safer than option 3, and more flexible than option 1.
 
+    * Turns out this is not so simple! When the Game is reconstituted from the GameStore, it falls back to using the Game(List<Events>) constructor, and the configured Shuffler is gone, instead it uses the default (production) Random shuffler.
+
+        * Solution: extract the Game's creation methods into a GameFactory, which holds on to the configured shuffler, using it when the game is created via reconstitution, or using the Random shuffler when in production "mode"
+
+* AssertJ: don't forget to use the InstanceOfAssertFactory to "cast" the extracting() method to a specific type: .extracting(Game::name, STRING)
+
+
 January 27, 2025 - Monday
 =========================
 

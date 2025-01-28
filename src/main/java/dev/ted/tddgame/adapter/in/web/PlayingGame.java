@@ -5,7 +5,7 @@ import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.ActionCard;
-import dev.ted.tddgame.domain.Member;
+import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -93,9 +93,7 @@ public class PlayingGame {
     public void discardCardFromHand(Principal principal,
                                     @PathVariable String gameHandle,
                                     @PathVariable String cardName) {
-        Member member = memberStore.findByAuthName(principal.getName())
-                                   .orElseThrow(() -> new RuntimeException("Member with AuthN username '%s' was not found in the MemberStore".formatted(principal.getName())));
-        gamePlay.discard(gameHandle, member.id(), ActionCard.valueOf(cardName));
+        gamePlay.discard(gameHandle, memberIdFrom(principal), ActionCard.valueOf(cardName));
     }
 
     @PostMapping(PLAY_CARD_URI_TEMPLATE_STRING)
@@ -103,6 +101,12 @@ public class PlayingGame {
     public void playCard(Principal principal,
                          @PathVariable String gameHandle,
                          @PathVariable String cardName) {
-        throw new UnsupportedOperationException();
+        gamePlay.play(gameHandle, memberIdFrom(principal), ActionCard.valueOf(cardName));
+    }
+
+    private MemberId memberIdFrom(Principal principal) {
+        return memberStore.findByAuthName(principal.getName())
+                          .orElseThrow(() -> new RuntimeException("Member with AuthN username '%s' was not found in the MemberStore".formatted(principal.getName())))
+                .id();
     }
 }

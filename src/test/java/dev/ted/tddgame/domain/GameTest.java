@@ -23,7 +23,7 @@ class GameTest {
 
     @Test
     void reconstitutedGameFromEventsHasNoFreshEvents() {
-        Game reconstituted = Game.reconstitute(List.of(
+        Game reconstituted = new GameFactory().reconstitute(List.of(
                 new GameCreated("name", "snowy-hound-21"),
                 new PlayerJoined(new MemberId(1L), "player 1")
         ));
@@ -91,7 +91,7 @@ class GameTest {
             List<GameEvent> committedEvents = List.of(
                     new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
                     new PlayerJoined(new MemberId(1L), "player 1"));
-            Game game = Game.reconstitute(committedEvents);
+            Game game = new GameFactory().reconstitute(committedEvents);
 
             game.start();
 
@@ -125,7 +125,7 @@ class GameTest {
                     new PlayerJoined(new MemberId(1L), "player 1"),
                     new PlayerJoined(new MemberId(2L), "player 2")
             );
-            Game game = Game.reconstitute(committedEvents);
+            Game game = new GameFactory().reconstitute(committedEvents);
 
             game.start();
 
@@ -158,11 +158,11 @@ class GameTest {
             game.start();
             // reconstitute the game from the events generated so far
             // as a way to clear the freshEvents()
-            return Game.reconstitute(game.freshEvents().toList());
+            return new GameFactory().reconstitute(game.freshEvents().toList());
         }
 
         private static Game createFreshGame() {
-            return Game.reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
+            return new GameFactory().reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
         }
     }
 
@@ -173,7 +173,7 @@ class GameTest {
         void newGameHasGameNameAndHandleAndStateIsCreated() {
             List<GameEvent> events = List.of(
                     new GameCreated("jitterted", "breezy-cat-85"));
-            Game game = Game.reconstitute(events);
+            Game game = new GameFactory().reconstitute(events);
 
             assertThat(game.name())
                     .isEqualTo("jitterted");
@@ -188,7 +188,7 @@ class GameTest {
             List<GameEvent> events = gameCreatedAndTheseEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"));
 
-            Game game = Game.reconstitute(events);
+            Game game = new GameFactory().reconstitute(events);
 
             assertThat(game.players())
                     .hasSize(1)
@@ -209,7 +209,7 @@ class GameTest {
                             ActionCard.PREDICT
                     )));
 
-            Game game = Game.reconstitute(events);
+            Game game = new GameFactory().reconstitute(events);
 
             assertThat(game.actionCardDeck()
                            .drawPile())
@@ -251,7 +251,7 @@ class GameTest {
         private Game gameCreatedAndReconstitutedWithTheseEvents(GameEvent... newEvents) {
             List<GameEvent> events = gameCreatedAndTheseEvents(
                     newEvents);
-            return Game.reconstitute(events);
+            return new GameFactory().reconstitute(events);
         }
 
         @Test
@@ -268,7 +268,7 @@ class GameTest {
                             ActionCard.REFACTOR)),
                     new ActionCardDrawn(ActionCard.PREDICT),
                     new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
-            Game game = Game.reconstitute(events);
+            Game game = new GameFactory().reconstitute(events);
 
             Player player = game.playerFor(new MemberId(53L));
             assertThat(player.hand())
@@ -305,7 +305,7 @@ class GameTest {
                     , new PlayerDiscardedActionCard(memberId, ActionCard.WRITE_CODE)
                     , new ActionCardDiscarded(ActionCard.WRITE_CODE)
             );
-            Game game = Game.reconstitute(events);
+            Game game = new GameFactory().reconstitute(events);
 
             Player player = game.playerFor(memberId);
             assertThat(player.hand())

@@ -2,6 +2,7 @@ package dev.ted.tddgame.application.port;
 
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameEvent;
+import dev.ted.tddgame.domain.GameFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +13,21 @@ import java.util.Optional;
 public class GameStore {
 
     private final Map<String, List<EventDto>> handleToEventDtoMap = new HashMap<>();
-
-    public static GameStore createEmpty() {
-        return new GameStore();
-    }
+    private GameFactory gameFactory;
 
     private GameStore() {
+    }
+
+    private GameStore(GameFactory gameFactory) {
+        this.gameFactory = gameFactory;
+    }
+
+    public static GameStore createEmpty() {
+        return new GameStore(new GameFactory());
+    }
+
+    public static GameStore createEmpty(GameFactory gameFactory) {
+        return new GameStore(gameFactory);
     }
 
     public List<Game> findAll() {
@@ -31,7 +41,7 @@ public class GameStore {
     public void save(Game game) {
         List<EventDto> existingEventDtos = handleToEventDtoMap
                 .computeIfAbsent(game.handle(),
-                                 (_) -> new ArrayList<>());
+                                 _ -> new ArrayList<>());
 //        AtomicInteger index = new AtomicInteger(game.lastEventId() + 1);
         List<EventDto> freshEventDtos = game.freshEvents()
                                             .map(event -> EventDto.from(
@@ -63,7 +73,7 @@ public class GameStore {
 
     private Game reconstitute(String gameHandle) {
         List<GameEvent> gameEvents = allEventsFor(gameHandle);
-        return Game.reconstitute(gameEvents);
+        return gameFactory.reconstitute(gameEvents);
     }
 
 }
