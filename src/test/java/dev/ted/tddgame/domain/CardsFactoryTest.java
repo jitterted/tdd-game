@@ -7,11 +7,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class DeckFactoryTest {
+class CardsFactoryTest {
 
     @Test
     void createActionCardDeckHasAllActionCardsInDiscardPile() {
-        List<ActionCard> actionCards = new DeckFactory().createStandardActionCards();
+        List<ActionCard> actionCards = new CardsFactory().createStandardActionCards();
 
         assertThat(actionCards)
                 .haveExactly(18, actionCardMatching(ActionCard.WRITE_CODE))

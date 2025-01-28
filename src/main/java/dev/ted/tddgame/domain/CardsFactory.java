@@ -3,7 +3,7 @@ package dev.ted.tddgame.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeckFactory {
+public class CardsFactory {
 
     // 63 cards in this standard action card deck
     public List<ActionCard> createStandardActionCards() {

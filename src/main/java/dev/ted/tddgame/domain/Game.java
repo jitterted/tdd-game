@@ -13,7 +13,7 @@ public class Game extends EventSourcedAggregate {
     private String handle;
     private final Map<MemberId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
-    private final DeckFactory deckFactory = new DeckFactory();
+    private final CardsFactory cardsFactory = new CardsFactory();
     private ActionCardDeck actionCardDeck;
 
     private Game() {
@@ -114,13 +114,17 @@ public class Game extends EventSourcedAggregate {
 
     public void start() {
         enqueue(new GameStarted());
-        enqueue(new ActionCardDeckCreated(deckFactory.createStandardActionCards()));
+        enqueue(new ActionCardDeckCreated(cardsFactory.createStandardActionCards()));
 
         players().forEach(player -> player.drawToFullFrom(actionCardDeck));
     }
 
     public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
         playerFor(memberId).discard(actionCardToDiscard, actionCardDeck);
+    }
+
+    public void play(MemberId memberId, ActionCard cardToPlay) {
+        throw new UnsupportedOperationException();
     }
 
     public Player playerFor(MemberId memberId) {

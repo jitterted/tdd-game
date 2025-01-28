@@ -1,3 +1,15 @@
+January 28, 2025 - Tuesday
+==========================
+
+* Getting the cards I want in the order I want for tests:
+    1. Modify the DeckFactory to create a subset of cards, e.g., don't have any Refactor cards in the deck, so they can't end up in a player's hand
+    2a. Be able to inject a shuffler that is programmable (and therefore predictable), which can completely ignore the cards created by the DeckFactory
+    2b. Modify DeckFactory to have cards in specific order AND an identity (no-shuffle) Shuffler
+    3. Apply the ActionCardDeckReplenished event directly to the Game
+
+    [Decision]
+    Going with option 2a as safer than option 3, and more flexible than option 1.
+
 January 27, 2025 - Monday
 =========================
 
@@ -6,7 +18,13 @@ January 27, 2025 - Monday
 
     !! Never trust an ASSERTION that hasn't failed (not just a test)
 
+* Again I got confused thinking `PlayingGame` was a service/use-case class, but it's actually a Controller.
+  Do I want to add back the Controller suffix to controllers?
+  If it happens again, then I'll change it.
 
+* Unclear how I'm test-driving the Play Card behavior from the Endpoint, when the game starts, the only possible card one could play is "Refactor", all other cards would throw an exception at the lower layer (in Game?)
+
+    * Similarly, not happy with the test-driving at the Use Case layer against GamePlay: not starting with red, so what are we testing? I'm also unhappy with the copy-n-paste of the GamePlay.play() implementation from the .discard() implementation.
 
 January 23, 2025 - Thursday
 ===========================
