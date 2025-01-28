@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.util.UriTemplate;
 
 import java.security.Principal;
 import java.util.List;
@@ -25,6 +26,10 @@ import static dev.ted.tddgame.adapter.HtmlElement.text;
 @Controller
 public class PlayingGame {
 
+    private static final String DISCARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/cards/discard/{cardName}";
+    private static final UriTemplate DISCARD_URI_TEMPLATE = new UriTemplate(DISCARD_URI_TEMPLATE_STRING);
+    private static final String PLAY_CARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/cards/play/{cardName}";
+    private static final UriTemplate PLAY_URI_TEMPLATE = new UriTemplate(PLAY_CARD_URI_TEMPLATE_STRING);
     private final GameStore gameStore;
     private final GamePlay gamePlay;
     private final MemberStore memberStore;
@@ -57,8 +62,8 @@ public class PlayingGame {
     @ResponseBody
     public String cardMenu(@PathVariable String gameHandle,
                            @PathVariable String cardName) {
-        String playUrlPath = "/game/" + gameHandle + "/cards/play/" + cardName;
-        String discardUrlPath = "/game/" + gameHandle + "/cards/discard/" + cardName;
+        String playUrlPath = PLAY_URI_TEMPLATE.expand(gameHandle, cardName).getRawPath();
+        String discardUrlPath = DISCARD_URI_TEMPLATE.expand(gameHandle, cardName).getRawPath();
         return HtmlElement.swapInnerHtml(
                 "dialog",
                 HtmlElement.div(
@@ -83,7 +88,7 @@ public class PlayingGame {
         ).render();
     }
 
-    @PostMapping("/game/{gameHandle}/cards/discard/{cardName}")
+    @PostMapping(DISCARD_URI_TEMPLATE_STRING)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void discardCardFromHand(Principal principal,
                                     @PathVariable String gameHandle,
