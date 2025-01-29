@@ -53,6 +53,7 @@ public class Player {
                 actionCards.remove(playerDiscardedActionCard.actionCard());
                 workspace.discardCard();
             }
+            
             case PlayerPlayedActionCard playerPlayedActionCard -> {
             }
         }

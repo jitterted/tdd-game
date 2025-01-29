@@ -247,10 +247,12 @@ class GameTest {
         void gameStartedResultsInStateOfGameAsInProgress() {
             MemberId firstPlayerMemberId = new MemberId(96L);
             MemberId secondPlayerMemberId = new MemberId(52L);
-            Game game = gameCreatedAndReconstitutedWithTheseEvents(
-                    new PlayerJoined(firstPlayerMemberId, "Member 96 Name"),
-                    new PlayerJoined(secondPlayerMemberId, "Member 52 Name"),
-                    new GameStarted());
+            Game gameSetup = new Game.GameFactory().create("Irrelevant Game Name", "irrelevant-game-handle");
+            gameSetup.join(firstPlayerMemberId, "first player");
+            gameSetup.join(secondPlayerMemberId, "second player");
+            gameSetup.start();
+
+            Game game = new Game.GameFactory().reconstitute(gameSetup.freshEvents().toList());
             Player firstPlayer = game.playerFor(firstPlayerMemberId);
             Player secondPlayer = game.playerFor(secondPlayerMemberId);
 
@@ -260,38 +262,14 @@ class GameTest {
                     .as("Both players should be on the first Hex Tile (What Should It Do?)")
                     .isEqualByComparingTo(secondPlayer.workspace().currentHexTile())
                     .isEqualByComparingTo(HexTile.WHAT_SHOULD_IT_DO);
-        }
-
-        private Game gameCreatedAndReconstitutedWithTheseEvents(GameEvent... newEvents) {
-            List<GameEvent> events = gameCreatedAndTheseEvents(
-                    newEvents);
-            return new Game.GameFactory().reconstitute(events);
-        }
-
-        @Test
-        void playerDrewCardResultsInPlayerHavingCardDrawnAndDeckDrawPileEmpty() {
-            // TODO: replace all of these event instantiations with more encapsulation and Collaborator-Based Isolation?
-            List<GameEvent> events = gameCreatedAndTheseEvents(
-                    new PlayerJoined(new MemberId(53L), "Member 53 Name"),
-                    new GameStarted(),
-                    new ActionCardDeckCreated(List.of(
-                            ActionCard.PREDICT,
-                            ActionCard.REFACTOR)),
-                    new ActionCardDeckReplenished(List.of(
-                            ActionCard.PREDICT,
-                            ActionCard.REFACTOR)),
-                    new ActionCardDrawn(ActionCard.PREDICT),
-                    new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
-            Game game = new Game.GameFactory().reconstitute(events);
-
-            Player player = game.playerFor(new MemberId(53L));
-            assertThat(player.hand())
-                    .as("Hand had unexpected cards")
-                    .containsExactly(ActionCard.PREDICT);
-            assertThat(game.actionCardDeck()
-                           .drawPile())
-                    .as("draw pile was not as expected")
-                    .containsExactly(ActionCard.REFACTOR);
+            assertThat(firstPlayer.hand())
+                    .as("First player's hand should have 5 cards")
+                    .hasSize(5);
+            assertThat(secondPlayer.hand())
+                    .as("Second player's hand should have 5 cards")
+                    .hasSize(5);
+            assertThat(game.actionCardDeck().drawPile())
+                    .hasSize(63 - 5 - 5);
             assertThat(game.actionCardDeck()
                            .discardPile())
                     .as("discard pile should be empty")
@@ -301,19 +279,7 @@ class GameTest {
         @Test
         void playerDiscardedCardResultsInCardMovedFromPlayerHandToDeckDiscardPile() {
             MemberId memberId = new MemberId(71L);
-            Deck.Shuffler<ActionCard> configuredActionCardShuffler =
-                    _ -> new ArrayList<>(List.of(
-                            ActionCard.WRITE_CODE, ActionCard.WRITE_CODE,
-                            ActionCard.PREDICT,    ActionCard.PREDICT,
-                            ActionCard.REFACTOR,   ActionCard.REFACTOR,
-                            ActionCard.LESS_CODE,  ActionCard.LESS_CODE,
-                            ActionCard.CODE_BLOAT, ActionCard.CODE_BLOAT
-                    ));
-            Game game = new Game.GameFactory(configuredActionCardShuffler)
-                    .create("Irrelevant Name", "irrelevant-handle");
-            game.join(memberId, "Member 71 = First Player");
-            game.join(new MemberId(99L), "Irrelevant Member");
-            game.start();
+            Game game = createTwoPlayerStartedGame(memberId);
 
             game.discard(memberId, ActionCard.WRITE_CODE);
 
@@ -329,6 +295,23 @@ class GameTest {
             assertThat(player.workspace().currentHexTile())
                     .as("Player should be on the 2nd tile after the Discard Card action")
                     .isEqualByComparingTo(HexTile.HOW_WILL_YOU_KNOW_IT_DID_IT);
+        }
+
+        private static Game createTwoPlayerStartedGame(MemberId firstPlayerMemberId) {
+            Deck.Shuffler<ActionCard> configuredActionCardShuffler =
+                    _ -> new ArrayList<>(List.of(
+                            ActionCard.WRITE_CODE, ActionCard.WRITE_CODE,
+                            ActionCard.PREDICT,    ActionCard.PREDICT,
+                            ActionCard.REFACTOR,   ActionCard.REFACTOR,
+                            ActionCard.LESS_CODE,  ActionCard.LESS_CODE,
+                            ActionCard.CODE_BLOAT, ActionCard.CODE_BLOAT
+                    ));
+            Game game = new Game.GameFactory(configuredActionCardShuffler)
+                    .create("Irrelevant Name", "irrelevant-handle");
+            game.join(firstPlayerMemberId, "Member = First Player");
+            game.join(new MemberId(99L), "Irrelevant Member");
+            game.start();
+            return game;
         }
 
         private static List<GameEvent> gameCreatedAndTheseEvents(GameEvent... freshEvents) {
