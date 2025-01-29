@@ -19,8 +19,8 @@ public class Game extends EventSourcedAggregate {
 
     // Rebuilds Game (and its entities) state
     // Public production code should use #reconstitute()
-    Game(List<GameEvent> events) {
-        actionCardShuffler = new Deck.RandomShuffler<>();
+    Game(List<GameEvent> events, Deck.Shuffler<ActionCard> actionCardShuffler) {
+        this.actionCardShuffler = actionCardShuffler;
         for (GameEvent event : events) {
             apply(event);
         }
@@ -46,7 +46,7 @@ public class Game extends EventSourcedAggregate {
     /**
      * Create a Game with the specified shuffler to be used when shuffling the discard pile into the draw pile
      */
-    public static Game createNull(Deck.Shuffler<ActionCard> shuffler, String gameName, String gameHandle) {
+    static Game createNull(Deck.Shuffler<ActionCard> shuffler, String gameName, String gameHandle) {
         Game game = new Game(shuffler);
         game.initialize(gameName, gameHandle);
         return game;

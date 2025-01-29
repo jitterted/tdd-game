@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 @Tag("mvc")
-class PlayingGameMvcTest {
+class PlayingGameControllerMvcTest {
 
     @Test
     void getToGameEndpointReturns200() {
@@ -92,7 +92,7 @@ class PlayingGameMvcTest {
 
     private static MockMvcTester mvcTesterFor(GameStore fixture, MemberStore memberStore) {
         return MockMvcTester.of(
-                new PlayingGame(fixture, new GamePlay(
+                new PlayingGameController(fixture, new GamePlay(
                         fixture, new GamePlayTest.NoOpDummyBroadcaster()
                 ), memberStore)
         );

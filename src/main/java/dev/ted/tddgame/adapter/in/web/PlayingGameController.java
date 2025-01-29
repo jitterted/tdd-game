@@ -24,7 +24,7 @@ import static dev.ted.tddgame.adapter.HtmlElement.attributes;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
 
 @Controller
-public class PlayingGame {
+public class PlayingGameController {
 
     private static final String DISCARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/cards/discard/{cardName}";
     private static final UriTemplate DISCARD_URI_TEMPLATE = new UriTemplate(DISCARD_URI_TEMPLATE_STRING);
@@ -34,7 +34,7 @@ public class PlayingGame {
     private final GamePlay gamePlay;
     private final MemberStore memberStore;
 
-    public PlayingGame(GameStore gameStore, GamePlay gamePlay, MemberStore memberStore) {
+    public PlayingGameController(GameStore gameStore, GamePlay gamePlay, MemberStore memberStore) {
         this.gameStore = gameStore;
         this.gamePlay = gamePlay;
         this.memberStore = memberStore;
@@ -93,7 +93,9 @@ public class PlayingGame {
     public void discardCardFromHand(Principal principal,
                                     @PathVariable String gameHandle,
                                     @PathVariable String cardName) {
-        gamePlay.discard(gameHandle, memberIdFrom(principal), ActionCard.valueOf(cardName));
+        gamePlay.discard(gameHandle,
+                         memberIdFrom(principal),
+                         ActionCard.valueOf(cardName));
     }
 
     @PostMapping(PLAY_CARD_URI_TEMPLATE_STRING)
@@ -101,12 +103,15 @@ public class PlayingGame {
     public void playCard(Principal principal,
                          @PathVariable String gameHandle,
                          @PathVariable String cardName) {
-        gamePlay.play(gameHandle, memberIdFrom(principal), ActionCard.valueOf(cardName));
+        gamePlay.play(gameHandle,
+                      memberIdFrom(principal),
+                      ActionCard.valueOf(cardName));
     }
 
     private MemberId memberIdFrom(Principal principal) {
-        return memberStore.findByAuthName(principal.getName())
-                          .orElseThrow(() -> new RuntimeException("Member with AuthN username '%s' was not found in the MemberStore".formatted(principal.getName())))
+        return memberStore
+                .findByAuthName(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Member with AuthN username '%s' was not found in the MemberStore".formatted(principal.getName())))
                 .id();
     }
 }

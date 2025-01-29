@@ -3,27 +3,28 @@ package dev.ted.tddgame.adapter.in.web;
 import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.GamePlayTest;
+import dev.ted.tddgame.application.PlayerJoinsGame;
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.ActionCard;
+import dev.ted.tddgame.domain.Deck;
 import dev.ted.tddgame.domain.Game;
+import dev.ted.tddgame.domain.GameFactory;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
-import java.util.List;
 
 import static dev.ted.tddgame.adapter.HtmlElement.attributes;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
 
-class PlayingGameTest {
+class PlayingGameControllerTest {
 
     @Test
     void gameReturnsGameViewWithPlayerViews() {
@@ -31,7 +32,7 @@ class PlayingGameTest {
         Fixture fixture = createGameWithPlayingGameController(gameHandle);
 
         Model model = new ConcurrentModel();
-        fixture.playingGame().game(model, gameHandle);
+        fixture.playingGameController().game(model, gameHandle);
 
         GameView gameView = (GameView) model.getAttribute("gameView");
 
@@ -47,7 +48,7 @@ class PlayingGameTest {
         String cardName = "CODE_BLOAT";
         Fixture fixture = createGameWithPlayingGameController(gameHandle);
 
-        String html = fixture.playingGame.cardMenu(gameHandle, cardName);
+        String html = fixture.playingGameController.cardMenu(gameHandle, cardName);
 
         assertThat(html)
                 .isEqualTo(
@@ -85,9 +86,9 @@ class PlayingGameTest {
 
         ActionCard cardFromFirstPlayerHand = firstCardFromFirstPlayerHand(game);
 
-        fixture.playingGame.discardCardFromHand(fixture.principal,
-                                                gameHandle,
-                                                cardFromFirstPlayerHand.name());
+        fixture.playingGameController.discardCardFromHand(fixture.principal,
+                                                          gameHandle,
+                                                          cardFromFirstPlayerHand.name());
 
         game = fixture.findGame(gameHandle);
         assertThat(game.actionCardDeck().discardPile())
@@ -95,15 +96,19 @@ class PlayingGameTest {
     }
 
     @Test
-    @Disabled("Until confirm that injected shuffler is working properly")
     void writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile() {
         String gameHandle = "play-game-handle";
-        Fixture fixture = createGameWithPlayingGameController(gameHandle);
+        Deck.Shuffler<ActionCard> writeCodeCardFirstShuffler = discardPile -> {
+            discardPile.set(0, ActionCard.WRITE_CODE);
+            return discardPile;
+        };
+        Fixture fixture = createGameWithPlayingGameControllerUsingShuffler(
+                gameHandle, writeCodeCardFirstShuffler);
         fixture.gamePlay.start(gameHandle);
 
-        fixture.playingGame.playCard(fixture.principal,
-                                     gameHandle,
-                                     ActionCard.WRITE_CODE.name());
+        fixture.playingGameController.playCard(fixture.principal,
+                                               gameHandle,
+                                               ActionCard.WRITE_CODE.name());
 
         Game game = fixture.findGame(gameHandle);
         assertThat(firstPlayerOf(game).hand())
@@ -115,26 +120,32 @@ class PlayingGameTest {
     // ---- FIXTURE
 
     private static Fixture createGameWithPlayingGameController(String gameHandle) {
-        GameStore gameStore = GameStore.createEmpty();
+        Deck.RandomShuffler<ActionCard> actionCardShuffler = new Deck.RandomShuffler<>();
+        return createGameWithPlayingGameControllerUsingShuffler(gameHandle, actionCardShuffler);
+    }
 
-        Game game = Game.createNull(_ -> List.of(),
-                                    "Only Game In Progress", gameHandle);
+    private static Fixture createGameWithPlayingGameControllerUsingShuffler(String gameHandle, Deck.Shuffler<ActionCard> actionCardShuffler) {
+        GameStore gameStore = GameStore.createEmpty(new GameFactory(actionCardShuffler));
+
+        Game game = Game.create("Only Game In Progress", gameHandle);
+        gameStore.save(game);
 
         MemberStore memberStore = new MemberStore();
         memberStore.save(new Member(new MemberId(32L), "BlueNickName", "blueauth"));
         Principal principal = () -> "blueauth"; // implements Principal.getName() = authName
-        game.join(new MemberId(32L), "BlueNickName");
-
-        gameStore.save(game);
 
         Broadcaster dummyBroadcaster = new GamePlayTest.NoOpDummyBroadcaster();
         GamePlay gamePlay = new GamePlay(gameStore, dummyBroadcaster);
-        PlayingGame playingGame = new PlayingGame(gameStore, gamePlay, memberStore);
-        return new Fixture(gameStore, playingGame, gamePlay, principal);
+        PlayingGameController playingGameController = new PlayingGameController(gameStore, gamePlay, memberStore);
+
+        // ensure we're going thru the Application layer
+        new PlayerJoinsGame(gameStore).join(new MemberId(32L), gameHandle, "BlueNickName");
+
+        return new Fixture(gameStore, playingGameController, gamePlay, principal);
     }
 
     private record Fixture(GameStore gameStore,
-                           PlayingGame playingGame,
+                           PlayingGameController playingGameController,
                            GamePlay gamePlay,
                            Principal principal) {
 

@@ -80,7 +80,7 @@ public abstract class Deck<CARD> {
         }
     }
 
-    protected static class RandomShuffler<CARD> implements Shuffler<CARD> {
+    public static class RandomShuffler<CARD> implements Shuffler<CARD> {
         @Override
         public List<CARD> shuffleCards(List<CARD> discardPile) {
             List<CARD> toBeShuffled = new ArrayList<>(discardPile);
