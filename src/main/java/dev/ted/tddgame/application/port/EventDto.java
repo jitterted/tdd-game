@@ -12,6 +12,7 @@ import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.PlayerDiscardedActionCard;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerJoined;
+import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class EventDto {
             , "ActionCardDeckCreated", ActionCardDeckCreated.class
             , "PlayerDrewActionCard", PlayerDrewActionCard.class
             , "PlayerDiscardedActionCard", PlayerDiscardedActionCard.class
+            , "PlayerPlayedActionCard", PlayerPlayedActionCard.class
             , "ActionCardDrawn", ActionCardDrawn.class
             , "ActionCardDiscarded", ActionCardDiscarded.class
             , "ActionCardDeckReplenished", ActionCardDeckReplenished.class

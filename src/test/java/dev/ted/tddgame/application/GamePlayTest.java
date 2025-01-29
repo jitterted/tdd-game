@@ -75,6 +75,20 @@ public class GamePlayTest {
         mockBroadcaster.verifyGameMatches(gameFixture.game);
     }
 
+    @Test
+    @Disabled("Until game.playCard is working")
+    void playCardBroadcastsUpdatedGameState() {
+        GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
+        GameUpdateMockBroadcaster mockBroadcaster = new GameUpdateMockBroadcaster();
+        GamePlay gamePlay = new GamePlay(gameFixture.gameStore, mockBroadcaster);
+        gamePlay.start(gameFixture.gameHandle);
+        mockBroadcaster.reset();
+
+        gamePlay.playCard(gameFixture.gameHandle, gameFixture.memberId, ActionCard.LESS_CODE);
+
+        mockBroadcaster.verifyGameMatches(gameFixture.game);
+    }
+
     // -- FIXTURE
 
     private static GameFixture createGameStoreWithGameWithOnePlayer() {
@@ -136,19 +150,27 @@ public class GamePlayTest {
 
     private static class GameUpdateMockBroadcaster extends NoOpDummyBroadcaster {
         private Game actualGameFromUpdate;
+        private boolean gameUpdateWasInvoked = false;
 
         public void verifyGameMatches(Game expectedGame) {
+            assertThat(gameUpdateWasInvoked)
+                    .as("Expected gameUpdate() to be invoked")
+                    .isTrue();
             assertThat(actualGameFromUpdate)
+                    .as("Game Update sent a null game")
+                    .isNotNull()
                     .as("Game from update was not the expected Game that was started")
                     .isEqualTo(expectedGame);
         }
 
         @Override
         public void gameUpdate(Game game) {
+            gameUpdateWasInvoked = true;
             actualGameFromUpdate = game;
         }
 
         public void reset() {
+            gameUpdateWasInvoked = false;
             actualGameFromUpdate = null;
         }
     }

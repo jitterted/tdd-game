@@ -12,6 +12,7 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.PlayerDiscardedActionCard;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerJoined;
+import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -92,6 +93,7 @@ class EventDtoTest {
                                 ActionCard.CANT_ASSERT)
                 ))
                 , Arguments.of(new PlayerDiscardedActionCard(memberId, ActionCard.PREDICT))
+                , Arguments.of(new PlayerPlayedActionCard(memberId, ActionCard.PREDICT))
         );
     }
 }

@@ -19,9 +19,7 @@ public class GamePlay {
     }
 
     public void start(String gameHandle) {
-        Game game = gameStore.findByHandle(gameHandle)
-                             .orElseThrow(() -> new RuntimeException(
-                                     "Game '%s' not found".formatted(gameHandle)));
+        Game game = loadGameWith(gameHandle);
 
         broadcaster.prepareForGamePlay(game);
 
@@ -36,9 +34,7 @@ public class GamePlay {
     public void discard(String gameHandle,
                         MemberId memberId,
                         ActionCard cardToDiscard) {
-        Game game = gameStore.findByHandle(gameHandle)
-                             .orElseThrow(() -> new RuntimeException(
-                                     "Game '%s' not found".formatted(gameHandle)));
+        Game game = loadGameWith(gameHandle);
 
         game.discard(memberId, cardToDiscard);
 
@@ -47,15 +43,17 @@ public class GamePlay {
         broadcaster.gameUpdate(game);
     }
 
-    public void play(String gameHandle, MemberId memberId, ActionCard cardToPlay) {
-        Game game = gameStore.findByHandle(gameHandle)
-                             .orElseThrow(() -> new RuntimeException(
-                                     "Game '%s' not found".formatted(gameHandle)));
+    public void playCard(String gameHandle, MemberId memberId, ActionCard cardToPlay) {
+        Game game = loadGameWith(gameHandle);
 
-        game.play(memberId, cardToPlay);
-
-        gameStore.save(game);
+        game.playCard(memberId, cardToPlay);
 
         broadcaster.gameUpdate(game);
+    }
+
+    private Game loadGameWith(String gameHandle) {
+        return gameStore.findByHandle(gameHandle)
+                        .orElseThrow(() -> new RuntimeException(
+                                "Game '%s' not found".formatted(gameHandle)));
     }
 }

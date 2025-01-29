@@ -103,9 +103,9 @@ public class PlayingGameController {
     public void playCard(Principal principal,
                          @PathVariable String gameHandle,
                          @PathVariable String cardName) {
-        gamePlay.play(gameHandle,
-                      memberIdFrom(principal),
-                      ActionCard.valueOf(cardName));
+        gamePlay.playCard(gameHandle,
+                          memberIdFrom(principal),
+                          ActionCard.valueOf(cardName));
     }
 
     private MemberId memberIdFrom(Principal principal) {

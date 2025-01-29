@@ -149,7 +149,7 @@ public class Game extends EventSourcedAggregate {
         playerFor(memberId).discard(actionCardToDiscard, actionCardDeck);
     }
 
-    public void play(MemberId memberId, ActionCard cardToPlay) {
+    public void playCard(MemberId memberId, ActionCard cardToPlay) {
         throw new UnsupportedOperationException();
     }
 

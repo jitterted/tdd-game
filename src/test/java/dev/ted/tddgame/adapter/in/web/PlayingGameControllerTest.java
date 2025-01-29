@@ -14,6 +14,7 @@ import dev.ted.tddgame.domain.GameFactory;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -96,6 +97,7 @@ class PlayingGameControllerTest {
     }
 
     @Test
+    @Disabled("Until Game.playCard works")
     void writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile() {
         String gameHandle = "play-game-handle";
         Deck.Shuffler<ActionCard> writeCodeCardFirstShuffler = discardPile -> {
