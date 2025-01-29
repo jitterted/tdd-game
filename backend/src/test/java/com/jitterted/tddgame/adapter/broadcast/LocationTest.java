@@ -16,7 +16,7 @@ public class LocationTest {
 
   @Test
   public void newGameThenPlayer1IsAtLocationOne() throws Exception {
-    Game game = new GameFactory().createTwoPlayerGame();
+    Game game = new Game.GameFactory().createTwoPlayerGame();
 
     Location location = game.locationFor(PlayerId.of(0));
 
@@ -27,7 +27,7 @@ public class LocationTest {
   @Test
   public void player1AtLocation1DiscardsCardThenIsAtLocation2() throws Exception {
     // given
-    Game game = new GameFactory().createTwoPlayerGame();
+    Game game = new Game.GameFactory().createTwoPlayerGame();
 
     // when
     // player 1 discards a card from their hand

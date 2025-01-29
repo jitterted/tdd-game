@@ -94,7 +94,7 @@ public class GamePlayTest {
     private static GameFixture createGameStoreWithGameWithOnePlayer() {
         Member member = new Member(new MemberId(17L), "Green Member Name", "green-username");
         String gameHandle = "sassy-dog-35";
-        Game game = Game.create("Name of Game", gameHandle);
+        Game game = new Game.GameFactory().create("Name of Game", gameHandle);
         game.join(member.id(), "Green Player Name");
 
         GameStore gameStore = GameStore.createEmpty();

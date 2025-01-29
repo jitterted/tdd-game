@@ -14,7 +14,7 @@ class GameTest {
 
     @Test
     void newGameAssignedIdentifier() {
-        Game game = Game.create("name", "windy-dolphin-68");
+        Game game = new Game.GameFactory().create("name", "windy-dolphin-68");
 
         assertThat(game.handle())
                 .isNotNull()
@@ -23,7 +23,7 @@ class GameTest {
 
     @Test
     void reconstitutedGameFromEventsHasNoFreshEvents() {
-        Game reconstituted = new GameFactory().reconstitute(List.of(
+        Game reconstituted = new Game.GameFactory().reconstitute(List.of(
                 new GameCreated("name", "snowy-hound-21"),
                 new PlayerJoined(new MemberId(1L), "player 1")
         ));
@@ -57,7 +57,7 @@ class GameTest {
 
         @Test
         void creatingGameEmitsGameCreatedEvent() {
-            Game game = Game.create("game name", "lovely-dog-23");
+            Game game = new Game.GameFactory().create("game name", "lovely-dog-23");
 
             Stream<GameEvent> events = game.freshEvents();
 
@@ -91,7 +91,7 @@ class GameTest {
             List<GameEvent> committedEvents = List.of(
                     new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
                     new PlayerJoined(new MemberId(1L), "player 1"));
-            Game game = new GameFactory().reconstitute(committedEvents);
+            Game game = new Game.GameFactory().reconstitute(committedEvents);
 
             game.start();
 
@@ -125,7 +125,7 @@ class GameTest {
                     new PlayerJoined(new MemberId(1L), "player 1"),
                     new PlayerJoined(new MemberId(2L), "player 2")
             );
-            Game game = new GameFactory().reconstitute(committedEvents);
+            Game game = new Game.GameFactory().reconstitute(committedEvents);
 
             game.start();
 
@@ -166,17 +166,17 @@ class GameTest {
         }
 
         private static Game createFreshGameWithTwoPlayersAndStart(MemberId firstPlayerMemberId) {
-            Game game = Game.create("IRRELEVANT GAME NAME", "IRRELEVANT HANDLE");
+            Game game = new Game.GameFactory().create("IRRELEVANT GAME NAME", "IRRELEVANT HANDLE");
             game.join(firstPlayerMemberId, "first player");
             game.join(new MemberId(113L), "second player");
             game.start();
             // reconstitute the game from the events generated so far
             // as a way to clear the freshEvents()
-            return new GameFactory().reconstitute(game.freshEvents().toList());
+            return new Game.GameFactory().reconstitute(game.freshEvents().toList());
         }
 
         private static Game createFreshGame() {
-            return new GameFactory().reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
+            return new Game.GameFactory().reconstitute(List.of(new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE")));
         }
     }
 
@@ -187,7 +187,7 @@ class GameTest {
         void newGameHasGameNameAndHandleAndStateIsCreated() {
             List<GameEvent> events = List.of(
                     new GameCreated("jitterted", "breezy-cat-85"));
-            Game game = new GameFactory().reconstitute(events);
+            Game game = new Game.GameFactory().reconstitute(events);
 
             assertThat(game.name())
                     .isEqualTo("jitterted");
@@ -202,7 +202,7 @@ class GameTest {
             List<GameEvent> events = gameCreatedAndTheseEvents(
                     new PlayerJoined(new MemberId(53L), "Member 53 Name"));
 
-            Game game = new GameFactory().reconstitute(events);
+            Game game = new Game.GameFactory().reconstitute(events);
 
             assertThat(game.players())
                     .hasSize(1)
@@ -223,7 +223,7 @@ class GameTest {
                             ActionCard.PREDICT
                     )));
 
-            Game game = new GameFactory().reconstitute(events);
+            Game game = new Game.GameFactory().reconstitute(events);
 
             assertThat(game.actionCardDeck()
                            .drawPile())
@@ -265,7 +265,7 @@ class GameTest {
         private Game gameCreatedAndReconstitutedWithTheseEvents(GameEvent... newEvents) {
             List<GameEvent> events = gameCreatedAndTheseEvents(
                     newEvents);
-            return new GameFactory().reconstitute(events);
+            return new Game.GameFactory().reconstitute(events);
         }
 
         @Test
@@ -282,7 +282,7 @@ class GameTest {
                             ActionCard.REFACTOR)),
                     new ActionCardDrawn(ActionCard.PREDICT),
                     new PlayerDrewActionCard(new MemberId(53L), ActionCard.PREDICT));
-            Game game = new GameFactory().reconstitute(events);
+            Game game = new Game.GameFactory().reconstitute(events);
 
             Player player = game.playerFor(new MemberId(53L));
             assertThat(player.hand())
@@ -301,6 +301,7 @@ class GameTest {
         @Test
         void playerDiscardedCardResultsInCardMovedFromPlayerHandToDeckDiscardPile() {
             MemberId memberId = new MemberId(71L);
+//            Game game = new Game.GameFactory().
             List<GameEvent> events = gameCreatedAndTheseEvents(
                     new PlayerJoined(memberId, "Member 71 Name")
                     , new GameStarted()
@@ -319,7 +320,7 @@ class GameTest {
                     , new PlayerDiscardedActionCard(memberId, ActionCard.WRITE_CODE)
                     , new ActionCardDiscarded(ActionCard.WRITE_CODE)
             );
-            Game game = new GameFactory().reconstitute(events);
+            Game game = new Game.GameFactory().reconstitute(events);
 
             Player player = game.playerFor(memberId);
             assertThat(player.hand())

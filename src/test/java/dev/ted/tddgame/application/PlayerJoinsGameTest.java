@@ -18,7 +18,7 @@ class PlayerJoinsGameTest {
 
     @Test
     void membersCanJoinNewGame() {
-        Game game = Game.create("new", "new");
+        Game game = new Game.GameFactory().create("new", "new");
 
         assertThat(game.canJoin(new MemberId(42L)))
                 .isTrue();

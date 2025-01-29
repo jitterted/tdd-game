@@ -22,7 +22,7 @@ class GameJoinerTest {
         memberStore.save(member);
         GameStore gameStore = GameStore.createEmpty();
         String gameHandle = "rush-cat-21";
-        Game game = Game.create("game name", gameHandle);
+        Game game = new Game.GameFactory().create("game name", gameHandle);
         gameStore.save(game);
         GameJoiner gameJoiner = new GameJoiner(new PlayerJoinsGame(gameStore),
                                                memberStore);

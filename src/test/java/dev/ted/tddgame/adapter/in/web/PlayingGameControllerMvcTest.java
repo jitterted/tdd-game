@@ -19,7 +19,7 @@ class PlayingGameControllerMvcTest {
     @Test
     void getToGameEndpointReturns200() {
         GameStore gameStore = GameStore.createEmpty();
-        gameStore.save(Game.create("Game Name", "get-game-handle"));
+        gameStore.save(new Game.GameFactory().create("Game Name", "get-game-handle"));
 
         MockMvcTester mvc = mvcTesterFor(gameStore);
 
@@ -103,7 +103,7 @@ class PlayingGameControllerMvcTest {
         Member member = new Member(new MemberId(46L), "IRRELEVANT nickname", "test-auth-username");
         memberStore.save(member);
         GameStore gameStore = GameStore.createEmpty();
-        Game game = Game.create("Game to be Started", handle);
+        Game game = new Game.GameFactory().create("Game to be Started", handle);
         game.join(member.id(), "Player 1");
         gameStore.save(game);
         return new Fixture(gameStore, game, memberStore, member.authName());

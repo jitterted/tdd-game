@@ -2,7 +2,6 @@ package dev.ted.tddgame.application.port;
 
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameEvent;
-import dev.ted.tddgame.domain.GameFactory;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ class GameStoreTest {
     @Test
     void savedGameCanBeFoundByHandle() {
         GameStore gameStore = GameStore.createEmpty();
-        Game game = Game.create("Game Name", "sad-beaver-92");
+        Game game = new Game.GameFactory().create("Game Name", "sad-beaver-92");
         gameStore.save(game);
 
         assertThat(gameStore.findByHandle("sad-beaver-92"))
@@ -34,7 +33,7 @@ class GameStoreTest {
     @Test
     void saveAppendsFreshEventsAndKeepsReconstitutedEvents() {
         GameStore gameStore = GameStore.createEmpty();
-        Game game = Game.create("Game Name", "sleepy-mouse-33");
+        Game game = new Game.GameFactory().create("Game Name", "sleepy-mouse-33");
         gameStore.save(game);
 
         Game loadedGame = gameStore.findByHandle("sleepy-mouse-33").orElseThrow();
@@ -59,14 +58,14 @@ class GameStoreTest {
 
     @Test
     void findUsesGameFactoryToReconstituteGame() {
-        GameStore gameStore = GameStore.createEmpty(new GameFactory() {
+        GameStore gameStore = GameStore.createEmpty(new Game.GameFactory() {
             @Override
             public Game reconstitute(List<GameEvent> events) {
-                return Game.create("This Game Was Created by the GameFactory",
-                                   "game-as-saved");
+                return new Game.GameFactory().create("This Game Was Created by the GameFactory",
+                                                "game-as-saved");
             }
         });
-        Game game = Game.create("This Game Was Saved", "game-as-saved");
+        Game game = new Game.GameFactory().create("This Game Was Saved", "game-as-saved");
         gameStore.save(game);
 
         assertThat(gameStore.findByHandle("game-as-saved"))

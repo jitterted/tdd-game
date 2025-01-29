@@ -25,7 +25,7 @@ public class GameCreator {
 
     public Game createNewGame(String nameOfGame) {
         String handle = idGen.generate();
-        Game game = Game.create(nameOfGame, handle);
+        Game game = new Game.GameFactory().create(nameOfGame, handle);
         gameStore.save(game);
         return game;
     }

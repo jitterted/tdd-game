@@ -28,7 +28,7 @@ class PlayerConnectorTest {
 
         GameStore gameStore = GameStore.createEmpty();
         String gameHandle = "fluffy-cat-13";
-        Game game = Game.create("Name of Game", gameHandle);
+        Game game = new Game.GameFactory().create("Name of Game", gameHandle);
 
         game.join(member1.id(), "Player 1 In-Game Name");
         game.join(member2.id(), "Player 2 In-Game Name");
@@ -53,7 +53,7 @@ class PlayerConnectorTest {
         String memberUsername = "greenusername";
         Member member = new Member(new MemberId(17L), "Green Member Name", memberUsername);
         String gameHandle = "sassy-dog-35";
-        Game game = Game.create("Name of Game", gameHandle);
+        Game game = new Game.GameFactory().create("Name of Game", gameHandle);
         game.join(member.id(), "Green Player Name");
         Player player = game.playerFor(member.id());
         MockForInitialConnectionBroadcaster mockForInitialConnectionBroadcaster = new MockForInitialConnectionBroadcaster(game, player);
@@ -76,7 +76,7 @@ class PlayerConnectorTest {
         String memberUsername = "greenusername";
         Member member = new Member(new MemberId(17L), "Green Member Name", memberUsername);
         String gameHandle = "sassy-dog-35";
-        Game game = Game.create("Name of Game", gameHandle);
+        Game game = new Game.GameFactory().create("Name of Game", gameHandle);
         ForTrackingPlayerMessageSenders forTrackingPlayerMessageSenders = new MessageSendersForPlayers();
         MockMessageSender mockMessageSender = new MockMessageSender(
                 "<swap id='other-players'><script>document.location.href='/lobby';</script></swap>"

@@ -15,7 +15,7 @@ class OtherPlayersViewComponentTest {
 
     @Test
     void otherPlayersHandsHtmlForAllPlayersInStartedGame() {
-        Game game = Game.create("irrelevant game name", "other-game-handle");
+        Game game = new Game.GameFactory().create("irrelevant game name", "other-game-handle");
         MemberId memberIdForOliver = new MemberId(78L);
         game.join(memberIdForOliver, "Oliver");
         MemberId memberIdForSamantha = new MemberId(63L);

@@ -48,7 +48,7 @@ public class GameControllerDrawTest {
   @Test
   public void drawCardActionResultsInNewCardDrawnToPlayerHand() throws Exception {
     DeckFactory stubDeckFactory = new StubWriteCodePlayingCardDeckFactory(new CardFactory());
-    Game game = new GameFactory(stubDeckFactory, new PlayerFactory()).createTwoPlayerGame();
+    Game game = new Game.GameFactory(stubDeckFactory, new PlayerFactory()).createTwoPlayerGame();
     game.start();
     FakeGameService gameService = new FakeGameService(game);
     GameController gameController = new GameController(gameService, mock(GameStateChannel.class));

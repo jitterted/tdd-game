@@ -10,7 +10,6 @@ import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Deck;
 import dev.ted.tddgame.domain.Game;
-import dev.ted.tddgame.domain.GameFactory;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
@@ -127,9 +126,9 @@ class PlayingGameControllerTest {
     }
 
     private static Fixture createGameWithPlayingGameControllerUsingShuffler(String gameHandle, Deck.Shuffler<ActionCard> actionCardShuffler) {
-        GameStore gameStore = GameStore.createEmpty(new GameFactory(actionCardShuffler));
+        GameStore gameStore = GameStore.createEmpty(new Game.GameFactory(actionCardShuffler));
 
-        Game game = Game.create("Only Game In Progress", gameHandle);
+        Game game = new Game.GameFactory().create("Only Game In Progress", gameHandle);
         gameStore.save(game);
 
         MemberStore memberStore = new MemberStore();

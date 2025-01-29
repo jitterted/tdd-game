@@ -27,7 +27,7 @@ class LobbyTest {
 
     @Test
     void lobbyViewShowsGamesWhenGamesExist() {
-        Lobby lobby = Lobby.createNull(Game.create("game name", "shiny-chrome-12"));
+        Lobby lobby = Lobby.createNull(new Game.GameFactory().create("game name", "shiny-chrome-12"));
 
         ConcurrentModel model = new ConcurrentModel();
         String viewName = lobby.showLobby(DUMMY_PRINCIPAL, model);

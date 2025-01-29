@@ -11,7 +11,7 @@ class GameTest {
 
   @Test
   public void newGameWhenStartsIsInInitialGameState() throws Exception {
-    Game game = new GameFactory().createTwoPlayerGame();
+    Game game = new Game.GameFactory().createTwoPlayerGame();
     game.start();
 
     assertThat(game.players())
@@ -26,7 +26,7 @@ class GameTest {
 
   @Test
   public void opponentForPlayerIsOtherPlayer() throws Exception {
-    Game game = new GameFactory().createTwoPlayerGame();
+    Game game = new Game.GameFactory().createTwoPlayerGame();
 
     Player player1 = game.players().get(0);
     Player player2 = game.players().get(1);
@@ -39,7 +39,7 @@ class GameTest {
 
   @Test
   public void playerDiscardOfCardIsTransferredToDeckDiscardPile() throws Exception {
-    Game game = new GameFactory().createTwoPlayerGame();
+    Game game = new Game.GameFactory().createTwoPlayerGame();
     game.start();
 
     Player player = game.players().getFirst();

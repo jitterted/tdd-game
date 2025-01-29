@@ -2,7 +2,6 @@ package dev.ted.tddgame.application.port;
 
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameEvent;
-import dev.ted.tddgame.domain.GameFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,20 +12,20 @@ import java.util.Optional;
 public class GameStore {
 
     private final Map<String, List<EventDto>> handleToEventDtoMap = new HashMap<>();
-    private GameFactory gameFactory;
+    private Game.GameFactory gameFactory;
 
     private GameStore() {
     }
 
-    private GameStore(GameFactory gameFactory) {
+    private GameStore(Game.GameFactory gameFactory) {
         this.gameFactory = gameFactory;
     }
 
     public static GameStore createEmpty() {
-        return new GameStore(new GameFactory());
+        return new GameStore(new Game.GameFactory());
     }
 
-    public static GameStore createEmpty(GameFactory gameFactory) {
+    public static GameStore createEmpty(Game.GameFactory gameFactory) {
         return new GameStore(gameFactory);
     }
 

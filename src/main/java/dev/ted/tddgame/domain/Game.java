@@ -19,7 +19,7 @@ public class Game extends EventSourcedAggregate {
 
     // Rebuilds Game (and its entities) state
     // Public production code should use #reconstitute()
-    Game(List<GameEvent> events, Deck.Shuffler<ActionCard> actionCardShuffler) {
+    private Game(List<GameEvent> events, Deck.Shuffler<ActionCard> actionCardShuffler) {
         this.actionCardShuffler = actionCardShuffler;
         for (GameEvent event : events) {
             apply(event);
@@ -29,18 +29,6 @@ public class Game extends EventSourcedAggregate {
     // Allows control of the shuffler used for the ActionCard deck replenishment
     private Game(Deck.Shuffler<ActionCard> actionCardShuffler) {
         this.actionCardShuffler = actionCardShuffler;
-    }
-
-    /**
-     * Create a Game for Production, using a Random shuffler
-     *
-     * @param gameName title of the game
-     * @param handle unique handle for the game
-     */
-    public static Game create(String gameName, String handle) {
-        Game game = new Game(new Deck.RandomShuffler<>());
-        game.initialize(gameName, handle);
-        return game;
     }
 
     /**
@@ -197,5 +185,42 @@ public class Game extends EventSourcedAggregate {
     public enum State {
         WAITING_TO_START,
         IN_PROGRESS
+    }
+
+    public static class GameFactory {
+
+        protected final Deck.Shuffler<ActionCard> actionCardShuffler;
+
+        public GameFactory() {
+            this(new Deck.RandomShuffler<>());
+        }
+
+        public GameFactory(Deck.Shuffler<ActionCard> actionCardShuffler) {
+            this.actionCardShuffler = actionCardShuffler;
+        }
+
+        /**
+         * Create a Game for Production, using a Random shuffler
+         *
+         * @param gameName title of the game
+         * @param handle unique handle for the game
+         */
+        public Game create(String gameName, String handle) {
+            Game game = new Game(new Deck.RandomShuffler<>());
+            game.initialize(gameName, handle);
+            return game;
+        }
+
+        /**
+         * Create a Game by playing back all of the events and applying them.
+         * MUST only be called by the repository (store), or tests.
+         * Configures the Shuffler as RandomShuffler for production use
+         *
+         * @param events GameEvents to play back
+         */
+        public Game reconstitute(List<GameEvent> events) {
+            return new Game(events, actionCardShuffler);
+        }
+
     }
 }

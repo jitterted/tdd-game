@@ -7,13 +7,13 @@ public class TwoPlayerGameService implements GameService {
 
     public TwoPlayerGameService(PlayerFactory playerFactory) {
         DeckFactory deckFactory = new DefaultDeckFactory(new CardFactory());
-        game = new GameFactory(deckFactory, playerFactory).createTwoPlayerGame();
+        game = new Game.GameFactory(deckFactory, playerFactory).createTwoPlayerGame();
         game.start();
     }
 
     public TwoPlayerGameService(PlayerFactory playerFactory, GameStateChannel gameStateChannel) {
         DeckFactory deckFactory = new DefaultDeckFactory(new CardFactory());
-        GameFactory gameFactory = new GameFactory(deckFactory, playerFactory, gameStateChannel);
+        GameFactory gameFactory = new Game.GameFactory(deckFactory, playerFactory, gameStateChannel);
         game = gameFactory.createTwoPlayerGame();
         game.start();
     }

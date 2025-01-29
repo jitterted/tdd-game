@@ -80,7 +80,7 @@ class MessageBroadcasterTest {
         MemberId memberId = new MemberId(17L);
         Member member = new Member(memberId, "Blue (member name)", "blue-username");
         String gameHandle = "chatty-piggy-81";
-        Game game = Game.create("Test Game", gameHandle);
+        Game game = new Game.GameFactory().create("Test Game", gameHandle);
         game.join(member.id(), "Blue (player name)");
         GameStore gameStore = GameStore.createEmpty();
         gameStore.save(game);
@@ -155,7 +155,7 @@ class MessageBroadcasterTest {
     // FIXTURE setup
 
     private Fixture createGameWithTwoPlayersConnectedAndGameStarted() {
-        Game game = Game.create("irrelevant game name", "gameHandle");
+        Game game = new Game.GameFactory().create("irrelevant game name", "gameHandle");
         MemberId memberIdForOliver = new MemberId(78L);
         game.join(memberIdForOliver, "Oliver");
         MemberId memberIdForSamantha = new MemberId(63L);

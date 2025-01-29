@@ -20,7 +20,7 @@ public class TddGameStartup {
     @Bean
     public CommandLineRunner addGameToGameStore(GameStore gameStore, MemberStore memberStore) {
         return _ -> {
-            Game game = Game.create("Preloaded Test Game", "testy-spider-83");
+            Game game = new Game.GameFactory().create("Preloaded Test Game", "testy-spider-83");
             gameStore.save(game);
             Member member = new Member(new MemberId(21L), "Red", "Red");
             memberStore.save(member);
