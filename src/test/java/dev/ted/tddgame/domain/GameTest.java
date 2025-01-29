@@ -301,31 +301,27 @@ class GameTest {
         @Test
         void playerDiscardedCardResultsInCardMovedFromPlayerHandToDeckDiscardPile() {
             MemberId memberId = new MemberId(71L);
-//            Game game = new Game.GameFactory().
-            List<GameEvent> events = gameCreatedAndTheseEvents(
-                    new PlayerJoined(memberId, "Member 71 Name")
-                    , new GameStarted()
-                    , new ActionCardDeckCreated(List.of(
-                            ActionCard.WRITE_CODE,
-                            ActionCard.PREDICT,
-                            ActionCard.REFACTOR))
-                    , new ActionCardDeckReplenished(List.of(
-                            ActionCard.WRITE_CODE,
-                            ActionCard.PREDICT,
-                            ActionCard.REFACTOR))
-                    , new ActionCardDrawn(ActionCard.WRITE_CODE)
-                    , new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE)
-                    , new ActionCardDrawn(ActionCard.PREDICT)
-                    , new PlayerDrewActionCard(memberId, ActionCard.PREDICT)
-                    , new PlayerDiscardedActionCard(memberId, ActionCard.WRITE_CODE)
-                    , new ActionCardDiscarded(ActionCard.WRITE_CODE)
-            );
-            Game game = new Game.GameFactory().reconstitute(events);
+            Deck.Shuffler<ActionCard> configuredActionCardShuffler =
+                    _ -> new ArrayList<>(List.of(
+                            ActionCard.WRITE_CODE, ActionCard.WRITE_CODE,
+                            ActionCard.PREDICT,    ActionCard.PREDICT,
+                            ActionCard.REFACTOR,   ActionCard.REFACTOR,
+                            ActionCard.LESS_CODE,  ActionCard.LESS_CODE,
+                            ActionCard.CODE_BLOAT, ActionCard.CODE_BLOAT
+                    ));
+            Game game = new Game.GameFactory(configuredActionCardShuffler)
+                    .create("Irrelevant Name", "irrelevant-handle");
+            game.join(memberId, "Member 71 = First Player");
+            game.join(new MemberId(99L), "Irrelevant Member");
+            game.start();
+
+            game.discard(memberId, ActionCard.WRITE_CODE);
 
             Player player = game.playerFor(memberId);
             assertThat(player.hand())
                     .as("Hand should have discarded the WRITE_CODE card")
-                    .containsExactly(ActionCard.PREDICT);
+                    .containsExactly(ActionCard.PREDICT, ActionCard.REFACTOR,
+                                     ActionCard.LESS_CODE, ActionCard.CODE_BLOAT);
             assertThat(game.actionCardDeck()
                            .discardPile())
                     .as("Action Deck Discard pile should contain only discarded WRITE_CODE cards")

@@ -1,3 +1,14 @@
+January 29, 2025 - Wednesday
+============================
+
+[Refactoring: 1:05pm/2h05m]
+* Moved static creation method from Game to GameFactory, then did Convert to Instance method. It mostly worked, but failed to update all references to use the inner class form of Game.GameFactory, so had to do manual Find and Replace
+    * Could have done the convert to instance method first, then moved GameFactory to be an inner class
+
+* Multi-Caret
+    * Duplicate works at the caret level (1:29p)
+    * Selection of "rectangular" area for copy-n-paste (1:31p)
+
 January 28, 2025 - Tuesday
 ==========================
 

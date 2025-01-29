@@ -189,14 +189,14 @@ public class Game extends EventSourcedAggregate {
 
     public static class GameFactory {
 
-        protected final Deck.Shuffler<ActionCard> actionCardShuffler;
+        protected final Deck.Shuffler<ActionCard> configuredActionCardShuffler;
 
         public GameFactory() {
             this(new Deck.RandomShuffler<>());
         }
 
-        public GameFactory(Deck.Shuffler<ActionCard> actionCardShuffler) {
-            this.actionCardShuffler = actionCardShuffler;
+        public GameFactory(Deck.Shuffler<ActionCard> configuredActionCardShuffler) {
+            this.configuredActionCardShuffler = configuredActionCardShuffler;
         }
 
         /**
@@ -206,7 +206,7 @@ public class Game extends EventSourcedAggregate {
          * @param handle unique handle for the game
          */
         public Game create(String gameName, String handle) {
-            Game game = new Game(new Deck.RandomShuffler<>());
+            Game game = new Game(configuredActionCardShuffler);
             game.initialize(gameName, handle);
             return game;
         }
@@ -219,7 +219,7 @@ public class Game extends EventSourcedAggregate {
          * @param events GameEvents to play back
          */
         public Game reconstitute(List<GameEvent> events) {
-            return new Game(events, actionCardShuffler);
+            return new Game(events, configuredActionCardShuffler);
         }
 
     }
