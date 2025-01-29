@@ -151,6 +151,20 @@ class GameTest {
                     );
         }
 
+        @Test
+        void playerPlaysActionCard_PlayerPlayedActionCard() {
+            MemberId firstPlayerMemberId = new MemberId(88L);
+            Game game = createFreshGameWithTwoPlayersAndStart(firstPlayerMemberId);
+
+            game.playCard(firstPlayerMemberId, ActionCard.WRITE_CODE);
+
+            assertThat(game.freshEvents())
+                    .containsExactly(
+                            new PlayerPlayedActionCard(firstPlayerMemberId,
+                                                       ActionCard.WRITE_CODE)
+                    );
+        }
+
         private static Game createFreshGameWithTwoPlayersAndStart(MemberId firstPlayerMemberId) {
             Game game = Game.create("IRRELEVANT GAME NAME", "IRRELEVANT HANDLE");
             game.join(firstPlayerMemberId, "first player");

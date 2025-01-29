@@ -150,7 +150,7 @@ public class Game extends EventSourcedAggregate {
     }
 
     public void playCard(MemberId memberId, ActionCard cardToPlay) {
-        throw new UnsupportedOperationException();
+        enqueue(new PlayerPlayedActionCard(memberId, cardToPlay));
     }
 
     public Player playerFor(MemberId memberId) {
