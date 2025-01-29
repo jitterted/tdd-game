@@ -74,6 +74,13 @@ public class Player {
         actionCardDeck.acceptDiscard(actionCardToDiscard);
     }
 
+    public void playCard(ActionCard actionCardToPlay) {
+        // check constraint: actionCardToPlay MUST be in the Player's Hand
+        PlayerEvent playerEvent =
+                new PlayerPlayedActionCard(memberId, actionCardToPlay);
+        eventEnqueuer.enqueue(playerEvent);
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) {
