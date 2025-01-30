@@ -1,6 +1,6 @@
 **Fair Source License, version 0.9**
 
-Copyright © 2019-2021, by Ted M. Young
+Copyright © 2019-2025, by Ted M. Young
 
 Licensor: Ted M. Young
 
