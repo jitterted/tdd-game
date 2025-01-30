@@ -68,6 +68,19 @@
     height: min-content;
 }
 
+.your-play-area .workspace {
+    height: 165px;
+    overflow: hidden;
+    background-color: #999;
+}
+
+.in-play {
+    display: grid;
+    grid-template-rows: 160px;
+    grid-template-columns: repeat(6, 125px);
+    align-content: start;
+}
+
 .other-player-container .hand {
     font-size: .75rem;
     display: grid;
