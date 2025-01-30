@@ -1,8 +1,13 @@
 package dev.ted.tddgame.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 public class Workspace {
     private final WorkspaceId id;
     private HexTile currentHexTile;
+    private final List<ActionCard> cardsInPlay = new ArrayList<>();
 
     /**
      * Assign the Workspace ID from the Player's ID
@@ -22,7 +27,27 @@ public class Workspace {
         return currentHexTile;
     }
 
-    public void discardCard() {
-        currentHexTile = currentHexTile.discardCard();
+    /**
+     * Handler for an ActionCard that was ALREADY discarded from the Player's hand.
+     * And this is called during event application (vs. command invocation).
+     * This is not the "decider", which can reject a discard, for that,
+     * we have a query to ask if we can do this.
+     * <br/>
+     * This is not the same as "clean up" cards, which happens on a successful PREDICT
+     */
+    public void cardDiscarded() {
+        currentHexTile = currentHexTile.cardDiscarded();
+    }
+
+    /**
+     * Handler for a card that has been played
+     */
+    public void cardPlayed(ActionCard actionCard) {
+        currentHexTile = currentHexTile.cardPlayed(actionCard);
+        cardsInPlay.add(actionCard);
+    }
+
+    public Stream<ActionCard> cards() {
+        return cardsInPlay.stream();
     }
 }

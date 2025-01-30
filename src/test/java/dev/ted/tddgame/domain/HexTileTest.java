@@ -10,7 +10,7 @@ class HexTileTest {
     void fromWhatShouldItDoWhenDiscardCardReturnsHowWillYouKnowItDidIt() {
         HexTile whatShouldItDo = HexTile.WHAT_SHOULD_IT_DO;
 
-        assertThat(whatShouldItDo.discardCard())
+        assertThat(whatShouldItDo.cardDiscarded())
                 .isEqualByComparingTo(HexTile.HOW_WILL_YOU_KNOW_IT_DID_IT);
     }
 
@@ -18,7 +18,7 @@ class HexTileTest {
     void fromHowWillYouKnowItDidItWhenDiscardCardReturnsWriteCodeForTest() {
         HexTile howWillYouKnowItDidIt = HexTile.HOW_WILL_YOU_KNOW_IT_DID_IT;
 
-        assertThat(howWillYouKnowItDidIt.discardCard())
+        assertThat(howWillYouKnowItDidIt.cardDiscarded())
             .isEqualByComparingTo(HexTile.WRITE_CODE_FOR_TEST);
     }
 
@@ -27,7 +27,7 @@ class HexTileTest {
         HexTile writeCodeForTest = HexTile.WRITE_CODE_FOR_TEST;
 
         assertThatExceptionOfType(UnsupportedOperationException.class)
-                .isThrownBy(writeCodeForTest::discardCard)
+                .isThrownBy(writeCodeForTest::cardDiscarded)
                 .withMessage("Probably want to return itself, but not sure yet");
     }
 }

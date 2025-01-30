@@ -10,7 +10,7 @@ public class Player {
     private final PlayerId playerId;
     private final MemberId memberId;
     private final String playerName;
-    private final List<ActionCard> actionCards = new ArrayList<>();
+    private final List<ActionCard> hand = new ArrayList<>();
     private final EventEnqueuer eventEnqueuer;
     private final Workspace workspace;
 
@@ -41,20 +41,23 @@ public class Player {
     }
 
     public Stream<ActionCard> hand() {
-        return actionCards.stream();
+        return hand.stream();
     }
 
     public void apply(PlayerEvent event) {
         switch (event) {
             case PlayerDrewActionCard playerDrewActionCard ->
-                    actionCards.add(playerDrewActionCard.actionCard());
+                    hand.add(playerDrewActionCard.actionCard());
 
             case PlayerDiscardedActionCard playerDiscardedActionCard -> {
-                actionCards.remove(playerDiscardedActionCard.actionCard());
-                workspace.discardCard();
+                hand.remove(playerDiscardedActionCard.actionCard());
+                workspace.cardDiscarded();
             }
-            
+
             case PlayerPlayedActionCard playerPlayedActionCard -> {
+                ActionCard actionCard = playerPlayedActionCard.actionCard();
+                hand.remove(actionCard);
+                workspace.cardPlayed(actionCard);
             }
         }
     }
@@ -77,6 +80,7 @@ public class Player {
 
     public void playCard(ActionCard actionCardToPlay) {
         // check constraint: actionCardToPlay MUST be in the Player's Hand
+        // check constraint: must check with Workspace to decide if this is allowed
         PlayerEvent playerEvent =
                 new PlayerPlayedActionCard(memberId, actionCardToPlay);
         eventEnqueuer.enqueue(playerEvent);

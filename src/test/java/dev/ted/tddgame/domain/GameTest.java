@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import dev.ted.tddgame.application.port.GameStore;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -154,7 +155,7 @@ class GameTest {
         @Test
         void playerPlaysActionCard_PlayerPlayedActionCard() {
             MemberId firstPlayerMemberId = new MemberId(88L);
-            Game game = createFreshGameWithTwoPlayersAndStart(firstPlayerMemberId);
+            Game game = createStartedGameWithTwoPlayersAndPlayerOnThirdTile(firstPlayerMemberId);
 
             game.playCard(firstPlayerMemberId, ActionCard.WRITE_CODE);
 
@@ -165,14 +166,32 @@ class GameTest {
                     );
         }
 
-        private static Game createFreshGameWithTwoPlayersAndStart(MemberId firstPlayerMemberId) {
-            Game game = new Game.GameFactory().create("IRRELEVANT GAME NAME", "IRRELEVANT HANDLE");
+        private Game createStartedGameWithTwoPlayersAndPlayerOnThirdTile(MemberId firstPlayerMemberId) {
+            GameStore gameStore = GameStore.createEmpty();
+
+            Game game = new Game.GameFactory().create("IRRELEVANT GAME NAME", "started-game");
             game.join(firstPlayerMemberId, "first player");
             game.join(new MemberId(113L), "second player");
             game.start();
-            // reconstitute the game from the events generated so far
-            // as a way to clear the freshEvents()
-            return new Game.GameFactory().reconstitute(game.freshEvents().toList());
+            game.discard(firstPlayerMemberId, ActionCard.PREDICT);
+            game.discard(firstPlayerMemberId, ActionCard.REFACTOR);
+
+            gameStore.save(game);
+
+            // returns the game with no freshEvents
+            return gameStore.findByHandle(game.handle())
+                            .orElseThrow();
+        }
+
+        private static Game createFreshGameWithTwoPlayersAndStart(MemberId firstPlayerMemberId) {
+            Game game = new Game.GameFactory().create("IRRELEVANT GAME NAME", "started-game");
+            game.join(firstPlayerMemberId, "first player");
+            game.join(new MemberId(113L), "second player");
+            game.start();
+
+            GameStore gameStore = GameStore.createEmpty();
+            gameStore.save(game);
+            return gameStore.findByHandle(game.handle()).orElseThrow();
         }
 
         private static Game createFreshGame() {
@@ -278,16 +297,21 @@ class GameTest {
 
         @Test
         void playerDiscardedCardResultsInCardMovedFromPlayerHandToDeckDiscardPile() {
-            MemberId memberId = new MemberId(71L);
-            Game game = createTwoPlayerStartedGame(memberId);
+            MemberId firstPlayerMemberId = new MemberId(71L);
+            Game game = createTwoPlayerStartedGame(firstPlayerMemberId,
+                                                   ActionCard.WRITE_CODE,
+                                                   ActionCard.PREDICT,
+                                                   ActionCard.REFACTOR,
+                                                   ActionCard.LESS_CODE,
+                                                   ActionCard.LESS_CODE);
 
-            game.discard(memberId, ActionCard.WRITE_CODE);
+            game.discard(firstPlayerMemberId, ActionCard.WRITE_CODE);
 
-            Player player = game.playerFor(memberId);
+            Player player = game.playerFor(firstPlayerMemberId);
             assertThat(player.hand())
                     .as("Hand should have discarded the WRITE_CODE card")
                     .containsExactly(ActionCard.PREDICT, ActionCard.REFACTOR,
-                                     ActionCard.LESS_CODE, ActionCard.CODE_BLOAT);
+                                     ActionCard.LESS_CODE, ActionCard.LESS_CODE);
             assertThat(game.actionCardDeck()
                            .discardPile())
                     .as("Action Deck Discard pile should contain only discarded WRITE_CODE cards")
@@ -297,14 +321,45 @@ class GameTest {
                     .isEqualByComparingTo(HexTile.HOW_WILL_YOU_KNOW_IT_DID_IT);
         }
 
-        private static Game createTwoPlayerStartedGame(MemberId firstPlayerMemberId) {
+        @Test
+        void playerPlayedCardResultsInCardMovedFromPlayerHandToWorkspace() {
+            MemberId firstPlayerMemberId = new MemberId(82L);
+            Game game = createTwoPlayerStartedGame(firstPlayerMemberId,
+                                                   ActionCard.WRITE_CODE,
+                                                   ActionCard.PREDICT,
+                                                   ActionCard.REFACTOR,
+                                                   ActionCard.LESS_CODE,
+                                                   ActionCard.LESS_CODE);
+            game.discard(firstPlayerMemberId, ActionCard.PREDICT);
+            game.discard(firstPlayerMemberId, ActionCard.REFACTOR);
+
+            game.playCard(firstPlayerMemberId, ActionCard.WRITE_CODE);
+
+            Player player = game.playerFor(firstPlayerMemberId);
+            assertThat(player.hand())
+                    .as("Hand should have PLAYed the WRITE_CODE card")
+                    .containsExactly(ActionCard.LESS_CODE, ActionCard.LESS_CODE);
+            assertThat(game.actionCardDeck().discardPile())
+                    .as("Action Deck Discard pile should have 2 cards")
+                    .containsExactly(ActionCard.PREDICT, ActionCard.REFACTOR);
+            assertThat(player.workspace().currentHexTile())
+                    .as("Player should be on the 4th tile after playing the WRITE CODE Card")
+                    .isEqualByComparingTo(HexTile.PREDICT_TEST_WILL_FAIL_TO_COMPILE);
+            assertThat(player.workspace().cards())
+                    .as("Workspace should now contain the played WRITE CODE card")
+                    .containsExactly(ActionCard.WRITE_CODE);
+        }
+
+        //--
+
+        private static Game createTwoPlayerStartedGame(MemberId firstPlayerMemberId, ActionCard... actionCards) {
             Deck.Shuffler<ActionCard> configuredActionCardShuffler =
                     _ -> new ArrayList<>(List.of(
-                            ActionCard.WRITE_CODE, ActionCard.WRITE_CODE,
-                            ActionCard.PREDICT,    ActionCard.PREDICT,
-                            ActionCard.REFACTOR,   ActionCard.REFACTOR,
-                            ActionCard.LESS_CODE,  ActionCard.LESS_CODE,
-                            ActionCard.CODE_BLOAT, ActionCard.CODE_BLOAT
+                            actionCards[0], ActionCard.WRITE_CODE,
+                            actionCards[1], ActionCard.PREDICT,
+                            actionCards[2], ActionCard.REFACTOR,
+                            actionCards[3], ActionCard.LESS_CODE,
+                            actionCards[4], ActionCard.LESS_CODE
                     ));
             Game game = new Game.GameFactory(configuredActionCardShuffler)
                     .create("Irrelevant Name", "irrelevant-handle");
