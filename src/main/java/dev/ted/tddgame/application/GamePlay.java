@@ -6,6 +6,8 @@ import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.MemberId;
 
+import java.util.function.Consumer;
+
 // Application-level Use Case (aka Inbound Port)
 // aka COMMAND
 public class GamePlay {
@@ -19,36 +21,32 @@ public class GamePlay {
     }
 
     public void start(String gameHandle) {
-        Game game = loadGameWith(gameHandle);
+        Consumer<Game> command = ((Consumer<Game>) broadcaster::prepareForGamePlay)
+                .andThen(Game::start);
 
-        broadcaster.prepareForGamePlay(game);
-
-        // start game (if not already started!)
-        game.start();
-
-        gameStore.save(game);
-
-        broadcaster.gameUpdate(game);
+        execute(gameHandle, command);
     }
 
     public void discard(String gameHandle,
                         MemberId memberId,
                         ActionCard cardToDiscard) {
+        execute(gameHandle, game -> game.discard(memberId, cardToDiscard));
+    }
+
+    private void execute(String gameHandle, Consumer<Game> command) {
         Game game = loadGameWith(gameHandle);
 
-        game.discard(memberId, cardToDiscard);
+        command.accept(game);
 
         gameStore.save(game);
 
         broadcaster.gameUpdate(game);
     }
 
-    public void playCard(String gameHandle, MemberId memberId, ActionCard cardToPlay) {
-        Game game = loadGameWith(gameHandle);
-
-        game.playCard(memberId, cardToPlay);
-
-        broadcaster.gameUpdate(game);
+    public void playCard(String gameHandle,
+                         MemberId memberId,
+                         ActionCard cardToPlay) {
+        execute(gameHandle, game -> game.playCard(memberId, cardToPlay));
     }
 
     private Game loadGameWith(String gameHandle) {

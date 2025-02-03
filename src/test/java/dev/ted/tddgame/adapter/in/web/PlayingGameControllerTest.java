@@ -13,11 +13,14 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static dev.ted.tddgame.adapter.HtmlElement.attributes;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
@@ -95,15 +98,23 @@ class PlayingGameControllerTest {
     }
 
     @Test
+    @Disabled("PlayingGameControllerTest: disabled until play card from hand works")
     void writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile() {
         String gameHandle = "play-game-handle";
-        Deck.Shuffler<ActionCard> writeCodeCardFirstShuffler = discardPile -> {
-            discardPile.set(0, ActionCard.WRITE_CODE);
-            return discardPile;
-        };
+        Deck.Shuffler<ActionCard> writeCodeCardFirstShuffler = _ -> new ArrayList<>(
+                List.of(
+                        ActionCard.WRITE_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.PREDICT,
+                        ActionCard.PREDICT));
         Fixture fixture = createGameWithPlayingGameControllerUsingShuffler(
                 gameHandle, writeCodeCardFirstShuffler);
         fixture.gamePlay.start(gameHandle);
+        Game gameForSetup = fixture.findGame(gameHandle);
+        gameForSetup.discard(fixture.memberId, ActionCard.LESS_CODE);
+        gameForSetup.discard(fixture.memberId, ActionCard.LESS_CODE);
+        fixture.gameStore.save(gameForSetup);
 
         fixture.playingGameController.playCard(fixture.principal,
                                                gameHandle,
@@ -112,7 +123,8 @@ class PlayingGameControllerTest {
         Game game = fixture.findGame(gameHandle);
         assertThat(firstPlayerOf(game).hand())
                 .as("Write Code card was played, so should not be in their hand")
-                .doesNotContain(ActionCard.WRITE_CODE);
+                .containsExactly(ActionCard.PREDICT,
+                                 ActionCard.PREDICT);
     }
 
 
@@ -130,7 +142,8 @@ class PlayingGameControllerTest {
         gameStore.save(game);
 
         MemberStore memberStore = new MemberStore();
-        memberStore.save(new Member(new MemberId(32L), "BlueNickName", "blueauth"));
+        MemberId memberId = new MemberId(32L);
+        memberStore.save(new Member(memberId, "BlueNickName", "blueauth"));
         Principal principal = () -> "blueauth"; // implements Principal.getName() = authName
 
         Broadcaster dummyBroadcaster = new GamePlayTest.NoOpDummyBroadcaster();
@@ -138,15 +151,15 @@ class PlayingGameControllerTest {
         PlayingGameController playingGameController = new PlayingGameController(gameStore, gamePlay, memberStore);
 
         // ensure we're going thru the Application layer
-        new PlayerJoinsGame(gameStore).join(new MemberId(32L), gameHandle, "BlueNickName");
+        new PlayerJoinsGame(gameStore).join(memberId, gameHandle, "BlueNickName");
 
-        return new Fixture(gameStore, playingGameController, gamePlay, principal);
+        return new Fixture(gameStore, playingGameController, gamePlay, principal, memberId);
     }
 
     private record Fixture(GameStore gameStore,
                            PlayingGameController playingGameController,
                            GamePlay gamePlay,
-                           Principal principal) {
+                           Principal principal, MemberId memberId) {
 
         private Game findGame(String gameHandle) {
             return gameStore.findByHandle(gameHandle).orElseThrow();

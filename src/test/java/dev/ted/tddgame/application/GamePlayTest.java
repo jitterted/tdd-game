@@ -73,20 +73,29 @@ public class GamePlayTest {
         gamePlay.discard(gameFixture.gameHandle, gameFixture.memberId, ActionCard.LESS_CODE);
 
         mockBroadcaster.verifyGameMatches(gameFixture.game);
+
+        Game game = gameFixture.gameStore.findByHandle(gameFixture.gameHandle).orElseThrow();
+        assertThat(game.actionCardDeck().discardPile())
+                .containsExactly(ActionCard.LESS_CODE);
     }
 
     @Test
-    @Disabled("Until game.playCard is working")
     void playCardBroadcastsUpdatedGameState() {
         GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
         GameUpdateMockBroadcaster mockBroadcaster = new GameUpdateMockBroadcaster();
         GamePlay gamePlay = new GamePlay(gameFixture.gameStore, mockBroadcaster);
         gamePlay.start(gameFixture.gameHandle);
+        gamePlay.discard(gameFixture.gameHandle, gameFixture.memberId, ActionCard.LESS_CODE);
+        gamePlay.discard(gameFixture.gameHandle, gameFixture.memberId, ActionCard.LESS_CODE);
         mockBroadcaster.reset();
 
-        gamePlay.playCard(gameFixture.gameHandle, gameFixture.memberId, ActionCard.LESS_CODE);
+        gamePlay.playCard(gameFixture.gameHandle, gameFixture.memberId, ActionCard.WRITE_CODE);
 
         mockBroadcaster.verifyGameMatches(gameFixture.game);
+
+        Game game = gameFixture.gameStore.findByHandle(gameFixture.gameHandle).orElseThrow();
+        assertThat(game.playerFor(gameFixture.memberId).workspace().cardsInPlay())
+                .containsExactly(ActionCard.WRITE_CODE);
     }
 
     // -- FIXTURE
