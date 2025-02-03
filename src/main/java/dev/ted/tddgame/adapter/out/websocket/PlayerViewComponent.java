@@ -6,6 +6,8 @@ import dev.ted.tddgame.domain.Player;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static dev.ted.tddgame.adapter.HtmlElement.text;
+
 public class PlayerViewComponent {
     private final Player player;
     private final String gameHandle;
@@ -16,19 +18,23 @@ public class PlayerViewComponent {
     }
 
     HtmlElement htmlForYou() {
-        HtmlElement workspaceDiv = HtmlElement
-                .div()
-                .classNames("workspace")
-                .addChildren(
-                        HtmlElement.text("<h2>Workspace</h2>"),
-                        HtmlElement.div().classNames("in-play")
-                                .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID)
-                );
-        HtmlElement handComponent = new HandViewComponent(gameHandle, player).handContainer();
-        HtmlElement handContainerDiv = HtmlElement
-                .div("titled-container",
-                     HtmlElement.text("Your Hand"),
-                     handComponent);
+        HtmlElement workspaceDiv =
+                HtmlElement.div()
+                           .classNames("workspace")
+                           .addChildren(
+                                   HtmlElement.text("<h2>Workspace</h2>"),
+                                   HtmlElement.div()
+                                              .classNames("in-play")
+                                              .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID)
+                           );
+        HtmlElement handComponent =
+                new HandViewComponent(gameHandle, player).handContainer();
+        HtmlElement handContainerDiv =
+                HtmlElement.div()
+                           .classNames("titled-container")
+                           .addChildren(
+                                   text("Your Hand"),
+                                   handComponent);
         String targetId = "you";
         return HtmlElement.swapInnerHtml(targetId, workspaceDiv, handContainerDiv);
     }

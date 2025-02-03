@@ -25,11 +25,12 @@ class PlayerViewComponentTest {
                 .isEqualTo(
                         swapInnerHtml("you",
                                       emptyWorkspace(),
-                                      div().classNames("titled-container")
-                                           .addChildren(
-                                                   text("Your Hand"),
-                                                   div().classNames("hand")
-                                           )
+                                      div()
+                                              .classNames("titled-container")
+                                              .addChildren(
+                                                      text("Your Hand"),
+                                                      div().classNames("hand")
+                                              )
                         )
                 );
     }
