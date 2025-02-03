@@ -243,8 +243,8 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [X] Implement the PLAY command
 
 ==> WE ARE HERE:
-                [ ] Show played cards in the Workspace for "You"
-                    [X] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
+                [X] Show played cards in the Workspace for "You"
+                    Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
                 [ ] Show played card in Workspace for "other players"
 
             [ ] Card menu should reflect current legal actions
@@ -269,8 +269,6 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [ ] Show a toast when they're reconnected
                 [ ] Show a "connected" status indicator in the player's container
 
-            [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page
-
             [ ] HtmlElement.Forest currently indents its children, but it shouldn't as the Forest isn't really a container element
 
             [ ] Replace List<HtmlAttribute> with HtmlAttributes that can render itself (fixes Primitive [Collection] Obsession)
@@ -283,6 +281,28 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
     [ ] (Temporary) Constraint: players can't join once game is started
 
+# Refactoring
+
+    [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page, e.g.:
+        * WorkspaceViewComponent contains InPlayViewComponent, which contains CardViewComponents
+        * HandViewComponent contains CardViewComponents
+        * BoardViewComponent contains HexTileViewComponents, with PawnViewComponents
+
+    [ ] HexTiles to class hierarchy, that holds internal state machines for PREDICT, and share similar behavior for discard/play cards
+        * WhatShouldItDo and HowDoYouKnowItDidIt have exactly the same behavior, only difference is their display title
+        * WriteCodeForTest and WriteCodeSoTestCompiles both require the Write Code card to be played in order to exit to the next tile
+            * Exit via "skip & add risk" are very similar, only differ on how much risk is added
+        * PredictTest... tiles also have the same behavior, with an internal smaller state machine for determining what cards can be played and how to exit to next tile
+
+    [ ] Test Data Builder for Game at both the Domain and Use Case layers
+        [ ] Domain: create a game, easily push it to different (legal) states
+        [ ] Use Case: same as above, but uses a GameStore to persist
+
+    [ ] Test Data Builder for Player, which can be "embedded" in the Game TDB
+        [ ] Look at PlayerViewComponentTest
+
+    [ ] Test Data Builder for Action Card Deck
+        [ ] See PlayingGameControllerTest.writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile
 
 [X] Inbound HTTP Adapter
     [X] Host create game: numeric-only textbox and "Create Game" button does POST
