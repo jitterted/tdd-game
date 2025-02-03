@@ -59,12 +59,12 @@ class MessageBroadcasterTest {
         fixture.broadcaster.gameUpdate(fixture.game);
 
         assertThat(fixture.messageSenderForOliver.sentMessages.size())
-                .as("Should have 4 messages sent to Oliver")
-                .isEqualTo(4);
+                .as("Should have 5 messages sent to Oliver")
+                .isEqualTo(5);
 
         assertThat(fixture.messageSenderForSamantha.sentMessages.size())
-                .as("Should have 4 messages sent to Samantha")
-                .isEqualTo(4);
+                .as("Should have 5 messages sent to Samantha")
+                .isEqualTo(5);
 
         assertThat(fixture.messageSenderForOliver.firstSentMessage())
                 .as("Oliver's custom HTML should not be the same as Samantha's (as they have different cards in their hands)")
@@ -73,6 +73,14 @@ class MessageBroadcasterTest {
         assertThat(fixture.messageSenderForOliver.lastSentMessage())
                 .as("Oliver's HTML for 'other players' should be the same for everyone")
                 .isEqualTo(fixture.messageSenderForSamantha.lastSentMessage());
+
+        assertThat(fixture.messageSenderForSamantha.messageContaining(
+                WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID))
+                .isPresent();
+
+        assertThat(fixture.messageSenderForOliver.messageContaining(
+                WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID))
+                .isPresent();
     }
 
     @Test

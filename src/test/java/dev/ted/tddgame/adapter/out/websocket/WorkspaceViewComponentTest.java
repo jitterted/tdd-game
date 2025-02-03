@@ -21,7 +21,7 @@ class WorkspaceViewComponentTest {
         HtmlElement htmlElement = workspaceViewComponent
                 .htmlForInPlayCards(player.workspace());
         assertThat(htmlElement)
-                .isEqualTo(HtmlElement.swapInnerHtml("your-in-play"));
+                .isEqualTo(HtmlElement.swapInnerHtml(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID));
     }
 
     @Test
@@ -37,7 +37,7 @@ class WorkspaceViewComponentTest {
         HtmlElement htmlElement = workspaceViewComponent.htmlForInPlayCards(player.workspace());
         assertThat(htmlElement)
                 .isEqualTo(HtmlElement.swapInnerHtml(
-                        "your-in-play",
+                        WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID,
                         HtmlElement.div(
                                 "card",
                                 HtmlElement.img(
@@ -63,7 +63,7 @@ class WorkspaceViewComponentTest {
         HtmlElement htmlElement = workspaceViewComponent.htmlForInPlayCards(player.workspace());
         assertThat(htmlElement)
                 .isEqualTo(HtmlElement.swapInnerHtml(
-                        "your-in-play",
+                        WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID,
                         HtmlElement.div(
                                 "card",
                                 HtmlElement.img(

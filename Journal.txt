@@ -21,6 +21,12 @@ February 3, 2025 - Monday
 
     and the "Declare static" was pre-checked and disabled, so could not make it non-static.
 
+[IntelliJ IDEA Bug 1:14pm 1:44]
+* Clicking in the gutter for the changed code popup is offscreen if the caret causes the editor to be scrolled horizontally
+
+
+
+
 January 29, 2025 - Wednesday
 ============================
 

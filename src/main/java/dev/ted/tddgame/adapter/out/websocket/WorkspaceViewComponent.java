@@ -14,6 +14,7 @@ import static dev.ted.tddgame.adapter.HtmlElement.swapBeforeEnd;
 import static dev.ted.tddgame.adapter.HtmlElement.swapDelete;
 
 public class WorkspaceViewComponent {
+    static final String YOUR_IN_PLAY_HTML_ID = "your-in-play";
     private final List<Player> players;
 
     public WorkspaceViewComponent(List<Player> players) {
@@ -47,7 +48,7 @@ public class WorkspaceViewComponent {
 
     public HtmlElement htmlForInPlayCards(Workspace workspace) {
         return HtmlElement.swapInnerHtml(
-                "your-in-play",
+                YOUR_IN_PLAY_HTML_ID,
                 inPlayCardDivs(workspace)
         );
     }

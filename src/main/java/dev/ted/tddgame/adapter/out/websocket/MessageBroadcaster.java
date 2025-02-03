@@ -38,29 +38,43 @@ public class MessageBroadcaster implements Broadcaster {
         sendActionCardDeckToAll(game);
         sendWorkspacePawnsToAll(game);
 
-        // send Workspace in-play cards to all
+        sendYourWorkspaceInPlayCardsForEachPlayerOf(game);
+        // send other players' Workspace in-play cards to all
 
         // send Test Results deck update
         // send commit & risk tracking updates
     }
 
+    private void sendYourWorkspaceInPlayCardsForEachPlayerOf(Game game) {
+        for (Player player : game.players()) {
+            messageSendersForPlayers.sendTo(
+                    game.handle(),
+                    player.id(),
+                    new WorkspaceViewComponent(game.players())
+                            .htmlForInPlayCards(player.workspace()).render());
+        }
+    }
+
     private void sendWorkspacePawnsToAll(Game game) {
-        messageSendersForPlayers.sendToAll(game.handle(),
-                                           new WorkspaceViewComponent(game.players())
-                                                   .getHtmlForPawns().render()
+        messageSendersForPlayers.sendToAll(
+                game.handle(),
+                new WorkspaceViewComponent(game.players())
+                        .getHtmlForPawns().render()
         );
     }
 
     private void sendActionCardDeckToAll(Game game) {
-        messageSendersForPlayers.sendToAll(game.handle(),
-                                           new DeckViewComponent(game.actionCardDeck())
-                                                   .htmlForDiscardAndDrawPiles().render());
+        messageSendersForPlayers.sendToAll(
+                game.handle(),
+                new DeckViewComponent(game.actionCardDeck())
+                        .htmlForDiscardAndDrawPiles().render());
     }
 
     private void sendOtherPlayerHandsToAll(Game game) {
-        messageSendersForPlayers.sendToAll(game.handle(),
-                                           new OtherPlayersViewComponent(game)
-                                                   .htmlForOtherPlayers().render());
+        messageSendersForPlayers.sendToAll(
+                game.handle(),
+                new OtherPlayersViewComponent(game)
+                        .htmlForOtherPlayers().render());
     }
 
     private void sendHtmlToRemoveModalContainerForEveryone(Game game) {

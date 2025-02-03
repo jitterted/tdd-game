@@ -19,16 +19,17 @@ class PlayerViewComponentTest {
     void generateHtmlWithSwapIdTargetForPlayerWithNoCards() {
         Player player = Player.createNull(79L, "Player with no cards");
 
-        HtmlElement htmlElement = new PlayerViewComponent("ZZZ-game-handle", player).htmlForYou();
+        HtmlElement htmlElement =
+                new PlayerViewComponent("ZZZ-game-handle", player).htmlForYou();
         assertThat(htmlElement)
                 .isEqualTo(
                         swapInnerHtml("you",
-                                      div("workspace",
-                                          text("<h2>Workspace</h2>")),
-                                      div("titled-container",
-                                          text("Your Hand"),
-                                          div("hand")
-                                      )
+                                      emptyWorkspace(),
+                                      div().classNames("titled-container")
+                                           .addChildren(
+                                                   text("Your Hand"),
+                                                   div().classNames("hand")
+                                           )
                         )
                 );
     }
@@ -45,8 +46,7 @@ class PlayerViewComponentTest {
         assertThat(htmlElement)
                 .isEqualTo(
                         swapInnerHtml("you",
-                                      div("workspace",
-                                          text("<h2>Workspace</h2>")),
+                                      emptyWorkspace(),
                                       div("titled-container",
                                           text("Your Hand"),
                                           new HandViewComponent(gameHandle, player).handContainer()
@@ -70,8 +70,7 @@ class PlayerViewComponentTest {
         assertThat(htmlElement)
                 .isEqualTo(
                         swapInnerHtml("you",
-                                      div("workspace",
-                                          text("<h2>Workspace</h2>")),
+                                      emptyWorkspace(),
                                       div("titled-container",
                                           text("Your Hand"),
                                           new HandViewComponent(gameHandle, player).handContainer()
@@ -98,6 +97,15 @@ class PlayerViewComponentTest {
                                           text("<h2 class=\"name\">Name of Player 3</h2>")),
                                       div("player-id-5", "other-player-container",
                                           text("<h2 class=\"name\">Name of Player 5</h2>"))));
+    }
+
+    static HtmlElement emptyWorkspace() {
+        return div().classNames("workspace")
+                    .addChildren(
+                            text("<h2>Workspace</h2>"),
+                            div().classNames("in-play")
+                                 .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID)
+                    );
     }
 
 }
