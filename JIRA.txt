@@ -243,9 +243,9 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                 [X] Implement the PLAY command
 
 ==> WE ARE HERE:
-                [ ] Show played cards in the Workspace
-                    [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
-                    [ ] Player might have cards in the "Tech Neglect" area
+                [ ] Show played cards in the Workspace for "You"
+                    [X] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
+                [ ] Show played card in Workspace for "other players"
 
             [ ] Card menu should reflect current legal actions
                 [ ] Only show PLAY option when available, which depends on:
@@ -255,6 +255,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
             [ ] Draw Action Card from the deck's draw pile
                 [ ] If it's a "tech neglect" card, move it to Workspace
+                [ ] Display "Tech Neglect" cards in the Workspace
 
             [ ] Create Workspace Scoring+Risk display
 
