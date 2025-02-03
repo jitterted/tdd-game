@@ -56,10 +56,7 @@ public class WorkspaceViewComponent {
         return workspace.cardsInPlay()
                         .map(card -> div(
                                 "card",
-                                HtmlElement.img(
-                                        "/write-code.png",
-                                        "Write Code"
-                                )
+                                HandViewComponent.imgElementFor(card)
                         ))
                         .toList()
                         .toArray(HtmlElement[]::new);

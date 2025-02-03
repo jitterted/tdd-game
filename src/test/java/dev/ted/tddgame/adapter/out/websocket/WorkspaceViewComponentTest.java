@@ -3,7 +3,6 @@ package dev.ted.tddgame.adapter.out.websocket;
 import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Player;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -50,7 +49,6 @@ class WorkspaceViewComponentTest {
     }
 
     @Test
-    @Disabled("Until Predict Test tile allows playing of LESS CODE")
     void multiplePlayedCardsShowUpInWorkspaceInPlayArea() {
         Player player = Player.createNull(64L, "Player played card");
         player.workspace().cardDiscarded(); // move to tile 2
