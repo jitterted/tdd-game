@@ -12,7 +12,7 @@ public class Player {
     private final MemberId memberId;
     private final String playerName;
     private final List<ActionCard> hand = new ArrayList<>();
-    private final EventEnqueuer eventEnqueuer;
+    private EventEnqueuer eventEnqueuer;
     private final Workspace workspace;
 
     public Player(PlayerId playerId, MemberId memberId,
@@ -27,8 +27,12 @@ public class Player {
 
     public static Player createNull(long id, String playerName) {
         PlayerId playerId = new PlayerId(id);
-        return new Player(playerId, new MemberId(42L), playerName,
-                          DUMMY_EVENT_ENQUEUER, new Workspace(playerId));
+        Player player = new Player(playerId, new MemberId(42L), playerName,
+                                   DUMMY_EVENT_ENQUEUER,
+                                   new Workspace(playerId));
+        // ensure that player events (from commands) get applied
+        player.eventEnqueuer = gameEvent -> player.apply((PlayerEvent)gameEvent);
+        return player;
     }
 
     public PlayerId id() {
