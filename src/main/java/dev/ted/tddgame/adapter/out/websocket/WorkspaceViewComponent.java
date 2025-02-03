@@ -45,4 +45,24 @@ public class WorkspaceViewComponent {
         );
     }
 
+    public HtmlElement htmlForInPlayCards(Workspace workspace) {
+        return HtmlElement.swapInnerHtml(
+                "your-in-play",
+                inPlayCardDivs(workspace)
+        );
+    }
+
+    private HtmlElement[] inPlayCardDivs(Workspace workspace) {
+        return workspace.cardsInPlay()
+                        .map(card -> div(
+                                "card",
+                                HtmlElement.img(
+                                        "/write-code.png",
+                                        "Write Code"
+                                )
+                        ))
+                        .toList()
+                        .toArray(HtmlElement[]::new);
+    }
+
 }

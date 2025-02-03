@@ -1,3 +1,26 @@
+February 3, 2025 - Monday
+=========================
+
+* Swempty = empty Swap element
+
+[IntelliJ IDEA Bug? 12:26pm 0:56]
+* Extract method for the HtmlElement.div() expression:
+
+    public HtmlElement htmlForInPlayCards() {
+        return HtmlElement.swapInnerHtml(
+                "your-in-play",
+                HtmlElement.div(
+                        "card",
+                        HtmlElement.img(
+                                "/write-code.png",
+                                "Write Code"
+                        )
+                )
+        );
+    }
+
+    and the "Declare static" was pre-checked and disabled, so could not make it non-static.
+
 January 29, 2025 - Wednesday
 ============================
 
