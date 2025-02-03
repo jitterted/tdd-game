@@ -6,11 +6,25 @@ public enum HexTile {
         public HexTile cardDiscarded() {
             return HOW_WILL_YOU_KNOW_IT_DID_IT;
         }
+
+        @Override
+        public HexTile cardPlayed(ActionCard actionCard) {
+            String cardName = actionCard.title();
+            String tileName = title();
+            throw new CanNotPlayCardHereException("Can not play a " + cardName + " card on the " + tileName + " hex tile.");
+        }
     }
     , HOW_WILL_YOU_KNOW_IT_DID_IT("How Will You Know It Did It?") {
         @Override
         public HexTile cardDiscarded() {
             return WRITE_CODE_FOR_TEST;
+        }
+
+        @Override
+        public HexTile cardPlayed(ActionCard actionCard) {
+            String cardName = actionCard.title();
+            String tileName = title();
+            throw new CanNotPlayCardHereException("Can not play a " + cardName + " card on the " + tileName + " hex tile.");
         }
     }, WRITE_CODE_FOR_TEST("Write Code for Test") {
         @Override
