@@ -2,12 +2,8 @@ package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.domain.ActionCard;
-import dev.ted.tddgame.domain.EventEnqueuer;
-import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
-import dev.ted.tddgame.domain.PlayerId;
-import dev.ted.tddgame.domain.Workspace;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,11 +15,9 @@ import static org.assertj.core.api.Assertions.*;
 
 class PlayerViewComponentTest {
 
-    private static final EventEnqueuer DUMMY_EVENT_ENQUEUER = _ -> {};
-
     @Test
     void generateHtmlWithSwapIdTargetForPlayerWithNoCards() {
-        Player player = createPlayer(79L, "Player with no cards");
+        Player player = Player.createNull(79L, "Player with no cards");
 
         HtmlElement htmlElement = new PlayerViewComponent("ZZZ-game-handle", player).htmlForYou();
         assertThat(htmlElement)
@@ -41,7 +35,7 @@ class PlayerViewComponentTest {
 
     @Test
     void generateHtmlWithOneDivForPlayerWithOneCards() {
-        Player player = createPlayer(34L, "Player with one LESS CODE card");
+        Player player = Player.createNull(34L, "Player with one LESS CODE card");
         player.apply(new PlayerDrewActionCard(player.memberId(),
                                               ActionCard.LESS_CODE));
         String gameHandle = "test-game-handle";
@@ -63,7 +57,7 @@ class PlayerViewComponentTest {
 
     @Test
     void generateHtmlForPlayerWithFiveCards() {
-        Player player = createPlayer(56L, "Player Name");
+        Player player = Player.createNull(56L, "Player Name");
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.LESS_CODE));
@@ -89,10 +83,10 @@ class PlayerViewComponentTest {
 
     @Test
     void createsPlaceholderDivForOnlyOtherPlayers() {
-        Player you = createPlayer(99L, "You as Player 99");
-        List<Player> players = List.of(createPlayer(3L, "Name of Player 3"),
+        Player you = Player.createNull(99L, "You as Player 99");
+        List<Player> players = List.of(Player.createNull(3L, "Name of Player 3"),
                                        you,
-                                       createPlayer(5L, "Name of Player 5"));
+                                       Player.createNull(5L, "Name of Player 5"));
 
         HtmlElement htmlElement = new PlayerViewComponent("ZZZ-game-handle", you)
                 .htmlPlaceholdersForOtherPlayers(players);
@@ -106,8 +100,4 @@ class PlayerViewComponentTest {
                                           text("<h2 class=\"name\">Name of Player 5</h2>"))));
     }
 
-    private Player createPlayer(long playerId, String playerName) {
-        final PlayerId playerId1 = new PlayerId(playerId);
-        return new Player(playerId1, new MemberId(42L), playerName, DUMMY_EVENT_ENQUEUER, new Workspace(playerId1));
-    }
 }

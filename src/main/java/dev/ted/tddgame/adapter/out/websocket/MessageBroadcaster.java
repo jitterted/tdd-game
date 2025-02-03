@@ -38,6 +38,8 @@ public class MessageBroadcaster implements Broadcaster {
         sendActionCardDeckToAll(game);
         sendWorkspacePawnsToAll(game);
 
+        // send Workspace in-play cards to all
+
         // send Test Results deck update
         // send commit & risk tracking updates
     }

@@ -345,7 +345,7 @@ class GameTest {
             assertThat(player.workspace().currentHexTile())
                     .as("Player should be on the 4th tile after playing the WRITE CODE Card")
                     .isEqualByComparingTo(HexTile.PREDICT_TEST_WILL_FAIL_TO_COMPILE);
-            assertThat(player.workspace().cards())
+            assertThat(player.workspace().cardsInPlay())
                     .as("Workspace should now contain the played WRITE CODE card")
                     .containsExactly(ActionCard.WRITE_CODE);
         }

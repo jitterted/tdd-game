@@ -238,11 +238,11 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
                 [X] Discard card causes Pawn to move
 
-==> WE ARE HERE:
-
             [ ] Implement POST request to handle PLAY card command
                 [X] Create "play" endpoint
                 [X] Implement the PLAY command
+
+==> WE ARE HERE:
                 [ ] Show played cards in the Workspace
                     [ ] Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
                     [ ] Player might have cards in the "Tech Neglect" area

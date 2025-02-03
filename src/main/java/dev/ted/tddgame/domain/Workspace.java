@@ -40,14 +40,14 @@ public class Workspace {
     }
 
     /**
-     * Handler for a card that has been played
+     * Handler for a card that has already been played (this is not a COMMAND)
      */
     public void cardPlayed(ActionCard actionCard) {
         currentHexTile = currentHexTile.cardPlayed(actionCard);
         cardsInPlay.add(actionCard);
     }
 
-    public Stream<ActionCard> cards() {
+    public Stream<ActionCard> cardsInPlay() {
         return cardsInPlay.stream();
     }
 }

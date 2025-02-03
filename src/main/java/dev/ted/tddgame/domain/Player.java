@@ -7,6 +7,7 @@ import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 public class Player {
+    private static final EventEnqueuer DUMMY_EVENT_ENQUEUER = _ -> {};
     private final PlayerId playerId;
     private final MemberId memberId;
     private final String playerName;
@@ -22,6 +23,12 @@ public class Player {
         this.playerName = playerName;
         this.eventEnqueuer = eventEnqueuer;
         this.workspace = workspace;
+    }
+
+    public static Player createNull(long id, String playerName) {
+        PlayerId playerId = new PlayerId(id);
+        return new Player(playerId, new MemberId(42L), playerName,
+                          DUMMY_EVENT_ENQUEUER, new Workspace(playerId));
     }
 
     public PlayerId id() {
