@@ -27,6 +27,11 @@ public enum HexTile {
         public HexTile cardDiscarded() {
             throw new UnsupportedOperationException();
         }
+
+        @Override
+        public HexTile cardPlayed(ActionCard actionCard) {
+            return this;
+        }
     };
 
     private final String title;

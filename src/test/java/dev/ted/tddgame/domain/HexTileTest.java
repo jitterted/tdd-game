@@ -19,7 +19,15 @@ class HexTileTest {
         HexTile howWillYouKnowItDidIt = HexTile.HOW_WILL_YOU_KNOW_IT_DID_IT;
 
         assertThat(howWillYouKnowItDidIt.cardDiscarded())
-            .isEqualByComparingTo(HexTile.WRITE_CODE_FOR_TEST);
+                .isEqualByComparingTo(HexTile.WRITE_CODE_FOR_TEST);
+    }
+
+    @Test
+    void playLessCodeCardOnPredictTestWillFailToCompileReturnsSelfHexTile() {
+        HexTile predictTestWillFailToCompile = HexTile.PREDICT_TEST_WILL_FAIL_TO_COMPILE;
+
+        assertThat(predictTestWillFailToCompile.cardPlayed(ActionCard.LESS_CODE))
+                .isEqualByComparingTo(predictTestWillFailToCompile);
     }
 
     @Test
