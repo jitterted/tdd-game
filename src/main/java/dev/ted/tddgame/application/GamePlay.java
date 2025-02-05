@@ -21,10 +21,10 @@ public class GamePlay {
     }
 
     public void start(String gameHandle) {
-        Consumer<Game> command = ((Consumer<Game>) broadcaster::prepareForGamePlay)
-                .andThen(Game::start);
-
-        execute(gameHandle, command);
+        execute(gameHandle, game -> {
+            broadcaster.prepareForGamePlay(game);
+            game.start();
+        });
     }
 
     public void discard(String gameHandle,

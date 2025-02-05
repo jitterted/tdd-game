@@ -299,7 +299,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
     [ ] Test Data Builder for Game at both the Domain and Use Case layers
         [ ] Domain: create a game, easily push it to different (legal) states
-        [ ] Use Case: same as above, but uses a GameStore to persist
+        [X] Use Case: same as above, but uses a GameStore to persist
 
     [ ] Test Data Builder for Player, which can be "embedded" in the Game TDB
         [ ] Look at PlayerViewComponentTest
