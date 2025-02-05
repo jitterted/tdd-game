@@ -41,9 +41,9 @@ public class Game extends EventSourcedAggregate {
     }
 
     private void initialize(String gameName, String handle) {
-        GameCreated gameCreated = new GameCreated(gameName, handle);
-        enqueue(gameCreated);
-        enqueue(new ActionCardDeckCreated(cardsFactory.createStandardActionCards()));
+        enqueue(new GameCreated(gameName, handle));
+        enqueue(new ActionCardDeckCreated(
+                cardsFactory.createStandardActionCards()));
     }
 
     @Override
