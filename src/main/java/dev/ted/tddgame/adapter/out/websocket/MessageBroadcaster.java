@@ -51,7 +51,7 @@ public class MessageBroadcaster implements Broadcaster {
                     game.handle(),
                     player.id(),
                     new WorkspaceViewComponent(game.players())
-                            .htmlForInPlayCards(player.workspace()).render());
+                            .htmlForInPlayCardsForYou(player.workspace()).render());
         }
     }
 
@@ -59,7 +59,7 @@ public class MessageBroadcaster implements Broadcaster {
         messageSendersForPlayers.sendToAll(
                 game.handle(),
                 new WorkspaceViewComponent(game.players())
-                        .getHtmlForPawns().render()
+                        .htmlForPawns().render()
         );
     }
 

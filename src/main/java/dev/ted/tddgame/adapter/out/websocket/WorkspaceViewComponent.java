@@ -21,7 +21,7 @@ public class WorkspaceViewComponent {
         this.players = players;
     }
 
-    HtmlElement getHtmlForPawns() {
+    HtmlElement htmlForPawns() {
         return players.stream()
                       .flatMap(player -> workspaceElementsOf(player.workspace()))
                       .reduce(forest(), HtmlElement::addChildren);
@@ -46,7 +46,7 @@ public class WorkspaceViewComponent {
         );
     }
 
-    public HtmlElement htmlForInPlayCards(Workspace workspace) {
+    public HtmlElement htmlForInPlayCardsForYou(Workspace workspace) {
         return HtmlElement.swapInnerHtml(
                 YOUR_IN_PLAY_HTML_ID,
                 inPlayCardDivs(workspace)
