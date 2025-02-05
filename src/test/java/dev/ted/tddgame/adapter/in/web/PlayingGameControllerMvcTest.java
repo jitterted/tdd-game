@@ -70,7 +70,7 @@ class PlayingGameControllerMvcTest {
     }
 
     @Test
-    @Disabled("Until play() is working in the Domain")
+    @Disabled("PlayingGameControllerMvcTest: need to move the player to a tile on which they are allowed to Play a card")
     void postToPlayCardEndpointReturns204NoContent() {
         String gameHandle = "game4play";
         Fixture fixture = createFixture(gameHandle);
