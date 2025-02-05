@@ -28,4 +28,21 @@ class GameBuilderTest {
                                  ActionCard.PREDICT
                 );
     }
+
+    @Test
+    void discardMovesCardFromFirstPlayerHandToDiscardPile() {
+        GameBuilder builder = GameBuilder
+                .create()
+                .actionCards(ActionCard.WRITE_CODE,
+                             ActionCard.WRITE_CODE,
+                             ActionCard.WRITE_CODE,
+                             ActionCard.WRITE_CODE,
+                             ActionCard.LESS_CODE)
+                .memberJoinsAsPlayer()
+                .startGame()
+                .discard(ActionCard.LESS_CODE);
+
+        assertThat(builder.firstPlayer().hand())
+                .doesNotContain(ActionCard.LESS_CODE);
+    }
 }

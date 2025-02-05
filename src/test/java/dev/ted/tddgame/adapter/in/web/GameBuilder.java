@@ -1,5 +1,8 @@
 package dev.ted.tddgame.adapter.in.web;
 
+import dev.ted.tddgame.application.GamePlay;
+import dev.ted.tddgame.application.GamePlayTest;
+import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.ActionCard;
@@ -18,9 +21,11 @@ public class GameBuilder {
     private final String gameHandle;
     private final String gameName = "Only Game In Progress";
     private final String authName = "blueauth";
+    private final MemberId memberId = new MemberId(42L);
     private GameStore gameStore;
     private final MemberStore memberStore = new MemberStore();
     private Game.GameFactory gameFactory;
+    private GamePlay gamePlay;
 
     public GameBuilder(String gameHandle) {
         this.gameHandle = gameHandle;
@@ -47,7 +52,6 @@ public class GameBuilder {
     }
 
     public GameBuilder memberJoinsAsPlayer() {
-        MemberId memberId = new MemberId(42L);
         Member member = new Member(memberId, "Default Member Nickname", authName);
         memberStore.save(member);
         Game game = game();
@@ -58,15 +62,15 @@ public class GameBuilder {
     }
 
     public GameBuilder startGame() {
-        Game game = game();
-        game.start();
-        gameStore.save(game);
+        gamePlay().start(gameHandle);
 
         return this;
     }
 
     public GameBuilder discard(ActionCard cardToDiscard) {
-        throw new UnsupportedOperationException();
+        gamePlay().discard(gameHandle, memberId, cardToDiscard);
+
+        return this;
     }
 
     public PlayingGameController playingGameController() {
@@ -88,5 +92,14 @@ public class GameBuilder {
 
     public MemberStore memberStore() {
         return memberStore;
+    }
+
+    public GamePlay gamePlay() {
+        if (gamePlay == null) {
+            Broadcaster dummyBroadcaster = new GamePlayTest.NoOpDummyBroadcaster();
+            gamePlay = new GamePlay(gameStore, dummyBroadcaster);
+        }
+
+        return gamePlay;
     }
 }
