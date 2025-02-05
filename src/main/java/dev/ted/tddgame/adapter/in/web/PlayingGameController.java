@@ -93,6 +93,9 @@ public class PlayingGameController {
     public void discardCardFromHand(Principal principal,
                                     @PathVariable String gameHandle,
                                     @PathVariable String cardName) {
+        if (principal == null || principal.getName() == null || principal.getName().isEmpty()) {
+            throw new RuntimeException("Principal or name cannot be empty");
+        }
         gamePlay.discard(gameHandle,
                          memberIdFrom(principal),
                          ActionCard.valueOf(cardName));

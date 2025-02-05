@@ -7,7 +7,6 @@ import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -70,16 +69,17 @@ class PlayingGameControllerMvcTest {
     }
 
     @Test
-    @Disabled("PlayingGameControllerMvcTest: need to move the player to a tile on which they are allowed to Play a card")
     void postToPlayCardEndpointReturns204NoContent() {
         String gameHandle = "game4play";
         Fixture fixture = createFixture(gameHandle);
         MockMvcTester mvc = mvcTesterFor(fixture.gameStore, fixture.memberStore);
         mvc.post().uri("/game/game4play/start-game").exchange();
+        mvc.post().principal(() -> fixture.memberAuthName).uri("/game/game4play/cards/discard/LESS_CODE").exchange();
+        mvc.post().principal(() -> fixture.memberAuthName).uri("/game/game4play/cards/discard/LESS_CODE").exchange();
 
         mvc.post()
            .principal(() -> fixture.memberAuthName)
-           .uri("/game/game4play/cards/play/LESS_CODE")
+           .uri("/game/game4play/cards/play/WRITE_CODE")
            .assertThat()
            .hasStatus(HttpStatus.NO_CONTENT);
     }

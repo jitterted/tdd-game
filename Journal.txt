@@ -3,6 +3,8 @@ February 5, 2025 - Wednesday
 
 * Encountered test failure for Commands-Generate-Events where we weren't using Commands in the setup portion of the test, which caused failures when we changed when the ActionCardDeckCreated event was created, but that was not relevant to the behavior of those failing tests (i.e., they should NOT have failed)
 
+* For some reason when using MockMvcTester, exceptions thrown aren't appearing in the test runner output
+
 
 February 3, 2025 - Monday
 =========================
