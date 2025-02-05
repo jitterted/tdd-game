@@ -26,6 +26,7 @@ public class GameBuilder {
     private final MemberStore memberStore = new MemberStore();
     private Game.GameFactory gameFactory;
     private GamePlay gamePlay;
+    private PlayingGameController playingGameController;
 
     public GameBuilder(String gameHandle) {
         this.gameHandle = gameHandle;
@@ -74,7 +75,11 @@ public class GameBuilder {
     }
 
     public PlayingGameController playingGameController() {
-        throw new UnsupportedOperationException();
+        if (playingGameController == null) {
+            playingGameController = new PlayingGameController(gameStore, gamePlay(), memberStore);
+        }
+
+        return playingGameController;
     }
 
     public Game game() {
@@ -87,7 +92,7 @@ public class GameBuilder {
     }
 
     public Principal firstPlayerPrincipal() {
-        throw new UnsupportedOperationException();
+        return () -> authName;
     }
 
     public MemberStore memberStore() {

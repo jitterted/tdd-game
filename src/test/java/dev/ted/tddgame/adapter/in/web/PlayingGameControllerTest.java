@@ -13,14 +13,11 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 import static dev.ted.tddgame.adapter.HtmlElement.attributes;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
@@ -99,36 +96,6 @@ class PlayingGameControllerTest {
 
     @Test
     void writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile() {
-        String gameHandle = "play-game-handle";
-        Deck.Shuffler<ActionCard> writeCodeCardFirstShuffler = _ -> new ArrayList<>(
-                List.of(
-                        ActionCard.WRITE_CODE,
-                        ActionCard.LESS_CODE,
-                        ActionCard.LESS_CODE,
-                        ActionCard.PREDICT,
-                        ActionCard.PREDICT));
-        Fixture fixture = createGameWithPlayingGameControllerUsingShuffler(
-                gameHandle, writeCodeCardFirstShuffler);
-        fixture.gamePlay.start(gameHandle);
-        Game gameForSetup = fixture.findGame(gameHandle);
-        gameForSetup.discard(fixture.memberId, ActionCard.LESS_CODE);
-        gameForSetup.discard(fixture.memberId, ActionCard.LESS_CODE);
-        fixture.gameStore.save(gameForSetup);
-
-        fixture.playingGameController.playCard(fixture.principal,
-                                               gameHandle,
-                                               ActionCard.WRITE_CODE.name());
-
-        Game game = fixture.findGame(gameHandle);
-        assertThat(firstPlayerOf(game).hand())
-                .as("Write Code card was played, so should not be in their hand")
-                .containsExactly(ActionCard.PREDICT,
-                                 ActionCard.PREDICT);
-    }
-
-    @Test
-    @Disabled("PGCT: until builder has been tested")
-    void USING_BUILDER_writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile() {
         String gameHandle = "play-game-handle";
         GameBuilder builder = GameBuilder.create(gameHandle)
                                          .actionCards(
