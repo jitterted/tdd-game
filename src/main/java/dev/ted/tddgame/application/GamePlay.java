@@ -30,7 +30,15 @@ public class GamePlay {
     public void discard(String gameHandle,
                         MemberId memberId,
                         ActionCard cardToDiscard) {
-        execute(gameHandle, game -> game.discard(memberId, cardToDiscard));
+        execute(gameHandle, game ->
+                game.discard(memberId, cardToDiscard));
+    }
+
+    public void playCard(String gameHandle,
+                         MemberId memberId,
+                         ActionCard cardToPlay) {
+        execute(gameHandle, game ->
+                game.playCard(memberId, cardToPlay));
     }
 
     private void execute(String gameHandle, Consumer<Game> command) {
@@ -41,12 +49,6 @@ public class GamePlay {
         gameStore.save(game);
 
         broadcaster.gameUpdate(game);
-    }
-
-    public void playCard(String gameHandle,
-                         MemberId memberId,
-                         ActionCard cardToPlay) {
-        execute(gameHandle, game -> game.playCard(memberId, cardToPlay));
     }
 
     private Game loadGameWith(String gameHandle) {
