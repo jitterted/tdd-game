@@ -137,7 +137,7 @@ class PlayingGameControllerTest {
                                                  ActionCard.LESS_CODE,
                                                  ActionCard.PREDICT,
                                                  ActionCard.PREDICT)
-                                         .addJoinedPlayer()
+                                         .memberJoinsAsPlayer()
                                          .startGame()
                                          .discard(ActionCard.LESS_CODE)
                                          .discard(ActionCard.LESS_CODE);

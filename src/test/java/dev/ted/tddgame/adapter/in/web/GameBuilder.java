@@ -5,6 +5,8 @@ import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Deck;
 import dev.ted.tddgame.domain.Game;
+import dev.ted.tddgame.domain.Member;
+import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 
 import java.security.Principal;
@@ -15,6 +17,7 @@ public class GameBuilder {
 
     private final String gameHandle;
     private final String gameName = "Only Game In Progress";
+    private final String authName = "blueauth";
     private GameStore gameStore;
     private final MemberStore memberStore = new MemberStore();
     private Game.GameFactory gameFactory;
@@ -43,20 +46,31 @@ public class GameBuilder {
         return this;
     }
 
-    public GameBuilder addJoinedPlayer() {
+    public GameBuilder memberJoinsAsPlayer() {
+        MemberId memberId = new MemberId(42L);
+        Member member = new Member(memberId, "Default Member Nickname", authName);
+        memberStore.save(member);
+        Game game = game();
+        game.join(memberId, "Default Player Name in game");
+        gameStore.save(game);
+
         return this;
     }
 
     public GameBuilder startGame() {
+        Game game = game();
+        game.start();
+        gameStore.save(game);
+
         return this;
     }
 
     public GameBuilder discard(ActionCard cardToDiscard) {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     public PlayingGameController playingGameController() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public Game game() {
@@ -65,11 +79,11 @@ public class GameBuilder {
     }
 
     public Player firstPlayer() {
-        return null;
+        return game().players().getFirst();
     }
 
     public Principal firstPlayerPrincipal() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public MemberStore memberStore() {
