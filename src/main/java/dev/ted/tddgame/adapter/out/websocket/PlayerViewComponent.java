@@ -53,8 +53,12 @@ public class PlayerViewComponent {
     }
 
     private static HtmlElement createPlaceholderDiv(Player player) {
-        return HtmlElement.div("player-id-" + player.id().id(),
-                               "other-player-container",
-                               HtmlElement.text("<h2 class=\"name\">" + player.playerName() + "</h2>"));
+        return HtmlElement.div(
+                "player-id-" + player.id().id(),
+                "other-player-container",
+                HtmlElement.h2(player.playerName())
+                        .classNames("name")
+        );
     }
+
 }

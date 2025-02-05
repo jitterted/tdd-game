@@ -9,6 +9,7 @@ import java.util.List;
 import static dev.ted.tddgame.adapter.HtmlElement.div;
 import static dev.ted.tddgame.adapter.HtmlElement.faIcon;
 import static dev.ted.tddgame.adapter.HtmlElement.forest;
+import static dev.ted.tddgame.adapter.HtmlElement.h2;
 import static dev.ted.tddgame.adapter.HtmlElement.swapBeforeEnd;
 import static dev.ted.tddgame.adapter.HtmlElement.swapDelete;
 import static org.assertj.core.api.Assertions.*;
@@ -17,15 +18,28 @@ import static org.assertj.core.api.Assertions.*;
 class HtmlElementTest {
 
     @Test
-    void textComponentIsRenderedBare() {
-        HtmlElement textComponent = HtmlElement.text("text component contents");
+    void textElementIsRenderedBare() {
+        HtmlElement textElement = HtmlElement.text("text component contents");
 
-        assertThat(textComponent.render())
+        assertThat(textElement.render())
                 .isEqualTo("text component contents");
     }
 
     @Test
-    void emptyDivComponentHasOnlyOpenAndCloseTagWithCssClass() {
+    void h2ElementRenderedWithClassAndTextContents() {
+        HtmlElement h2Element = h2("h2 text contents")
+                .classNames("className");
+
+        assertThat(h2Element.render())
+                .isEqualTo("""
+                           <h2 class="className">
+                               h2 text contents
+                           </h2>
+                           """);
+    }
+
+    @Test
+    void emptyDivElementHasOnlyOpenAndCloseTagWithCssClass() {
         HtmlElement div = div("cssClass");
 
         assertThat(div.render())
@@ -36,7 +50,7 @@ class HtmlElementTest {
     }
 
     @Test
-    void emptyDivComponentWithClassAndIdHasOnlyOpenAndCloseTagWithIdAndClass() {
+    void emptyDivElementWithClassAndIdHasOnlyOpenAndCloseTagWithIdAndClass() {
         HtmlElement div = div("htmlId", "cssClass");
 
         assertThat(div.render())
@@ -47,10 +61,10 @@ class HtmlElementTest {
     }
 
     @Test
-    void divWithNestedTextComponentRendersTextAsIndentedOneLevel() {
-        HtmlElement textComponent = HtmlElement.text("nested text");
+    void divWithNestedTextElementRendersTextAsIndentedOneLevel() {
+        HtmlElement textElement = HtmlElement.text("nested text");
 
-        HtmlElement div = div("cssClass", textComponent);
+        HtmlElement div = div("cssClass", textElement);
 
         assertThat(div.render())
                 .isEqualTo("""
@@ -104,7 +118,7 @@ class HtmlElementTest {
     }
 
     @Test
-    void swapWithTextAndDivComponentRendersCorrectly() {
+    void swapWithTextAndDivElementRendersCorrectly() {
         HtmlElement swap = HtmlElement.swapAfterBegin("swapId", HtmlElement.text("Heading for div"),
                                                       div("class of second nested",
                                                           HtmlElement.text("Inside DIV")));
@@ -194,7 +208,7 @@ class HtmlElementTest {
     @Nested
     class EqualsVerification {
         @Test
-        void swapEqualsWithoutNestedComponents() {
+        void swapEqualsWithoutNestedElements() {
             assertThat(HtmlElement.swapDelete("delete-me"))
                     .isEqualTo(HtmlElement.swapDelete("delete-me"));
 
@@ -203,7 +217,7 @@ class HtmlElementTest {
         }
 
         @Test
-        void textComponentEquals() {
+        void textElementEquals() {
             assertThat(HtmlElement.text("text contents"))
                     .as("Text contents are the same, so should be Equal")
                     .isEqualTo(HtmlElement.text("text contents"));
@@ -214,7 +228,7 @@ class HtmlElementTest {
         }
 
         @Test
-        void swapEqualsWithNestedComponentsOneLevel() {
+        void swapEqualsWithNestedElementsOneLevel() {
             assertThat(HtmlElement.swapInnerHtml("text-swap", HtmlElement.text("Text inside Swap")))
                     .isEqualTo(HtmlElement.swapInnerHtml("text-swap", HtmlElement.text("Text inside Swap")));
 
@@ -228,7 +242,7 @@ class HtmlElementTest {
         }
 
         @Test
-        void divEqualsWithoutNestedComponents() {
+        void divEqualsWithoutNestedElements() {
             assertThat(div("html-class"))
                     .isEqualTo(div("html-class"));
 
@@ -237,7 +251,7 @@ class HtmlElementTest {
         }
 
         @Test
-        void divEqualsWithTwoLevelsOfChildComponents() {
+        void divEqualsWithTwoLevelsOfChildElements() {
             assertThat(div("has-two-children",
                            div("first-child",
                                HtmlElement.text("Text of Leaf component"))))

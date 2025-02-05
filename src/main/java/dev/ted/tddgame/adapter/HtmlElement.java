@@ -104,6 +104,11 @@ public abstract class HtmlElement {
         return new NormalElement("div");
     }
 
+    public static HtmlElement h2(String textContents) {
+        return new NormalElement("h2")
+                .addChildren(text(textContents));
+    }
+
     public HtmlElement addChildren(HtmlElement... childElements) {
         Collections.addAll(this.childElements, childElements);
         return this;

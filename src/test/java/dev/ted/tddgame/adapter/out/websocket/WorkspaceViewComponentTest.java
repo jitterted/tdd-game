@@ -80,4 +80,21 @@ class WorkspaceViewComponentTest {
                         )
                 ));
     }
+
+    @Test
+    void multipleWorkspacesRenderMultipleInPlayAreasForOtherPlayers() {
+        Player firstPlayer = Player.createNull(64L, "First Player");
+        firstPlayer.workspace().cardDiscarded(); // move to tile 2
+        firstPlayer.workspace().cardDiscarded(); // move to tile 3
+        firstPlayer.workspace().cardPlayed(ActionCard.WRITE_CODE);
+        firstPlayer.workspace().cardPlayed(ActionCard.LESS_CODE);
+
+        Player secondPlayer = Player.createNull(64L, "Second Player");
+        secondPlayer.workspace().cardDiscarded(); // move to tile 2
+        secondPlayer.workspace().cardDiscarded(); // move to tile 3
+        secondPlayer.workspace().cardPlayed(ActionCard.WRITE_CODE);
+        secondPlayer.workspace().cardPlayed(ActionCard.PREDICT);
+
+        new WorkspaceViewComponent(List.of(firstPlayer, secondPlayer));
+    }
 }

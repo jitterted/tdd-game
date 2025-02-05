@@ -285,6 +285,7 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
     [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page, e.g.:
         * WorkspaceViewComponent contains InPlayViewComponent, which contains CardViewComponents
+            * Constructor might take list of Workspaces (instead of Players)?
         * HandViewComponent contains CardViewComponents
         * BoardViewComponent contains HexTileViewComponents, with PawnViewComponents
         * Pull all of these as children of a GameViewComponent

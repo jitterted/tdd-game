@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static dev.ted.tddgame.adapter.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.h2;
 import static dev.ted.tddgame.adapter.HtmlElement.swapInnerHtml;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
@@ -95,9 +96,13 @@ class PlayerViewComponentTest {
                 .isEqualTo(
                         swapInnerHtml("other-players",
                                       div("player-id-3", "other-player-container",
-                                          text("<h2 class=\"name\">Name of Player 3</h2>")),
+                                          h2("Name of Player 3").classNames("name")
+                                      ),
                                       div("player-id-5", "other-player-container",
-                                          text("<h2 class=\"name\">Name of Player 5</h2>"))));
+                                          h2("Name of Player 5").classNames("name")
+                                      )
+                        )
+                );
     }
 
     static HtmlElement emptyWorkspace() {
