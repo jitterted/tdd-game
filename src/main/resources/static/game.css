@@ -74,10 +74,17 @@
     background-color: #999;
 }
 
-.in-play {
+.your-play-area .in-play {
     display: grid;
     grid-template-rows: 160px;
     grid-template-columns: repeat(6, 125px);
+    align-content: start;
+}
+
+.other-player-container .in-play {
+    display: grid;
+    grid-template-rows: 100px;
+    grid-template-columns: repeat(6, 75px);
     align-content: start;
 }
 
