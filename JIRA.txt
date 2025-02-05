@@ -241,21 +241,19 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [ ] Implement POST request to handle PLAY card command
                 [X] Create "play" endpoint
                 [X] Implement the PLAY command
-
-==> WE ARE HERE:
                 [X] Show played cards in the Workspace for "You"
                     Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
                 [ ] Show played card in Workspace for "other players"
+
+            [ ] Draw Action Card from the deck's draw pile
+                [ ] If it's a "tech neglect" card, move it to Workspace
+                [ ] Display "Tech Neglect" cards in the Workspace
 
             [ ] Card menu should reflect current legal actions
                 [ ] Only show PLAY option when available, which depends on:
                     * The card you selected AND:
                         * The Hex Tile you're on (e.g., can't play WRITE CODE when on "Predict Test Will Fail to Compile", nor "REFACTOR" when on a non-Green tile)
                         * Cards already played in the Workspace
-
-            [ ] Draw Action Card from the deck's draw pile
-                [ ] If it's a "tech neglect" card, move it to Workspace
-                [ ] Display "Tech Neglect" cards in the Workspace
 
             [ ] Create Workspace Scoring+Risk display
 
@@ -287,6 +285,9 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
         * WorkspaceViewComponent contains InPlayViewComponent, which contains CardViewComponents
         * HandViewComponent contains CardViewComponents
         * BoardViewComponent contains HexTileViewComponents, with PawnViewComponents
+        * Pull all of these as children of a GameViewComponent
+            --> this will let us create a "mini" test server for evaluating HTML layout and playing with HTMX OOB swaps
+            --> moves us to a single source of truth for the HTML
 
     [ ] HexTiles to class hierarchy, that holds internal state machines for PREDICT, and share similar behavior for discard/play cards
         * WhatShouldItDo and HowDoYouKnowItDidIt have exactly the same behavior, only difference is their display title

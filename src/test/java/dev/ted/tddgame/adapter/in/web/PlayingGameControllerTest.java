@@ -13,6 +13,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -125,6 +126,33 @@ class PlayingGameControllerTest {
                                  ActionCard.PREDICT);
     }
 
+    @Test
+    @Disabled("PGCT: until builder has been tested")
+    void USING_BUILDER_writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile() {
+        String gameHandle = "play-game-handle";
+        GameBuilder builder = GameBuilder.create(gameHandle)
+                                         .actionCards(
+                                                 ActionCard.WRITE_CODE,
+                                                 ActionCard.LESS_CODE,
+                                                 ActionCard.LESS_CODE,
+                                                 ActionCard.PREDICT,
+                                                 ActionCard.PREDICT)
+                                         .addJoinedPlayer()
+                                         .startGame()
+                                         .discard(ActionCard.LESS_CODE)
+                                         .discard(ActionCard.LESS_CODE);
+
+        builder.playingGameController()
+               .playCard(builder.firstPlayerPrincipal(),
+                         gameHandle,
+                         ActionCard.WRITE_CODE.name());
+
+        assertThat(builder.firstPlayer().hand())
+                .as("Write Code card was played, so should not be in their hand")
+                .containsExactly(ActionCard.PREDICT,
+                                 ActionCard.PREDICT);
+    }
+
 
     // ---- FIXTURE
 
@@ -146,7 +174,8 @@ class PlayingGameControllerTest {
 
         Broadcaster dummyBroadcaster = new GamePlayTest.NoOpDummyBroadcaster();
         GamePlay gamePlay = new GamePlay(gameStore, dummyBroadcaster);
-        PlayingGameController playingGameController = new PlayingGameController(gameStore, gamePlay, memberStore);
+        PlayingGameController playingGameController =
+                new PlayingGameController(gameStore, gamePlay, memberStore);
 
         // ensure we're going thru the Application layer
         new PlayerJoinsGame(gameStore).join(memberId, gameHandle, "BlueNickName");
