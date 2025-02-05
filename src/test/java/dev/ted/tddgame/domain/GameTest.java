@@ -57,13 +57,30 @@ class GameTest {
         private static final int PLAYER_HAND_FULL_SIZE = 5;
 
         @Test
-        void creatingGameEmitsGameCreatedEvent() {
+        void creatingGameEmits_GameCreated_ActionCardDeckCreated_Events() {
             Game game = new Game.GameFactory().create("game name", "lovely-dog-23");
 
             Stream<GameEvent> events = game.freshEvents();
 
             assertThat(events)
-                    .containsExactly(new GameCreated("game name", "lovely-dog-23"));
+                    .hasSize(2)
+                    .startsWith(new GameCreated("game name", "lovely-dog-23"));
+
+            assertThat(game.freshEvents())
+                    .hasExactlyElementsOfTypes(
+                            GameCreated.class,
+                            ActionCardDeckCreated.class);
+
+            ActionCardDeckCreated actionCardDeckCreated =
+                    game.freshEvents()
+                        .filter(event -> event instanceof ActionCardDeckCreated)
+                        .map(event -> (ActionCardDeckCreated) event)
+                        .findFirst()
+                        .get();
+
+            assertThat(actionCardDeckCreated.actionCards())
+                    .as("Number of action cards in deck created event must be 63")
+                    .hasSize(63);
         }
 
         @Test
@@ -88,7 +105,7 @@ class GameTest {
         }
 
         @Test
-        void startGameEmitsGameStarted_DeckCreated_PlayerDrawCards_Events() {
+        void startGameEmits_GameStarted_PlayerDrawCards_Events() {
             GameStore gameStore = GameStore.createEmpty();
             Game gameForSetup = new Game.GameFactory().create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
             gameForSetup.join(new MemberId(1L), "IRRELEVANT PLAYER NAME");
@@ -102,24 +119,12 @@ class GameTest {
             assertThat(game.freshEvents())
                     .hasExactlyElementsOfTypes(
                             GameStarted.class,
-                            ActionCardDeckCreated.class,
                             ActionCardDeckReplenished.class,
                             ActionCardDrawn.class, PlayerDrewActionCard.class,
                             ActionCardDrawn.class, PlayerDrewActionCard.class,
                             ActionCardDrawn.class, PlayerDrewActionCard.class,
                             ActionCardDrawn.class, PlayerDrewActionCard.class,
                             ActionCardDrawn.class, PlayerDrewActionCard.class);
-
-            ActionCardDeckCreated actionCardDeckCreated =
-                    game.freshEvents()
-                        .filter(event -> event instanceof ActionCardDeckCreated)
-                        .map(event -> (ActionCardDeckCreated) event)
-                        .findFirst()
-                        .get();
-
-            assertThat(actionCardDeckCreated.actionCards())
-                    .as("Number of action cards in deck created event must be 63")
-                    .hasSize(63);
         }
 
         @Test
