@@ -89,10 +89,13 @@ class GameTest {
 
         @Test
         void startGameEmitsGameStarted_DeckCreated_PlayerDrawCards_Events() {
-            List<GameEvent> committedEvents = List.of(
-                    new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
-                    new PlayerJoined(new MemberId(1L), "player 1"));
-            Game game = new Game.GameFactory().reconstitute(committedEvents);
+            GameStore gameStore = GameStore.createEmpty();
+            Game gameForSetup = new Game.GameFactory().create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
+            gameForSetup.join(new MemberId(1L), "IRRELEVANT PLAYER NAME");
+            gameStore.save(gameForSetup);
+            // get the Game, but with no fresh events
+            Game game = gameStore.findByHandle(gameForSetup.handle())
+                                  .orElseThrow();
 
             game.start();
 
@@ -121,12 +124,14 @@ class GameTest {
 
         @Test
         void withMultiplePlayers_AllPlayersHaveFullHands() {
-            List<GameEvent> committedEvents = List.of(
-                    new GameCreated("IRRELEVANT NAME", "IRRELEVANT HANDLE"),
-                    new PlayerJoined(new MemberId(1L), "player 1"),
-                    new PlayerJoined(new MemberId(2L), "player 2")
-            );
-            Game game = new Game.GameFactory().reconstitute(committedEvents);
+            GameStore gameStore = GameStore.createEmpty();
+            Game gameForSetup = new Game.GameFactory().create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
+            gameForSetup.join(new MemberId(1L), "IRRELEVANT PLAYER NAME 1");
+            gameForSetup.join(new MemberId(2L), "IRRELEVANT PLAYER NAME 2");
+            gameStore.save(gameForSetup);
+            // get the Game, but with no fresh events
+            Game game = gameStore.findByHandle(gameForSetup.handle())
+                                 .orElseThrow();
 
             game.start();
 

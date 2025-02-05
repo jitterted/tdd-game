@@ -279,7 +279,9 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
     [ ] (Temporary) Constraint: players can't join once game is started
 
-# Refactoring
+# Refactoring/Design Changes
+
+    [ ] Add clearFreshEvents() to EventSourcedAggregate, but ensure that ArchUnit test exists to enforce that only tests can call that method
 
     [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page, e.g.:
         * WorkspaceViewComponent contains InPlayViewComponent, which contains CardViewComponents
