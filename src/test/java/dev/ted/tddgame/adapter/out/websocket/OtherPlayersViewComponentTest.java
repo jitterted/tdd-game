@@ -7,6 +7,7 @@ import dev.ted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
 
 import static dev.ted.tddgame.adapter.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.h2;
 import static dev.ted.tddgame.adapter.HtmlElement.swapInnerHtml;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
@@ -49,7 +50,7 @@ class OtherPlayersViewComponentTest {
         // </div>
         HtmlElement oliverSwap =
                 swapInnerHtml("player-id-" + oliverPlayer.id().id(),
-                              text("<h2 class=\"name\">Oliver</h2>"),
+                              h2("Oliver").classNames("name"),
                               div("other-player-container",
                                   div("titled-container",
                                       text("Hand"),
@@ -57,7 +58,7 @@ class OtherPlayersViewComponentTest {
                               ));
         HtmlElement samanthaSwap =
                 swapInnerHtml("player-id-" + samanthaPlayer.id().id(),
-                              text("<h2 class=\"name\">Samantha</h2>"),
+                              h2("Samantha").classNames("name"),
                               div("other-player-container",
                                   div("titled-container",
                                       text("Hand"),

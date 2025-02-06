@@ -5,6 +5,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Player;
 
 import static dev.ted.tddgame.adapter.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.h2;
 import static dev.ted.tddgame.adapter.HtmlElement.swapInnerHtml;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
 
@@ -25,8 +26,7 @@ public class OtherPlayersViewComponent {
     }
 
     private HtmlElement createSwapInnerHtml(Player player) {
-        HtmlElement nameH2 = text("<h2 class=\"name\">%s</h2>"
-                                            .formatted(player.playerName()));
+        HtmlElement nameH2 = h2(player.playerName()).classNames("name");
         HtmlElement divContainer = div("other-player-container",
                                        div("titled-container",
                                              text("Hand"),
