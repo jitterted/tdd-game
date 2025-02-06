@@ -189,6 +189,7 @@
             <div id="action-card-deck" class="card-deck action-cards">
                 <button id="action-card-draw-pile"
                         class="draw-pile"
+                        hx-swap="none"
                         th:hx-post="@{/game/{gameHandle}/draw-card(gameHandle=${gameView.handle})}"
                 >
                     <img src="/static/action-card-back.png"

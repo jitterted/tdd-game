@@ -29,7 +29,8 @@ public enum HexTile {
     }, WRITE_CODE_FOR_TEST("Write Code for Test") {
         @Override
         public HexTile cardDiscarded() {
-            throw new UnsupportedOperationException("Probably want to return itself, but not sure yet");
+            // allowed to discard, but doesn't move pawn
+            return this;
         }
 
         @Override
@@ -39,7 +40,7 @@ public enum HexTile {
     }, PREDICT_TEST_WILL_FAIL_TO_COMPILE("Predict Test Will Fail to Compile") {
         @Override
         public HexTile cardDiscarded() {
-            throw new UnsupportedOperationException();
+            return this;
         }
 
         @Override
