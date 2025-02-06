@@ -238,19 +238,23 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
                 [X] Discard card causes Pawn to move
 
-            [ ] Implement POST request to handle PLAY card command
+            [X] Implement POST request to handle PLAY card command
                 [X] Create "play" endpoint
                 [X] Implement the PLAY command
                 [X] Show played cards in the Workspace for "You"
                     Player has "In-Play" area (for WRITE CODE, LESS CODE, PREDICT)
+                [X] Show played card in Workspace for "other players"
 
 WE ARE HERE ===>>
 
-                [ ] Show played card in Workspace for "other players"
-
-            [ ] Draw Action Card from the deck's draw pile
+            [ ] Draw Action Card from the deck's draw pile: Player clicks on Draw Pile to initiate DRAW CARD action
+                [ ] POST request for DRAW CARD from ACTION CARD DRAW PILE: player (via Principal) and game (via Game Handle)
                 [ ] If it's a "tech neglect" card, move it to Workspace
                 [ ] Display "Tech Neglect" cards in the Workspace
+
+            [ ] Show Player Turn indicators
+                [ ] Highlight player in some way: for other players, change the other player area background color and scale their pawn and add a "thinking emoji" (h/t basebleem)
+                [ ] For your turn, show a dismissible modal "Your Turn"
 
             [ ] Card menu should reflect current legal actions
                 [ ] Only show PLAY option when available, which depends on:
