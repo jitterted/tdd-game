@@ -15,6 +15,7 @@ import dev.ted.tddgame.domain.Player;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GameBuilder {
 
@@ -53,10 +54,20 @@ public class GameBuilder {
     }
 
     public GameBuilder memberJoinsAsPlayer() {
-        Member member = new Member(memberId, "Default Member Nickname", authName);
+        return memberJoinsAsPlayer(memberId,
+                                   "Default Member Nickname",
+                                   authName,
+                                   "Default Player Name in game");
+    }
+
+    public GameBuilder memberJoinsAsPlayer(MemberId memberId,
+                                           String name,
+                                           String authName,
+                                           String playerName) {
+        Member member = new Member(memberId, name, authName);
         memberStore.save(member);
         Game game = game();
-        game.join(memberId, "Default Player Name in game");
+        game.join(memberId, playerName);
         gameStore.save(game);
 
         return this;
@@ -107,4 +118,40 @@ public class GameBuilder {
 
         return gamePlay;
     }
+
+    public GameBuilder playerActions(MemberId memberId, Consumer<PlayerExecutor> actions) {
+        PlayerExecutor executor = new PlayerExecutor(gameHandle, memberId, gamePlay());
+        actions.accept(executor);
+        return this;
+    }
+
+    public String gameHandle() {
+        return gameHandle;
+    }
+
+    public Player playerFor(MemberId memberId) {
+        return game().playerFor(memberId);
+    }
+    public static class PlayerExecutor {
+        private final String gameHandle;
+        private final MemberId memberId;
+
+        private final GamePlay gamePlay;
+
+        private PlayerExecutor(String gameHandle, MemberId memberId, GamePlay gamePlay) {
+            this.gameHandle = gameHandle;
+            this.memberId = memberId;
+            this.gamePlay = gamePlay;
+        }
+
+        public void discard(ActionCard card) {
+            gamePlay.discard(gameHandle, memberId, card);
+        }
+        public void playCard(ActionCard card) {
+            gamePlay.playCard(gameHandle, memberId, card);
+        }
+
+    }
+
+
 }

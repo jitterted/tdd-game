@@ -28,6 +28,10 @@ public class OtherPlayersViewComponent {
     private HtmlElement createSwapInnerHtml(Player player) {
         HtmlElement nameH2 = h2(player.playerName()).classNames("name");
         HtmlElement divContainer = div("other-player-container",
+                                       div().classNames("workspace")
+                                            .addChildren(
+                                                    div().classNames("in-play")
+                                            ),
                                        div("titled-container",
                                              text("Hand"),
                                              new HandViewComponent(game.handle(), player)

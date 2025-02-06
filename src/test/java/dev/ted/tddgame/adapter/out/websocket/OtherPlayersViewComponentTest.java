@@ -1,7 +1,8 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.HtmlElement;
-import dev.ted.tddgame.domain.Game;
+import dev.ted.tddgame.adapter.in.web.GameBuilder;
+import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import org.junit.jupiter.api.Test;
@@ -16,17 +17,32 @@ class OtherPlayersViewComponentTest {
 
     @Test
     void otherPlayersHandsHtmlForAllPlayersInStartedGame() {
-        Game game = new Game.GameFactory().create("irrelevant game name", "other-game-handle");
-        MemberId memberIdForOliver = new MemberId(78L);
-        game.join(memberIdForOliver, "Oliver");
-        MemberId memberIdForSamantha = new MemberId(63L);
-        game.join(memberIdForSamantha, "Samantha");
-        Player oliverPlayer = game.playerFor(memberIdForOliver);
-        Player samanthaPlayer = game.playerFor(memberIdForSamantha);
+        MemberId oliverMemberId = new MemberId(78L);
+        MemberId samanthaMemberId = new MemberId(63L);
+        GameBuilder gameBuilder = GameBuilder
+                .create("other-game-handle")
+                .actionCards(ActionCard.WRITE_CODE, ActionCard.WRITE_CODE,
+                             ActionCard.LESS_CODE, ActionCard.LESS_CODE,
+                             ActionCard.LESS_CODE, ActionCard.LESS_CODE,
+                             ActionCard.PREDICT, ActionCard.PREDICT,
+                             ActionCard.REFACTOR, ActionCard.REFACTOR)
+                .memberJoinsAsPlayer(oliverMemberId, "Oliver", "Oliver (authName)", "Oliver (Player)")
+                .memberJoinsAsPlayer(samanthaMemberId, "Samantha", "Samantha (authName)", "Samantha (Player)")
+                .startGame()
+                .playerActions(oliverMemberId, executor -> {
+                    executor.discard(ActionCard.LESS_CODE);
+                    executor.discard(ActionCard.PREDICT);
+                    executor.playCard(ActionCard.WRITE_CODE);
+                })
+                .playerActions(samanthaMemberId, executor -> {
+                    executor.discard(ActionCard.LESS_CODE);
+                    executor.discard(ActionCard.PREDICT);
+                    executor.playCard(ActionCard.WRITE_CODE);
+                });
+        Player oliverPlayer = gameBuilder.playerFor(oliverMemberId);
+        Player samanthaPlayer = gameBuilder.playerFor(samanthaMemberId);
 
-        game.start();
-
-        HtmlElement htmlElementActual = new OtherPlayersViewComponent(game)
+        HtmlElement htmlElementActual = new OtherPlayersViewComponent(gameBuilder.game())
                 .htmlForOtherPlayers();
         // actual is a ForestHtmlComponent that contains:
         // 2 swap-innerHTML components, 1 for each player's hand
@@ -34,8 +50,19 @@ class OtherPlayersViewComponentTest {
         //      which contains 5 DIVs (one for each card)
         // <h2 class="name">Player Name for ID of 1</h2>
         // <div class="other-player-container">
+        //     Workspace
         //     <div class="workspace">
-        //         Workspace
+        //         <div class="in-play">
+        //             <div class="card">
+        //                 <img src="/write-code.png">
+        //             </div>
+        //             <div class="card">
+        //                 <img src="/less-code.png">
+        //             </div>
+        //             <div class="card">
+        //                 <img src="/predict.png">
+        //             </div>
+        //         </div>
         //     </div>
         //     <div class="titled-container">
         //         Hand
@@ -50,20 +77,38 @@ class OtherPlayersViewComponentTest {
         // </div>
         HtmlElement oliverSwap =
                 swapInnerHtml("player-id-" + oliverPlayer.id().id(),
-                              h2("Oliver").classNames("name"),
-                              div("other-player-container",
-                                  div("titled-container",
-                                      text("Hand"),
-                                      new HandViewComponent("other-game-handle", oliverPlayer).handContainer())
-                              ));
+                              h2("Oliver (Player)").classNames("name"),
+                              div().classNames("other-player-container")
+                                   .addChildren(
+                                           div().classNames("workspace")
+                                                .addChildren(
+                                                        div().classNames("in-play")
+                                                ),
+                                           div().classNames("titled-container")
+                                                .addChildren(
+                                                        text("Hand"),
+                                                        new HandViewComponent("other-game-handle", oliverPlayer)
+                                                                .handContainer()
+                                                )
+                                   )
+                );
         HtmlElement samanthaSwap =
                 swapInnerHtml("player-id-" + samanthaPlayer.id().id(),
-                              h2("Samantha").classNames("name"),
-                              div("other-player-container",
-                                  div("titled-container",
-                                      text("Hand"),
-                                      new HandViewComponent("other-game-handle", samanthaPlayer).handContainer())
-                              ));
+                              h2("Samantha (Player)").classNames("name"),
+                              div().classNames("other-player-container")
+                                   .addChildren(
+                                           div().classNames("workspace")
+                                                .addChildren(
+                                                        div().classNames("in-play")
+                                                ),
+                                           div().classNames("titled-container")
+                                                .addChildren(
+                                                        text("Hand"),
+                                                        new HandViewComponent("other-game-handle", samanthaPlayer)
+                                                                .handContainer()
+                                                )
+                                   )
+                );
 
         assertThat(htmlElementActual)
                 .isEqualTo(new HtmlElement.Forest(

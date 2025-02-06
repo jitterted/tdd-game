@@ -1,3 +1,10 @@
+February 6, 2025 - Thursday
+===========================
+
+* Rediscovered that other player workspaces are rendered by the OtherPlayersViewComponent
+
+
+
 February 5, 2025 - Wednesday
 ============================
 
