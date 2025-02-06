@@ -120,6 +120,10 @@ class PlayingGameControllerTest {
                                  ActionCard.PREDICT);
     }
 
+    @Test
+    void drawActionCardMovesTopCardFromDrawPileToPlayerHand() {
+        fail("resume here");
+    }
 
     // ---- FIXTURE
 

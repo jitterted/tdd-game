@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GameBuilder {
+public class GameBuilder implements NeedsActionCards {
 
     private final String gameHandle;
     private final String gameName = "Only Game In Progress";
@@ -33,11 +33,11 @@ public class GameBuilder {
         this.gameHandle = gameHandle;
     }
 
-    public static GameBuilder create(String gameHandle) {
+    public static NeedsActionCards create(String gameHandle) {
         return new GameBuilder(gameHandle);
     }
 
-    public static GameBuilder create() {
+    public static NeedsActionCards create() {
         return create("builder-created-game-handle");
     }
 
@@ -166,6 +166,7 @@ public class GameBuilder {
         public void discard(ActionCard card) {
             gamePlay.discard(gameHandle, memberId, card);
         }
+
         public void playCard(ActionCard card) {
             gamePlay.playCard(gameHandle, memberId, card);
         }
@@ -177,5 +178,5 @@ public class GameBuilder {
         }
     }
 
-
 }
+

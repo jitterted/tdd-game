@@ -3,6 +3,7 @@ February 6, 2025 - Thursday
 
 * Rediscovered that other player workspaces are rendered by the OtherPlayersViewComponent
 
+* With GameBuilder: No idea why an inner interface that the outer class implements causes a "cyclic" compiler error
 
 
 February 5, 2025 - Wednesday
