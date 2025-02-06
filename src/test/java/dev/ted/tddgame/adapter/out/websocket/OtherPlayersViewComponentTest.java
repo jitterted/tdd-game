@@ -31,13 +31,17 @@ class OtherPlayersViewComponentTest {
                 .startGame()
                 .playerActions(oliverMemberId, executor -> {
                     executor.discard(ActionCard.LESS_CODE);
-                    executor.discard(ActionCard.PREDICT);
+                    executor.discard(ActionCard.REFACTOR);
                     executor.playCard(ActionCard.WRITE_CODE);
                 })
                 .playerActions(samanthaMemberId, executor -> {
                     executor.discard(ActionCard.LESS_CODE);
                     executor.discard(ActionCard.PREDICT);
                     executor.playCard(ActionCard.WRITE_CODE);
+                })
+                .playerActions(oliverMemberId, executor -> {
+                    executor.playCard(ActionCard.LESS_CODE);
+                    executor.playCard(ActionCard.PREDICT);
                 });
         Player oliverPlayer = gameBuilder.playerFor(oliverMemberId);
         Player samanthaPlayer = gameBuilder.playerFor(samanthaMemberId);
@@ -76,21 +80,36 @@ class OtherPlayersViewComponentTest {
         //     </div>
         // </div>
         HtmlElement oliverSwap =
-                swapInnerHtml("player-id-" + oliverPlayer.id().id(),
-                              h2("Oliver (Player)").classNames("name"),
-                              div().classNames("other-player-container")
-                                   .addChildren(
-                                           div().classNames("workspace")
-                                                .addChildren(
-                                                        div().classNames("in-play")
-                                                ),
-                                           div().classNames("titled-container")
-                                                .addChildren(
-                                                        text("Hand"),
-                                                        new HandViewComponent("other-game-handle", oliverPlayer)
-                                                                .handContainer()
-                                                )
-                                   )
+                swapInnerHtml(
+                        "player-id-" + oliverPlayer.id().id(),
+                        h2("Oliver (Player)").classNames("name"),
+                        div().classNames("other-player-container")
+                             .addChildren(
+                                     div().classNames("workspace")
+                                          .addChildren(
+                                                  div().classNames("in-play")
+                                                       .addChildren(
+                                                               div().classNames("card")
+                                                                    .addChildren(
+                                                                            HandViewComponent.imgElementFor(ActionCard.WRITE_CODE)
+                                                                    ),
+                                                               div().classNames("card")
+                                                                    .addChildren(
+                                                                            HandViewComponent.imgElementFor(ActionCard.LESS_CODE)
+                                                                    ),
+                                                               div().classNames("card")
+                                                                    .addChildren(
+                                                                            HandViewComponent.imgElementFor(ActionCard.PREDICT)
+                                                                    )
+                                                       )
+                                          ),
+                                     div().classNames("titled-container")
+                                          .addChildren(
+                                                  text("Hand"),
+                                                  new HandViewComponent("other-game-handle", oliverPlayer)
+                                                          .handContainer()
+                                          )
+                             )
                 );
         HtmlElement samanthaSwap =
                 swapInnerHtml("player-id-" + samanthaPlayer.id().id(),
@@ -100,6 +119,12 @@ class OtherPlayersViewComponentTest {
                                            div().classNames("workspace")
                                                 .addChildren(
                                                         div().classNames("in-play")
+                                                             .addChildren(
+                                                                     div().classNames("card")
+                                                                          .addChildren(
+                                                                                  HandViewComponent.imgElementFor(ActionCard.WRITE_CODE)
+                                                                          )
+                                                             )
                                                 ),
                                            div().classNames("titled-container")
                                                 .addChildren(

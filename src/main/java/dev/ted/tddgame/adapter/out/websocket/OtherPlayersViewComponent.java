@@ -30,7 +30,7 @@ public class OtherPlayersViewComponent {
         HtmlElement divContainer = div("other-player-container",
                                        div().classNames("workspace")
                                             .addChildren(
-                                                    div().classNames("in-play")
+                                                    inPlayCardsFor(player)
                                             ),
                                        div("titled-container",
                                              text("Hand"),
@@ -40,6 +40,19 @@ public class OtherPlayersViewComponent {
         return swapInnerHtml("player-id-" + player.id().id(),
                              nameH2,
                              divContainer);
+    }
+
+    private HtmlElement inPlayCardsFor(Player player) {
+        return div().classNames("in-play")
+                .addChildren(
+                        player.workspace().cardsInPlay()
+                                .map(actionCard ->
+                                        div().classNames("card")
+                                                .addChildren(
+                                                        HandViewComponent.imgElementFor(actionCard)
+                                                )
+                                ).toArray(HtmlElement[]::new)
+                );
     }
 
 }
