@@ -59,7 +59,7 @@ class HexTileTest {
             "WRITE_CODE_FOR_TEST",
             "PREDICT_TEST_WILL_FAIL_TO_COMPILE"
     })
-    void remainOnSameTileWhenDiscardCardOnWriteCodeForTest(HexTile hexTile) {
+    void remainOnSameTileWhenDiscardCardOnCertainTiles(HexTile hexTile) {
         HexTile nextTile = hexTile.cardDiscarded();
 
         assertThat(nextTile)
