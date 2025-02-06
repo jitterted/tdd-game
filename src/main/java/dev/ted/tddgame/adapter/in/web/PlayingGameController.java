@@ -30,6 +30,8 @@ public class PlayingGameController {
     private static final UriTemplate DISCARD_URI_TEMPLATE = new UriTemplate(DISCARD_URI_TEMPLATE_STRING);
     private static final String PLAY_CARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/cards/play/{cardName}";
     private static final UriTemplate PLAY_URI_TEMPLATE = new UriTemplate(PLAY_CARD_URI_TEMPLATE_STRING);
+    private static final String DRAW_ACTION_CARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/draw-card";
+    private static final UriTemplate DRAW_URI_TEMPLATE = new UriTemplate(DRAW_ACTION_CARD_URI_TEMPLATE_STRING);
     private final GameStore gameStore;
     private final GamePlay gamePlay;
     private final MemberStore memberStore;
@@ -109,6 +111,13 @@ public class PlayingGameController {
         gamePlay.playCard(gameHandle,
                           memberIdFrom(principal),
                           ActionCard.valueOf(cardName));
+    }
+
+    @PostMapping(DRAW_ACTION_CARD_URI_TEMPLATE_STRING)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void drawActionCard(Principal principal,
+                               @PathVariable String gameHandle) {
+
     }
 
     private MemberId memberIdFrom(Principal principal) {

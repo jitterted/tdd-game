@@ -1,6 +1,8 @@
 package dev.ted.tddgame.domain;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -52,12 +54,15 @@ class HexTileTest {
                 .withMessage("Can not play a Write Code card on the How Will You Know It Did It? hex tile.");
     }
 
-    @Test
-    void exceptionThrownWhenDiscardCardOnWriteCodeForTest() {
-        HexTile writeCodeForTest = HexTile.WRITE_CODE_FOR_TEST;
+    @ParameterizedTest
+    @EnumSource(names = {
+            "WRITE_CODE_FOR_TEST",
+            "PREDICT_TEST_WILL_FAIL_TO_COMPILE"
+    })
+    void remainOnSameTileWhenDiscardCardOnWriteCodeForTest(HexTile hexTile) {
+        HexTile nextTile = hexTile.cardDiscarded();
 
-        assertThatExceptionOfType(UnsupportedOperationException.class)
-                .isThrownBy(writeCodeForTest::cardDiscarded)
-                .withMessage("Probably want to return itself, but not sure yet");
+        assertThat(nextTile)
+                .isEqualByComparingTo(hexTile);
     }
 }

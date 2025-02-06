@@ -18,6 +18,8 @@ how -r-> for_test : Discard Any Action Card
 
 for_test -r-> predict_fail_compile : Play WRITE CODE card
 
+for_test -d-> for_test: Discard Any Action Card
+
 for_test --> for_feature : Add 3 Cycle Risk
 state predict_fail_compile {
     state "Wait for Predict" as WaitForPredict2

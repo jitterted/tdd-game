@@ -84,16 +84,39 @@ class PlayingGameControllerMvcTest {
            .hasStatus(HttpStatus.NO_CONTENT);
     }
 
-    // -- FIXTURE
+    @Test
+    void postToDrawCardEndpointReturns204NoContent() {
+        String gameHandle = "game4drawCard";
+        MemberId oliverMemberId = new MemberId(23L);
+        GameBuilder gameBuilder = GameBuilder
+                .create(gameHandle)
+                .shuffledActionCards()
+                .memberJoinsAsPlayer(oliverMemberId, "Oliver", "oliver-auth-name", "Oliver (Player Name)")
+                .startGame()
+                .playerActions(oliverMemberId, executor -> {
+                    executor.discardFirstCardInHand();
+                    executor.discardFirstCardInHand();
+                    executor.discardFirstCardInHand();
+                });
+        MockMvcTester mvc = mvcTesterFor(gameBuilder.gameStore(), gameBuilder.memberStore());
 
-    private static MockMvcTester mvcTesterFor(GameStore fixture) {
-        return mvcTesterFor(fixture, new MemberStore());
+        mvc.post()
+           .principal(gameBuilder.firstPlayerPrincipal())
+           .uri("/game/game4drawCard/draw-card")
+           .assertThat()
+           .hasStatus(HttpStatus.NO_CONTENT);
     }
 
-    private static MockMvcTester mvcTesterFor(GameStore fixture, MemberStore memberStore) {
+    // -- FIXTURE
+
+    private static MockMvcTester mvcTesterFor(GameStore gameStore) {
+        return mvcTesterFor(gameStore, new MemberStore());
+    }
+
+    private static MockMvcTester mvcTesterFor(GameStore gameStore, MemberStore memberStore) {
         return MockMvcTester.of(
-                new PlayingGameController(fixture, new GamePlay(
-                        fixture, new GamePlayTest.NoOpDummyBroadcaster()
+                new PlayingGameController(gameStore, new GamePlay(
+                        gameStore, new GamePlayTest.NoOpDummyBroadcaster()
                 ), memberStore)
         );
     }
@@ -109,6 +132,7 @@ class PlayingGameControllerMvcTest {
         return new Fixture(gameStore, game, memberStore, member.authName());
     }
 
-    private record Fixture(GameStore gameStore, Game game, MemberStore memberStore, String memberAuthName) {}
+    private record Fixture(GameStore gameStore, Game game, MemberStore memberStore,
+                           String memberAuthName) {}
 
 }

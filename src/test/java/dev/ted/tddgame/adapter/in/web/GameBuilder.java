@@ -53,6 +53,16 @@ public class GameBuilder {
         return this;
     }
 
+    public GameBuilder shuffledActionCards() {
+        gameFactory = new Game.GameFactory();
+        gameStore = GameStore.createEmpty(gameFactory);
+
+        Game game = gameFactory.create(gameName, gameHandle);
+        gameStore.save(game);
+
+        return this;
+    }
+
     public GameBuilder memberJoinsAsPlayer() {
         return memberJoinsAsPlayer(memberId,
                                    "Default Member Nickname",
@@ -120,7 +130,7 @@ public class GameBuilder {
     }
 
     public GameBuilder playerActions(MemberId memberId, Consumer<PlayerExecutor> actions) {
-        PlayerExecutor executor = new PlayerExecutor(gameHandle, memberId, gamePlay());
+        PlayerExecutor executor = new PlayerExecutor(gameHandle, memberId, gamePlay(), playerFor(memberId));
         actions.accept(executor);
         return this;
     }
@@ -132,16 +142,25 @@ public class GameBuilder {
     public Player playerFor(MemberId memberId) {
         return game().playerFor(memberId);
     }
+
+    public GameStore gameStore() {
+        return gameStore;
+    }
+
     public static class PlayerExecutor {
         private final String gameHandle;
         private final MemberId memberId;
-
         private final GamePlay gamePlay;
+        private final Player player;
 
-        private PlayerExecutor(String gameHandle, MemberId memberId, GamePlay gamePlay) {
+        private PlayerExecutor(String gameHandle,
+                               MemberId memberId,
+                               GamePlay gamePlay,
+                               Player player) {
             this.gameHandle = gameHandle;
             this.memberId = memberId;
             this.gamePlay = gamePlay;
+            this.player = player;
         }
 
         public void discard(ActionCard card) {
@@ -151,6 +170,11 @@ public class GameBuilder {
             gamePlay.playCard(gameHandle, memberId, card);
         }
 
+        public void discardFirstCardInHand() {
+            player.hand()
+                  .findFirst()
+                  .ifPresent(this::discard);
+        }
     }
 
 
