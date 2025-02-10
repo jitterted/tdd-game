@@ -247,12 +247,12 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
             [ ] Draw Action Card from the deck's draw pile: Player clicks on Draw Pile to initiate DRAW CARD action
                 [X] POST handler for DRAW CARD from ACTION CARD DRAW PILE: player (via Principal) and game (via Game Handle)
+                [X] Implement Use Case for Draw Action Card via test-driving PlayingGameControllerTest, and then GamePlay
 
 WE ARE HERE ===>>
 
-                [ ] Implement Use Case for Draw Action Card via test-driving PlayingGameControllerTest, and then GamePlay
-                [ ] If it's a "tech neglect" card, move it to Workspace
-                [ ] Display "Tech Neglect" cards in the Workspace
+                [ ] If Player draws a "tech neglect" card, move it to Tech Neglect area
+                [ ] Display "Tech Neglect" cards in the Workspace's Tech Neglect area
 
             [ ] Change the way we configure the Action Card deck so that instead of hacking the cards via the Shuffler, provide a way to specify the cards that go into the Discard Pile along with an "identity" shuffler that moves them to the Draw Pile in a predictable way
 
