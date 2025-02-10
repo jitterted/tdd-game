@@ -20,4 +20,14 @@ public enum ActionCard {
     public String title() {
         return title;
     }
+
+    PlayerEvent playedCardEventFor(MemberId memberId) {
+        PlayerEvent event;
+        if (this == CANT_ASSERT || this == CODE_BLOAT) {
+            event = new PlayerDrewTechNeglectCard(memberId, this);
+        } else {
+            event = new PlayerDrewActionCard(memberId, this);
+        }
+        return event;
+    }
 }

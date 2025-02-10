@@ -83,12 +83,7 @@ public class Player {
 
         ActionCard drawnCard = actionCardDeck.draw();
 
-        PlayerEvent event;
-        if (drawnCard == ActionCard.CANT_ASSERT || drawnCard == ActionCard.CODE_BLOAT) {
-            event = new PlayerDrewTechNeglectCard(memberId, drawnCard);
-        } else {
-            event = new PlayerDrewActionCard(memberId, drawnCard);
-        }
+        PlayerEvent event = drawnCard.playedCardEventFor(memberId);
 
         eventEnqueuer.enqueue(event);
 
