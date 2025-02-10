@@ -1,7 +1,17 @@
 February 10, 2025 - Monday
 ==========================
 
-* 
+[Decision]
+* When a Tech Neglect card is Drawn, there are two options for generating events:
+    1. Generate two separate events:
+           PlayerDrewActionCard(TECH_NEGLECT),
+           PlayerPlayedActionCard(TECH_NEGLECT)
+    2. Generate a single (new) event:
+           PlayerDrewTechNeglectCard(TECH_NEGLECT)
+
+  Going with #1 would mean the HexTiles would have to know about and ignore any played Tech Neglect cards (as part of the Workspace.playCard), and also if (when) we track number of cards exiting the hand (where 3 discard/plays defines a Turn), we'd have to account for that.
+
+  Therefore, we're going with option #2: a new event
 
 
 February 6, 2025 - Thursday
