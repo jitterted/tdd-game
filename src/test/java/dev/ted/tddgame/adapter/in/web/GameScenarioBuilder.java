@@ -22,7 +22,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     private final String gameHandle;
     private final String gameName = "Only Game In Progress";
     private String firstPlayerAuthName = "blueauth";
-    private final MemberId memberId = new MemberId(42L);
+    private final MemberId firstPlayerMemberId = new MemberId(42L);
     private GameStore gameStore;
     private final MemberStore memberStore = new MemberStore();
     private Game.GameFactory gameFactory;
@@ -64,11 +64,19 @@ public class GameScenarioBuilder implements NeedsActionCards {
         return this;
     }
 
-    public GameScenarioBuilder memberJoinsAsPlayer() {
-        return memberJoinsAsPlayer(memberId,
+    public GameScenarioBuilder memberJoinsAsOnlyPlayer() {
+        return memberJoinsAsPlayer(firstPlayerMemberId,
                                    "Default Member Nickname",
                                    firstPlayerAuthName,
                                    "Default Player Name in game");
+    }
+
+    public GameScenarioBuilder memberJoinsAsPlayer(MemberId memberId) {
+        return memberJoinsAsPlayer(memberId,
+                                   "Default Name for " + memberId,
+                                   "defaultAuthNameFor" + memberId.id(),
+                                   "Default Player Name for " + memberId
+        );
     }
 
     public GameScenarioBuilder memberJoinsAsPlayer(MemberId memberId,
@@ -97,7 +105,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public GameScenarioBuilder discard(ActionCard cardToDiscard) {
-        gamePlay().discard(gameHandle, memberId, cardToDiscard);
+        gamePlay().discard(gameHandle, firstPlayerMemberId, cardToDiscard);
 
         return this;
     }

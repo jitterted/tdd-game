@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
 import dev.ted.tddgame.application.port.GameStore;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -114,7 +115,7 @@ class GameTest {
             gameStore.save(gameForSetup);
             // get the Game, but with no fresh events
             Game game = gameStore.findByHandle(gameForSetup.handle())
-                                  .orElseThrow();
+                                 .orElseThrow();
 
             game.start();
 
@@ -131,18 +132,25 @@ class GameTest {
 
         @Test
         void withMultiplePlayers_AllPlayersHaveFullHands() {
-            Game.GameFactory gameFactory = new Game.GameFactory(new Deck.IdentityShuffler<>());
-            Game gameForSetup = gameFactory.create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
-            GameStore gameStore = GameStore.createEmpty(gameFactory);
-            gameForSetup.join(new MemberId(1L), "IRRELEVANT PLAYER NAME 1");
-            gameForSetup.join(new MemberId(2L), "IRRELEVANT PLAYER NAME 2");
-            gameStore.save(gameForSetup);
-            // get the Game, but with no fresh events
-            Game game = gameStore.findByHandle(gameForSetup.handle())
-                                 .orElseThrow();
+            GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                    .create()
+                    .actionCards(ActionCard.PREDICT,
+                                 ActionCard.LESS_CODE,
+                                 ActionCard.PREDICT,
+                                 ActionCard.LESS_CODE,
+                                 ActionCard.REFACTOR,
+                                 ActionCard.LESS_CODE,
+                                 ActionCard.LESS_CODE,
+                                 ActionCard.PREDICT,
+                                 ActionCard.WRITE_CODE,
+                                 ActionCard.WRITE_CODE)
+                    .memberJoinsAsPlayer(new MemberId(10L))
+                    .memberJoinsAsPlayer(new MemberId(11L));
 
+            Game game = gameScenarioBuilder.game();
             game.start();
 
+            // don't reconstitute the game, we want to see the fresh events
             new EventsAssertion(game.freshEvents())
                     .hasExactly(PlayerDrewActionCard.class, 2 * PLAYER_HAND_FULL_SIZE)
                     .hasExactly(ActionCardDrawn.class, 2 * PLAYER_HAND_FULL_SIZE);

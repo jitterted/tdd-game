@@ -17,7 +17,7 @@ class GameScenarioBuilderTest {
                         ActionCard.LESS_CODE,
                         ActionCard.PREDICT,
                         ActionCard.PREDICT)
-                .memberJoinsAsPlayer()
+                .memberJoinsAsOnlyPlayer()
                 .startGame();
 
         assertThat(builder.firstPlayer().hand())
@@ -38,7 +38,7 @@ class GameScenarioBuilderTest {
                              ActionCard.WRITE_CODE,
                              ActionCard.WRITE_CODE,
                              ActionCard.LESS_CODE)
-                .memberJoinsAsPlayer()
+                .memberJoinsAsOnlyPlayer()
                 .startGame()
                 .discard(ActionCard.LESS_CODE);
 

@@ -70,7 +70,7 @@ public class GamePlayTest {
                         ActionCard.REFACTOR
                 )
                 .withBroadcaster(mockBroadcaster)
-                .memberJoinsAsPlayer();
+                .memberJoinsAsOnlyPlayer();
 
         gameScenarioBuilder.gamePlay().start(gameHandle);
 
@@ -131,7 +131,7 @@ public class GamePlayTest {
                         ActionCard.PREDICT,
                         cardToBeDrawn)
                 .withBroadcaster(mockBroadcaster)
-                .memberJoinsAsPlayer()
+                .memberJoinsAsOnlyPlayer()
                 .startGame()
                 .discard(ActionCard.LESS_CODE);
         mockBroadcaster.reset();
