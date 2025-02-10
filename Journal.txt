@@ -13,6 +13,8 @@ February 10, 2025 - Monday
 
   Therefore, we're going with option #2: a new event
 
+* Flakiness in tests due to not injecting the predictable GameFactory into the GameStore
+
 
 February 6, 2025 - Thursday
 ===========================

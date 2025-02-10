@@ -81,8 +81,15 @@ public class Player {
     void drawCardFrom(ActionCardDeck actionCardDeck) {
         ensureHandNotFull();
 
-        PlayerEvent event =
-                new PlayerDrewActionCard(memberId, actionCardDeck.draw());
+        ActionCard drawnCard = actionCardDeck.draw();
+
+        PlayerEvent event;
+        if (drawnCard == ActionCard.CANT_ASSERT || drawnCard == ActionCard.CODE_BLOAT) {
+            event = new PlayerDrewTechNeglectCard(memberId, drawnCard);
+        } else {
+            event = new PlayerDrewActionCard(memberId, drawnCard);
+        }
+
         eventEnqueuer.enqueue(event);
 
         assert hand.size() <= 5; // post-condition

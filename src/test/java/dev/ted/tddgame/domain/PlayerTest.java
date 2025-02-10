@@ -26,9 +26,10 @@ class PlayerTest {
 
         @Test
         void canDrawCardWhenHandHasFewerThanFiveCards() {
-            Fixture fixture = createPlayerAndActionCardDeckWithEventAccumulator();
+            ActionCardDeck actionCardDeck = ActionCardDeck.createForTest(
+                    new CardsFactory().createStandardActionCards());
+            Fixture fixture = createPlayerWithEventAccumulator(actionCardDeck);
             Player player = fixture.player();
-            ActionCardDeck actionCardDeck = fixture.actionCardDeck();
 
             player.drawCardFrom(actionCardDeck);
             player.drawCardFrom(actionCardDeck);
@@ -54,7 +55,28 @@ class PlayerTest {
                     .withMessage("Can't draw any more cards, the Hand is full with five cards");
         }
 
-        private Fixture createPlayerAndActionCardDeckWithEventAccumulator() {
+        @Test
+        void techNeglectCardDrawnEventsWhenPlayerDrawsTechNeglectCards() {
+            ActionCardDeck actionCardDeck = ActionCardDeck.createForTest(
+                    ActionCard.CANT_ASSERT,
+                    ActionCard.CODE_BLOAT
+            );
+            Fixture fixture = createPlayerWithEventAccumulator(actionCardDeck);
+
+            fixture.player().drawCardFrom(actionCardDeck);
+            fixture.player().drawCardFrom(actionCardDeck);
+
+            assertThat(fixture.eventEnqueuer().events())
+                    .containsExactly(
+                            new PlayerDrewTechNeglectCard(
+                                    fixture.player().memberId(),
+                                    ActionCard.CANT_ASSERT),
+                            new PlayerDrewTechNeglectCard(
+                                    fixture.player().memberId(),
+                                    ActionCard.CODE_BLOAT));
+        }
+
+        private Fixture createPlayerWithEventAccumulator(ActionCardDeck actionCardDeck) {
             final PlayerId playerId = new PlayerId(IRRELEVANT_PLAYER_ID);
             AccumulatingEventEnqueuer eventEnqueuer = new AccumulatingEventEnqueuer();
             Player player = new Player(playerId,
@@ -62,12 +84,11 @@ class PlayerTest {
                                        "Player 1",
                                        eventEnqueuer,
                                        new Workspace(playerId));
-            ActionCardDeck actionCardDeck = ActionCardDeck
-                    .createForTest(new CardsFactory().createStandardActionCards());
             return new Fixture(eventEnqueuer, player, actionCardDeck);
         }
 
-        private record Fixture(AccumulatingEventEnqueuer eventEnqueuer, Player player, ActionCardDeck actionCardDeck) {}
+        private record Fixture(AccumulatingEventEnqueuer eventEnqueuer, Player player,
+                               ActionCardDeck actionCardDeck) {}
 
         private static class AccumulatingEventEnqueuer implements EventEnqueuer {
             private final List<GameEvent> events = new ArrayList<>();

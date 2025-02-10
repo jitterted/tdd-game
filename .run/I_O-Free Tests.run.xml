@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="I/O-Free Tests" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="I/O-Free Tests" type="JUnit" factoryName="JUnit" repeat_mode="N Times">
     <module name="tdd-game" />
     <option name="PACKAGE_NAME" value="" />
     <option name="MAIN_CLASS_NAME" value="" />

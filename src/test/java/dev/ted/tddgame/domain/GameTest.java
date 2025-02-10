@@ -106,8 +106,10 @@ class GameTest {
 
         @Test
         void startGameEmits_GameStarted_PlayerDrawCards_Events() {
-            GameStore gameStore = GameStore.createEmpty();
-            Game gameForSetup = new Game.GameFactory().create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
+            Game.GameFactory gameFactory = new Game
+                    .GameFactory(new Deck.IdentityShuffler<>());
+            Game gameForSetup = gameFactory.create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
+            GameStore gameStore = GameStore.createEmpty(gameFactory);
             gameForSetup.join(new MemberId(1L), "IRRELEVANT PLAYER NAME");
             gameStore.save(gameForSetup);
             // get the Game, but with no fresh events
@@ -129,8 +131,9 @@ class GameTest {
 
         @Test
         void withMultiplePlayers_AllPlayersHaveFullHands() {
-            GameStore gameStore = GameStore.createEmpty();
-            Game gameForSetup = new Game.GameFactory().create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
+            Game.GameFactory gameFactory = new Game.GameFactory(new Deck.IdentityShuffler<>());
+            Game gameForSetup = gameFactory.create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
+            GameStore gameStore = GameStore.createEmpty(gameFactory);
             gameForSetup.join(new MemberId(1L), "IRRELEVANT PLAYER NAME 1");
             gameForSetup.join(new MemberId(2L), "IRRELEVANT PLAYER NAME 2");
             gameStore.save(gameForSetup);
@@ -276,12 +279,13 @@ class GameTest {
         void gameStartedResultsInStateOfGameAsInProgress() {
             MemberId firstPlayerMemberId = new MemberId(96L);
             MemberId secondPlayerMemberId = new MemberId(52L);
-            Game gameSetup = new Game.GameFactory().create("Irrelevant Game Name", "irrelevant-game-handle");
+            Game.GameFactory gameFactory = new Game.GameFactory(new Deck.IdentityShuffler<>());
+            Game gameSetup = gameFactory.create("Irrelevant Game Name", "irrelevant-game-handle");
             gameSetup.join(firstPlayerMemberId, "first player");
             gameSetup.join(secondPlayerMemberId, "second player");
             gameSetup.start();
 
-            Game game = new Game.GameFactory().reconstitute(gameSetup.freshEvents().toList());
+            Game game = gameFactory.reconstitute(gameSetup.freshEvents().toList());
             Player firstPlayer = game.playerFor(firstPlayerMemberId);
             Player secondPlayer = game.playerFor(secondPlayerMemberId);
 

@@ -95,7 +95,7 @@ class EventDtoTest {
                 ))
                 , Arguments.of(new PlayerDiscardedActionCard(memberId, ActionCard.PREDICT))
                 , Arguments.of(new PlayerPlayedActionCard(memberId, ActionCard.PREDICT))
-                , Arguments.of(new PlayerDrewTechNeglectCard(memberId))
+                , Arguments.of(new PlayerDrewTechNeglectCard(memberId, ActionCard.CANT_ASSERT))
         );
     }
 }
