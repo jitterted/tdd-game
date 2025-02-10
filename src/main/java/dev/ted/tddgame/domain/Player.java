@@ -70,6 +70,10 @@ public class Player {
                 hand.remove(actionCard);
                 workspace.cardPlayed(actionCard);
             }
+
+            case PlayerDrewTechNeglectCard ignored -> {
+                // No state changes needed for tech neglect card drawn event
+            }
         }
     }
 

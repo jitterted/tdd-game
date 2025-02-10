@@ -11,6 +11,7 @@ import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.PlayerDiscardedActionCard;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
+import dev.ted.tddgame.domain.PlayerDrewTechNeglectCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 
@@ -38,18 +39,20 @@ public class EventDto {
     // -- the following mapper and maps should be externalized to some configuration
     //    so that when adding (and especially renaming) classes, the mapping works
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final Map<String, Class<? extends GameEvent>> eventNameToClassMap = Map.of(
-            "GameCreated", GameCreated.class
-            , "PlayerJoined", PlayerJoined.class
-            , "GameStarted", GameStarted.class
-            , "ActionCardDeckCreated", ActionCardDeckCreated.class
-            , "PlayerDrewActionCard", PlayerDrewActionCard.class
-            , "PlayerDiscardedActionCard", PlayerDiscardedActionCard.class
-            , "PlayerPlayedActionCard", PlayerPlayedActionCard.class
-            , "ActionCardDrawn", ActionCardDrawn.class
-            , "ActionCardDiscarded", ActionCardDiscarded.class
-            , "ActionCardDeckReplenished", ActionCardDeckReplenished.class
-    );
+    private static final Map<String, Class<? extends GameEvent>> eventNameToClassMap =
+            Map.ofEntries(
+                    Map.entry("GameCreated", GameCreated.class),
+                    Map.entry("PlayerJoined", PlayerJoined.class),
+                    Map.entry("GameStarted", GameStarted.class),
+                    Map.entry("ActionCardDeckCreated", ActionCardDeckCreated.class),
+                    Map.entry("PlayerDrewActionCard", PlayerDrewActionCard.class),
+                    Map.entry("PlayerDiscardedActionCard", PlayerDiscardedActionCard.class),
+                    Map.entry("PlayerPlayedActionCard", PlayerPlayedActionCard.class),
+                    Map.entry("ActionCardDrawn", ActionCardDrawn.class),
+                    Map.entry("ActionCardDiscarded", ActionCardDiscarded.class),
+                    Map.entry("ActionCardDeckReplenished", ActionCardDeckReplenished.class),
+                    Map.entry("PlayerDrewTechNeglectCard", PlayerDrewTechNeglectCard.class)
+            );
     private static final Map<Class<? extends GameEvent>, String> classToEventName =
             swapKeysValues(eventNameToClassMap);
 

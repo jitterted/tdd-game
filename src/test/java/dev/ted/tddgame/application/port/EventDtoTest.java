@@ -11,6 +11,7 @@ import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.PlayerDiscardedActionCard;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
+import dev.ted.tddgame.domain.PlayerDrewTechNeglectCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 import org.junit.jupiter.api.Test;
@@ -94,6 +95,7 @@ class EventDtoTest {
                 ))
                 , Arguments.of(new PlayerDiscardedActionCard(memberId, ActionCard.PREDICT))
                 , Arguments.of(new PlayerPlayedActionCard(memberId, ActionCard.PREDICT))
+                , Arguments.of(new PlayerDrewTechNeglectCard(memberId))
         );
     }
 }
