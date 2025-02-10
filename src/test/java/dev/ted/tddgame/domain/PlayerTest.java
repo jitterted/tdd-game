@@ -36,9 +36,8 @@ class PlayerTest {
             player.drawCardFrom(actionCardDeck);
             player.drawCardFrom(actionCardDeck);
 
-            assertThat(fixture.eventEnqueuer().events())
-                    .hasOnlyElementsOfType(PlayerDrewActionCard.class)
-                    .hasSize(5);
+            new EventsAssertion(fixture.eventEnqueuer().events())
+                    .hasExactly(PlayerDrewActionCard.class, 5);
         }
 
         @Test

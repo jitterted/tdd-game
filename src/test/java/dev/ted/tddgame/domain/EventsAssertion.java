@@ -15,6 +15,10 @@ class EventsAssertion {
         this.actualEvents = actualEvents.toList();
     }
 
+    public EventsAssertion(List<GameEvent> events) {
+        this.actualEvents = List.copyOf(events);
+    }
+
     public void hasExactly(Class<?> clazz, int expectedCount) {
         Condition<Object> condition = new Condition<>(gameEvent -> gameEvent.getClass() == clazz,
                                                       "GameEvent is " + clazz.getSimpleName());
