@@ -88,7 +88,7 @@ class PlayingGameControllerMvcTest {
     void postToDrawCardEndpointReturns204NoContent() {
         String gameHandle = "game4drawCard";
         MemberId oliverMemberId = new MemberId(23L);
-        GameBuilder gameBuilder = GameBuilder
+        GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
                 .create(gameHandle)
                 .shuffledActionCards()
                 .memberJoinsAsPlayer(oliverMemberId, "Oliver", "oliver-auth-name", "Oliver (Player Name)")
@@ -98,10 +98,11 @@ class PlayingGameControllerMvcTest {
                     executor.discardFirstCardInHand();
                     executor.discardFirstCardInHand();
                 });
-        MockMvcTester mvc = mvcTesterFor(gameBuilder.gameStore(), gameBuilder.memberStore());
+        MockMvcTester mvc = mvcTesterFor(gameScenarioBuilder.gameStore(),
+                                         gameScenarioBuilder.memberStore());
 
         mvc.post()
-           .principal(gameBuilder.firstPlayerPrincipal())
+           .principal(gameScenarioBuilder.firstPlayerPrincipal())
            .uri("/game/game4drawCard/draw-card")
            .assertThat()
            .hasStatus(HttpStatus.NO_CONTENT);

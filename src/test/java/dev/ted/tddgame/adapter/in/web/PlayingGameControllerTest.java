@@ -13,6 +13,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -97,17 +98,18 @@ class PlayingGameControllerTest {
     @Test
     void writeCodeInWorkspaceWhenWriteCodeCardPlayedOnWriteCodeForTestTile() {
         String gameHandle = "play-game-handle";
-        GameBuilder builder = GameBuilder.create(gameHandle)
-                                         .actionCards(
-                                                 ActionCard.WRITE_CODE,
-                                                 ActionCard.LESS_CODE,
-                                                 ActionCard.LESS_CODE,
-                                                 ActionCard.PREDICT,
-                                                 ActionCard.PREDICT)
-                                         .memberJoinsAsPlayer()
-                                         .startGame()
-                                         .discard(ActionCard.LESS_CODE)
-                                         .discard(ActionCard.LESS_CODE);
+        GameScenarioBuilder builder = GameScenarioBuilder
+                .create(gameHandle)
+                .actionCards(
+                        ActionCard.WRITE_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.PREDICT,
+                        ActionCard.PREDICT)
+                .memberJoinsAsPlayer()
+                .startGame()
+                .discard(ActionCard.LESS_CODE)
+                .discard(ActionCard.LESS_CODE);
 
         builder.playingGameController()
                .playCard(builder.firstPlayerPrincipal(),
@@ -121,8 +123,33 @@ class PlayingGameControllerTest {
     }
 
     @Test
+    @Disabled("PlayingGameControllerTest 2/10/25 11:38 — until GamePlay supports draw action card")
     void drawActionCardMovesTopCardFromDrawPileToPlayerHand() {
-        fail("resume here");
+        ActionCard cardToBeDrawn = ActionCard.REFACTOR;
+        String gameHandle = "draw-card-scenario";
+        GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                .create(gameHandle)
+                .actionCards(
+                        ActionCard.WRITE_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.PREDICT,
+                        ActionCard.PREDICT,
+                        cardToBeDrawn)
+                .memberJoinsAsPlayer()
+                .startGame()
+                .discard(ActionCard.LESS_CODE);
+
+        gameScenarioBuilder.playingGameController()
+                           .drawActionCard(
+                                   gameScenarioBuilder.firstPlayerPrincipal(),
+                                   gameHandle);
+
+        assertThat(gameScenarioBuilder.firstPlayer().hand())
+                .as("Player's hand must have the card to be drawn")
+                .contains(cardToBeDrawn);
+        assertThat(gameScenarioBuilder.game().actionCardDeck().drawPile())
+                .isEmpty();
     }
 
     // ---- FIXTURE

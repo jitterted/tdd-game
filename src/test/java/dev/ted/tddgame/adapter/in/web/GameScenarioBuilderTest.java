@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-class GameBuilderTest {
+class GameScenarioBuilderTest {
 
     @Test
     void definedActionCardsDealtToPlayerInOrderAfterGameStarted() {
-        GameBuilder builder = GameBuilder
+        GameScenarioBuilder builder = GameScenarioBuilder
                 .create()
                 .actionCards(
                         ActionCard.WRITE_CODE,
@@ -31,7 +31,7 @@ class GameBuilderTest {
 
     @Test
     void discardMovesCardFromFirstPlayerHandToDiscardPile() {
-        GameBuilder builder = GameBuilder
+        GameScenarioBuilder builder = GameScenarioBuilder
                 .create()
                 .actionCards(ActionCard.WRITE_CODE,
                              ActionCard.WRITE_CODE,

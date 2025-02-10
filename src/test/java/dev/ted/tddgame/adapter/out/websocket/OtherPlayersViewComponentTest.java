@@ -1,7 +1,7 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.HtmlElement;
-import dev.ted.tddgame.adapter.in.web.GameBuilder;
+import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
@@ -19,7 +19,7 @@ class OtherPlayersViewComponentTest {
     void otherPlayersHandsHtmlForAllPlayersInStartedGame() {
         MemberId oliverMemberId = new MemberId(78L);
         MemberId samanthaMemberId = new MemberId(63L);
-        GameBuilder gameBuilder = GameBuilder
+        GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
                 .create("other-game-handle")
                 .actionCards(ActionCard.WRITE_CODE, ActionCard.WRITE_CODE,
                              ActionCard.LESS_CODE, ActionCard.LESS_CODE,
@@ -43,10 +43,10 @@ class OtherPlayersViewComponentTest {
                     executor.playCard(ActionCard.LESS_CODE);
                     executor.playCard(ActionCard.PREDICT);
                 });
-        Player oliverPlayer = gameBuilder.playerFor(oliverMemberId);
-        Player samanthaPlayer = gameBuilder.playerFor(samanthaMemberId);
+        Player oliverPlayer = gameScenarioBuilder.playerFor(oliverMemberId);
+        Player samanthaPlayer = gameScenarioBuilder.playerFor(samanthaMemberId);
 
-        HtmlElement htmlElementActual = new OtherPlayersViewComponent(gameBuilder.game())
+        HtmlElement htmlElementActual = new OtherPlayersViewComponent(gameScenarioBuilder.game())
                 .htmlForOtherPlayers();
         // actual is a ForestHtmlComponent that contains:
         // 2 swap-innerHTML components, 1 for each player's hand

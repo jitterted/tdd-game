@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GameBuilder implements NeedsActionCards {
+public class GameScenarioBuilder implements NeedsActionCards {
 
     private final String gameHandle;
     private final String gameName = "Only Game In Progress";
@@ -28,20 +28,21 @@ public class GameBuilder implements NeedsActionCards {
     private Game.GameFactory gameFactory;
     private GamePlay gamePlay;
     private PlayingGameController playingGameController;
+    private Broadcaster broadcaster = new GamePlayTest.NoOpDummyBroadcaster();
 
-    public GameBuilder(String gameHandle) {
+    public GameScenarioBuilder(String gameHandle) {
         this.gameHandle = gameHandle;
     }
 
     public static NeedsActionCards create(String gameHandle) {
-        return new GameBuilder(gameHandle);
+        return new GameScenarioBuilder(gameHandle);
     }
 
     public static NeedsActionCards create() {
         return create("builder-created-game-handle");
     }
 
-    public GameBuilder actionCards(ActionCard... actionCards) {
+    public GameScenarioBuilder actionCards(ActionCard... actionCards) {
         Deck.Shuffler<ActionCard> definedCardsShuffler =
                 _ -> new ArrayList<>(List.of(actionCards));
         gameFactory = new Game.GameFactory(definedCardsShuffler);
@@ -53,7 +54,7 @@ public class GameBuilder implements NeedsActionCards {
         return this;
     }
 
-    public GameBuilder shuffledActionCards() {
+    public GameScenarioBuilder shuffledActionCards() {
         gameFactory = new Game.GameFactory();
         gameStore = GameStore.createEmpty(gameFactory);
 
@@ -63,17 +64,20 @@ public class GameBuilder implements NeedsActionCards {
         return this;
     }
 
-    public GameBuilder memberJoinsAsPlayer() {
+    public GameScenarioBuilder memberJoinsAsPlayer() {
         return memberJoinsAsPlayer(memberId,
                                    "Default Member Nickname",
                                    authName,
                                    "Default Player Name in game");
     }
 
-    public GameBuilder memberJoinsAsPlayer(MemberId memberId,
-                                           String name,
-                                           String authName,
-                                           String playerName) {
+    public GameScenarioBuilder memberJoinsAsPlayer(MemberId memberId,
+                                                   String name,
+                                                   String authName,
+                                                   String playerName) {
+        if (memberStore.findById(memberId).isPresent()) {
+            throw new IllegalArgumentException("Member already exists");
+        }
         Member member = new Member(memberId, name, authName);
         memberStore.save(member);
         Game game = game();
@@ -83,13 +87,13 @@ public class GameBuilder implements NeedsActionCards {
         return this;
     }
 
-    public GameBuilder startGame() {
+    public GameScenarioBuilder startGame() {
         gamePlay().start(gameHandle);
 
         return this;
     }
 
-    public GameBuilder discard(ActionCard cardToDiscard) {
+    public GameScenarioBuilder discard(ActionCard cardToDiscard) {
         gamePlay().discard(gameHandle, memberId, cardToDiscard);
 
         return this;
@@ -122,14 +126,13 @@ public class GameBuilder implements NeedsActionCards {
 
     public GamePlay gamePlay() {
         if (gamePlay == null) {
-            Broadcaster dummyBroadcaster = new GamePlayTest.NoOpDummyBroadcaster();
-            gamePlay = new GamePlay(gameStore, dummyBroadcaster);
+            gamePlay = new GamePlay(gameStore, broadcaster);
         }
 
         return gamePlay;
     }
 
-    public GameBuilder playerActions(MemberId memberId, Consumer<PlayerExecutor> actions) {
+    public GameScenarioBuilder playerActions(MemberId memberId, Consumer<PlayerExecutor> actions) {
         PlayerExecutor executor = new PlayerExecutor(gameHandle, memberId, gamePlay(), playerFor(memberId));
         actions.accept(executor);
         return this;
@@ -145,6 +148,11 @@ public class GameBuilder implements NeedsActionCards {
 
     public GameStore gameStore() {
         return gameStore;
+    }
+
+    public GameScenarioBuilder withBroadcaster(Broadcaster broadcaster) {
+        this.broadcaster = broadcaster;
+        return this;
     }
 
     public static class PlayerExecutor {
