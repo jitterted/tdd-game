@@ -3,6 +3,7 @@ package dev.ted.tddgame.domain;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -25,12 +26,60 @@ class PlayerTest {
 
         @Test
         void canDrawCardWhenHandHasFewerThanFiveCards() {
+            Fixture fixture = createPlayerAndActionCardDeckWithEventAccumulator();
+            Player player = fixture.player();
+            ActionCardDeck actionCardDeck = fixture.actionCardDeck();
 
+            player.drawCardFrom(actionCardDeck);
+            player.drawCardFrom(actionCardDeck);
+            player.drawCardFrom(actionCardDeck);
+            player.drawCardFrom(actionCardDeck);
+            player.drawCardFrom(actionCardDeck);
+
+            assertThat(fixture.eventEnqueuer().events())
+                    .hasOnlyElementsOfType(PlayerDrewActionCard.class)
+                    .hasSize(5);
         }
 
         @Test
         void exceptionThrownWhenDrawCardAndHandHasFiveCards() {
+            Player player = Player.createNull(73L, "Player Name");
+            ActionCardDeck actionCardDeck = ActionCardDeck
+                    .createForTest(new CardsFactory().createStandardActionCards());
+            for (int i = 0; i < 5; i++) {
+                player.drawCardFrom(actionCardDeck);
+            }
 
+            assertThatExceptionOfType(IllegalStateException.class)
+                    .isThrownBy(() -> player.drawCardFrom(actionCardDeck));
+        }
+
+        private Fixture createPlayerAndActionCardDeckWithEventAccumulator() {
+            final PlayerId playerId = new PlayerId(IRRELEVANT_PLAYER_ID);
+            AccumulatingEventEnqueuer eventEnqueuer = new AccumulatingEventEnqueuer();
+            Player player = new Player(playerId,
+                                       new MemberId(IRRELEVANT_MEMBER_ID),
+                                       "Player 1",
+                                       eventEnqueuer,
+                                       new Workspace(playerId));
+            ActionCardDeck actionCardDeck = ActionCardDeck
+                    .createForTest(new CardsFactory().createStandardActionCards());
+            return new Fixture(eventEnqueuer, player, actionCardDeck);
+        }
+
+        private record Fixture(AccumulatingEventEnqueuer eventEnqueuer, Player player, ActionCardDeck actionCardDeck) {}
+
+        private static class AccumulatingEventEnqueuer implements EventEnqueuer {
+            private final List<GameEvent> events = new ArrayList<>();
+
+            public List<GameEvent> events() {
+                return events;
+            }
+
+            @Override
+            public void enqueue(GameEvent gameEvent) {
+                events.add(gameEvent);
+            }
         }
     }
 
@@ -74,6 +123,7 @@ class PlayerTest {
         return new Player(playerId,
                           new MemberId(memberId),
                           "Player 1",
-                          null, new Workspace(playerId));
+                          null,
+                          new Workspace(playerId));
     }
 }

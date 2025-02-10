@@ -75,10 +75,15 @@ public class Player {
 
 
     void drawCardFrom(ActionCardDeck actionCardDeck) {
-        // constraint: Player's Hand must have room for an additional card
+        if (hand.size() == 5) { // precondition
+            throw new IllegalStateException();
+        }
+
         PlayerEvent event =
                 new PlayerDrewActionCard(memberId, actionCardDeck.draw());
         eventEnqueuer.enqueue(event);
+
+        assert hand.size() <= 5; // post-condition
     }
 
     void discard(ActionCard actionCardToDiscard, ActionCardDeck actionCardDeck) {
