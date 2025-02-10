@@ -144,9 +144,7 @@ class GameTest {
             game.start();
 
             new EventsAssertion(game.freshEvents())
-                    .hasExactly(PlayerDrewActionCard.class, 2 * PLAYER_HAND_FULL_SIZE);
-
-            new EventsAssertion(game.freshEvents())
+                    .hasExactly(PlayerDrewActionCard.class, 2 * PLAYER_HAND_FULL_SIZE)
                     .hasExactly(ActionCardDrawn.class, 2 * PLAYER_HAND_FULL_SIZE);
         }
 
