@@ -117,7 +117,7 @@ public class PlayingGameController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void drawActionCard(Principal principal,
                                @PathVariable String gameHandle) {
-
+        gamePlay.drawActionCard(gameHandle, memberIdFrom(principal));
     }
 
     private MemberId memberIdFrom(Principal principal) {

@@ -1,5 +1,6 @@
 package dev.ted.tddgame.application;
 
+import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
 import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.domain.ActionCard;
@@ -53,13 +54,30 @@ public class GamePlayTest {
 
     @Test
     void startGameBroadcastsGameStartedInformation() {
-        GameFixture gameFixture = createGameStoreWithGameWithOnePlayer();
         GameUpdateMockBroadcaster mockBroadcaster = new GameUpdateMockBroadcaster();
-        GamePlay gamePlay = new GamePlay(gameFixture.gameStore, mockBroadcaster);
+        String gameHandle = "start-game-scenario";
+        GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                .create(gameHandle)
+                .actionCards(
+                        ActionCard.WRITE_CODE,
+                        ActionCard.PREDICT,
+                        ActionCard.WRITE_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.PREDICT,
+                        ActionCard.PREDICT,
+                        ActionCard.WRITE_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.REFACTOR
+                )
+                .withBroadcaster(mockBroadcaster)
+                .memberJoinsAsPlayer();
 
-        gamePlay.start(gameFixture.gameHandle);
+        gameScenarioBuilder.gamePlay().start(gameHandle);
 
-        mockBroadcaster.verifyGameMatches(gameFixture.game);
+        mockBroadcaster.verifyGameMatches(gameScenarioBuilder.game());
+
+        assertThat(gameScenarioBuilder.game().actionCardDeck().drawPile())
+                .hasSize(9 - 5);
     }
 
     @Test
@@ -96,6 +114,44 @@ public class GamePlayTest {
         Game game = gameFixture.gameStore.findByHandle(gameFixture.gameHandle).orElseThrow();
         assertThat(game.playerFor(gameFixture.memberId).workspace().cardsInPlay())
                 .containsExactly(ActionCard.WRITE_CODE);
+    }
+
+    @Test
+    void drawCardBroadcastsUpdatedPlayerHandAndActionCardDrawPileState() {
+        ActionCard cardToBeDrawn = ActionCard.REFACTOR;
+        GameUpdateMockBroadcaster mockBroadcaster = new GameUpdateMockBroadcaster();
+        String gameHandle = "draw-card-scenario";
+        GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                .create(gameHandle)
+                .actionCards(
+                        ActionCard.WRITE_CODE,
+                        ActionCard.PREDICT,
+                        ActionCard.WRITE_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.PREDICT,
+                        cardToBeDrawn)
+                .withBroadcaster(mockBroadcaster)
+                .memberJoinsAsPlayer()
+                .startGame()
+                .discard(ActionCard.LESS_CODE);
+        mockBroadcaster.reset();
+
+        gameScenarioBuilder
+                .gamePlay()
+                .drawActionCard(gameHandle,
+                                gameScenarioBuilder.firstPlayer().memberId());
+
+        mockBroadcaster.verifyGameMatches(gameScenarioBuilder.game());
+
+        assertThat(gameScenarioBuilder.game()
+                                      .actionCardDeck().drawPile())
+                .as("Action Card Draw Pile should be empty after player draws the card")
+                .isEmpty();
+        assertThat(gameScenarioBuilder.game()
+                           .playerFor(gameScenarioBuilder.firstPlayer().memberId())
+                           .hand())
+                .as("Player's Hand should contain the card draw from the Action Card Deck's draw pile")
+                .contains(cardToBeDrawn);
     }
 
     // -- FIXTURE

@@ -13,7 +13,6 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -123,7 +122,6 @@ class PlayingGameControllerTest {
     }
 
     @Test
-    @Disabled("PlayingGameControllerTest 2/10/25 11:38 — until GamePlay supports draw action card")
     void drawActionCardMovesTopCardFromDrawPileToPlayerHand() {
         ActionCard cardToBeDrawn = ActionCard.REFACTOR;
         String gameHandle = "draw-card-scenario";
