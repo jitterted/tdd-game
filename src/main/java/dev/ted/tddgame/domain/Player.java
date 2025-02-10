@@ -75,8 +75,8 @@ public class Player {
 
 
     void drawCardFrom(ActionCardDeck actionCardDeck) {
-        if (hand.size() == 5) { // precondition
-            throw new IllegalStateException();
+        if (handIsFull()) { // precondition
+            throw new HandAlreadyFull("Can't draw any more cards, the Hand is full with five cards");
         }
 
         PlayerEvent event =
@@ -84,6 +84,10 @@ public class Player {
         eventEnqueuer.enqueue(event);
 
         assert hand.size() <= 5; // post-condition
+    }
+
+    private boolean handIsFull() {
+        return hand.size() == 5;
     }
 
     void discard(ActionCard actionCardToDiscard, ActionCardDeck actionCardDeck) {

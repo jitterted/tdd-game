@@ -49,8 +49,9 @@ class PlayerTest {
                 player.drawCardFrom(actionCardDeck);
             }
 
-            assertThatExceptionOfType(IllegalStateException.class)
-                    .isThrownBy(() -> player.drawCardFrom(actionCardDeck));
+            assertThatExceptionOfType(HandAlreadyFull.class)
+                    .isThrownBy(() -> player.drawCardFrom(actionCardDeck))
+                    .withMessage("Can't draw any more cards, the Hand is full with five cards");
         }
 
         private Fixture createPlayerAndActionCardDeckWithEventAccumulator() {
