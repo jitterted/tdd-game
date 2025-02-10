@@ -21,7 +21,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
 
     private final String gameHandle;
     private final String gameName = "Only Game In Progress";
-    private final String authName = "blueauth";
+    private String firstPlayerAuthName = "blueauth";
     private final MemberId memberId = new MemberId(42L);
     private GameStore gameStore;
     private final MemberStore memberStore = new MemberStore();
@@ -67,7 +67,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     public GameScenarioBuilder memberJoinsAsPlayer() {
         return memberJoinsAsPlayer(memberId,
                                    "Default Member Nickname",
-                                   authName,
+                                   firstPlayerAuthName,
                                    "Default Player Name in game");
     }
 
@@ -81,6 +81,9 @@ public class GameScenarioBuilder implements NeedsActionCards {
         Member member = new Member(memberId, name, authName);
         memberStore.save(member);
         Game game = game();
+        if (game.players().isEmpty()) {
+            firstPlayerAuthName = authName;
+        }
         game.join(memberId, playerName);
         gameStore.save(game);
 
@@ -117,7 +120,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public Principal firstPlayerPrincipal() {
-        return () -> authName;
+        return () -> firstPlayerAuthName;
     }
 
     public MemberStore memberStore() {

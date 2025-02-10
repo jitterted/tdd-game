@@ -21,6 +21,20 @@ class PlayerTest {
     }
 
     @Nested
+    class CommandsGenerateEvents {
+
+        @Test
+        void canDrawCardWhenHandHasFewerThanFiveCards() {
+
+        }
+
+        @Test
+        void exceptionThrownWhenDrawCardAndHandHasFiveCards() {
+
+        }
+    }
+
+    @Nested
     class EventsProjectState {
 
         @Test
