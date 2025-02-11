@@ -56,14 +56,6 @@
     row-gap: 0.5rem;
 }
 
-.other-player-container .workspace {
-    padding: 0.25rem;
-    border-width: 1px;
-    border-color: #D1D5DB;
-    --tw-bg-opacity: 1;
-    background-color: rgb(241 245 249 / var(--tw-bg-opacity)) /* #f1f5f9 */;
-}
-
 .hand {
     height: min-content;
 }
@@ -72,20 +64,45 @@
     height: 185px;
     overflow: hidden;
     background-color: #999;
+    display: flex;
 }
 
 .your-play-area .in-play {
     display: grid;
     grid-template-rows: 160px;
     grid-template-columns: repeat(6, 125px);
-    align-content: start;
+    align-content: center;
+}
+
+.your-play-area .tech-neglect {
+    display: grid;
+    grid-template-rows: 160px;
+    grid-template-columns: repeat(2, 125px);
+    align-content: center;
+}
+
+.other-player-container .workspace {
+    padding: 0.25rem;
+    border-width: 1px;
+    border-color: #D1D5DB;
+    --tw-bg-opacity: 1;
+    background-color: rgb(241 245 249 / var(--tw-bg-opacity)) /* #f1f5f9 */;
+    display: flex;
+    align-items: stretch;
 }
 
 .other-player-container .in-play {
     display: grid;
     grid-template-rows: 100px;
-    grid-template-columns: repeat(6, 75px);
+    grid-template-columns: repeat(5, 75px);
     align-content: start;
+}
+
+.other-player-container .tech-neglect {
+    display: grid;
+    grid-template-rows: 100px;
+    grid-template-columns: repeat(2, 75px);
+    align-content: end;
 }
 
 .other-player-container .hand {

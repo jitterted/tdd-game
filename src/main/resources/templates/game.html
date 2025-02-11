@@ -114,11 +114,19 @@
                             <img src="/static/predict.png">
                         </div>
                     </div>
+                    <div class="tech-neglect">
+                        <div class="card">
+                            <img src="/static/cant-assert.png">
+                        </div>
+                        <div class="card">
+                            <img src="/static/code-bloat.png">
+                        </div>
+                    </div>
                 </div>
                 <div class="titled-container">
                     Hand
                     <div class="hand">
-                        <div class="card"><img src="/static/cant-assert.png"></div>
+                        <div class="card"><img src="/static/write-code.png"></div>
                         <div class="card"><img src="/static/predict.png"></div>
                         <div class="card"><img src="/static/less-code.png"></div>
                         <div class="card"><img src="/static/refactor.png"></div>
@@ -232,6 +240,16 @@
                              th:src="@{/predict.png}">
                     </div>
                 </div>
+                <div class="tech-neglect">
+                    <div class="card">
+                        <img src="/static/code-bloat.png"
+                             th:src="@{/code-bloat.png}">
+                    </div>
+                    <div class="card">
+                        <img src="/static/cant-assert.png"
+                             th:src="@{/cant-assert.png}">
+                    </div>
+                </div>
             </div>
             <div class="titled-container">
                 Your Hand
@@ -240,12 +258,12 @@
                             hx-on::after-settle="document.querySelector('dialog').showModal()"
                             hx-swap="none"
                             class="card">
-                        <img src="/static/cant-assert.png"
-                             th:src="@{/cant-assert.png}">
+                        <img src="/static/write-code.png"
+                             th:src="@{/write-code.png}">
                     </button>
                     <div class="card">
-                        <img src="/static/code-bloat.png"
-                             th:src="@{/code-bloat.png}">
+                        <img src="/static/predict.png"
+                             th:src="@{/predict.png}">
                     </div>
                     <div class="card">
                         <img src="/static/less-code.png"
