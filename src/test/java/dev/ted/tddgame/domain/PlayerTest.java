@@ -136,6 +136,12 @@ class PlayerTest {
                     .containsOnly(ActionCard.PREDICT);
         }
 
+        @Test
+        void drawTechNeglectCardsGoDirectlyIntoWorkspace() {
+
+            // deck does not have the drawn card
+            // workspace's Tech Neglect area has the drawn card
+        }
     }
 
 

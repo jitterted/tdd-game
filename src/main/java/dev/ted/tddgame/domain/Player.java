@@ -57,21 +57,20 @@ public class Player {
 
     public void apply(PlayerEvent event) {
         switch (event) {
-            case PlayerDrewActionCard playerDrewActionCard ->
-                    hand.add(playerDrewActionCard.actionCard());
+            case PlayerDrewActionCard(_, ActionCard actionCard) ->
+                    hand.add(actionCard);
 
-            case PlayerDiscardedActionCard playerDiscardedActionCard -> {
-                hand.remove(playerDiscardedActionCard.actionCard());
+            case PlayerDiscardedActionCard(_, ActionCard actionCard) -> {
+                hand.remove(actionCard);
                 workspace.cardDiscarded();
             }
 
-            case PlayerPlayedActionCard playerPlayedActionCard -> {
-                ActionCard actionCard = playerPlayedActionCard.actionCard();
+            case PlayerPlayedActionCard(_, ActionCard actionCard) -> {
                 hand.remove(actionCard);
                 workspace.cardPlayed(actionCard);
             }
 
-            case PlayerDrewTechNeglectCard ignored -> {
+            case PlayerDrewTechNeglectCard(_, ActionCard actionCard) -> {
                 // No state changes needed for tech neglect card drawn event
             }
         }
