@@ -35,4 +35,8 @@ class EventsAssertion {
         return this;
     }
 
+    public EventsAssertion as(String description) {
+        info.description(description);
+        return this;
+    }
 }

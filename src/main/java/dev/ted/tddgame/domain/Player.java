@@ -32,7 +32,7 @@ public class Player {
                                    DUMMY_EVENT_ENQUEUER,
                                    new Workspace(playerId));
         // ensure that player events (from commands) get applied
-        player.eventEnqueuer = gameEvent -> player.apply((PlayerEvent)gameEvent);
+        player.eventEnqueuer = gameEvent -> player.apply((PlayerEvent) gameEvent);
         return player;
     }
 
@@ -58,8 +58,7 @@ public class Player {
 
     public void apply(PlayerEvent event) {
         switch (event) {
-            case PlayerDrewActionCard(_, ActionCard actionCard) ->
-                    hand.add(actionCard);
+            case PlayerDrewActionCard(_, ActionCard actionCard) -> hand.add(actionCard);
 
             case PlayerDiscardedActionCard(_, ActionCard actionCard) -> {
                 hand.remove(actionCard);
@@ -98,6 +97,12 @@ public class Player {
 
     private boolean handIsFull() {
         return hand.size() == PLAYER_HAND_FULL_SIZE;
+    }
+
+    void drawToFull(ActionCardDeck actionCardDeck) {
+        while (!handIsFull()) {
+            drawCardFrom(actionCardDeck);
+        }
     }
 
     void discard(ActionCard actionCardToDiscard, ActionCardDeck actionCardDeck) {

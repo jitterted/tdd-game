@@ -128,9 +128,7 @@ public class Game extends EventSourcedAggregate {
 
     private void initialDealCardsToAllPlayers() {
         players().forEach(player -> {
-            for (int i = 0; i < 5; i++) {
-                player.drawCardFrom(actionCardDeck);
-            }
+            player.drawToFull(actionCardDeck);
         });
     }
 

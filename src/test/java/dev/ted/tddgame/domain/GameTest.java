@@ -166,8 +166,11 @@ class GameTest {
 
             // don't reconstitute the game, we want to see the fresh events
             new EventsAssertion(game.freshEvents())
-                    .hasExactly(ActionCardDrawn.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
+                    .as("12 cards needed to be drawn, as there are 2 Tech Neglect cards and 10 Regular Action Cards")
+                    .hasExactly(ActionCardDrawn.class, 12)
+                    .as("10 Action Cards should have been drawn")
                     .hasExactly(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
+                    .as("2 Tech Neglect cards should have been drawn")
                     .hasExactly(PlayerDrewTechNeglectCard.class, 2);
         }
 
