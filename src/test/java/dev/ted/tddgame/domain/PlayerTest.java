@@ -138,9 +138,20 @@ class PlayerTest {
 
         @Test
         void drawTechNeglectCardsGoDirectlyIntoWorkspace() {
+            MemberId memberId = new MemberId(82L);
+            Player player = createPlayer(memberId.id());
+            List<PlayerEvent> events = List.of(
+                    new PlayerDrewTechNeglectCard(memberId, ActionCard.CANT_ASSERT),
+                    new PlayerDrewTechNeglectCard(memberId, ActionCard.CODE_BLOAT)
+            );
 
-            // deck does not have the drawn card
-            // workspace's Tech Neglect area has the drawn card
+            events.forEach(player::apply);
+
+            assertThat(player.hand())
+                    .as("No cards should have been added to the hand, as we drew only Tech Neglect cards")
+                    .isEmpty();
+            assertThat(player.workspace().techNeglectCards())
+                    .containsExactly(ActionCard.CANT_ASSERT, ActionCard.CODE_BLOAT);
         }
     }
 

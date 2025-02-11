@@ -301,6 +301,7 @@ WE ARE HERE ===>>
     [ ] Add clearFreshEvents() to EventSourcedAggregate, but ensure that ArchUnit test exists to enforce that only tests can call that method
 
     [ ] Move the JSON annotations (@JsonCreator/@JsonValue) in ActionCard to a separate class (perhaps EventDto?)
+        [ ] Check if we could then change the ActionCard parameter in PlayerDrewTechNeglectCard to the more specific TechNeglectCard
 
     [ ] Reorganize the ViewComponents to have a more direct relationship to where their contents appear on the page, e.g.:
         * WorkspaceViewComponent contains InPlayViewComponent, which contains CardViewComponents

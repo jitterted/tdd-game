@@ -8,6 +8,7 @@ public class Workspace {
     private final WorkspaceId id;
     private HexTile currentHexTile;
     private final List<ActionCard> cardsInPlay = new ArrayList<>();
+    private final List<ActionCard> techNeglectCards = new ArrayList<>();
 
     /**
      * Assign the Workspace ID from the Player's ID
@@ -49,5 +50,16 @@ public class Workspace {
 
     public Stream<ActionCard> cardsInPlay() {
         return cardsInPlay.stream();
+    }
+
+    public Stream<ActionCard> techNeglectCards() {
+        return techNeglectCards.stream();
+    }
+
+    /**
+     * Handler for Tech Neglect ActionCard that has been "played"
+     */
+    public void techNeglectCardPlayed(ActionCard actionCard) {
+        techNeglectCards.add(actionCard);
     }
 }
