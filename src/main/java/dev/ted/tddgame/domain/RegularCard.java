@@ -6,7 +6,7 @@ public final class RegularCard extends ActionCard {
     }
 
     @Override
-    PlayerEvent playedCardEventFor(MemberId memberId) {
+    PlayerEvent drawnCardEventFor(MemberId memberId) {
         return new PlayerDrewActionCard(memberId, this);
     }
 }

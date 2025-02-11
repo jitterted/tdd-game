@@ -14,6 +14,7 @@ import dev.ted.tddgame.domain.Player;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -43,8 +44,12 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public GameScenarioBuilder actionCards(ActionCard... actionCards) {
+        return actionCards(List.of(actionCards));
+    }
+
+    private GameScenarioBuilder actionCards(List<ActionCard> actionCardList) {
         Deck.Shuffler<ActionCard> definedCardsShuffler =
-                _ -> new ArrayList<>(List.of(actionCards));
+                _ -> new ArrayList<>(actionCardList);
         gameFactory = new Game.GameFactory(definedCardsShuffler);
         gameStore = GameStore.createEmpty(gameFactory);
 
@@ -62,6 +67,17 @@ public class GameScenarioBuilder implements NeedsActionCards {
         gameStore.save(game);
 
         return this;
+    }
+
+    @Override
+    public GameScenarioBuilder actionCards(int count1, ActionCard actionCard1, int count2, ActionCard actionCard2, int count3, ActionCard actionCard3, int count4, ActionCard actionCard4) {
+        List<ActionCard> actionCards = new ArrayList<>();
+        actionCards.addAll(Collections.nCopies(count1, actionCard1));
+        actionCards.addAll(Collections.nCopies(count2, actionCard2));
+        actionCards.addAll(Collections.nCopies(count3, actionCard3));
+        actionCards.addAll(Collections.nCopies(count4, actionCard4));
+
+        return actionCards(actionCards);
     }
 
     public GameScenarioBuilder memberJoinsAsOnlyPlayer() {

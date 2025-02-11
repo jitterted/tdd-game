@@ -6,7 +6,7 @@ public final class TechNeglectCard extends ActionCard {
     }
 
     @Override
-    PlayerEvent playedCardEventFor(MemberId memberId) {
+    PlayerEvent drawnCardEventFor(MemberId memberId) {
         return new PlayerDrewTechNeglectCard(memberId, this);
     }
 }

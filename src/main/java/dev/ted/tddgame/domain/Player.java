@@ -82,7 +82,7 @@ public class Player {
 
         ActionCard drawnCard = actionCardDeck.draw();
 
-        PlayerEvent event = drawnCard.playedCardEventFor(memberId);
+        PlayerEvent event = drawnCard.drawnCardEventFor(memberId);
 
         eventEnqueuer.enqueue(event);
 

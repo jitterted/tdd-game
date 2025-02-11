@@ -106,7 +106,7 @@ class GameTest {
         }
 
         @Test
-        void startGameEmits_GameStarted_PlayerDrawCards_Events() {
+        void startGameEmits_GameStarted_PlayerDrawRegularCards_Events() {
             Game.GameFactory gameFactory = new Game
                     .GameFactory(new Deck.IdentityShuffler<>());
             Game gameForSetup = gameFactory.create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
@@ -134,16 +134,10 @@ class GameTest {
         void withMultiplePlayers_AllPlayersHaveFullHands() {
             GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
                     .create()
-                    .actionCards(ActionCard.PREDICT,
-                                 ActionCard.LESS_CODE,
-                                 ActionCard.PREDICT,
-                                 ActionCard.LESS_CODE,
-                                 ActionCard.REFACTOR,
-                                 ActionCard.LESS_CODE,
-                                 ActionCard.LESS_CODE,
-                                 ActionCard.PREDICT,
-                                 ActionCard.WRITE_CODE,
-                                 ActionCard.WRITE_CODE)
+                    .actionCards(3, ActionCard.PREDICT,
+                                 4, ActionCard.LESS_CODE,
+                                 1, ActionCard.REFACTOR,
+                                 2, ActionCard.WRITE_CODE)
                     .memberJoinsAsPlayer(new MemberId(10L))
                     .memberJoinsAsPlayer(new MemberId(11L));
 

@@ -55,5 +55,5 @@ public sealed abstract class ActionCard permits RegularCard, TechNeglectCard {
         return name();
     }
 
-    abstract PlayerEvent playedCardEventFor(MemberId memberId);
+    abstract PlayerEvent drawnCardEventFor(MemberId memberId);
 }
