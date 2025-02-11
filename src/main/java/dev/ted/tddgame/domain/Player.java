@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 public class Player {
     private static final EventEnqueuer DUMMY_EVENT_ENQUEUER = _ -> {};
+    static final int PLAYER_HAND_FULL_SIZE = 5;
     private final PlayerId playerId;
     private final MemberId memberId;
     private final String playerName;
@@ -86,7 +87,7 @@ public class Player {
 
         eventEnqueuer.enqueue(event);
 
-        assert hand.size() <= 5; // post-condition
+        assert hand.size() <= PLAYER_HAND_FULL_SIZE; // post-condition
     }
 
     private void ensureHandNotFull() {
@@ -96,7 +97,7 @@ public class Player {
     }
 
     private boolean handIsFull() {
-        return hand.size() == 5;
+        return hand.size() == PLAYER_HAND_FULL_SIZE;
     }
 
     void discard(ActionCard actionCardToDiscard, ActionCardDeck actionCardDeck) {

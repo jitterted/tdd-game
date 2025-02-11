@@ -55,8 +55,6 @@ class GameTest {
     @Nested
     class CommandsGenerateEvents {
 
-        private static final int PLAYER_HAND_FULL_SIZE = 5;
-
         @Test
         void creatingGameEmits_GameCreated_ActionCardDeckCreated_Events() {
             Game game = new Game.GameFactory().create("game name", "lovely-dog-23");
@@ -131,7 +129,7 @@ class GameTest {
         }
 
         @Test
-        void withMultiplePlayers_AllPlayersHaveFullHands() {
+        void withMultiplePlayers_OnlyRegularActionCardsInDeck_AllPlayersHaveFullHands() {
             GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
                     .create()
                     .actionCards(3, ActionCard.PREDICT,
@@ -146,8 +144,31 @@ class GameTest {
 
             // don't reconstitute the game, we want to see the fresh events
             new EventsAssertion(game.freshEvents())
-                    .hasExactly(PlayerDrewActionCard.class, 2 * PLAYER_HAND_FULL_SIZE)
-                    .hasExactly(ActionCardDrawn.class, 2 * PLAYER_HAND_FULL_SIZE);
+                    .hasExactly(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
+                    .hasExactly(ActionCardDrawn.class, 2 * Player.PLAYER_HAND_FULL_SIZE);
+        }
+
+        @Test
+        void withMultiplePlayers_MixOfRegularAndTechNeglectCardsInDeck_AllPlayersHaveFullHands() {
+            GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                    .create()
+                    .actionCards(3, ActionCard.PREDICT,
+                                 2, ActionCard.LESS_CODE,
+                                 1, ActionCard.CODE_BLOAT,
+                                 1, ActionCard.CANT_ASSERT,
+                                 1, ActionCard.REFACTOR,
+                                 4, ActionCard.WRITE_CODE)
+                    .memberJoinsAsPlayer(new MemberId(10L))
+                    .memberJoinsAsPlayer(new MemberId(11L));
+
+            Game game = gameScenarioBuilder.game();
+            game.start();
+
+            // don't reconstitute the game, we want to see the fresh events
+            new EventsAssertion(game.freshEvents())
+                    .hasExactly(ActionCardDrawn.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
+                    .hasExactly(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
+                    .hasExactly(PlayerDrewTechNeglectCard.class, 2);
         }
 
         @Test
@@ -369,11 +390,18 @@ class GameTest {
         private static Game createTwoPlayerStartedGame(MemberId firstPlayerMemberId, ActionCard... actionCards) {
             Deck.Shuffler<ActionCard> configuredActionCardShuffler =
                     _ -> new ArrayList<>(List.of(
-                            actionCards[0], ActionCard.WRITE_CODE,
-                            actionCards[1], ActionCard.PREDICT,
-                            actionCards[2], ActionCard.REFACTOR,
-                            actionCards[3], ActionCard.LESS_CODE,
-                            actionCards[4], ActionCard.LESS_CODE
+                            // each player grabs all the cards to fill their hand first
+                            actionCards[0],
+                            actionCards[1],
+                            actionCards[2],
+                            actionCards[3],
+                            actionCards[4],
+                            // now the cards for the 2nd player:
+                            ActionCard.WRITE_CODE,
+                            ActionCard.PREDICT,
+                            ActionCard.REFACTOR,
+                            ActionCard.LESS_CODE,
+                            ActionCard.LESS_CODE
                     ));
             Game game = new Game.GameFactory(configuredActionCardShuffler)
                     .create("Irrelevant Name", "irrelevant-handle");

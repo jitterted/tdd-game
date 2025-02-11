@@ -126,11 +126,12 @@ public class Game extends EventSourcedAggregate {
         initialDealCardsToAllPlayers();
     }
 
-    // Deal cards in round-robin fashion
     private void initialDealCardsToAllPlayers() {
-        for (int i = 0; i < 5; i++) {
-            players().forEach(player -> player.drawCardFrom(actionCardDeck));
-        }
+        players().forEach(player -> {
+            for (int i = 0; i < 5; i++) {
+                player.drawCardFrom(actionCardDeck);
+            }
+        });
     }
 
     public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
@@ -207,7 +208,7 @@ public class Game extends EventSourcedAggregate {
          * Create a Game for Production, using a Random shuffler
          *
          * @param gameName title of the game
-         * @param handle unique handle for the game
+         * @param handle   unique handle for the game
          */
         public Game create(String gameName, String handle) {
             Game game = new Game(configuredActionCardShuffler);
