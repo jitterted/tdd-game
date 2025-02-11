@@ -31,6 +31,38 @@ import static org.assertj.core.api.Assertions.*;
 class EventDtoTest {
 
     @Test
+    void showsPlayerDrewTechNeglectCardJson() {
+        MemberId memberId = new MemberId(42L);
+        PlayerDrewTechNeglectCard event = new PlayerDrewTechNeglectCard(memberId, ActionCard.CANT_ASSERT);
+
+        EventDto eventDto = EventDto.from(1, 12, event);
+
+        assertThat(eventDto)
+                .isEqualTo(new EventDto(
+                        1,
+                        12,
+                        "PlayerDrewTechNeglectCard",
+                        """
+                        {"memberId":{"id":42},"techNeglectActionCard":"CANT_ASSERT"}"""));
+    }
+
+    @Test
+    void showsPlayerDrewActionCardJson() {
+        MemberId memberId = new MemberId(42L);
+        PlayerDrewActionCard event = new PlayerDrewActionCard(memberId, ActionCard.REFACTOR);
+
+        EventDto eventDto = EventDto.from(1, 12, event);
+
+        assertThat(eventDto)
+                .isEqualTo(new EventDto(
+                        1,
+                        12,
+                        "PlayerDrewActionCard",
+                        """
+                        {"memberId":{"id":42},"actionCard":"REFACTOR"}"""));
+    }
+
+    @Test
     void givenPlayerWonGameEventCreateEventDto() {
         GameCreated event = new GameCreated("game name", "lovely-dog-23");
 
