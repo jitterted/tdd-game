@@ -108,9 +108,11 @@ class PlayerViewComponentTest {
     static HtmlElement emptyWorkspace() {
         return div().classNames("workspace")
                     .addChildren(
-                            text("<h2>Workspace</h2>"),
+                            h2("Workspace"),
                             div().classNames("in-play")
-                                 .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID)
+                                 .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID),
+                            div().classNames("tech-neglect")
+                                 .id(WorkspaceViewComponent.YOUR_TECH_NEGLECT_HTML_ID)
                     );
     }
 

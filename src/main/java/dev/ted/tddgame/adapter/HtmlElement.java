@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -163,8 +164,23 @@ public abstract class HtmlElement {
         }
 
         HtmlElement that = (HtmlElement) o;
-        return childElements.equals(that.childElements)
-               && attributes.equals(that.attributes)
+
+        List<HtmlElement> ourChildElements = childElements.stream()
+                                                          .sorted(Comparator.comparing(Object::hashCode))
+                                                          .toList();
+        List<HtmlElement> theirChildElements = that.childElements.stream()
+                                                                 .sorted(Comparator.comparing(Object::hashCode))
+                                                                 .toList();
+
+        List<HtmlAttribute> ourAttributes = attributes.stream()
+                                                      .sorted(Comparator.comparing(Object::hashCode))
+                                                      .toList();
+        List<HtmlAttribute> theirAttributes = that.attributes.stream()
+                                                             .sorted(Comparator.comparing(Object::hashCode))
+                                                             .toList();
+
+        return ourChildElements.equals(theirChildElements)
+               && ourAttributes.equals(theirAttributes)
                && tag.equals(that.tag);
     }
 

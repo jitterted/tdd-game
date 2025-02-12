@@ -119,13 +119,13 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public GameScenarioBuilder memberJoinsAsPlayer(MemberId memberId,
-                                                   String name,
+                                                   String memberNickname,
                                                    String authName,
                                                    String playerName) {
         if (memberStore.findById(memberId).isPresent()) {
             throw new IllegalArgumentException("Member already exists");
         }
-        Member member = new Member(memberId, name, authName);
+        Member member = new Member(memberId, memberNickname, authName);
         memberStore.save(member);
         Game game = game();
         if (game.players().isEmpty()) {

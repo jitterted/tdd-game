@@ -1,3 +1,10 @@
+February 11, 2025 - Tuesday
+===========================
+
+* Forgot to write a test at the MessageBroadcaster level to ensure that we were including the Tech Neglect card HTML in the final output
+
+* Continue to get confused as to what HTML elements are kept from the game.html template
+
 February 10, 2025 - Monday
 ==========================
 

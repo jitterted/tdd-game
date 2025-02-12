@@ -97,6 +97,7 @@
         <!-- HTMX TARGET for PLAYER with ID of 1  -->
         <div id="player-id-1"
              class="other-player-container">
+            <!-- innerHTML replaced -->
             <h2 class="name">
                 Player with ID of 1
             </h2>
@@ -224,9 +225,11 @@
             </div>
         </div>
         <div id="you" class="your-play-area">
-            <h2>Workspace</h2>
+            <!--  innerHTML replaced via PlayerViewComponent  -->
             <div class="workspace">
+                <h2>Workspace</h2>
                 <div id="your-in-play" class="in-play">
+                    <!-- innerHTML replaced -->
                     <div class="card">
                         <img src="/static/write-code.png"
                              th:src="@{/write-code.png}">
@@ -240,7 +243,8 @@
                              th:src="@{/predict.png}">
                     </div>
                 </div>
-                <div class="tech-neglect">
+                <div id="your-tech-neglect" class="tech-neglect">
+                    <!-- innerHTML replaced -->
                     <div class="card">
                         <img src="/static/code-bloat.png"
                              th:src="@{/code-bloat.png}">

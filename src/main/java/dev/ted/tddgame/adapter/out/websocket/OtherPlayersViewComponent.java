@@ -31,6 +31,7 @@ public class OtherPlayersViewComponent {
                                        div().classNames("workspace")
                                             .addChildren(
                                                     inPlayCardsFor(player)
+                                                    // tech neglect cards here
                                             ),
                                        div("titled-container",
                                              text("Hand"),

@@ -6,6 +6,8 @@ import dev.ted.tddgame.domain.Player;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static dev.ted.tddgame.adapter.HtmlElement.div;
+import static dev.ted.tddgame.adapter.HtmlElement.h2;
 import static dev.ted.tddgame.adapter.HtmlElement.text;
 
 public class PlayerViewComponent {
@@ -19,22 +21,21 @@ public class PlayerViewComponent {
 
     HtmlElement htmlForYou() {
         HtmlElement workspaceDiv =
-                HtmlElement.div()
-                           .classNames("workspace")
-                           .addChildren(
-                                   HtmlElement.text("<h2>Workspace</h2>"),
-                                   HtmlElement.div()
-                                              .classNames("in-play")
-                                              .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID)
-                           );
+                div().classNames("workspace")
+                     .addChildren(
+                             h2("Workspace"),
+                             div().classNames("in-play")
+                                  .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID),
+                             div().classNames("tech-neglect")
+                                  .id(WorkspaceViewComponent.YOUR_TECH_NEGLECT_HTML_ID)
+                     );
         HtmlElement handComponent =
                 new HandViewComponent(gameHandle, player).handContainer();
         HtmlElement handContainerDiv =
-                HtmlElement.div()
-                           .classNames("titled-container")
-                           .addChildren(
-                                   text("Your Hand"),
-                                   handComponent);
+                div().classNames("titled-container")
+                     .addChildren(
+                             text("Your Hand"),
+                             handComponent);
         String targetId = "you";
         return HtmlElement.swapInnerHtml(targetId, workspaceDiv, handContainerDiv);
     }
@@ -53,12 +54,11 @@ public class PlayerViewComponent {
     }
 
     private static HtmlElement createPlaceholderDiv(Player player) {
-        return HtmlElement.div(
-                "player-id-" + player.id().id(),
-                "other-player-container",
-                HtmlElement.h2(player.playerName())
-                        .classNames("name")
-        );
+        return div().classNames("other-player-container")
+                    .id("player-id-" + player.id().id())
+                    .addChildren(
+                            h2(player.playerName()).classNames("name")
+                    );
     }
 
 }

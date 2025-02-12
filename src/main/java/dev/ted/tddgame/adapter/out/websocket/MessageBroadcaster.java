@@ -51,7 +51,14 @@ public class MessageBroadcaster implements Broadcaster {
                     game.handle(),
                     player.id(),
                     new WorkspaceViewComponent(game.players())
-                            .htmlForInPlayCardsForYou(player.workspace()).render());
+                            .htmlForInPlayCardsForYou(player.workspace())
+                            .render());
+            messageSendersForPlayers.sendTo(
+                    game.handle(),
+                    player.id(),
+                    new WorkspaceViewComponent(game.players())
+                            .htmlForTechNeglectCardsForYou(player.workspace())
+                            .render());
         }
     }
 

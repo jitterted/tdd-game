@@ -1,6 +1,7 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.HtmlElement;
+import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
 import dev.ted.tddgame.adapter.shared.MessageSender;
 import dev.ted.tddgame.application.GamePlay;
 import dev.ted.tddgame.application.port.GameStore;
@@ -54,32 +55,73 @@ class MessageBroadcasterTest {
 
     @Test
     void gameUpdateSendsPlayerSpecificHtml() {
-        Fixture fixture = createGameWithTwoPlayersConnectedAndGameStarted();
+        MemberId memberIdForOliver = new MemberId(78L);
+        MemberId memberIdForSamantha = new MemberId(63L);
+        GameScenarioBuilder builder = GameScenarioBuilder
+                .create("gameHandle")
+                .actionCards(3, ActionCard.PREDICT,
+                             1, ActionCard.CODE_BLOAT,
+                             2, ActionCard.LESS_CODE,
+                             1, ActionCard.CANT_ASSERT,
+                             1, ActionCard.REFACTOR,
+                             4, ActionCard.WRITE_CODE)
+                .memberJoinsAsPlayer(memberIdForOliver)
+                .memberJoinsAsPlayer(memberIdForSamantha)
+                .startGame();
 
-        fixture.broadcaster.gameUpdate(fixture.game);
+        Player oliverPlayer = builder.playerFor(memberIdForOliver);
+        Player samanthaPlayer = builder.playerFor(memberIdForSamantha);
 
-        assertThat(fixture.messageSenderForOliver.sentMessages.size())
-                .as("Should have 5 messages sent to Oliver")
-                .isEqualTo(5);
+        MessageSendersForPlayers messageSendersForPlayers = new MessageSendersForPlayers();
+        MessageSenderSpy messageSenderForOliver = new MessageSenderSpy();
+        messageSendersForPlayers.add(messageSenderForOliver, "gameHandle", oliverPlayer.id());
+        MessageSenderSpy messageSenderForSamantha = new MessageSenderSpy();
+        messageSendersForPlayers.add(messageSenderForSamantha, "gameHandle", samanthaPlayer.id());
+        MessageBroadcaster broadcaster = new MessageBroadcaster(messageSendersForPlayers);
 
-        assertThat(fixture.messageSenderForSamantha.sentMessages.size())
-                .as("Should have 5 messages sent to Samantha")
-                .isEqualTo(5);
+        broadcaster.gameUpdate(builder.game());
 
-        assertThat(fixture.messageSenderForOliver.firstSentMessage())
+        assertThat(messageSenderForOliver.sentMessages.size())
+                .as("Should have 6 messages sent to Oliver")
+                .isEqualTo(6);
+
+        assertThat(messageSenderForSamantha.sentMessages.size())
+                .as("Should have 6 messages sent to Samantha")
+                .isEqualTo(6);
+
+        assertThat(messageSenderForOliver.firstSentMessage())
                 .as("Oliver's custom HTML should not be the same as Samantha's (as they have different cards in their hands)")
-                .isNotEqualTo(fixture.messageSenderForSamantha.firstSentMessage());
+                .isNotEqualTo(messageSenderForSamantha.firstSentMessage());
 
-        assertThat(fixture.messageSenderForOliver.lastSentMessage())
-                .as("Oliver's HTML for 'other players' should be the same for everyone")
-                .isEqualTo(fixture.messageSenderForSamantha.lastSentMessage());
+        assertThat(messageSenderForOliver.messageContaining("other-player-container"))
+                .as("Oliver's HTML should have 'other players' view")
+                .isPresent();
 
-        assertThat(fixture.messageSenderForSamantha.messageContaining(
+        // for when we are ready to add other players' tech neglect cards
+//        assertThat(messageSenderForOliver.messageContaining("<div class=\"tech-neglect\">"))
+//                .as("Oliver's HTML should have 'other players' view of Tech Neglect")
+//                .isPresent();
+
+        assertThat(messageSenderForSamantha.messageContaining("other-player-container"))
+                .as("Samantha's HTML should have 'other players' view")
+                .isPresent();
+
+        assertThat(messageSenderForOliver.messageContaining(
                 WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID))
                 .isPresent();
 
-        assertThat(fixture.messageSenderForOliver.messageContaining(
+        assertThat(messageSenderForSamantha.messageContaining(
                 WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID))
+                .isPresent();
+
+        assertThat(messageSenderForSamantha.messageContaining(
+                WorkspaceViewComponent.YOUR_TECH_NEGLECT_HTML_ID))
+                .as("Samantha should have seen a swap for \"your-tech-neglect\".")
+                .isPresent();
+
+        assertThat(messageSenderForOliver.messageContaining(
+                WorkspaceViewComponent.YOUR_TECH_NEGLECT_HTML_ID))
+                .as("Oliver should have seen a swap for \"your-tech-neglect\".")
                 .isPresent();
     }
 

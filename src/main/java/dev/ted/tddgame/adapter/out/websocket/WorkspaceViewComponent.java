@@ -1,6 +1,7 @@
 package dev.ted.tddgame.adapter.out.websocket;
 
 import dev.ted.tddgame.adapter.HtmlElement;
+import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.Workspace;
 
@@ -15,6 +16,7 @@ import static dev.ted.tddgame.adapter.HtmlElement.swapDelete;
 
 public class WorkspaceViewComponent {
     static final String YOUR_IN_PLAY_HTML_ID = "your-in-play";
+    public static final String YOUR_TECH_NEGLECT_HTML_ID = "your-tech-neglect";
     private final List<Player> players;
 
     public WorkspaceViewComponent(List<Player> players) {
@@ -49,18 +51,25 @@ public class WorkspaceViewComponent {
     public HtmlElement htmlForInPlayCardsForYou(Workspace workspace) {
         return HtmlElement.swapInnerHtml(
                 YOUR_IN_PLAY_HTML_ID,
-                inPlayCardDivs(workspace)
+                cardsAsDivs(workspace.cardsInPlay())
         );
     }
 
-    private HtmlElement[] inPlayCardDivs(Workspace workspace) {
-        return workspace.cardsInPlay()
-                        .map(card -> div(
-                                "card",
-                                HandViewComponent.imgElementFor(card)
-                        ))
-                        .toList()
-                        .toArray(HtmlElement[]::new);
+    public HtmlElement htmlForTechNeglectCardsForYou(Workspace workspace) {
+        return HtmlElement.swapInnerHtml(
+                WorkspaceViewComponent.YOUR_TECH_NEGLECT_HTML_ID,
+                cardsAsDivs(workspace.techNeglectCards())
+        );
+    }
+
+    private HtmlElement[] cardsAsDivs(Stream<ActionCard> cards) {
+        return cards
+                .map(card -> div(
+                        "card",
+                        HandViewComponent.imgElementFor(card)
+                ))
+                .toList()
+                .toArray(HtmlElement[]::new);
     }
 
 }
