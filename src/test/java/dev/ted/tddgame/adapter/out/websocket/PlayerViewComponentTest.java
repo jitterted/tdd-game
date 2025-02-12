@@ -25,12 +25,11 @@ class PlayerViewComponentTest {
                 .isEqualTo(
                         swapInnerHtml("you",
                                       emptyWorkspace(),
-                                      div()
-                                              .classNames("titled-container")
-                                              .addChildren(
-                                                      h2("Your Hand").classNames("title"),
-                                                      div().classNames("hand")
-                                              )
+                                      div().classNames("titled-container")
+                                           .addChildren(
+                                                   h2("Your Hand").classNames("title"),
+                                                   div().classNames("hand")
+                                           )
                         )
                 );
     }
@@ -48,10 +47,11 @@ class PlayerViewComponentTest {
                 .isEqualTo(
                         swapInnerHtml("you",
                                       emptyWorkspace(),
-                                      div("titled-container",
-                                          h2("Your Hand").classNames("title"),
-                                          new HandViewComponent(gameHandle, player).handContainer()
-                                      )
+                                      div().classNames("titled-container")
+                                           .addChildren(
+                                                   h2("Your Hand").classNames("title"),
+                                                   new HandViewComponent(gameHandle, player).handContainer()
+                                           )
                         )
                 );
     }
