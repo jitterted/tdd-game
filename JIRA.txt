@@ -252,10 +252,11 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                     [X] Generates correct event(s)
                     [X] Updates state from event(s)
                     [X] When the Game starts, all Player Hands must have 5 cards: if they drew a Tech Neglect card, that gets placed into the Workspace, and the Player must get more cards until their hand is full
+                [X] Display "Tech Neglect" cards in the Workspace's Tech Neglect area for YOU
 
 WE ARE HERE ===>>
 
-                [ ] Display "Tech Neglect" cards in the Workspace's Tech Neglect area
+                [ ] Display Other Players' "Tech Neglect" cards in their workspace views
 
             [ ] Change the way we configure the Action Card deck so that instead of hacking the cards via the Shuffler, provide a way to specify the cards that go into the Discard Pile along with an "identity" shuffler that moves them to the Draw Pile in a predictable way
 

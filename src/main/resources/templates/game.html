@@ -226,8 +226,9 @@
         </div>
         <div id="you" class="your-play-area">
             <!--  innerHTML replaced via PlayerViewComponent  -->
+            <div class="titled-container">
+            <h2 class="font-bold text-lg">Workspace</h2>
             <div class="workspace">
-                <h2>Workspace</h2>
                 <div id="your-in-play" class="in-play">
                     <!-- innerHTML replaced -->
                     <div class="card">
@@ -255,8 +256,9 @@
                     </div>
                 </div>
             </div>
+            </div>
             <div class="titled-container">
-                Your Hand
+                <h2 class="font-bold text-lg">Your Hand</h2>
                 <div class="hand">
                     <button hx-get="/game/{gameHandle}/card-menu/CANT_ASSERT"
                             hx-on::after-settle="document.querySelector('dialog').showModal()"

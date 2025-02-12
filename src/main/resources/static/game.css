@@ -131,7 +131,7 @@
     grid-column: span 2;
     padding: 0.25rem;
     display: grid;
-    grid-template-rows: auto;
+    grid-template-rows: repeat(2, min-content);
 }
 
 .your-play-area .hand {
