@@ -85,6 +85,7 @@ class OtherPlayersViewComponentTest {
                         h2("Oliver (Player)").classNames("name"),
                         div().classNames("other-player-container")
                              .addChildren(
+                                     text("Workspace"),
                                      div().classNames("workspace")
                                           .addChildren(
                                                   div().classNames("in-play")
@@ -116,6 +117,7 @@ class OtherPlayersViewComponentTest {
                               h2("Samantha (Player)").classNames("name"),
                               div().classNames("other-player-container")
                                    .addChildren(
+                                           text("Workspace"),
                                            div().classNames("workspace")
                                                 .addChildren(
                                                         div().classNames("in-play")
@@ -135,11 +137,12 @@ class OtherPlayersViewComponentTest {
                                    )
                 );
 
+        HtmlElement.Forest expectedForest = new HtmlElement.Forest(
+                oliverSwap,
+                samanthaSwap
+        );
         assertThat(htmlElementActual)
-                .isEqualTo(new HtmlElement.Forest(
-                        oliverSwap,
-                        samanthaSwap
-                ));
+                .isEqualTo(expectedForest);
     }
 
 }

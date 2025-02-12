@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 import static dev.ted.tddgame.adapter.HtmlElement.div;
 import static dev.ted.tddgame.adapter.HtmlElement.h2;
-import static dev.ted.tddgame.adapter.HtmlElement.text;
 
 public class PlayerViewComponent {
     private final Player player;
@@ -37,7 +36,7 @@ public class PlayerViewComponent {
         HtmlElement handContainerDiv =
                 div().classNames("titled-container")
                      .addChildren(
-                             text("Your Hand"),
+                             h2("Your Hand").classNames("title"),
                              handComponent);
         String targetId = "you";
         return HtmlElement.swapInnerHtml(targetId, workspaceDiv, handContainerDiv);

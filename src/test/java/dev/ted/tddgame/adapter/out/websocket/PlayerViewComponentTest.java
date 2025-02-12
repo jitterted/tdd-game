@@ -11,7 +11,6 @@ import java.util.List;
 import static dev.ted.tddgame.adapter.HtmlElement.div;
 import static dev.ted.tddgame.adapter.HtmlElement.h2;
 import static dev.ted.tddgame.adapter.HtmlElement.swapInnerHtml;
-import static dev.ted.tddgame.adapter.HtmlElement.text;
 import static org.assertj.core.api.Assertions.*;
 
 class PlayerViewComponentTest {
@@ -29,7 +28,7 @@ class PlayerViewComponentTest {
                                       div()
                                               .classNames("titled-container")
                                               .addChildren(
-                                                      text("Your Hand"),
+                                                      h2("Your Hand").classNames("title"),
                                                       div().classNames("hand")
                                               )
                         )
@@ -50,7 +49,7 @@ class PlayerViewComponentTest {
                         swapInnerHtml("you",
                                       emptyWorkspace(),
                                       div("titled-container",
-                                          text("Your Hand"),
+                                          h2("Your Hand").classNames("title"),
                                           new HandViewComponent(gameHandle, player).handContainer()
                                       )
                         )
@@ -74,7 +73,7 @@ class PlayerViewComponentTest {
                         swapInnerHtml("you",
                                       emptyWorkspace(),
                                       div("titled-container",
-                                          text("Your Hand"),
+                                          h2("Your Hand").classNames("title"),
                                           new HandViewComponent(gameHandle, player).handContainer()
                                       )
                         )
