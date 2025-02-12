@@ -71,44 +71,29 @@ public class GameScenarioBuilder implements NeedsActionCards {
 
     @Override
     public GameScenarioBuilder actionCards(int count1, ActionCard actionCard1) {
-        List<ActionCard> actionCards = new ArrayList<>();
-        actionCards.addAll(Collections.nCopies(count1, actionCard1));
-        return actionCards(actionCards);
+        return actionCardsHelper(count1, actionCard1);
     }
 
     @Override
     public GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
-                                         int count2, ActionCard actionCard2) {
-        List<ActionCard> actionCards = new ArrayList<>();
-        actionCards.addAll(Collections.nCopies(count1, actionCard1));
-        actionCards.addAll(Collections.nCopies(count2, actionCard2));
-        return actionCards(actionCards);
+                                           int count2, ActionCard actionCard2) {
+        return actionCardsHelper(count1, actionCard1, count2, actionCard2);
     }
 
     @Override
     public GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
-                                         int count2, ActionCard actionCard2,
-                                         int count3, ActionCard actionCard3) {
-        List<ActionCard> actionCards = new ArrayList<>();
-        actionCards.addAll(Collections.nCopies(count1, actionCard1));
-        actionCards.addAll(Collections.nCopies(count2, actionCard2));
-        actionCards.addAll(Collections.nCopies(count3, actionCard3));
-        return actionCards(actionCards);
+                                           int count2, ActionCard actionCard2,
+                                           int count3, ActionCard actionCard3) {
+        return actionCardsHelper(count1, actionCard1, count2, actionCard2, count3, actionCard3);
     }
 
     @Override
     public GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
                                            int count2, ActionCard actionCard2,
                                            int count3, ActionCard actionCard3,
-                                           int count4, ActionCard actionCard4
-    ) {
-        List<ActionCard> actionCards = new ArrayList<>();
-        actionCards.addAll(Collections.nCopies(count1, actionCard1));
-        actionCards.addAll(Collections.nCopies(count2, actionCard2));
-        actionCards.addAll(Collections.nCopies(count3, actionCard3));
-        actionCards.addAll(Collections.nCopies(count4, actionCard4));
-
-        return actionCards(actionCards);
+                                           int count4, ActionCard actionCard4) {
+        return actionCardsHelper(count1, actionCard1, count2, actionCard2,
+                                 count3, actionCard3, count4, actionCard4);
     }
 
     @Override
@@ -117,13 +102,9 @@ public class GameScenarioBuilder implements NeedsActionCards {
                                            int count3, ActionCard actionCard3,
                                            int count4, ActionCard actionCard4,
                                            int count5, ActionCard actionCard5) {
-        List<ActionCard> actionCards = new ArrayList<>();
-        actionCards.addAll(Collections.nCopies(count1, actionCard1));
-        actionCards.addAll(Collections.nCopies(count2, actionCard2));
-        actionCards.addAll(Collections.nCopies(count3, actionCard3));
-        actionCards.addAll(Collections.nCopies(count4, actionCard4));
-        actionCards.addAll(Collections.nCopies(count5, actionCard5));
-        return actionCards(actionCards);
+        return actionCardsHelper(count1, actionCard1, count2, actionCard2,
+                                 count3, actionCard3, count4, actionCard4,
+                                 count5, actionCard5);
     }
 
     @Override
@@ -132,16 +113,18 @@ public class GameScenarioBuilder implements NeedsActionCards {
                                            int count3, ActionCard actionCard3,
                                            int count4, ActionCard actionCard4,
                                            int count5, ActionCard actionCard5,
-                                           int count6, ActionCard actionCard6
-    ) {
-        List<ActionCard> actionCards = new ArrayList<>();
-        actionCards.addAll(Collections.nCopies(count1, actionCard1));
-        actionCards.addAll(Collections.nCopies(count2, actionCard2));
-        actionCards.addAll(Collections.nCopies(count3, actionCard3));
-        actionCards.addAll(Collections.nCopies(count4, actionCard4));
-        actionCards.addAll(Collections.nCopies(count5, actionCard5));
-        actionCards.addAll(Collections.nCopies(count6, actionCard6));
+                                           int count6, ActionCard actionCard6) {
+        return actionCardsHelper(count1, actionCard1, count2, actionCard2,
+                                 count3, actionCard3, count4, actionCard4,
+                                 count5, actionCard5, count6, actionCard6);
+    }
 
+    private GameScenarioBuilder actionCardsHelper(Object... args) {
+        List<ActionCard> actionCards = new ArrayList<>();
+        for (int i = 0; i < args.length; i += 2) {
+            actionCards.addAll(Collections.nCopies((Integer) args[i],
+                                                   (ActionCard) args[i + 1]));
+        }
         return actionCards(actionCards);
     }
 
