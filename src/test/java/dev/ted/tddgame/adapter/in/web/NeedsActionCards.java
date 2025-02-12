@@ -7,10 +7,25 @@ public interface NeedsActionCards {
 
     GameScenarioBuilder shuffledActionCards();
 
+    GameScenarioBuilder actionCards(int count1, ActionCard actionCard1);
+
+    GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
+                                   int count2, ActionCard actionCard2);
+
+    GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
+                                   int count2, ActionCard actionCard2,
+                                   int count3, ActionCard actionCard3);
+
     GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
                                     int count2, ActionCard actionCard2,
                                     int count3, ActionCard actionCard3,
                                     int count4, ActionCard actionCard4);
+
+    GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
+                                    int count2, ActionCard actionCard2,
+                                    int count3, ActionCard actionCard3,
+                                    int count4, ActionCard actionCard4,
+                                    int count5, ActionCard actionCard5);
 
     GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
                                     int count2, ActionCard actionCard2,

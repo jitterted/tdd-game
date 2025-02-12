@@ -21,11 +21,11 @@ class OtherPlayersViewComponentTest {
         MemberId samanthaMemberId = new MemberId(63L);
         GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
                 .create("other-game-handle")
-                .actionCards(ActionCard.WRITE_CODE, ActionCard.WRITE_CODE,
-                             ActionCard.LESS_CODE, ActionCard.LESS_CODE,
-                             ActionCard.LESS_CODE, ActionCard.LESS_CODE,
-                             ActionCard.PREDICT, ActionCard.PREDICT,
-                             ActionCard.REFACTOR, ActionCard.REFACTOR)
+                .actionCards(2, ActionCard.WRITE_CODE,
+                             2, ActionCard.LESS_CODE,
+                             2, ActionCard.LESS_CODE,
+                             2, ActionCard.PREDICT,
+                             2, ActionCard.REFACTOR)
                 .memberJoinsAsPlayer(oliverMemberId, "Oliver", "Oliver (authName)", "Oliver (Player)")
                 .memberJoinsAsPlayer(samanthaMemberId, "Samantha", "Samantha (authName)", "Samantha (Player)")
                 .startGame()
