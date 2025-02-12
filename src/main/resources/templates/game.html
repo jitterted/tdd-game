@@ -227,38 +227,38 @@
         <div id="you" class="your-play-area">
             <!--  innerHTML replaced via PlayerViewComponent  -->
             <div class="titled-container">
-            <h2 class="font-bold text-lg">Workspace</h2>
-            <div class="workspace">
-                <div id="your-in-play" class="in-play">
-                    <!-- innerHTML replaced -->
-                    <div class="card">
-                        <img src="/static/write-code.png"
-                             th:src="@{/write-code.png}">
+                <h2 class="title">Your Workspace</h2>
+                <div class="workspace">
+                    <div id="your-in-play" class="in-play">
+                        <!-- innerHTML replaced -->
+                        <div class="card">
+                            <img src="/static/write-code.png"
+                                 th:src="@{/write-code.png}">
+                        </div>
+                        <div class="card">
+                            <img src="/static/less-code.png"
+                                 th:src="@{/less-code.png}">
+                        </div>
+                        <div class="card">
+                            <img src="/static/predict.png"
+                                 th:src="@{/predict.png}">
+                        </div>
                     </div>
-                    <div class="card">
-                        <img src="/static/less-code.png"
-                             th:src="@{/less-code.png}">
-                    </div>
-                    <div class="card">
-                        <img src="/static/predict.png"
-                             th:src="@{/predict.png}">
+                    <div id="your-tech-neglect" class="tech-neglect">
+                        <!-- innerHTML replaced -->
+                        <div class="card">
+                            <img src="/static/code-bloat.png"
+                                 th:src="@{/code-bloat.png}">
+                        </div>
+                        <div class="card">
+                            <img src="/static/cant-assert.png"
+                                 th:src="@{/cant-assert.png}">
+                        </div>
                     </div>
                 </div>
-                <div id="your-tech-neglect" class="tech-neglect">
-                    <!-- innerHTML replaced -->
-                    <div class="card">
-                        <img src="/static/code-bloat.png"
-                             th:src="@{/code-bloat.png}">
-                    </div>
-                    <div class="card">
-                        <img src="/static/cant-assert.png"
-                             th:src="@{/cant-assert.png}">
-                    </div>
-                </div>
-            </div>
             </div>
             <div class="titled-container">
-                <h2 class="font-bold text-lg">Your Hand</h2>
+                <h2 class="title">Your Hand</h2>
                 <div class="hand">
                     <button hx-get="/game/{gameHandle}/card-menu/CANT_ASSERT"
                             hx-on::after-settle="document.querySelector('dialog').showModal()"

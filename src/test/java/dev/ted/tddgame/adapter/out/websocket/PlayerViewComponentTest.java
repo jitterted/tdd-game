@@ -106,13 +106,16 @@ class PlayerViewComponentTest {
     }
 
     static HtmlElement emptyWorkspace() {
-        return div().classNames("workspace")
+        return div().classNames("titled-container")
                     .addChildren(
-                            h2("Workspace"),
-                            div().classNames("in-play")
-                                 .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID),
-                            div().classNames("tech-neglect")
-                                 .id(WorkspaceViewComponent.YOUR_TECH_NEGLECT_HTML_ID)
+                            h2("Your Workspace").classNames("title"),
+                            div().classNames("workspace")
+                                 .addChildren(
+                                         div().classNames("in-play")
+                                              .id(WorkspaceViewComponent.YOUR_IN_PLAY_HTML_ID),
+                                         div().classNames("tech-neglect")
+                                              .id(WorkspaceViewComponent.YOUR_TECH_NEGLECT_HTML_ID)
+                                 )
                     );
     }
 

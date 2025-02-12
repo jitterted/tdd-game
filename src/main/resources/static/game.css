@@ -60,6 +60,11 @@
     height: min-content;
 }
 
+.title {
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
 .your-play-area .workspace {
     height: 185px;
     overflow: hidden;
