@@ -34,4 +34,13 @@ public interface NeedsActionCards {
                                     int count5, ActionCard actionCard5,
                                     int count6, ActionCard actionCard6
     );
+
+    GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
+                                    int count2, ActionCard actionCard2,
+                                    int count3, ActionCard actionCard3,
+                                    int count4, ActionCard actionCard4,
+                                    int count5, ActionCard actionCard5,
+                                    int count6, ActionCard actionCard6,
+                                    int count7, ActionCard actionCard7
+    );
 }

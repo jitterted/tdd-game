@@ -119,6 +119,21 @@ public class GameScenarioBuilder implements NeedsActionCards {
                                  count5, actionCard5, count6, actionCard6);
     }
 
+    @Override
+    public GameScenarioBuilder actionCards(int count1, ActionCard actionCard1,
+                                           int count2, ActionCard actionCard2,
+                                           int count3, ActionCard actionCard3,
+                                           int count4, ActionCard actionCard4,
+                                           int count5, ActionCard actionCard5,
+                                           int count6, ActionCard actionCard6,
+                                           int count7, ActionCard actionCard7
+    ) {
+        return actionCardsHelper(count1, actionCard1, count2, actionCard2,
+                                 count3, actionCard3, count4, actionCard4,
+                                 count5, actionCard5, count6, actionCard6,
+                                 count7, actionCard7);
+    }
+
     private GameScenarioBuilder actionCardsHelper(Object... args) {
         List<ActionCard> actionCards = new ArrayList<>();
         for (int i = 0; i < args.length; i += 2) {
