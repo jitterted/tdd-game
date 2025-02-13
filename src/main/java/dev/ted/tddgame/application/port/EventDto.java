@@ -6,6 +6,7 @@ import dev.ted.tddgame.domain.ActionCardDeckCreated;
 import dev.ted.tddgame.domain.ActionCardDeckReplenished;
 import dev.ted.tddgame.domain.ActionCardDiscarded;
 import dev.ted.tddgame.domain.ActionCardDrawn;
+import dev.ted.tddgame.domain.Card;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
@@ -72,10 +73,12 @@ public class EventDto {
         this.eventId = eventId;
         this.eventType = eventClassName;
         this.json = json;
+        objectMapper.addMixIn(Card.class, CardMixIn.class);
     }
 
     public static EventDto from(int entityId, int eventId, GameEvent event) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.addMixIn(Card.class, CardMixIn.class);
         try {
             String json = objectMapper.writeValueAsString(event);
             String className = classToEventName.get(event.getClass());

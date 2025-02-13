@@ -257,8 +257,10 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
 WE ARE HERE ===>>
     [ ] Predict with Test Results Cards Feature
-        [ ] Create TestResultsDeck that extends Deck, which requires Deck to be completely generic
-            [ ] Create TestResultCard enums
+        [ ] Make Deck handle all Cards: ActionCard and TestResultsCard
+            [ ] Generalize code in Deck to use Card instead of ActionCard
+                [ ] Generalize Card events
+            [X] Create TestResultCard enums
             [ ] Render the Test Result deck's draw and discard piles
         [ ] (start implementing the sequence diagram)
             [ ] Refactor HexTile from enums to classes with state

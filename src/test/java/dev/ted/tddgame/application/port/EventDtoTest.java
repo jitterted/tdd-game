@@ -8,6 +8,7 @@ import dev.ted.tddgame.domain.ActionCardDeckCreated;
 import dev.ted.tddgame.domain.ActionCardDeckReplenished;
 import dev.ted.tddgame.domain.ActionCardDiscarded;
 import dev.ted.tddgame.domain.ActionCardDrawn;
+import dev.ted.tddgame.domain.Card;
 import dev.ted.tddgame.domain.CardDrawn;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
@@ -35,10 +36,10 @@ import static org.assertj.core.api.Assertions.*;
 
 class EventDtoTest {
 
-
     @Test
-    void howDoesObjectMapperMap() throws JsonProcessingException {
+    void ensureTwoWayMappingOfCardDrawnForActionAndTestResultsCards() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.addMixIn(Card.class, CardMixIn.class);
         objectMapper.activateDefaultTyping(
                 objectMapper.getPolymorphicTypeValidator(),
                 ObjectMapper.DefaultTyping.NON_FINAL,
@@ -48,16 +49,12 @@ class EventDtoTest {
 
         String json = objectMapper.writeValueAsString(actionCardDrawn);
 
-        System.out.println(json);
-
         assertThat(objectMapper.readValue(json, CardDrawn.class))
                 .isEqualTo(actionCardDrawn);
 
         CardDrawn testResultsCardDrawn = new CardDrawn(TestResultsCard.NEED_ONE_LESS_CODE);
 
         json = objectMapper.writeValueAsString(testResultsCardDrawn);
-
-        System.out.println(json);
 
         assertThat(objectMapper.readValue(json, CardDrawn.class))
                 .isEqualTo(testResultsCardDrawn);
