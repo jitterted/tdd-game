@@ -13,6 +13,21 @@ public abstract class Deck<CARD extends Card> {
     protected EventEnqueuer eventEnqueuer; // TODO: should be final
     protected List<CARD> discardPile; // TODO: should be final
 
+    public Deck(List<CARD> cards,
+                Shuffler<CARD> shuffler,
+                EventEnqueuer eventEnqueuer) {
+        this.discardPile = new ArrayList<>(cards);
+        this.shuffler = shuffler;
+        this.eventEnqueuer = eventEnqueuer;
+    }
+
+    // -- FOR TESTS --
+    Deck(List<CARD> cards, Shuffler<CARD> shuffler, List<DeckEvent> deckEventsReceiver) {
+        this.discardPile = new ArrayList<>(cards);
+        this.shuffler = shuffler;
+        this.eventEnqueuer = new DeckEventEnqueuer<>(this, deckEventsReceiver);
+    }
+
     public CARD draw() {
         if (drawPile.isEmpty()) {
             replenishDrawPileFromDiscardPile();

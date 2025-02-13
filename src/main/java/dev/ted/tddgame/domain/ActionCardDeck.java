@@ -9,14 +9,12 @@ public class ActionCardDeck extends Deck<ActionCard> {
     protected ActionCardDeck(List<ActionCard> cards,
                              Deck.Shuffler<ActionCard> shuffler,
                              EventEnqueuer eventEnqueuer) {
-        this.discardPile = new ArrayList<>(cards);
-        this.shuffler = shuffler;
-        this.eventEnqueuer = eventEnqueuer;
+        super(cards, shuffler, eventEnqueuer);
     }
 
     // TODO: for production usage, uses random shuffler
     // TODO: must never accept a list of cards that is empty
-    public static ActionCardDeck create(List<ActionCard> cards,
+    public static Deck<ActionCard> create(List<ActionCard> cards,
                                         EventEnqueuer eventEnqueuer,
                                         Shuffler<ActionCard> shuffler) {
         return new ActionCardDeck(cards, shuffler, eventEnqueuer);
@@ -27,10 +25,7 @@ public class ActionCardDeck extends Deck<ActionCard> {
     protected ActionCardDeck(List<ActionCard> cards,
                              Shuffler<ActionCard> shuffler,
                              List<DeckEvent> deckEventsReceiver) {
-        this.discardPile = new ArrayList<>(cards);
-        this.shuffler = shuffler;
-        // TODO: need a different way to create an enqueuer for testing so that we don't need to pass in `this`
-        this.eventEnqueuer = new DeckEventEnqueuer<>(this, deckEventsReceiver);
+        super(cards, shuffler, deckEventsReceiver);
     }
 
     public static ActionCardDeck createForTest(ActionCard... actionCards) {

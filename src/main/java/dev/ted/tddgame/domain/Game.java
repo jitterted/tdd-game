@@ -14,7 +14,7 @@ public class Game extends EventSourcedAggregate {
     private final Map<MemberId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
     private final CardsFactory cardsFactory = new CardsFactory();
-    private ActionCardDeck actionCardDeck;
+    private Deck<ActionCard> actionCardDeck;
     private final Deck.Shuffler<ActionCard> actionCardShuffler;
 
     // Rebuilds Game (and its entities) state

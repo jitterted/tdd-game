@@ -77,7 +77,7 @@ public class Player {
     }
 
 
-    void drawCardFrom(ActionCardDeck actionCardDeck) {
+    void drawCardFrom(Deck<ActionCard> actionCardDeck) {
         ensureHandNotFull();
 
         ActionCard drawnCard = actionCardDeck.draw();
@@ -99,13 +99,13 @@ public class Player {
         return hand.size() == PLAYER_HAND_FULL_SIZE;
     }
 
-    void drawToFull(ActionCardDeck actionCardDeck) {
+    void drawToFull(Deck<ActionCard> actionCardDeck) {
         while (!handIsFull()) {
             drawCardFrom(actionCardDeck);
         }
     }
 
-    void discard(ActionCard actionCardToDiscard, ActionCardDeck actionCardDeck) {
+    void discard(ActionCard actionCardToDiscard, Deck<ActionCard> actionCardDeck) {
         // check constraint: actionCardToDiscard MUST be in the Player's Hand
         PlayerEvent playerEvent =
                 new PlayerDiscardedActionCard(memberId, actionCardToDiscard);

@@ -18,7 +18,7 @@ class ActionCardDeckTest {
             List<ActionCard> actionCards = List.of(
                     ActionCard.PREDICT,
                     ActionCard.WRITE_CODE);
-            ActionCardDeck deck = ActionCardDeck.create(actionCards, null, new Deck.RandomShuffler<>());
+            Deck<ActionCard> deck = ActionCardDeck.create(actionCards, null, new Deck.RandomShuffler<>());
 
             assertThat(deck.isDrawPileEmpty())
                     .as("Draw Pile should be empty when Deck is created")
