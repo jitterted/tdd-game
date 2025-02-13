@@ -1,3 +1,19 @@
+February 13, 2025 - Thursday
+============================
+
+* Thinking about generalizing the ActionCard Drawn and ActionCard Discarded, if I generalize the event records, e.g.:
+
+    record CardDrawn(Card card)
+
+  I have to worry about how Jackson (ObjectMapper) will deal with the concrete Card types (basically ActionCard and TestResultsCard) in the events. Options:
+
+    1. Use Jackson annotations to get it to write out (and read/reconstitute) the concrete type
+    2. Write code similar to how the Event itself is written (see eventNameToClassMap in EventDto)
+    3. Forget about a generic event and use concrete events, one each for the ActionCard and TestResultsCard types
+
+[Decision]
+* Ended up with a variation of option #1 above, where we wrote a Type Resolver to handle converting the concrete ActionCard subtypes and the TestResultsCard enum in both directions
+
 February 11, 2025 - Tuesday
 ===========================
 

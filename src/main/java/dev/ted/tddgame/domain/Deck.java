@@ -59,6 +59,7 @@ public abstract class Deck<CARD> {
                                                             .formatted(actionCardDrawn, removedCard));
                 }
             }
+
             case ActionCardDiscarded actionCardDiscarded -> {
                 discardPile.add((CARD) actionCardDiscarded.card());
             }

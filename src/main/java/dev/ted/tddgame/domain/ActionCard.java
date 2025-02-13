@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Map;
 
-public sealed abstract class ActionCard permits RegularCard, TechNeglectCard {
+public sealed abstract class ActionCard implements Card
+        permits RegularCard, TechNeglectCard {
     public static final RegularCard LESS_CODE = new RegularCard("Less Code", "LESS_CODE");
     public static final RegularCard WRITE_CODE = new RegularCard("Write Code", "WRITE_CODE");
     public static final RegularCard REFACTOR = new RegularCard("Refactor", "REFACTOR");

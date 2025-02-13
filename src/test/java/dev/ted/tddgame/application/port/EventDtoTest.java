@@ -1,10 +1,14 @@
 package dev.ted.tddgame.application.port;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
 import dev.ted.tddgame.domain.ActionCardDeckReplenished;
 import dev.ted.tddgame.domain.ActionCardDiscarded;
 import dev.ted.tddgame.domain.ActionCardDrawn;
+import dev.ted.tddgame.domain.CardDrawn;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
@@ -14,6 +18,7 @@ import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerDrewTechNeglectCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 import dev.ted.tddgame.domain.PlayerPlayedActionCard;
+import dev.ted.tddgame.domain.TestResultsCard;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,6 +35,34 @@ import static org.assertj.core.api.Assertions.*;
 
 class EventDtoTest {
 
+
+    @Test
+    void howDoesObjectMapperMap() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.activateDefaultTyping(
+                objectMapper.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.NON_FINAL,
+                JsonTypeInfo.As.PROPERTY
+        );
+        CardDrawn actionCardDrawn = new CardDrawn(ActionCard.WRITE_CODE);
+
+        String json = objectMapper.writeValueAsString(actionCardDrawn);
+
+        System.out.println(json);
+
+        assertThat(objectMapper.readValue(json, CardDrawn.class))
+                .isEqualTo(actionCardDrawn);
+
+        CardDrawn testResultsCardDrawn = new CardDrawn(TestResultsCard.NEED_ONE_LESS_CODE);
+
+        json = objectMapper.writeValueAsString(testResultsCardDrawn);
+
+        System.out.println(json);
+
+        assertThat(objectMapper.readValue(json, CardDrawn.class))
+                .isEqualTo(testResultsCardDrawn);
+    }
+
     @Test
     void showsPlayerDrewTechNeglectCardJson() {
         MemberId memberId = new MemberId(42L);
@@ -43,7 +76,7 @@ class EventDtoTest {
                         12,
                         "PlayerDrewTechNeglectCard",
                         """
-                        {"memberId":{"id":42},"techNeglectActionCard":"CANT_ASSERT"}"""));
+                        {"memberId":{"id":42},"techNeglectActionCard":["ActionCard","CANT_ASSERT"]}"""));
     }
 
     @Test
@@ -59,7 +92,7 @@ class EventDtoTest {
                         12,
                         "PlayerDrewActionCard",
                         """
-                        {"memberId":{"id":42},"actionCard":"REFACTOR"}"""));
+                        {"memberId":{"id":42},"actionCard":["ActionCard","REFACTOR"]}"""));
     }
 
     @Test

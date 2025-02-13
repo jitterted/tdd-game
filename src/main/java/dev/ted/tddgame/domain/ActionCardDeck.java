@@ -55,7 +55,7 @@ public class ActionCardDeck extends Deck<ActionCard> {
 
     @Override
     protected ActionCardDrawn createCardDrawnEvent(ActionCard drawnCard) {
-        return new ActionCardDrawn((ActionCard) drawnCard);
+        return new ActionCardDrawn(drawnCard);
     }
 
     @Override

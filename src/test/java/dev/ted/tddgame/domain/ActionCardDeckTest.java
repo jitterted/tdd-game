@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class DeckTest {
+class ActionCardDeckTest {
 
     @Nested
     class newActionCardDeck {
