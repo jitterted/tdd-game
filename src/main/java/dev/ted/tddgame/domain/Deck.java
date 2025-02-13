@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public abstract class Deck<CARD> {
+public abstract class Deck<CARD extends Card> {
     protected Shuffler<CARD> shuffler; // TODO: should be final
     private final Queue<CARD> drawPile = new LinkedList<>();
     protected EventEnqueuer eventEnqueuer; // TODO: should be final
@@ -18,18 +18,18 @@ public abstract class Deck<CARD> {
             replenishDrawPileFromDiscardPile();
         }
         CARD drawnCard = drawPile.peek();
-        //      1. Check concrete type of CARD, e.g. if drawnCard.class == ActionCard, then generate ActionCardDrawn
+        //      1. Check concrete type of CARD, e.g. if drawnCard.class == ActionCard, then generate CardDrawn
         //      2. Ask CARD for its event representing card drawn, e.g., drawnCard.drawEvent()
         // [✅] 3. push down the event creation to a concrete subclass
         eventEnqueuer.enqueue(createCardDrawnEvent(drawnCard));
         return drawnCard;
     }
 
-    protected abstract ActionCardDrawn createCardDrawnEvent(CARD drawnCard);
+    protected abstract CardDrawn createCardDrawnEvent(CARD drawnCard);
 
     private void replenishDrawPileFromDiscardPile() {
         discardPile = shuffler.shuffleCards(discardPile);
-        eventEnqueuer.enqueue(new ActionCardDeckReplenished((List<ActionCard>) discardPile));
+        eventEnqueuer.enqueue(new DeckReplenished((List<Card>) discardPile));
     }
 
     public boolean isDrawPileEmpty() {
@@ -43,25 +43,25 @@ public abstract class Deck<CARD> {
 
     public void apply(DeckEvent deckEvent) {
         switch (deckEvent) {
-            case ActionCardDeckReplenished actionCardDeckReplenished -> {
-                drawPile.addAll((Collection<? extends CARD>) actionCardDeckReplenished.cardsInDrawPile());
+            case DeckReplenished deckReplenished -> {
+                drawPile.addAll((Collection<? extends CARD>) deckReplenished.cardsInDrawPile());
                 discardPile.clear();
             }
 
-            case ActionCardDrawn actionCardDrawn -> {
+            case CardDrawn cardDrawn -> {
                 if (drawPile.isEmpty()) {
-                    throw new IllegalStateException("DrawPile must not be empty when applying event: " + actionCardDrawn);
+                    throw new IllegalStateException("DrawPile must not be empty when applying event: " + cardDrawn);
                 }
                 CARD removedCard = drawPile.remove();
-                if (!actionCardDrawn.card()
-                                    .equals(removedCard)) {
+                if (!cardDrawn.card()
+                              .equals(removedCard)) {
                     throw new IllegalStateException("Card drawn from DrawPile did not match card in event = %s, card drawn = %s"
-                                                            .formatted(actionCardDrawn, removedCard));
+                                                            .formatted(cardDrawn, removedCard));
                 }
             }
 
-            case ActionCardDiscarded actionCardDiscarded -> {
-                discardPile.add((CARD) actionCardDiscarded.card());
+            case CardDiscarded cardDiscarded -> {
+                discardPile.add((CARD) cardDiscarded.card());
             }
         }
     }
@@ -70,7 +70,7 @@ public abstract class Deck<CARD> {
         eventEnqueuer.enqueue(createCardDiscardedEvent(discardedCard));
     }
 
-    protected abstract ActionCardDiscarded createCardDiscardedEvent(CARD discardedCard);
+    protected abstract CardDiscarded createCardDiscardedEvent(CARD discardedCard);
 
     // -- EMBEDDED STUB for Nullable Shuffler --
 
@@ -95,7 +95,7 @@ public abstract class Deck<CARD> {
     }
 }
 
-class DeckEventEnqueuer<CARD> implements EventEnqueuer {
+class DeckEventEnqueuer<CARD extends Card> implements EventEnqueuer {
     private final Deck<CARD> deck;
     private final List<DeckEvent> deckEvents;
 
@@ -104,7 +104,6 @@ class DeckEventEnqueuer<CARD> implements EventEnqueuer {
         this.deckEvents = deckEvents;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void enqueue(GameEvent gameEvent) {
         if (gameEvent instanceof DeckEvent deckEvent) {

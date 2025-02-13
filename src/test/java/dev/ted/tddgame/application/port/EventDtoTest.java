@@ -5,11 +5,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
-import dev.ted.tddgame.domain.ActionCardDeckReplenished;
-import dev.ted.tddgame.domain.ActionCardDiscarded;
-import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.Card;
+import dev.ted.tddgame.domain.CardDiscarded;
 import dev.ted.tddgame.domain.CardDrawn;
+import dev.ted.tddgame.domain.DeckReplenished;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
@@ -148,9 +147,9 @@ class EventDtoTest {
                 , Arguments.of(new GameStarted())
                 , Arguments.of(new ActionCardDeckCreated(List.of(ActionCard.PREDICT)))
                 , Arguments.of(new PlayerDrewActionCard(memberId, ActionCard.REFACTOR))
-                , Arguments.of(new ActionCardDrawn(ActionCard.PREDICT))
-                , Arguments.of(new ActionCardDiscarded(ActionCard.LESS_CODE))
-                , Arguments.of(new ActionCardDeckReplenished(
+                , Arguments.of(new CardDrawn(ActionCard.PREDICT))
+                , Arguments.of(new CardDiscarded(ActionCard.LESS_CODE))
+                , Arguments.of(new DeckReplenished(
                         List.of(ActionCard.WRITE_CODE,
                                 ActionCard.LESS_CODE,
                                 ActionCard.CANT_ASSERT)

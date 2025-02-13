@@ -87,8 +87,8 @@ class ActionCardDeckTest {
 
             assertThat(deckEventsReceiver)
                     .containsExactly(
-                            new ActionCardDeckReplenished(List.of(ActionCard.PREDICT)),
-                            new ActionCardDrawn(ActionCard.PREDICT));
+                            new DeckReplenished(List.of(ActionCard.PREDICT)),
+                            new CardDrawn(ActionCard.PREDICT));
         }
 
         @Test
@@ -102,10 +102,10 @@ class ActionCardDeckTest {
 
             assertThat(deckEventsReceiver)
                     .containsExactly(
-                            new ActionCardDeckReplenished(List.of(ActionCard.LESS_CODE,
-                                                                    ActionCard.WRITE_CODE)),
-                            new ActionCardDrawn(ActionCard.LESS_CODE),
-                            new ActionCardDrawn(ActionCard.WRITE_CODE)
+                            new DeckReplenished(List.of(ActionCard.LESS_CODE,
+                                                        ActionCard.WRITE_CODE)),
+                            new CardDrawn(ActionCard.LESS_CODE),
+                            new CardDrawn(ActionCard.WRITE_CODE)
                     );
         }
 
@@ -118,8 +118,8 @@ class ActionCardDeckTest {
         void deckReplenishedEventMovesCardsIntoDrawPile() {
             ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.LESS_CODE,
                                                                ActionCard.CANT_ASSERT);
-            ActionCardDeckReplenished deckEvent =
-                    new ActionCardDeckReplenished(List.of(
+            DeckReplenished deckEvent =
+                    new DeckReplenished(List.of(
                             ActionCard.LESS_CODE,
                             ActionCard.CANT_ASSERT));
 
@@ -138,10 +138,10 @@ class ActionCardDeckTest {
         void deckCardDrawnEventRemovesCardFromDeck() {
             ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.REFACTOR,
                                                                ActionCard.CODE_BLOAT);
-            deck.apply(new ActionCardDeckReplenished(List.of(ActionCard.REFACTOR,
-                                                               ActionCard.CODE_BLOAT)));
+            deck.apply(new DeckReplenished(List.of(ActionCard.REFACTOR,
+                                                   ActionCard.CODE_BLOAT)));
 
-            deck.apply(new ActionCardDrawn(ActionCard.REFACTOR));
+            deck.apply(new CardDrawn(ActionCard.REFACTOR));
 
             assertThat(deck.view().drawPile())
                     .as("Draw Pile contents not as expected")
@@ -155,13 +155,13 @@ class ActionCardDeckTest {
         void exceptionWhenDeckCardDrawnHasDifferentCardThanDrawnFromDrawPile() {
             ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.REFACTOR,
                                                                ActionCard.CODE_BLOAT);
-            deck.apply(new ActionCardDeckReplenished(List.of(ActionCard.REFACTOR,
-                                                               ActionCard.CODE_BLOAT)));
+            deck.apply(new DeckReplenished(List.of(ActionCard.REFACTOR,
+                                                   ActionCard.CODE_BLOAT)));
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> deck.apply(
-                            new ActionCardDrawn(ActionCard.PREDICT)))
-                    .withMessage("Card drawn from DrawPile did not match card in event = ActionCardDrawn[card=PREDICT], card drawn = REFACTOR");
+                            new CardDrawn(ActionCard.PREDICT)))
+                    .withMessage("Card drawn from DrawPile did not match card in event = CardDrawn[card=PREDICT], card drawn = REFACTOR");
         }
 
         @Test
@@ -169,12 +169,12 @@ class ActionCardDeckTest {
             ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.REFACTOR,
                                                                ActionCard.CODE_BLOAT);
 
-            // draw pile is empty, because we haven't applied a ActionCardDeckReplenished event
+            // draw pile is empty, because we haven't applied a DeckReplenished event
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> deck.apply(
-                            new ActionCardDrawn(ActionCard.REFACTOR)))
-                    .withMessage("DrawPile must not be empty when applying event: ActionCardDrawn[card=REFACTOR]");
+                            new CardDrawn(ActionCard.REFACTOR)))
+                    .withMessage("DrawPile must not be empty when applying event: CardDrawn[card=REFACTOR]");
         }
     }
 

@@ -54,13 +54,13 @@ public class ActionCardDeck extends Deck<ActionCard> {
     }
 
     @Override
-    protected ActionCardDrawn createCardDrawnEvent(ActionCard drawnCard) {
-        return new ActionCardDrawn(drawnCard);
+    protected CardDrawn createCardDrawnEvent(ActionCard drawnCard) {
+        return new CardDrawn(drawnCard);
     }
 
     @Override
-    protected ActionCardDiscarded createCardDiscardedEvent(ActionCard discardedCard) {
-        return new ActionCardDiscarded(discardedCard);
+    protected CardDiscarded createCardDiscardedEvent(ActionCard discardedCard) {
+        return new CardDiscarded(discardedCard);
     }
 
 }
