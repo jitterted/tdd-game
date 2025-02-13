@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public abstract class Deck<CARD extends Card> {
+public class Deck<CARD extends Card> {
     private final Shuffler<CARD> shuffler;
     private final Queue<CARD> drawPile = new LinkedList<>();
     private final EventEnqueuer eventEnqueuer;
@@ -33,11 +33,13 @@ public abstract class Deck<CARD extends Card> {
             replenishDrawPileFromDiscardPile();
         }
         CARD drawnCard = drawPile.peek();
+        // TODO: if drawnCard is null, that means we ran out of cards!
         eventEnqueuer.enqueue(new CardDrawn(drawnCard));
         return drawnCard;
     }
 
     private void replenishDrawPileFromDiscardPile() {
+        // TODO - PRECONDITION: discardPile must NOT be empty
         List<Card> shuffledDiscardedCards = (List<Card>) shuffler.shuffleCards(discardPile);
         eventEnqueuer.enqueue(new DeckReplenished(shuffledDiscardedCards));
     }
