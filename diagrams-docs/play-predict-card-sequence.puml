@@ -1,0 +1,42 @@
+@startuml
+actor "Player\n<<actor>>" as PlayerActor
+boundary "GamePlay (Use Case)\n<<service>>" as GamePlay
+participant Game
+participant Player
+participant TestResultsDeck
+participant Workspace
+participant PredictNeededHexTile
+
+note over PlayerActor, Game: (time passes)\nPlayer clicks on PREDICT card for menu\nWRITE CODE card must already be In Play
+
+PlayerActor -> GamePlay : click on PREDICT card
+PlayerActor <-- GamePlay : Show Menu: [Discard] or [Play]
+PlayerActor -> GamePlay: playCard(PREDICT)
+GamePlay -> Game: playCard(PREDICT)
+Game -> Player: playCard(PREDICT)
+Player -> Workspace: cardPlayed(PREDICT)
+Workspace -> PredictNeededHexTile: cardPlayed(PREDICT)
+PredictNeededHexTile -> PredictNeededHexTile: internal state changed
+note over PlayerActor, Game: card played from hand to workspace HTML is sent to everyone
+PlayerActor -> PlayerActor: click on Test Results Deck to draw card
+PlayerActor -> GamePlay: drawTestResultsCard()
+GamePlay -> Game: drawTestResultsCard()
+Game -> Player:  drawTestResultsCard()
+Player -> TestResultsDeck: drawCard()
+Player <-- TestResultsDeck: TestResultsCard
+Player -> Workspace: testResultsCardDrawn(testResultsCard)\n(Workspace holds onto that card for display/state purposes)
+GamePlay --> PlayerActor: showModal(testResultsCard)\nWe display the modal via the Workspace rendering itself
+PlayerActor -> GamePlay: acceptTestResults()
+GamePlay -> Workspace: acceptTestResults()\n(evaluates the TestResultsCard)
+alt TestResultsCard is "As Predicted"
+    Workspace -> PredictNeededHexTile: testResultsSuccess
+    PredictNeededHexTile --> Workspace: return next tile (Write Code So Test Compiles)
+    Workspace -> Workspace: discard the drawn TestResultsCard
+    Workspace -> Workspace: discard all In-Play cards
+else TestResultsCard is "Unexpected"
+    Workspace -> Workspace: discard the drawn TestResultsCard
+    Workspace -> Workspace: discard the PREDICT card
+end
+GamePlay -> Broadcaster: gameUpdate
+Broadcaster --> PlayerActor: updated HTML
+@enduml
