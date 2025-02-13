@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Queue;
 
 public abstract class Deck<CARD extends Card> {
-    protected Shuffler<CARD> shuffler; // TODO: should be final
+    private final Shuffler<CARD> shuffler;
     private final Queue<CARD> drawPile = new LinkedList<>();
-    protected EventEnqueuer eventEnqueuer; // TODO: should be final
-    protected List<CARD> discardPile; // TODO: should be final
+    private final EventEnqueuer eventEnqueuer;
+    private final List<CARD> discardPile;
 
     public Deck(List<CARD> cards,
                 Shuffler<CARD> shuffler,
@@ -38,8 +38,8 @@ public abstract class Deck<CARD extends Card> {
     }
 
     private void replenishDrawPileFromDiscardPile() {
-        discardPile = shuffler.shuffleCards(discardPile);
-        eventEnqueuer.enqueue(new DeckReplenished((List<Card>) discardPile));
+        List<Card> shuffledDiscardedCards = (List<Card>) shuffler.shuffleCards(discardPile);
+        eventEnqueuer.enqueue(new DeckReplenished(shuffledDiscardedCards));
     }
 
     public boolean isDrawPileEmpty() {

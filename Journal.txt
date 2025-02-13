@@ -14,6 +14,10 @@ February 13, 2025 - Thursday
 [Decision]
 * Ended up with a variation of option #1 above, where we wrote a Type Resolver to handle converting the concrete ActionCard subtypes and the TestResultsCard enum in both directions
 
+* In Deck, when executing the replenish (shuffle) as part of the draw() command, we were (unintentionally?) assigning the shuffled cards to the discardPile field. Commands must not change internal state, only event application can do that.
+
+    ?? Can we write an ArchUnit rule that ensures command methods do not modify fields? (Commands only decide if and which events get generated, but must not modify state.) Would require an annotation like @CommandMethod or @CommandHandler to ensure we apply the rule to only those methods.
+
 February 11, 2025 - Tuesday
 ===========================
 
