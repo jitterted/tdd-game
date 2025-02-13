@@ -6,20 +6,12 @@ import java.util.List;
 
 public class ActionCardDeck extends Deck<ActionCard> {
     // intended for Production only
-    protected ActionCardDeck(List<ActionCard> cards, Deck.Shuffler<ActionCard> shuffler, EventEnqueuer eventEnqueuer) {
+    protected ActionCardDeck(List<ActionCard> cards,
+                             Deck.Shuffler<ActionCard> shuffler,
+                             EventEnqueuer eventEnqueuer) {
         this.discardPile = new ArrayList<>(cards);
         this.shuffler = shuffler;
         this.eventEnqueuer = eventEnqueuer;
-    }
-
-    // intended for tests only
-    protected ActionCardDeck(List<ActionCard> cards,
-                             Shuffler<ActionCard> shuffler,
-                             List<DeckEvent> deckEventsReceiver) {
-        this.discardPile = new ArrayList<>(cards);
-        this.shuffler = shuffler;
-        // TODO: need a different way to create an enqueuer for testing so that we don't need to pass in `this`
-        this.eventEnqueuer = new DeckEventEnqueuer<>(this, deckEventsReceiver);
     }
 
     // TODO: for production usage, uses random shuffler
@@ -28,6 +20,17 @@ public class ActionCardDeck extends Deck<ActionCard> {
                                         EventEnqueuer eventEnqueuer,
                                         Shuffler<ActionCard> shuffler) {
         return new ActionCardDeck(cards, shuffler, eventEnqueuer);
+    }
+
+    // -- FOR TESTS ONLY BELOW --
+
+    protected ActionCardDeck(List<ActionCard> cards,
+                             Shuffler<ActionCard> shuffler,
+                             List<DeckEvent> deckEventsReceiver) {
+        this.discardPile = new ArrayList<>(cards);
+        this.shuffler = shuffler;
+        // TODO: need a different way to create an enqueuer for testing so that we don't need to pass in `this`
+        this.eventEnqueuer = new DeckEventEnqueuer<>(this, deckEventsReceiver);
     }
 
     public static ActionCardDeck createForTest(ActionCard... actionCards) {
@@ -51,16 +54,6 @@ public class ActionCardDeck extends Deck<ActionCard> {
         return new ActionCardDeck(Arrays.asList(actionCards),
                                   new IdentityShuffler<>(),
                                   deckEventsReceiver);
-    }
-
-    @Override
-    protected CardDrawn createCardDrawnEvent(ActionCard drawnCard) {
-        return new CardDrawn(drawnCard);
-    }
-
-    @Override
-    protected CardDiscarded createCardDiscardedEvent(ActionCard discardedCard) {
-        return new CardDiscarded(discardedCard);
     }
 
 }

@@ -259,7 +259,7 @@ WE ARE HERE ===>>
     [ ] Predict with Test Results Cards Feature
         [ ] Make Deck handle all Cards: ActionCard and TestResultsCard
             [ ] Generalize code in Deck to use Card instead of ActionCard
-                [ ] Generalize Card events
+                [X] Generalize Card events
             [X] Create TestResultCard enums
             [ ] Render the Test Result deck's draw and discard piles
         [ ] (start implementing the sequence diagram)

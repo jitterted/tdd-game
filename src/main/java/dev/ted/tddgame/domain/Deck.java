@@ -18,14 +18,9 @@ public abstract class Deck<CARD extends Card> {
             replenishDrawPileFromDiscardPile();
         }
         CARD drawnCard = drawPile.peek();
-        //      1. Check concrete type of CARD, e.g. if drawnCard.class == ActionCard, then generate CardDrawn
-        //      2. Ask CARD for its event representing card drawn, e.g., drawnCard.drawEvent()
-        // [✅] 3. push down the event creation to a concrete subclass
-        eventEnqueuer.enqueue(createCardDrawnEvent(drawnCard));
+        eventEnqueuer.enqueue(new CardDrawn(drawnCard));
         return drawnCard;
     }
-
-    protected abstract CardDrawn createCardDrawnEvent(CARD drawnCard);
 
     private void replenishDrawPileFromDiscardPile() {
         discardPile = shuffler.shuffleCards(discardPile);
@@ -67,10 +62,8 @@ public abstract class Deck<CARD extends Card> {
     }
 
     void acceptDiscard(CARD discardedCard) {
-        eventEnqueuer.enqueue(createCardDiscardedEvent(discardedCard));
+        eventEnqueuer.enqueue(new CardDiscarded(discardedCard));
     }
-
-    protected abstract CardDiscarded createCardDiscardedEvent(CARD discardedCard);
 
     // -- EMBEDDED STUB for Nullable Shuffler --
 
