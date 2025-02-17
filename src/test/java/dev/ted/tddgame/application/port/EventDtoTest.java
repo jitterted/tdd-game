@@ -19,6 +19,7 @@ import dev.ted.tddgame.domain.PlayerDrewTechNeglectCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 import dev.ted.tddgame.domain.TestResultsCard;
+import dev.ted.tddgame.domain.TestResultsCardDeckCreated;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,6 +27,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -146,6 +148,7 @@ class EventDtoTest {
                 , Arguments.of(new PlayerJoined(memberId, "Chiddi"))
                 , Arguments.of(new GameStarted())
                 , Arguments.of(new ActionCardDeckCreated(List.of(ActionCard.PREDICT)))
+                , Arguments.of(new TestResultsCardDeckCreated(Collections.emptyList()))
                 , Arguments.of(new PlayerDrewActionCard(memberId, ActionCard.REFACTOR))
                 , Arguments.of(new CardDrawn(ActionCard.PREDICT))
                 , Arguments.of(new CardDiscarded(ActionCard.LESS_CODE))

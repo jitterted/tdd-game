@@ -7,6 +7,8 @@ import org.assertj.core.internal.Failures;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.*;
+
 class EventsAssertion {
     private final List<GameEvent> actualEvents;
     private final WritableAssertionInfo info = new WritableAssertionInfo();
@@ -37,6 +39,29 @@ class EventsAssertion {
 
     public EventsAssertion as(String description) {
         info.description(description);
+        return this;
+    }
+
+    public EventsAssertion hasEventMatching(Condition<GameEvent> filterCondition,
+                                            Condition<GameEvent> assertionCondition) {
+        int actualCount = (int) actualEvents.stream()
+                                            .filter(filterCondition::matches)
+                                            .count();
+        if (actualCount != 1) {
+            throw Failures
+                    .instance()
+                    .failure(info,
+                             EventsShouldHaveExactly.eventsShouldHaveExactly(actualEvents, 1, actualCount, filterCondition));
+
+        }
+        GameEvent gameEvent = actualEvents.stream()
+                                          .filter(filterCondition::matches)
+                                          .findFirst()
+                                          .orElseThrow();
+
+        assertThat(gameEvent)
+                .is(assertionCondition);
+
         return this;
     }
 }

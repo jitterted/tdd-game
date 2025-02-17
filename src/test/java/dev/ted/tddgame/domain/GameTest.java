@@ -2,13 +2,13 @@ package dev.ted.tddgame.domain;
 
 import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
 import dev.ted.tddgame.application.port.GameStore;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -56,30 +56,28 @@ class GameTest {
     class CommandsGenerateEvents {
 
         @Test
-        void creatingGameEmits_GameCreated_ActionCardDeckCreated_Events() {
+        void creatingGameEmits_GameCreated_BothDeckCreated_Events() {
             Game game = new Game.GameFactory().create("game name", "lovely-dog-23");
-
-            Stream<GameEvent> events = game.freshEvents();
-
-            assertThat(events)
-                    .hasSize(2)
-                    .startsWith(new GameCreated("game name", "lovely-dog-23"));
 
             assertThat(game.freshEvents())
                     .hasExactlyElementsOfTypes(
                             GameCreated.class,
-                            ActionCardDeckCreated.class);
+                            ActionCardDeckCreated.class,
+                            TestResultsCardDeckCreated.class)
+                    .startsWith(new GameCreated("game name", "lovely-dog-23"));
 
-            ActionCardDeckCreated actionCardDeckCreated =
-                    game.freshEvents()
-                        .filter(event -> event instanceof ActionCardDeckCreated)
-                        .map(event -> (ActionCardDeckCreated) event)
-                        .findFirst()
-                        .get();
-
-            assertThat(actionCardDeckCreated.actionCards())
-                    .as("Number of action cards in deck created event must be 63")
-                    .hasSize(63);
+            new EventsAssertion(game.freshEvents())
+                    .hasEventMatching(
+                            new Condition<>(gameEvent -> gameEvent.getClass() == ActionCardDeckCreated.class,
+                                            "ActionCardDeckCreated event not found"),
+                            new Condition<>(gameEvent -> ((ActionCardDeckCreated) gameEvent).actionCards().size() == 63,
+                                            "63 cards in the Action Card Deck"))
+                    .hasEventMatching(
+                            new Condition<>(gameEvent -> gameEvent.getClass() == TestResultsCardDeckCreated.class,
+                                            "TestResultsCardDeckCreated event not found"),
+                            new Condition<>(gameEvent -> ((TestResultsCardDeckCreated) gameEvent).testResultsCards().size() == 18,
+                                            "18 cards in the Test Results Card Deck")
+                    );
         }
 
         @Test
