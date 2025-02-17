@@ -15,6 +15,9 @@ public class TestResultsDeck extends Deck<TestResultsCard> {
         super(testResultsCards, shuffler, deckEventsReceiver);
     }
 
+
+    // -- FOR TESTS ONLY BELOW --
+
     static TestResultsDeck createForTest(List<@NotNull TestResultsCard> testResultsCards) {
         return new TestResultsDeck(
                 testResultsCards,
