@@ -84,7 +84,7 @@ public class Deck<CARD extends Card> {
 
     // -- EMBEDDED STUB for Nullable Shuffler --
 
-    protected static class IdentityShuffler<CARD> implements Shuffler<CARD> {
+    public static class IdentityShuffler<CARD> implements Shuffler<CARD> {
         @Override
         public List<CARD> shuffleCards(List<CARD> discardPile) {
             return new ArrayList<>(discardPile);

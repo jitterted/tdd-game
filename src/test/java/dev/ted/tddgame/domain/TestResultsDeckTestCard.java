@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-class TestResultsDeckTest {
+class TestResultsDeckTestCard {
 
     @Test
     void deckHoldsTestResultsCardsThatCanBeDrawn() {
-        TestResultsDeck testResultsCardDeck = TestResultsDeck.createForTest(
+        TestResultsCardDeck testResultsCardDeck = TestResultsCardDeck.createForTest(
                 TestResultsCard.NEED_ONE_LESS_CODE,
                 TestResultsCard.NEED_TWO_LESS_CODE,
                 TestResultsCard.AS_PREDICTED

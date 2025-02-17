@@ -289,6 +289,25 @@ class GameTest {
                                      ActionCard.PREDICT);
         }
 
+        @Test
+        void testResultsCardDeckCreatedResultsInDeckHavingCardsFromEvent() {
+            List<GameEvent> events = gameCreatedPlayerJoinedAnd(
+                    new TestResultsCardDeckCreated(List.of(
+                            TestResultsCard.AS_PREDICTED,
+                            TestResultsCard.NEED_ONE_LESS_CODE,
+                            TestResultsCard.NEED_TWO_LESS_CODE
+                    )));
+
+            Game game = new Game.GameFactory().reconstitute(events);
+
+            assertThat(game.testResultsCardDeck().drawPile())
+                    .isEmpty();
+            assertThat(game.testResultsCardDeck().discardPile())
+                    .containsExactly(TestResultsCard.AS_PREDICTED,
+                                     TestResultsCard.NEED_ONE_LESS_CODE,
+                                     TestResultsCard.NEED_TWO_LESS_CODE);
+        }
+
         private List<GameEvent> gameCreatedPlayerJoinedAnd(GameEvent... freshEvents) {
             List<GameEvent> events = new ArrayList<>();
             events.add(new GameCreated("jitterted", "breezy-cat-85"));

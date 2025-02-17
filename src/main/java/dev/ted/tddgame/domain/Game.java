@@ -15,6 +15,7 @@ public class Game extends EventSourcedAggregate {
     private final AtomicLong playerIdGenerator = new AtomicLong();
     private final CardsFactory cardsFactory = new CardsFactory();
     private Deck<ActionCard> actionCardDeck;
+    private Deck<TestResultsCard> testResultsCardDeck;
     private final Deck.Shuffler<ActionCard> actionCardShuffler;
 
     // Rebuilds Game (and its entities) state
@@ -79,8 +80,12 @@ public class Game extends EventSourcedAggregate {
 
             case DeckEvent deckEvent -> actionCardDeck.apply(deckEvent);
 
-            case TestResultsCardDeckCreated testResultsCardDeckCreated -> {
-            }
+            case TestResultsCardDeckCreated(List<TestResultsCard> testResultsCards) ->
+                    testResultsCardDeck = TestResultsCardDeck.create(
+                            testResultsCards,
+                            this::enqueue,
+                            new Deck.IdentityShuffler<>()
+                    );
         }
     }
 
@@ -162,6 +167,10 @@ public class Game extends EventSourcedAggregate {
 
     public DeckView<ActionCard> actionCardDeck() {
         return actionCardDeck.view();
+    }
+
+    public DeckView<TestResultsCard> testResultsCardDeck() {
+        return testResultsCardDeck.view();
     }
 
     public State state() {
