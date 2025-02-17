@@ -38,7 +38,7 @@ public class HandViewComponent {
 
     private HtmlElement asButton(ActionCard card) {
         return HtmlElement.button(htmlAttributesFor(card),
-                                  CardViewComponent.of(card).render());
+                                  CardViewComponent.of(card).html());
     }
 
 }

@@ -161,7 +161,7 @@ class MessageBroadcasterTest {
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
-                                CardViewComponent.of(cardToDiscard).render()
+                                CardViewComponent.of(cardToDiscard).html()
                         )
                 ).render());
     }

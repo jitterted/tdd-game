@@ -29,7 +29,7 @@ public class DeckViewComponent<C extends Card> {
                                        "action-card-draw-pile",
                                        "action-card-discard-pile",
                                        HtmlElement.img("/action-card-back.png", "Action Card Draw Pile"),
-                                       card -> HtmlElement.swapInnerHtml("action-card-discard-pile", CardViewComponent.of(card).render())
+                                       card -> HtmlElement.swapInnerHtml("action-card-discard-pile", CardViewComponent.of(card).html())
         );
     }
 
@@ -38,7 +38,7 @@ public class DeckViewComponent<C extends Card> {
                                        "test-results-card-draw-pile",
                                        "test-results-card-discard-pile",
                                        HtmlElement.img("/test-results-card-back.png", "Test Results Card Draw Pile"),
-                                       card -> HtmlElement.swapInnerHtml("test-results-card-discard-pile", CardViewComponent.of(card).render())
+                                       card -> HtmlElement.swapInnerHtml("test-results-card-discard-pile", CardViewComponent.of(card).html())
         );
     }
 

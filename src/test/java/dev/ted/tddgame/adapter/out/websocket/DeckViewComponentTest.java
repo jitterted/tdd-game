@@ -64,7 +64,7 @@ class DeckViewComponentTest {
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
-                                CardViewComponent.of(ActionCard.PREDICT).render()
+                                CardViewComponent.of(ActionCard.PREDICT).html()
                         )
                 ));
     }
@@ -84,7 +84,7 @@ class DeckViewComponentTest {
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
-                                CardViewComponent.of(ActionCard.LESS_CODE).render()
+                                CardViewComponent.of(ActionCard.LESS_CODE).html()
                         )
                 ));
     }
@@ -121,7 +121,7 @@ class DeckViewComponentTest {
                         ),
                         swapInnerHtml(
                                 "test-results-card-discard-pile",
-                                CardViewComponent.of(TestResultsCard.NEED_ONE_LESS_CODE).render()
+                                CardViewComponent.of(TestResultsCard.NEED_ONE_LESS_CODE).html()
                         )
                 ));
     }

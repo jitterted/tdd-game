@@ -24,7 +24,7 @@ public class CardViewComponent<C extends Card> {
         return new CardViewComponent<>(card, TestResultsCard::name);
     }
 
-    public HtmlElement render() {
+    public HtmlElement html() {
         String cardName = nameExtractor.apply(card);
         return HtmlElement.img("/" + filenameFor(cardName) + ".png", cardName);
     }
