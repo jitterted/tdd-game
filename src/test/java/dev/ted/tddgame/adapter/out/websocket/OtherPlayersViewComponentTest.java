@@ -74,26 +74,26 @@ class OtherPlayersViewComponentTest {
                                                        .addChildren(
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            CardViewComponent.imgElementFor(ActionCard.WRITE_CODE)
+                                                                            CardViewComponent.of(ActionCard.WRITE_CODE).render()
                                                                     ),
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            CardViewComponent.imgElementFor(ActionCard.LESS_CODE)
+                                                                            CardViewComponent.of(ActionCard.LESS_CODE).render()
                                                                     ),
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            CardViewComponent.imgElementFor(ActionCard.PREDICT)
+                                                                            CardViewComponent.of(ActionCard.PREDICT).render()
                                                                     )
                                                        ),
                                                   div().classNames("tech-neglect")
                                                        .addChildren(
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            CardViewComponent.imgElementFor(ActionCard.CODE_BLOAT)
+                                                                            CardViewComponent.of(ActionCard.CODE_BLOAT).render()
                                                                     ),
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            CardViewComponent.imgElementFor(ActionCard.CODE_BLOAT)
+                                                                            CardViewComponent.of(ActionCard.CODE_BLOAT).render()
                                                                     )
                                                        )
                                           ),
@@ -117,18 +117,18 @@ class OtherPlayersViewComponentTest {
                                                              .addChildren(
                                                                      div().classNames("card")
                                                                           .addChildren(
-                                                                                  CardViewComponent.imgElementFor(ActionCard.WRITE_CODE)
+                                                                                  CardViewComponent.of(ActionCard.WRITE_CODE).render()
                                                                           )
                                                              ),
                                                         div().classNames("tech-neglect")
                                                              .addChildren(
                                                                      div().classNames("card")
                                                                           .addChildren(
-                                                                                  CardViewComponent.imgElementFor(ActionCard.CANT_ASSERT)
+                                                                                  CardViewComponent.of(ActionCard.CANT_ASSERT).render()
                                                                           ),
                                                                      div().classNames("card")
                                                                           .addChildren(
-                                                                                  CardViewComponent.imgElementFor(ActionCard.CANT_ASSERT)
+                                                                                  CardViewComponent.of(ActionCard.CANT_ASSERT).render()
                                                                           )
                                                              )
                                                 ),

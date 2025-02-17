@@ -3,6 +3,7 @@ package dev.ted.tddgame.adapter.out.websocket;
 import dev.ted.tddgame.adapter.HtmlElement;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.DeckView;
+import dev.ted.tddgame.domain.TestResultsCard;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -63,7 +64,7 @@ class DeckViewComponentTest {
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
-                                CardViewComponent.imgElementFor(ActionCard.PREDICT)
+                                CardViewComponent.of(ActionCard.PREDICT).render()
                         )
                 ));
     }
@@ -83,7 +84,44 @@ class DeckViewComponentTest {
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
-                                CardViewComponent.imgElementFor(ActionCard.LESS_CODE)
+                                CardViewComponent.of(ActionCard.LESS_CODE).render()
+                        )
+                ));
+    }
+
+    @Test
+    void testResultsDrawPileHasCardsAndDiscardPileIsEmptyThenImageOnlyInsideDrawPileSwap() {
+        DeckView<TestResultsCard> deckView = new DeckView<>(List.of(TestResultsCard.AS_PREDICTED),
+                                                           Collections.emptyList());
+        DeckViewComponent<TestResultsCard> deckViewComponent = DeckViewComponent.forTestResultsCardDeck(deckView);
+
+        assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
+                .isEqualTo(forest(
+                        swapInnerHtml(
+                                "test-results-card-draw-pile",
+                                HtmlElement.img("/test-results-card-back.png",
+                                                "Test Results Card Draw Pile")
+                        ),
+                        swapInnerHtml(
+                                "test-results-card-discard-pile"
+                        )
+                ));
+    }
+
+    @Test
+    void testResultsDrawPileEmptyAndDiscardPileHasCardThenImageOfCardInDiscardPileSwap() {
+        DeckView<TestResultsCard> deckView = new DeckView<>(Collections.emptyList(),
+                                                           List.of(TestResultsCard.NEED_ONE_LESS_CODE));
+        DeckViewComponent<TestResultsCard> deckViewComponent = DeckViewComponent.forTestResultsCardDeck(deckView);
+
+        assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
+                .isEqualTo(forest(
+                        swapInnerHtml(
+                                "test-results-card-draw-pile"
+                        ),
+                        swapInnerHtml(
+                                "test-results-card-discard-pile",
+                                CardViewComponent.of(TestResultsCard.NEED_ONE_LESS_CODE).render()
                         )
                 ));
     }
