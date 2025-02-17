@@ -62,7 +62,7 @@ public class OtherPlayersViewComponent {
                             cards.map(actionCard ->
                                                div().classNames("card")
                                                     .addChildren(
-                                                            HandViewComponent.imgElementFor(actionCard)
+                                                            CardViewComponent.imgElementFor(actionCard)
                                                     )
                                   ).toArray(HtmlElement[]::new)
                     );

@@ -38,17 +38,7 @@ public class HandViewComponent {
 
     private HtmlElement asButton(ActionCard card) {
         return HtmlElement.button(htmlAttributesFor(card),
-                                  imgElementFor(card));
-    }
-
-    static HtmlElement imgElementFor(ActionCard card) {
-        return HtmlElement.img("/" + baseImageFilenameOf(card.title()) + ".png", card.title());
-    }
-
-    static String baseImageFilenameOf(String cardTitle) {
-        return cardTitle.toLowerCase()
-                        .replace(" ", "-")
-                        .replace("'", "");
+                                  CardViewComponent.imgElementFor(card));
     }
 
 }

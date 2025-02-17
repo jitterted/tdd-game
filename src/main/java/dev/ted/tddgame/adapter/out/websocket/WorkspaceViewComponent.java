@@ -66,7 +66,7 @@ public class WorkspaceViewComponent {
         return cards
                 .map(card -> div(
                         "card",
-                        HandViewComponent.imgElementFor(card)
+                        CardViewComponent.imgElementFor(card)
                 ))
                 .toList()
                 .toArray(HtmlElement[]::new);

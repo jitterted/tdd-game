@@ -260,10 +260,10 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [X] Generalize code in Deck to use Card instead of ActionCard
                 [X] Generalize Card events
             [X] Create TestResultCard enums
+            [X] Write some TestResultsDeck tests
 
 WE ARE HERE ===>>
 
-            [ ] Write some TestResultsDeck tests
             [ ] Render the Test Result deck's draw and discard piles
         [ ] (start implementing the sequence diagram)
             [ ] Refactor HexTile from enums to classes with state

@@ -18,7 +18,7 @@ class DeckViewComponentTest {
     void bothPilesEmptyHasEmptySwapElements() {
         DeckView<ActionCard> deckView = new DeckView<>(Collections.emptyList(),
                                                        Collections.emptyList());
-        DeckViewComponent deckViewComponent = new DeckViewComponent(deckView);
+        DeckViewComponent deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
 
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
@@ -35,7 +35,7 @@ class DeckViewComponentTest {
     void drawPileHasCardsAndDiscardPileIsEmptyThenImageOnlyInsideDrawPileSwap() {
         DeckView<ActionCard> deckView = new DeckView<>(List.of(ActionCard.WRITE_CODE),
                                                        Collections.emptyList());
-        DeckViewComponent deckViewComponent = new DeckViewComponent(deckView);
+        DeckViewComponent deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
 
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
@@ -54,7 +54,7 @@ class DeckViewComponentTest {
     void drawPileEmptyAndDiscardPileHasCardThenImageOfCardInDiscardPileSwap() {
         DeckView<ActionCard> deckView = new DeckView<>(Collections.emptyList(),
                                                        List.of(ActionCard.PREDICT));
-        DeckViewComponent deckViewComponent = new DeckViewComponent(deckView);
+        DeckViewComponent deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
 
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
@@ -63,7 +63,7 @@ class DeckViewComponentTest {
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
-                                HandViewComponent.imgElementFor(ActionCard.PREDICT)
+                                CardViewComponent.imgElementFor(ActionCard.PREDICT)
                         )
                 ));
     }
@@ -74,7 +74,7 @@ class DeckViewComponentTest {
                                                        List.of(ActionCard.WRITE_CODE,
                                                                ActionCard.REFACTOR,
                                                                ActionCard.LESS_CODE));
-        DeckViewComponent deckViewComponent = new DeckViewComponent(deckView);
+        DeckViewComponent deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
 
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
@@ -83,7 +83,7 @@ class DeckViewComponentTest {
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
-                                HandViewComponent.imgElementFor(ActionCard.LESS_CODE)
+                                CardViewComponent.imgElementFor(ActionCard.LESS_CODE)
                         )
                 ));
     }

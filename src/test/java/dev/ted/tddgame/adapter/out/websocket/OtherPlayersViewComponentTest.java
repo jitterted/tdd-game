@@ -74,26 +74,26 @@ class OtherPlayersViewComponentTest {
                                                        .addChildren(
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            HandViewComponent.imgElementFor(ActionCard.WRITE_CODE)
+                                                                            CardViewComponent.imgElementFor(ActionCard.WRITE_CODE)
                                                                     ),
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            HandViewComponent.imgElementFor(ActionCard.LESS_CODE)
+                                                                            CardViewComponent.imgElementFor(ActionCard.LESS_CODE)
                                                                     ),
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            HandViewComponent.imgElementFor(ActionCard.PREDICT)
+                                                                            CardViewComponent.imgElementFor(ActionCard.PREDICT)
                                                                     )
                                                        ),
                                                   div().classNames("tech-neglect")
                                                        .addChildren(
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            HandViewComponent.imgElementFor(ActionCard.CODE_BLOAT)
+                                                                            CardViewComponent.imgElementFor(ActionCard.CODE_BLOAT)
                                                                     ),
                                                                div().classNames("card")
                                                                     .addChildren(
-                                                                            HandViewComponent.imgElementFor(ActionCard.CODE_BLOAT)
+                                                                            CardViewComponent.imgElementFor(ActionCard.CODE_BLOAT)
                                                                     )
                                                        )
                                           ),
@@ -117,18 +117,18 @@ class OtherPlayersViewComponentTest {
                                                              .addChildren(
                                                                      div().classNames("card")
                                                                           .addChildren(
-                                                                                  HandViewComponent.imgElementFor(ActionCard.WRITE_CODE)
+                                                                                  CardViewComponent.imgElementFor(ActionCard.WRITE_CODE)
                                                                           )
                                                              ),
                                                         div().classNames("tech-neglect")
                                                              .addChildren(
                                                                      div().classNames("card")
                                                                           .addChildren(
-                                                                                  HandViewComponent.imgElementFor(ActionCard.CANT_ASSERT)
+                                                                                  CardViewComponent.imgElementFor(ActionCard.CANT_ASSERT)
                                                                           ),
                                                                      div().classNames("card")
                                                                           .addChildren(
-                                                                                  HandViewComponent.imgElementFor(ActionCard.CANT_ASSERT)
+                                                                                  CardViewComponent.imgElementFor(ActionCard.CANT_ASSERT)
                                                                           )
                                                              )
                                                 ),

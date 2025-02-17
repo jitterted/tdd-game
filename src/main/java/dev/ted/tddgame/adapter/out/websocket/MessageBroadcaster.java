@@ -73,8 +73,8 @@ public class MessageBroadcaster implements Broadcaster {
     private void sendActionCardDeckToAll(Game game) {
         messageSendersForPlayers.sendToAll(
                 game.handle(),
-                new DeckViewComponent(game.actionCardDeck())
-                        .htmlForDiscardAndDrawPiles().render());
+                DeckViewComponent.forActionCardDeck(game.actionCardDeck())
+                                 .htmlForDiscardAndDrawPiles().render());
     }
 
     private void sendOtherPlayerHandsToAll(Game game) {
