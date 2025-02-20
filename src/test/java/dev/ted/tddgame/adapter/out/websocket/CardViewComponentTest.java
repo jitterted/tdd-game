@@ -34,7 +34,7 @@ class CardViewComponentTest {
 
         assertThat(component.html().render())
                 .isEqualTo("""
-                           <img src="/as-predicted.png" alt="AS_PREDICTED">
+                           <img src="/as-predicted.png" alt="As Predicted">
                            """);
     }
 
@@ -44,7 +44,7 @@ class CardViewComponentTest {
 
         assertThat(component.html().render())
                 .isEqualTo("""
-                           <img src="/need-one-less-code.png" alt="NEED_ONE_LESS_CODE">
+                           <img src="/need-one-less-code.png" alt="Need At Least One LESS CODE card">
                            """);
     }
 }
