@@ -82,12 +82,12 @@ class MessageBroadcasterTest {
         broadcaster.gameUpdate(builder.game());
 
         assertThat(messageSenderForOliver.sentMessages.size())
-                .as("Should have 6 messages sent to Oliver")
-                .isEqualTo(6);
+                .as("Should have 7 messages sent to Oliver")
+                .isEqualTo(7);
 
         assertThat(messageSenderForSamantha.sentMessages.size())
-                .as("Should have 6 messages sent to Samantha")
-                .isEqualTo(6);
+                .as("Should have 7 messages sent to Samantha")
+                .isEqualTo(7);
 
         assertThat(messageSenderForOliver.firstSentMessage())
                 .as("Oliver's custom HTML should not be the same as Samantha's (as they have different cards in their hands)")
@@ -95,6 +95,14 @@ class MessageBroadcasterTest {
 
         assertThat(messageSenderForOliver.messageContaining("other-player-container"))
                 .as("Oliver's HTML should have 'other players' view")
+                .isPresent();
+
+        assertThat(messageSenderForSamantha.messageContaining("action-card-draw-pile"))
+                .as("Should have the Action Card deck HTML")
+                .isPresent();
+
+        assertThat(messageSenderForSamantha.messageContaining("test-results-card-draw-pile"))
+                .as("Should have the Test Results deck HTML")
                 .isPresent();
 
         // for when we are ready to add other players' tech neglect cards

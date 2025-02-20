@@ -36,6 +36,7 @@ public class MessageBroadcaster implements Broadcaster {
         sendYourHtmlForEachPlayerOf(game);
         sendOtherPlayerHandsToAll(game);
         sendActionCardDeckToAll(game);
+        sendTestResultsDeckToAll(game);
         sendWorkspacePawnsToAll(game);
 
         sendYourWorkspaceInPlayCardsForEachPlayerOf(game);
@@ -74,6 +75,13 @@ public class MessageBroadcaster implements Broadcaster {
         messageSendersForPlayers.sendToAll(
                 game.handle(),
                 DeckViewComponent.forActionCardDeck(game.actionCardDeck())
+                                 .htmlForDiscardAndDrawPiles().render());
+    }
+
+    private void sendTestResultsDeckToAll(Game game) {
+        messageSendersForPlayers.sendToAll(
+                game.handle(),
+                DeckViewComponent.forTestResultsCardDeck(game.testResultsCardDeck())
                                  .htmlForDiscardAndDrawPiles().render());
     }
 

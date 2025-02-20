@@ -19,7 +19,7 @@ class DeckViewComponentTest {
     void bothPilesEmptyHasEmptySwapElements() {
         DeckView<ActionCard> deckView = new DeckView<>(Collections.emptyList(),
                                                        Collections.emptyList());
-        DeckViewComponent deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
+        DeckViewComponent<ActionCard> deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
 
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
@@ -36,7 +36,7 @@ class DeckViewComponentTest {
     void drawPileHasCardsAndDiscardPileIsEmptyThenImageOnlyInsideDrawPileSwap() {
         DeckView<ActionCard> deckView = new DeckView<>(List.of(ActionCard.WRITE_CODE),
                                                        Collections.emptyList());
-        DeckViewComponent deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
+        DeckViewComponent<ActionCard> deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
 
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
@@ -55,7 +55,7 @@ class DeckViewComponentTest {
     void drawPileEmptyAndDiscardPileHasCardThenImageOfCardInDiscardPileSwap() {
         DeckView<ActionCard> deckView = new DeckView<>(Collections.emptyList(),
                                                        List.of(ActionCard.PREDICT));
-        DeckViewComponent deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
+        DeckViewComponent<ActionCard> deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
 
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
@@ -75,7 +75,7 @@ class DeckViewComponentTest {
                                                        List.of(ActionCard.WRITE_CODE,
                                                                ActionCard.REFACTOR,
                                                                ActionCard.LESS_CODE));
-        DeckViewComponent deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
+        DeckViewComponent<ActionCard> deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
 
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
