@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.*;
 class DeckViewComponentTest {
 
     @Test
-    void bothPilesEmptyHasEmptySwapElements() {
+    void bothPilesEmptyHasOnlyBackOfCardForDrawPile() {
         DeckView<ActionCard> deckView = new DeckView<>(Collections.emptyList(),
                                                        Collections.emptyList());
         DeckViewComponent<ActionCard> deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
@@ -24,7 +24,9 @@ class DeckViewComponentTest {
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
                         swapInnerHtml(
-                                "action-card-draw-pile"
+                                "action-card-draw-pile",
+                                HtmlElement.img("/action-card-back.png",
+                                                "Action Card Draw Pile")
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile"
@@ -52,7 +54,7 @@ class DeckViewComponentTest {
     }
 
     @Test
-    void drawPileEmptyAndDiscardPileHasCardThenImageOfCardInDiscardPileSwap() {
+    void drawPileEmptyAndDiscardPileHasCardThenBackOfCardForDrawPileAndImageOfCardInDiscardPile() {
         DeckView<ActionCard> deckView = new DeckView<>(Collections.emptyList(),
                                                        List.of(ActionCard.PREDICT));
         DeckViewComponent<ActionCard> deckViewComponent = DeckViewComponent.forActionCardDeck(deckView);
@@ -60,7 +62,9 @@ class DeckViewComponentTest {
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
                         swapInnerHtml(
-                                "action-card-draw-pile"
+                                "action-card-draw-pile",
+                                HtmlElement.img("/action-card-back.png",
+                                                "Action Card Draw Pile")
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
@@ -70,7 +74,7 @@ class DeckViewComponentTest {
     }
 
     @Test
-    void drawPileEmptyAndDiscardPileWithTwoCardsHasImageOfLastCardInDiscardPileSwap() {
+    void drawPileEmptyAndDiscardPileWithTwoCardsHasBackOfCardForDrawPileAndImageOfLastCardInDiscardPile() {
         DeckView<ActionCard> deckView = new DeckView<>(Collections.emptyList(),
                                                        List.of(ActionCard.WRITE_CODE,
                                                                ActionCard.REFACTOR,
@@ -80,7 +84,9 @@ class DeckViewComponentTest {
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
                         swapInnerHtml(
-                                "action-card-draw-pile"
+                                "action-card-draw-pile",
+                                HtmlElement.img("/action-card-back.png",
+                                                "Action Card Draw Pile")
                         ),
                         swapInnerHtml(
                                 "action-card-discard-pile",
@@ -90,7 +96,7 @@ class DeckViewComponentTest {
     }
 
     @Test
-    void testResultsDrawPileHasCardsAndDiscardPileIsEmptyThenImageOnlyInsideDrawPileSwap() {
+    void testResultsDrawPileHasCardsAndDiscardPileIsEmptyThenImageOnlyInsideDrawPile() {
         DeckView<TestResultsCard> deckView = new DeckView<>(List.of(TestResultsCard.AS_PREDICTED),
                                                            Collections.emptyList());
         DeckViewComponent<TestResultsCard> deckViewComponent = DeckViewComponent.forTestResultsCardDeck(deckView);
@@ -109,7 +115,7 @@ class DeckViewComponentTest {
     }
 
     @Test
-    void testResultsDrawPileEmptyAndDiscardPileHasCardThenImageOfCardInDiscardPileSwap() {
+    void testResultsDrawPileEmptyAndDiscardPileHasCardThenBackOfCardInDrawPileAndImageOfCardInDiscardPile() {
         DeckView<TestResultsCard> deckView = new DeckView<>(Collections.emptyList(),
                                                            List.of(TestResultsCard.NEED_ONE_LESS_CODE));
         DeckViewComponent<TestResultsCard> deckViewComponent = DeckViewComponent.forTestResultsCardDeck(deckView);
@@ -117,7 +123,9 @@ class DeckViewComponentTest {
         assertThat(deckViewComponent.htmlForDiscardAndDrawPiles())
                 .isEqualTo(forest(
                         swapInnerHtml(
-                                "test-results-card-draw-pile"
+                                "test-results-card-draw-pile",
+                                HtmlElement.img("/test-results-card-back.png",
+                                                "Test Results Card Draw Pile")
                         ),
                         swapInnerHtml(
                                 "test-results-card-discard-pile",

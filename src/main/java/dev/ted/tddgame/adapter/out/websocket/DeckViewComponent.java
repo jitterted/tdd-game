@@ -44,9 +44,7 @@ public class DeckViewComponent<C extends Card> {
 
     HtmlElement htmlForDiscardAndDrawPiles() {
         return HtmlElement.forest(
-                swapForPile(deckView.drawPile(),
-                            drawPileTargetId,
-                            _ -> HtmlElement.swapInnerHtml(drawPileTargetId, backOfCardImgElement)),
+                HtmlElement.swapInnerHtml(drawPileTargetId, backOfCardImgElement),
                 swapForPile(deckView.discardPile(),
                             discardPileTargetId,
                             cardToHtmlTransformer)
