@@ -1,7 +1,13 @@
 February 20, 2025 - Thursday
 ============================
 
-*
+[Junie]
+* Feature request: able to run a test run configuration instead of Junie's chosen tests
+
+* In state-machine-driven code (e.g., HexTile), CQS does not apply, as it's implementing the State pattern where a state is always returned, even if it's the same state as it was before
+
+* Thinking that instead of having HexTile and its implementations be classes, keep the enums and have a "decider strategy" injected into each enum, where tiles that have similar behavior will get the same strategy (composition vs. inheritance)
+
 
 February 17, 2025 - Monday
 ==========================
