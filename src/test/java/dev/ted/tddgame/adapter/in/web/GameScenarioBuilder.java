@@ -6,6 +6,7 @@ import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.ActionCard;
+import dev.ted.tddgame.domain.CardsFactory;
 import dev.ted.tddgame.domain.Deck;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
@@ -53,7 +54,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
         return actionCards(List.of(actionCards));
     }
 
-    private GameScenarioBuilder actionCards(List<ActionCard> actionCardList) {
+    public GameScenarioBuilder actionCards(List<ActionCard> actionCardList) {
         Deck.Shuffler<ActionCard> definedCardsShuffler =
                 _ -> new ArrayList<>(actionCardList);
         gameFactory = new Game.GameFactory(definedCardsShuffler);
@@ -63,6 +64,11 @@ public class GameScenarioBuilder implements NeedsActionCards {
         gameStore.save(game);
 
         return this;
+    }
+
+    @Override
+    public GameScenarioBuilder unshuffledActionCards() {
+        return actionCards(new CardsFactory().createAllActionCards());
     }
 
     public GameScenarioBuilder shuffledActionCards() {

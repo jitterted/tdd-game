@@ -104,7 +104,7 @@ class GameTest {
         @Test
         void startGameEmits_GameStarted_PlayerDrewActionCards_Events() {
             Game game = GameScenarioBuilder.create()
-                                           .shuffledActionCards()
+                                           .unshuffledActionCards()
                                            .memberJoinsAsPlayer(new MemberId(1L))
                                            .game();
 
@@ -315,13 +315,13 @@ class GameTest {
         void gameStartedResultsInStateOfGameAsInProgress() {
             MemberId firstPlayerMemberId = new MemberId(96L);
             MemberId secondPlayerMemberId = new MemberId(52L);
-            Game.GameFactory gameFactory = new Game.GameFactory(new Deck.IdentityShuffler<>());
-            Game gameSetup = gameFactory.create("Irrelevant Game Name", "irrelevant-game-handle");
-            gameSetup.join(firstPlayerMemberId, "first player");
-            gameSetup.join(secondPlayerMemberId, "second player");
-            gameSetup.start();
+            Game game = GameScenarioBuilder.create()
+                                           .unshuffledActionCards()
+                                           .memberJoinsAsPlayer(firstPlayerMemberId)
+                                           .memberJoinsAsPlayer(secondPlayerMemberId)
+                                           .startGame()
+                                           .game();
 
-            Game game = gameFactory.reconstitute(gameSetup.freshEvents().toList());
             Player firstPlayer = game.playerFor(firstPlayerMemberId);
             Player secondPlayer = game.playerFor(secondPlayerMemberId);
 
@@ -339,8 +339,7 @@ class GameTest {
                     .hasSize(5);
             assertThat(game.actionCardDeck().drawPile())
                     .hasSize(63 - 5 - 5);
-            assertThat(game.actionCardDeck()
-                           .discardPile())
+            assertThat(game.actionCardDeck().discardPile())
                     .as("discard pile should be empty")
                     .isEmpty();
         }
