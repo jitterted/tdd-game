@@ -268,8 +268,11 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
 WE ARE HERE ===>>
 
-        [ ] Workspace: evaluate the drawn Test Results card
-
+        [ ] Draw Test Results Card
+            [ ] click to draw a card: Add button to draw pile card
+            [ ] render the drawn card as a dialog with the image of the drawn card and a button [OK]
+            [ ] upon button click, POST the card to be evaluated
+            [ ] Workspace: evaluate the drawn Test Results card
 
             [ ] Change the way we configure the Action Card deck so that instead of hacking the cards via the Shuffler, provide a way to specify the cards that go into the Discard Pile along with an "identity" shuffler that moves them to the Draw Pile in a predictable way
 

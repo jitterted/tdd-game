@@ -28,13 +28,12 @@ Player -> Workspace: testResultsCardDrawn(testResultsCard)\n(Workspace holds ont
 GamePlay --> PlayerActor: showModal(testResultsCard)\nWe display the modal via the Workspace rendering itself
 PlayerActor -> GamePlay: acceptTestResults()
 GamePlay -> Workspace: acceptTestResults()\n(evaluates the TestResultsCard)
+Workspace -> Workspace: discard the drawn TestResultsCard
 alt TestResultsCard is "As Predicted"
     Workspace -> PredictNeededHexTile: testResultsAsExpected
     PredictNeededHexTile --> Workspace: return next tile (Write Code So Test Compiles)
-    Workspace -> Workspace: discard the drawn TestResultsCard
     Workspace -> Workspace: discard all In-Play cards
 else TestResultsCard is "Unexpected"
-    Workspace -> Workspace: discard the drawn TestResultsCard
     Workspace -> Workspace: discard the PREDICT card
 end
 GamePlay -> Broadcaster: gameUpdate
