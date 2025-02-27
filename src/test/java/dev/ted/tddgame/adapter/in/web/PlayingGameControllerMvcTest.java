@@ -85,8 +85,8 @@ class PlayingGameControllerMvcTest {
     }
 
     @Test
-    void postToDrawCardEndpointReturns204NoContent() {
-        String gameHandle = "game4drawCard";
+    void postToDrawActionCardEndpointReturns204NoContent() {
+        String gameHandle = "game4drawActionCard";
         MemberId oliverMemberId = new MemberId(23L);
         GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
                 .create(gameHandle)
@@ -98,14 +98,31 @@ class PlayingGameControllerMvcTest {
                     executor.discardFirstCardInHand();
                     executor.discardFirstCardInHand();
                 });
-        MockMvcTester mvc = mvcTesterFor(gameScenarioBuilder.gameStore(),
-                                         gameScenarioBuilder.memberStore());
 
-        mvc.post()
-           .principal(gameScenarioBuilder.firstPlayerPrincipal())
-           .uri("/game/game4drawCard/action-card-deck/draw-card")
-           .assertThat()
-           .hasStatus(HttpStatus.NO_CONTENT);
+        gameScenarioBuilder.mvcTester()
+                           .post()
+                           .principal(gameScenarioBuilder.firstPlayerPrincipal())
+                           .uri("/game/game4drawActionCard/action-card-deck/draw-card")
+                           .assertThat()
+                           .hasStatus(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    void postToDrawTestResultsCardEndpointReturns204NoContent() {
+        String gameHandle = "game4drawTestResultsCard";
+        GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                .create(gameHandle)
+                .shuffledActionCards()
+                .memberJoinsAsPlayer(new MemberId(92L))
+                .startGame();
+
+        gameScenarioBuilder.mvcTester()
+                           .post()
+                           .principal(gameScenarioBuilder.firstPlayerPrincipal())
+                           .uri("/game/game4drawActionCard/test-results-deck/draw-card")
+                           .assertThat()
+                           .hasStatus(HttpStatus.NO_CONTENT);
+
     }
 
     // -- FIXTURE

@@ -30,6 +30,7 @@ public class PlayingGameController {
     private static final UriTemplate PLAY_URI_TEMPLATE = new UriTemplate(PLAY_CARD_URI_TEMPLATE_STRING);
     private static final String DRAW_ACTION_CARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/action-card-deck/draw-card";
     private static final UriTemplate DRAW_URI_TEMPLATE = new UriTemplate(DRAW_ACTION_CARD_URI_TEMPLATE_STRING);
+    private static final String DRAW_TEST_RESULTS_CARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/test-results-deck/draw-card";
     private final GameStore gameStore;
     private final GamePlay gamePlay;
     private final MemberStore memberStore;
@@ -84,8 +85,8 @@ public class PlayingGameController {
     @PostMapping(PLAY_CARD_URI_TEMPLATE_STRING)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void playCard(Principal principal,
-                         @PathVariable String gameHandle,
-                         @PathVariable String cardName) {
+                         @PathVariable("gameHandle") String gameHandle,
+                         @PathVariable("cardName") String cardName) {
         gamePlay.playCard(gameHandle,
                           memberIdFrom(principal),
                           ActionCard.valueOf(cardName));
@@ -94,8 +95,15 @@ public class PlayingGameController {
     @PostMapping(DRAW_ACTION_CARD_URI_TEMPLATE_STRING)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void drawActionCard(Principal principal,
-                               @PathVariable String gameHandle) {
+                               @PathVariable("gameHandle") String gameHandle) {
         gamePlay.drawActionCard(gameHandle, memberIdFrom(principal));
+    }
+
+    @PostMapping(DRAW_TEST_RESULTS_CARD_URI_TEMPLATE_STRING)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void drawTestResultsCard(Principal principal,
+                                    @PathVariable("gameHandle") String gameHandle) {
+//        gamePlay.drawTestResultsCard(gameHandle, memberIdFrom(principal));
     }
 
     private MemberId memberIdFrom(Principal principal) {
@@ -104,4 +112,5 @@ public class PlayingGameController {
                 .orElseThrow(() -> new RuntimeException("Member with AuthN username '%s' was not found in the MemberStore".formatted(principal.getName())))
                 .id();
     }
+
 }

@@ -11,6 +11,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -243,6 +244,16 @@ public class GameScenarioBuilder implements NeedsActionCards {
     public GameScenarioBuilder withBroadcaster(Broadcaster broadcaster) {
         this.broadcaster = broadcaster;
         return this;
+    }
+
+    MockMvcTester mvcTester() {
+        GameStore gameStore = gameStore();
+        MemberStore memberStore = memberStore();
+        GamePlay gamePlay = new GamePlay(gameStore,
+                                         new GamePlayTest.NoOpDummyBroadcaster());
+        PlayingGameController playingGameController = new
+                PlayingGameController(gameStore, gamePlay, memberStore);
+        return MockMvcTester.of(playingGameController);
     }
 
     public static class PlayerExecutor {
