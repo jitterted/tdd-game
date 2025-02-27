@@ -13,7 +13,7 @@ public class Game extends EventSourcedAggregate {
     private String handle;
     private final Map<MemberId, Player> playerMap = new HashMap<>();
     private final AtomicLong playerIdGenerator = new AtomicLong();
-    private final CardsFactory cardsFactory = new CardsFactory();
+    private final CardsFactory cardsFactory;
     private Deck<ActionCard> actionCardDeck;
     private Deck<TestResultsCard> testResultsCardDeck;
     private final Deck.Shuffler<ActionCard> actionCardShuffler;
@@ -21,39 +21,40 @@ public class Game extends EventSourcedAggregate {
 
     // Rebuilds Game (and its entities) state
     // Public production code should use #reconstitute()
-    private Game(List<GameEvent> events, Deck.Shuffler<ActionCard> actionCardShuffler) {
+    private Game(List<GameEvent> events,
+                 Deck.Shuffler<ActionCard> actionCardShuffler,
+                 CardsFactory cardsFactory) {
+// TODO: eventually no shufflers should be used for predictable card draws, but instead provide a configured CardsFactory
+        if (!(actionCardShuffler instanceof Deck.RandomShuffler<ActionCard> ||
+             actionCardShuffler instanceof Deck.IdentityShuffler<ActionCard>)) {
+            throw new IllegalArgumentException("Unsupported Deck Shuffler:  " + actionCardShuffler.getClass().getSimpleName());
+        }
         this.actionCardShuffler = actionCardShuffler;
+        this.cardsFactory = cardsFactory;
+        this.testResultsCardShuffler = new Deck.IdentityShuffler<>();
+
         for (GameEvent event : events) {
             apply(event);
         }
-        testResultsCardShuffler = new Deck.IdentityShuffler<>();
     }
 
     // Allows control of the shuffler used for the ActionCard deck replenishment
-    private Game(Deck.Shuffler<ActionCard> actionCardShuffler) {
+    // And configured CardsFactory to define the cards that end up in the deck
+    private Game(Deck.Shuffler<ActionCard> actionCardShuffler,
+                 CardsFactory cardsFactory) {
         this.actionCardShuffler = actionCardShuffler;
-        testResultsCardShuffler = new Deck.IdentityShuffler<>();
-    }
-
-    /**
-     * Create a Game with the specified shuffler to be used when shuffling the discard pile into the draw pile
-     */
-    static Game createNull(Deck.Shuffler<ActionCard> shuffler,
-                           String gameName,
-                           String gameHandle) {
-        Game game = new Game(shuffler);
-        game.initialize(gameName, gameHandle);
-        return game;
+        this.testResultsCardShuffler = new Deck.IdentityShuffler<>();
+        this.cardsFactory = cardsFactory;
     }
 
     private void initialize(String gameName, String handle) {
         enqueue(new GameCreated(gameName, handle));
         enqueue(new ActionCardDeckCreated(
-                        cardsFactory.createAllActionCards()
+                        cardsFactory.allActionCards()
                 )
         );
         enqueue(new TestResultsCardDeckCreated(
-                        cardsFactory.createAllTestResultsCards()
+                        cardsFactory.allTestResultsCards()
                 )
         );
     }
@@ -146,9 +147,7 @@ public class Game extends EventSourcedAggregate {
     }
 
     private void initialDealCardsToAllPlayers() {
-        players().forEach(player -> {
-            player.drawToFull(actionCardDeck);
-        });
+        players().forEach(player -> player.drawToFull(actionCardDeck));
     }
 
     public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
@@ -215,14 +214,30 @@ public class Game extends EventSourcedAggregate {
 
     public static class GameFactory {
 
-        protected final Deck.Shuffler<ActionCard> configuredActionCardShuffler;
+        private final Deck.Shuffler<ActionCard> configuredActionCardShuffler;
+        private final CardsFactory configuredCardsFactory;
 
         public GameFactory() {
             this(new Deck.RandomShuffler<>());
         }
 
-        public GameFactory(Deck.Shuffler<ActionCard> configuredActionCardShuffler) {
-            this.configuredActionCardShuffler = configuredActionCardShuffler;
+        private GameFactory(Deck.Shuffler<ActionCard> configuredActionCardShuffler) {
+            this(configuredActionCardShuffler, new CardsFactory());
+        }
+
+        public GameFactory(Deck.Shuffler<ActionCard> definedCardsShuffler,
+                           CardsFactory configuredCardsFactory) {
+            this.configuredActionCardShuffler = definedCardsShuffler;
+            this.configuredCardsFactory = configuredCardsFactory;
+        }
+
+        public static GameFactory forTest(Deck.Shuffler<ActionCard> configuredActionCardShuffler) {
+            return new GameFactory(configuredActionCardShuffler);
+        }
+
+        public static GameFactory forTest(Deck.Shuffler<ActionCard> configuredActionCardShuffler,
+                                          CardsFactory cardsFactory) {
+            return new GameFactory(configuredActionCardShuffler, cardsFactory);
         }
 
         /**
@@ -232,7 +247,7 @@ public class Game extends EventSourcedAggregate {
          * @param handle   unique handle for the game
          */
         public Game create(String gameName, String handle) {
-            Game game = new Game(configuredActionCardShuffler);
+            Game game = new Game(configuredActionCardShuffler, configuredCardsFactory);
             game.initialize(gameName, handle);
             return game;
         }
@@ -245,7 +260,9 @@ public class Game extends EventSourcedAggregate {
          * @param events GameEvents to play back
          */
         public Game reconstitute(List<GameEvent> events) {
-            return new Game(events, configuredActionCardShuffler);
+            return new Game(events,
+                            configuredActionCardShuffler,
+                            configuredCardsFactory);
         }
 
     }

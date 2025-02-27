@@ -57,7 +57,9 @@ public class GameScenarioBuilder implements NeedsActionCards {
     public GameScenarioBuilder actionCards(List<ActionCard> actionCardList) {
         Deck.Shuffler<ActionCard> definedCardsShuffler =
                 _ -> new ArrayList<>(actionCardList);
-        gameFactory = new Game.GameFactory(definedCardsShuffler);
+        CardsFactory cardsFactory = CardsFactory.forTest(actionCardList);
+        gameFactory = Game.GameFactory.forTest(definedCardsShuffler,
+                                               cardsFactory);
         gameStore = GameStore.createEmpty(gameFactory);
 
         Game game = gameFactory.create(gameName, gameHandle);
@@ -68,7 +70,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
 
     @Override
     public GameScenarioBuilder unshuffledActionCards() {
-        return actionCards(new CardsFactory().createAllActionCards());
+        return actionCards(new CardsFactory().allActionCards());
     }
 
     public GameScenarioBuilder shuffledActionCards() {

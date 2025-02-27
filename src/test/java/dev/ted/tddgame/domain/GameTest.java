@@ -35,10 +35,13 @@ class GameTest {
     }
 
     @Test
-    void createGameWithDefinedShufflerForActionCardDeck() {
-        Deck.Shuffler<ActionCard> refactorCardsOnlyShuffler =
-                _ -> new ArrayList<>(Collections.nCopies(12, ActionCard.REFACTOR));
-        Game game = Game.createNull(refactorCardsOnlyShuffler, "Name of Game", "game-handle");
+    void createGameWithDefinedCardsForActionCardDeck() {
+        CardsFactory cardsFactory = CardsFactory.forTest(
+                Collections.nCopies(12, ActionCard.REFACTOR));
+        Game.GameFactory gameFactory = new Game.GameFactory(
+                new Deck.IdentityShuffler<>(),
+                cardsFactory);
+        Game game = gameFactory.create("Name of Game", "game-handle");
         MemberId firstPlayerMemberId = new MemberId(23L);
         game.join(firstPlayerMemberId, "First Player");
         MemberId secondPlayerMemberId = new MemberId(24L);
@@ -417,8 +420,8 @@ class GameTest {
                             ActionCard.LESS_CODE,
                             ActionCard.LESS_CODE
                     ));
-            Game game = new Game.GameFactory(configuredActionCardShuffler)
-                    .create("Irrelevant Name", "irrelevant-handle");
+            Game game = Game.GameFactory.forTest(configuredActionCardShuffler)
+                                        .create("Irrelevant Name", "irrelevant-handle");
             game.join(firstPlayerMemberId, "Member = First Player");
             game.join(new MemberId(99L), "Irrelevant Member");
             game.start();

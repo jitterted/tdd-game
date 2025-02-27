@@ -268,6 +268,9 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
 WE ARE HERE ===>>
 
+        [ ] Refactor: move away from using the "cheater" Shuffler to using a configured CardsFactory
+            [ ] Fix tests that violate our new constraint (in Game:28), which is that either we get an Identity Shuffler or a Random Shuffler. Any other shuffler should be replaced with a configured CardsFactory. Do this in GameScenarioBuilder's actionCards() methods and that should fix all of the failing tests.
+
         [ ] Draw Test Results Card
             [ ] click to draw a card
                 [X] Add button to draw pile card (in game.html)

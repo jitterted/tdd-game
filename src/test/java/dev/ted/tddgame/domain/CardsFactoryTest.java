@@ -11,7 +11,7 @@ class CardsFactoryTest {
 
     @Test
     void createActionCardDeckHasAllActionCardsInDiscardPile() {
-        List<ActionCard> actionCards = new CardsFactory().createAllActionCards();
+        List<ActionCard> actionCards = new CardsFactory().allActionCards();
 
         assertThat(actionCards)
                 .haveExactly(18, actionCardMatching(ActionCard.WRITE_CODE))

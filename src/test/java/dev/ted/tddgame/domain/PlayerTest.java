@@ -27,7 +27,7 @@ class PlayerTest {
         @Test
         void canDrawCardWhenHandHasFewerThanFiveCards() {
             ActionCardDeck actionCardDeck = ActionCardDeck.createForTest(
-                    new CardsFactory().createAllActionCards());
+                    new CardsFactory().allActionCards());
             Fixture fixture = createPlayerWithEventAccumulator(actionCardDeck);
             Player player = fixture.player();
 
@@ -45,7 +45,7 @@ class PlayerTest {
         void exceptionThrownWhenDrawCardAndHandHasFiveCards() {
             Player player = Player.createNull(73L, "Player Name");
             ActionCardDeck actionCardDeck = ActionCardDeck
-                    .createForTest(new CardsFactory().createAllActionCards());
+                    .createForTest(new CardsFactory().allActionCards());
             for (int i = 0; i < 5; i++) {
                 player.drawCardFrom(actionCardDeck);
             }

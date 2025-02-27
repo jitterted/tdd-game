@@ -6,8 +6,33 @@ import java.util.List;
 
 public class CardsFactory {
 
+    private final List<ActionCard> allActionCards;
+    private final List<TestResultsCard> allTestResultsCards;
+
+    public CardsFactory() {
+        this(createAllActionCards(), createAllTestResultsCards());
+    }
+
+    public CardsFactory(List<ActionCard> allActionCards,
+                        List<TestResultsCard> allTestResultsCards) {
+        this.allActionCards = allActionCards;
+        this.allTestResultsCards = allTestResultsCards;
+    }
+
+    public static CardsFactory forTest(List<ActionCard> actionCardList) {
+        return new CardsFactory(actionCardList, createAllTestResultsCards());
+    }
+
     // 63 cards in this standard action card deck
-    public List<ActionCard> createAllActionCards() {
+    public List<ActionCard> allActionCards() {
+        return allActionCards;
+    }
+
+    public List<TestResultsCard> allTestResultsCards() {
+        return allTestResultsCards;
+    }
+
+    private static List<ActionCard> createAllActionCards() {
         List<ActionCard> allActionCards = new ArrayList<>();
         allActionCards.addAll(Collections.nCopies(18, ActionCard.WRITE_CODE));
         allActionCards.addAll(Collections.nCopies(18, ActionCard.LESS_CODE));
@@ -18,7 +43,7 @@ public class CardsFactory {
         return allActionCards;
     }
 
-    public List<TestResultsCard> createAllTestResultsCards() {
+    private static List<TestResultsCard> createAllTestResultsCards() {
         List<TestResultsCard> allTestResultsCards = new ArrayList<>();
 
         allTestResultsCards.addAll(Collections.nCopies(4, TestResultsCard.AS_PREDICTED));
