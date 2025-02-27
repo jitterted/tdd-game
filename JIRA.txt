@@ -270,6 +270,7 @@ WE ARE HERE ===>>
 
         [ ] Draw Test Results Card
             [ ] click to draw a card: Add button to draw pile card
+                [ ] Add card to player's workspace
             [ ] render the drawn card as a dialog with the image of the drawn card and a button [OK]
             [ ] upon button click, POST the card to be evaluated
             [ ] Workspace: evaluate the drawn Test Results card
@@ -331,6 +332,7 @@ WE ARE HERE ===>>
         * WorkspaceViewComponent contains InPlayViewComponent, which contains CardViewComponents
             * Constructor might take list of Workspaces (instead of Players)?
         * HandViewComponent contains CardViewComponents
+        * DeckViewComponent pulls in the button "behavior" out of the game.html template
         * BoardViewComponent contains HexTileViewComponents, with PawnViewComponents
         * Pull all of these as children of a GameViewComponent
             --> this will let us create a "mini" test server for evaluating HTML layout and playing with HTMX OOB swaps

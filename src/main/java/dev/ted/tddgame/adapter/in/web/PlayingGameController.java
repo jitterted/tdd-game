@@ -28,7 +28,7 @@ public class PlayingGameController {
     private static final UriTemplate DISCARD_URI_TEMPLATE = new UriTemplate(DISCARD_URI_TEMPLATE_STRING);
     private static final String PLAY_CARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/cards/play/{cardName}";
     private static final UriTemplate PLAY_URI_TEMPLATE = new UriTemplate(PLAY_CARD_URI_TEMPLATE_STRING);
-    private static final String DRAW_ACTION_CARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/draw-card";
+    private static final String DRAW_ACTION_CARD_URI_TEMPLATE_STRING = "/game/{gameHandle}/action-card-deck/draw-card";
     private static final UriTemplate DRAW_URI_TEMPLATE = new UriTemplate(DRAW_ACTION_CARD_URI_TEMPLATE_STRING);
     private final GameStore gameStore;
     private final GamePlay gamePlay;

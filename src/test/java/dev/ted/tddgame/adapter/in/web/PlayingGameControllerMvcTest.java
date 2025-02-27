@@ -103,7 +103,7 @@ class PlayingGameControllerMvcTest {
 
         mvc.post()
            .principal(gameScenarioBuilder.firstPlayerPrincipal())
-           .uri("/game/game4drawCard/draw-card")
+           .uri("/game/game4drawCard/action-card-deck/draw-card")
            .assertThat()
            .hasStatus(HttpStatus.NO_CONTENT);
     }
