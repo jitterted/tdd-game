@@ -102,16 +102,11 @@ class GameTest {
         }
 
         @Test
-        void startGameEmits_GameStarted_PlayerDrawRegularCards_Events() {
-            Game.GameFactory gameFactory = new Game
-                    .GameFactory(new Deck.IdentityShuffler<>());
-            Game gameForSetup = gameFactory.create("IRRELEVANT NAME", "IRRELEVANT HANDLE");
-            GameStore gameStore = GameStore.createEmpty(gameFactory);
-            gameForSetup.join(new MemberId(1L), "IRRELEVANT PLAYER NAME");
-            gameStore.save(gameForSetup);
-            // get the Game, but with no fresh events
-            Game game = gameStore.findByHandle(gameForSetup.handle())
-                                 .orElseThrow();
+        void startGameEmits_GameStarted_PlayerDrewActionCards_Events() {
+            Game game = GameScenarioBuilder.create()
+                                           .shuffledActionCards()
+                                           .memberJoinsAsPlayer(new MemberId(1L))
+                                           .game();
 
             game.start();
 

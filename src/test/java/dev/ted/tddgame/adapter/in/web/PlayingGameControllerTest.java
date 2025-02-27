@@ -8,7 +8,6 @@ import dev.ted.tddgame.application.port.Broadcaster;
 import dev.ted.tddgame.application.port.GameStore;
 import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.ActionCard;
-import dev.ted.tddgame.domain.Deck;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
@@ -30,7 +29,7 @@ class PlayingGameControllerTest {
     @Test
     void gameReturnsGameViewWithPlayerViews() {
         String gameHandle = "wily-coyote-77";
-        Fixture fixture = createGameWithPlayingGameController(gameHandle);
+        Fixture fixture = createGameWithPlayingGameControllerWithRandomShuffler(gameHandle);
 
         Model model = new ConcurrentModel();
         fixture.playingGameController().game(model, gameHandle);
@@ -47,7 +46,7 @@ class PlayingGameControllerTest {
     void cardMenuPopulatedWithButtonsForDiscardAndPlay() {
         String gameHandle = "bugs-bunny-33";
         String cardName = "CODE_BLOAT";
-        Fixture fixture = createGameWithPlayingGameController(gameHandle);
+        Fixture fixture = createGameWithPlayingGameControllerWithRandomShuffler(gameHandle);
 
         String html = fixture.playingGameController.cardMenu(gameHandle, cardName);
 
@@ -81,7 +80,7 @@ class PlayingGameControllerTest {
     @Test
     void discardCardRequestMustDiscardSpecifiedCardFromPlayerHand() {
         String gameHandle = "discard-game-handle";
-        Fixture fixture = createGameWithPlayingGameController(gameHandle);
+        Fixture fixture = createGameWithPlayingGameControllerWithRandomShuffler(gameHandle);
         fixture.gamePlay.start(gameHandle);
         Game game = fixture.findGame(gameHandle);
 
@@ -164,13 +163,8 @@ class PlayingGameControllerTest {
 
     // ---- FIXTURE
 
-    private static Fixture createGameWithPlayingGameController(String gameHandle) {
-        Deck.RandomShuffler<ActionCard> actionCardShuffler = new Deck.RandomShuffler<>();
-        return createGameWithPlayingGameControllerUsingShuffler(gameHandle, actionCardShuffler);
-    }
-
-    private static Fixture createGameWithPlayingGameControllerUsingShuffler(String gameHandle, Deck.Shuffler<ActionCard> actionCardShuffler) {
-        GameStore gameStore = GameStore.createEmpty(new Game.GameFactory(actionCardShuffler));
+    private static Fixture createGameWithPlayingGameControllerWithRandomShuffler(String gameHandle) {
+        GameStore gameStore = GameStore.createEmpty(new Game.GameFactory());
 
         Game game = new Game.GameFactory().create("Only Game In Progress", gameHandle);
         gameStore.save(game);
