@@ -11,6 +11,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import dev.ted.tddgame.domain.TestResultsCard;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.security.Principal;
@@ -42,6 +43,10 @@ public class GameScenarioBuilder implements NeedsActionCards {
 
     public static NeedsActionCards create() {
         return create("builder-created-game-handle");
+    }
+
+    public GameScenarioBuilder testResultsCards(TestResultsCard... testResultsCards) {
+        throw new UnsupportedOperationException("Awaiting support of putting cards in Discard Pile in desired order and using an IDENTITY SHUFFLER");
     }
 
     public GameScenarioBuilder actionCards(ActionCard... actionCards) {

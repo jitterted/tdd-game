@@ -269,9 +269,11 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 WE ARE HERE ===>>
 
         [ ] Draw Test Results Card
-            [ ] click to draw a card: Add button to draw pile card
-                [ ] Add card to player's workspace
-            [ ] render the drawn card as a dialog with the image of the drawn card and a button [OK]
+            [ ] click to draw a card
+                [X] Add button to draw pile card (in game.html)
+                [X] Add POST endpoint
+                [ ] Call gamePlay.drawTestResultsCard to draw card and add it to player's workspace
+            [ ] render the drawn card (via the Workspace) as a dialog with the image of the drawn card and a button [OK]
             [ ] upon button click, POST the card to be evaluated
             [ ] Workspace: evaluate the drawn Test Results card
 

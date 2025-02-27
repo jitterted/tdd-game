@@ -13,6 +13,8 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import dev.ted.tddgame.domain.TestResultsCard;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -148,6 +150,16 @@ class PlayingGameControllerTest {
                 .contains(cardToBeDrawn);
         assertThat(gameScenarioBuilder.game().actionCardDeck().drawPile())
                 .isEmpty();
+    }
+
+    @Test
+    @Disabled("PlayingGameControllerTest 2/27/25 13:41 — Until we have discard pile + identity shuffler instead of shuffler that supplies its own cards")
+    void drawTestResultsCardMovesTopCardFromDrawPileToPlayerWorkspace() {
+        TestResultsCard cardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
+        String gameHandle = "draw-test-results-card-scenario";
+        GameScenarioBuilder.create(gameHandle)
+                           .shuffledActionCards()
+                           .testResultsCards(cardToBeDrawn, TestResultsCard.AS_PREDICTED);
     }
 
     // ---- FIXTURE
