@@ -15,7 +15,7 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
         super(testResultsCards, shuffler, deckEventsReceiver);
     }
 
-    public static TestResultsCardDeck create(List<TestResultsCard> testResultsCards, EventEnqueuer eventEnqueuer, IdentityShuffler<TestResultsCard> shuffler) {
+    public static TestResultsCardDeck create(List<TestResultsCard> testResultsCards, EventEnqueuer eventEnqueuer, Shuffler<TestResultsCard> shuffler) {
         return new TestResultsCardDeck(testResultsCards, shuffler, eventEnqueuer);
     }
 

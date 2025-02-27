@@ -17,6 +17,7 @@ public class Game extends EventSourcedAggregate {
     private Deck<ActionCard> actionCardDeck;
     private Deck<TestResultsCard> testResultsCardDeck;
     private final Deck.Shuffler<ActionCard> actionCardShuffler;
+    private final Deck.Shuffler<TestResultsCard> testResultsCardShuffler;
 
     // Rebuilds Game (and its entities) state
     // Public production code should use #reconstitute()
@@ -25,17 +26,21 @@ public class Game extends EventSourcedAggregate {
         for (GameEvent event : events) {
             apply(event);
         }
+        testResultsCardShuffler = new Deck.IdentityShuffler<>();
     }
 
     // Allows control of the shuffler used for the ActionCard deck replenishment
     private Game(Deck.Shuffler<ActionCard> actionCardShuffler) {
         this.actionCardShuffler = actionCardShuffler;
+        testResultsCardShuffler = new Deck.IdentityShuffler<>();
     }
 
     /**
      * Create a Game with the specified shuffler to be used when shuffling the discard pile into the draw pile
      */
-    static Game createNull(Deck.Shuffler<ActionCard> shuffler, String gameName, String gameHandle) {
+    static Game createNull(Deck.Shuffler<ActionCard> shuffler,
+                           String gameName,
+                           String gameHandle) {
         Game game = new Game(shuffler);
         game.initialize(gameName, gameHandle);
         return game;
@@ -84,7 +89,7 @@ public class Game extends EventSourcedAggregate {
                     testResultsCardDeck = TestResultsCardDeck.create(
                             testResultsCards,
                             this::enqueue,
-                            new Deck.IdentityShuffler<>()
+                            testResultsCardShuffler
                     );
         }
     }
