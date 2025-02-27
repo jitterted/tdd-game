@@ -7,6 +7,9 @@ import dev.ted.tddgame.domain.TestResultsCard;
 
 import java.util.Map;
 
+import static dev.ted.tddgame.adapter.HtmlElement.attributes;
+import static dev.ted.tddgame.adapter.HtmlElement.text;
+
 public class CardViewComponent<C extends Card> {
     private static final Map<String, String> CARD_NAME_TO_FILENAME = Map.of(
             TestResultsCard.AS_PREDICTED.name(), "/as-predicted.png"
@@ -45,6 +48,31 @@ public class CardViewComponent<C extends Card> {
     static HtmlElement asButton(String gameHandle, ActionCard card) {
         return HtmlElement.button(htmlAttributesFor(gameHandle, card),
                                   of(card).html());
+    }
+
+    public static HtmlElement cardMenuFor(String playUrlPath, String discardUrlPath) {
+        return HtmlElement.swapInnerHtml(
+                "dialog",
+                HtmlElement.div(
+                        "",
+                        HtmlElement.button(
+                                attributes()
+                                        .autofocus()
+                                        .hxPost(playUrlPath)
+                                        .hxOn("before-request", "document.querySelector('dialog').close()"),
+                                text("Play Card into Workspace")
+                        )
+                ),
+                HtmlElement.div(
+                        "",
+                        HtmlElement.button(
+                                attributes()
+                                        .hxPost(discardUrlPath)
+                                        .hxOn("before-request", "document.querySelector('dialog').close()"),
+                                text("Discard Card to Discard Pile")
+                        )
+                )
+        );
     }
 
     public HtmlElement html() {
