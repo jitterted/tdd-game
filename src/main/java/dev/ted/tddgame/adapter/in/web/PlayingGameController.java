@@ -64,6 +64,11 @@ public class PlayingGameController {
     @ResponseBody
     public String cardMenu(@PathVariable String gameHandle,
                            @PathVariable String cardName) {
+        HtmlElement cardMenuHtml = cardMenuFor(gameHandle, cardName);
+        return cardMenuHtml.render();
+    }
+
+    private HtmlElement cardMenuFor(String gameHandle, String cardName) {
         String playUrlPath = PLAY_URI_TEMPLATE.expand(gameHandle, cardName).getRawPath();
         String discardUrlPath = DISCARD_URI_TEMPLATE.expand(gameHandle, cardName).getRawPath();
         return HtmlElement.swapInnerHtml(
@@ -87,7 +92,7 @@ public class PlayingGameController {
                                 text("Discard Card to Discard Pile")
                         )
                 )
-        ).render();
+        );
     }
 
     @PostMapping(DISCARD_URI_TEMPLATE_STRING)

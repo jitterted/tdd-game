@@ -24,21 +24,8 @@ public class HandViewComponent {
 
     private HtmlElement[] buttonsForEachCardIn(Stream<ActionCard> actionCards) {
         return actionCards
-                .map(this::asButton)
+                .map(card -> CardViewComponent.asButton(gameHandle, card))
                 .toArray(HtmlElement[]::new);
-    }
-
-    private HtmlElement.HtmlAttributes htmlAttributesFor(ActionCard card) {
-        return HtmlElement.attributes()
-                          .cssClass("card")
-                          .hxGet("/game/" + gameHandle + "/card-menu/" + card.name())
-                          .hxSwap("none")
-                          .hxOn("after-settle", "document.querySelector('dialog').showModal()");
-    }
-
-    private HtmlElement asButton(ActionCard card) {
-        return HtmlElement.button(htmlAttributesFor(card),
-                                  CardViewComponent.of(card).html());
     }
 
 }

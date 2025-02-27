@@ -1,3 +1,9 @@
+February 27, 2025 - Thursday
+============================
+
+* Decided to defer further "componentizing" Card until I get more features completed. To consider: is CardViewComponent a Flyweight, i.e., adds things depending on the context, e.g., like a button (for play/discard menu) or Zoom action or rotated (as when it appears in a Discard pile)
+
+
 February 20, 2025 - Thursday
 ============================
 

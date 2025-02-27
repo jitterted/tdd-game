@@ -64,8 +64,6 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 
 * ?? Where to place pawn tokens on each hex tile: define 4 locations where pawns can appear
 
-* [Later] Tap/click on item (hex tile or card) to zoom in
-
 * Player-Pawn is 1:1, except when playing as a group/cooperative game ("Ensemble Game Mode")
 
 ## Need
@@ -263,12 +261,14 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
             [X] Write some TestResultsDeck tests
             [X] Render the Test Result deck's draw and discard piles
 
+            (Not sure any of this is necessary, as Workspace is doing most of the "deciding")
+                [ ] Refactor HexTile from enums to classes with state
+                    [ ] Base class for similar tile behaviors
+                        [ ] Composite for behaviors, since some tiles have "skip to exit" AND "predict to exit" while others just have "predict to exit", and "skip" can be combined with "WRITE CODE card to exit"
+
 WE ARE HERE ===>>
 
-        [ ] (start implementing the sequence diagram)
-            [ ] Refactor HexTile from enums to classes with state
-                [ ] Base class for similar tile behaviors
-                    [ ] Composite for behaviors, since some tiles have "skip to exit" AND "predict to exit" while others just have "predict to exit", and "skip" can be combined with "WRITE CODE card to exit"
+        [ ] Workspace: evaluate the drawn Test Results card
 
 
             [ ] Change the way we configure the Action Card deck so that instead of hacking the cards via the Shuffler, provide a way to specify the cards that go into the Discard Pile along with an "identity" shuffler that moves them to the Draw Pile in a predictable way
@@ -412,6 +412,14 @@ WE ARE HERE ===>>
 
 [X] Come up with a name other than Person(Id) that's easier to differentiate from Player(Id), hopefully something other than "Account" or "User"
     Perhaps "Member"?
+
+
+## User Interface/Experience
+
+* Tap/click on item (hex tile or card) to zoom in
+    * When the card is in-hand, show the zoomed-in card alongside the play/discard options (if any) in the <dialog> that appears
+
+
 
 
 ## Future Features

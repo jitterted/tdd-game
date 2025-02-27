@@ -33,6 +33,20 @@ public class CardViewComponent<C extends Card> {
         return new CardViewComponent<>(card);
     }
 
+    static HtmlElement.HtmlAttributes htmlAttributesFor(String gameHandle, ActionCard card) {
+        return HtmlElement.attributes()
+                          .cssClass("card")
+                          .hxGet("/game/" + gameHandle + "/card-menu/" + card.name())
+                          .hxSwap("none")
+                          .hxOn("after-settle",
+                                "document.querySelector('dialog').showModal()");
+    }
+
+    static HtmlElement asButton(String gameHandle, ActionCard card) {
+        return HtmlElement.button(htmlAttributesFor(gameHandle, card),
+                                  of(card).html());
+    }
+
     public HtmlElement html() {
         return HtmlElement.img(filenameFor(card), card.title());
     }
