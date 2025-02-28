@@ -24,11 +24,6 @@ public class Game extends EventSourcedAggregate {
     private Game(List<GameEvent> events,
                  Deck.Shuffler<ActionCard> actionCardShuffler,
                  CardsFactory cardsFactory) {
-// TODO: eventually no shufflers should be used for predictable card draws, but instead provide a configured CardsFactory
-        if (!(actionCardShuffler instanceof Deck.RandomShuffler<ActionCard> ||
-             actionCardShuffler instanceof Deck.IdentityShuffler<ActionCard>)) {
-            throw new IllegalArgumentException("Unsupported Deck Shuffler:  " + actionCardShuffler.getClass().getSimpleName());
-        }
         this.actionCardShuffler = actionCardShuffler;
         this.cardsFactory = cardsFactory;
         this.testResultsCardShuffler = new Deck.IdentityShuffler<>();
