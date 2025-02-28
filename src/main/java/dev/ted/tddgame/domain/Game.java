@@ -79,14 +79,14 @@ public class Game extends EventSourcedAggregate {
                             actionCardShuffler
                     );
 
-            case DeckEvent deckEvent -> actionCardDeck.apply(deckEvent);
-
             case TestResultsCardDeckCreated(List<TestResultsCard> testResultsCards) ->
                     testResultsCardDeck = TestResultsCardDeck.create(
                             testResultsCards,
                             this::enqueue,
                             testResultsCardShuffler
                     );
+
+            case DeckEvent deckEvent -> actionCardDeck.apply(deckEvent);
         }
     }
 
@@ -158,7 +158,11 @@ public class Game extends EventSourcedAggregate {
     }
 
     public void drawTestResultsCard(MemberId memberId) {
+        TestResultsCard drawnCard = testResultsCardDeck.draw();
 
+        PlayerEvent event = new PlayerDrewTestResultsCard(memberId, drawnCard);
+
+        enqueue(event);
     }
 
     public Player playerFor(MemberId memberId) {
