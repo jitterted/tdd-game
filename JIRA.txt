@@ -266,10 +266,10 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
                     [ ] Base class for similar tile behaviors
                         [ ] Composite for behaviors, since some tiles have "skip to exit" AND "predict to exit" while others just have "predict to exit", and "skip" can be combined with "WRITE CODE card to exit"
 
-WE ARE HERE ===>>
+        [X] Refactor: move away from using the "cheater" Shuffler to using a configured CardsFactory
+            [X] Fix tests that violate our new constraint (in Game:28), which is that either we get an Identity Shuffler or a Random Shuffler. Any other shuffler should be replaced with a configured CardsFactory. Do this in GameScenarioBuilder's actionCards() methods and that should fix all of the failing tests.
 
-        [ ] Refactor: move away from using the "cheater" Shuffler to using a configured CardsFactory
-            [ ] Fix tests that violate our new constraint (in Game:28), which is that either we get an Identity Shuffler or a Random Shuffler. Any other shuffler should be replaced with a configured CardsFactory. Do this in GameScenarioBuilder's actionCards() methods and that should fix all of the failing tests.
+WE ARE HERE ===>>
 
         [ ] Draw Test Results Card
             [ ] click to draw a card

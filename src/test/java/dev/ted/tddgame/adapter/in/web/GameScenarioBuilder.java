@@ -33,9 +33,14 @@ public class GameScenarioBuilder implements NeedsActionCards {
     private GamePlay gamePlay;
     private PlayingGameController playingGameController;
     private Broadcaster broadcaster = new GamePlayTest.NoOpDummyBroadcaster();
+    private List<ActionCard> configuredActionCardList;
+    private Deck.Shuffler<ActionCard> configuredActionCardShuffler;
+    private List<TestResultsCard> configuredTestResultsCardList;
 
     public GameScenarioBuilder(String gameHandle) {
         this.gameHandle = gameHandle;
+        configuredActionCardShuffler = new Deck.IdentityShuffler<>();
+        configuredTestResultsCardList = new CardsFactory().allTestResultsCards();
     }
 
     public static NeedsActionCards create(String gameHandle) {
@@ -55,13 +60,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public GameScenarioBuilder actionCards(List<ActionCard> actionCardList) {
-        CardsFactory cardsFactory = CardsFactory.forTest(actionCardList);
-        gameFactory = Game.GameFactory.forTest(new Deck.IdentityShuffler<>(),
-                                               cardsFactory);
-        gameStore = GameStore.createEmpty(gameFactory);
-
-        Game game = gameFactory.create(gameName, gameHandle);
-        gameStore.save(game);
+        this.configuredActionCardList = actionCardList;
 
         return this;
     }
@@ -72,11 +71,8 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public GameScenarioBuilder shuffledActionCards() {
-        gameFactory = new Game.GameFactory();
-        gameStore = GameStore.createEmpty(gameFactory);
-
-        Game game = gameFactory.create(gameName, gameHandle);
-        gameStore.save(game);
+        configuredActionCardShuffler = new Deck.RandomShuffler<>();
+        configuredActionCardList = new CardsFactory().allActionCards();
 
         return this;
     }
@@ -215,6 +211,18 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public Game game() {
+        // at this point, if gameStore is null, it means we haven't actually created the Game, etc., so we do it now
+        if (gameStore == null) {
+            CardsFactory cardsFactory = new CardsFactory(configuredActionCardList,
+                                                         configuredTestResultsCardList);
+            gameFactory = Game.GameFactory.forTest(configuredActionCardShuffler,
+                                                   cardsFactory);
+            gameStore = GameStore.createEmpty(gameFactory);
+
+            Game game = gameFactory.create(gameName, gameHandle);
+            gameStore.save(game);
+        }
+
         return gameStore.findByHandle(gameHandle)
                         .orElseThrow(() -> new RuntimeException("Something has gone terribly wrong, we can't load the Game from our GameStore using the handle: " + gameHandle));
     }

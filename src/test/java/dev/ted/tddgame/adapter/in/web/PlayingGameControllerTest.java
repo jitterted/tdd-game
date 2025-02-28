@@ -152,7 +152,7 @@ class PlayingGameControllerTest {
     }
 
     @Test
-    @Disabled("PlayingGameControllerTest 2/27/25 13:41 — Until we have discard pile + identity shuffler instead of shuffler that supplies its own cards")
+    @Disabled("PlayingGameControllerTest 2/28/25 13:54 — until we defer creation of CardsFactory in the GameScenarioBuilder")
     void drawTestResultsCardMovesTopCardFromDrawPileToPlayerWorkspace() {
         TestResultsCard cardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
         String gameHandle = "draw-test-results-card-scenario";
