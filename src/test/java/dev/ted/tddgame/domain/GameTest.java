@@ -350,12 +350,15 @@ class GameTest {
         @Test
         void playerDiscardedCardResultsInCardMovedFromPlayerHandToDeckDiscardPile() {
             MemberId firstPlayerMemberId = new MemberId(71L);
-            Game game = createTwoPlayerStartedGame(firstPlayerMemberId,
-                                                   ActionCard.WRITE_CODE,
-                                                   ActionCard.PREDICT,
-                                                   ActionCard.REFACTOR,
-                                                   ActionCard.LESS_CODE,
-                                                   ActionCard.LESS_CODE);
+            Game game = GameScenarioBuilder.create()
+                                           .actionCards(ActionCard.WRITE_CODE,
+                                                        ActionCard.PREDICT,
+                                                        ActionCard.REFACTOR,
+                                                        ActionCard.LESS_CODE,
+                                                        ActionCard.LESS_CODE)
+                                           .memberJoinsAsPlayer(firstPlayerMemberId)
+                                           .startGame()
+                                           .game();
 
             game.discard(firstPlayerMemberId, ActionCard.WRITE_CODE);
 
@@ -364,8 +367,7 @@ class GameTest {
                     .as("Hand should have discarded the WRITE_CODE card")
                     .containsExactly(ActionCard.PREDICT, ActionCard.REFACTOR,
                                      ActionCard.LESS_CODE, ActionCard.LESS_CODE);
-            assertThat(game.actionCardDeck()
-                           .discardPile())
+            assertThat(game.actionCardDeck().discardPile())
                     .as("Action Deck Discard pile should contain only discarded WRITE_CODE cards")
                     .containsExactly(ActionCard.WRITE_CODE);
             assertThat(player.workspace().currentHexTile())
@@ -376,14 +378,18 @@ class GameTest {
         @Test
         void playerPlayedCardResultsInCardMovedFromPlayerHandToWorkspace() {
             MemberId firstPlayerMemberId = new MemberId(82L);
-            Game game = createTwoPlayerStartedGame(firstPlayerMemberId,
+            Game game = GameScenarioBuilder.create()
+                                           .actionCards(
                                                    ActionCard.WRITE_CODE,
                                                    ActionCard.PREDICT,
                                                    ActionCard.REFACTOR,
                                                    ActionCard.LESS_CODE,
-                                                   ActionCard.LESS_CODE);
-            game.discard(firstPlayerMemberId, ActionCard.PREDICT);
-            game.discard(firstPlayerMemberId, ActionCard.REFACTOR);
+                                                   ActionCard.LESS_CODE)
+                                           .memberJoinsAsPlayer(firstPlayerMemberId)
+                                           .startGame()
+                                           .discard(ActionCard.PREDICT)
+                                           .discard(ActionCard.REFACTOR)
+                                           .game();
 
             game.playCard(firstPlayerMemberId, ActionCard.WRITE_CODE);
 
@@ -403,30 +409,6 @@ class GameTest {
         }
 
         //--
-
-        private static Game createTwoPlayerStartedGame(MemberId firstPlayerMemberId, ActionCard... actionCards) {
-            Deck.Shuffler<ActionCard> configuredActionCardShuffler =
-                    _ -> new ArrayList<>(List.of(
-                            // each player grabs all the cards to fill their hand first
-                            actionCards[0],
-                            actionCards[1],
-                            actionCards[2],
-                            actionCards[3],
-                            actionCards[4],
-                            // now the cards for the 2nd player:
-                            ActionCard.WRITE_CODE,
-                            ActionCard.PREDICT,
-                            ActionCard.REFACTOR,
-                            ActionCard.LESS_CODE,
-                            ActionCard.LESS_CODE
-                    ));
-            Game game = Game.GameFactory.forTest(configuredActionCardShuffler)
-                                        .create("Irrelevant Name", "irrelevant-handle");
-            game.join(firstPlayerMemberId, "Member = First Player");
-            game.join(new MemberId(99L), "Irrelevant Member");
-            game.start();
-            return game;
-        }
 
         private static List<GameEvent> gameCreatedAndTheseEvents(GameEvent... freshEvents) {
             List<GameEvent> events = new ArrayList<>();

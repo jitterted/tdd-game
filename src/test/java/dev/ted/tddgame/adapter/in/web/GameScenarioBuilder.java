@@ -26,7 +26,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     private final String gameHandle;
     private final String gameName = "Only Game In Progress";
     private String firstPlayerAuthName = "blueauth";
-    private final MemberId firstPlayerMemberId = new MemberId(42L);
+    private MemberId firstPlayerMemberId;
     private GameStore gameStore;
     private final MemberStore memberStore = new MemberStore();
     private Game.GameFactory gameFactory;
@@ -55,10 +55,8 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public GameScenarioBuilder actionCards(List<ActionCard> actionCardList) {
-        Deck.Shuffler<ActionCard> definedCardsShuffler =
-                _ -> new ArrayList<>(actionCardList);
         CardsFactory cardsFactory = CardsFactory.forTest(actionCardList);
-        gameFactory = Game.GameFactory.forTest(definedCardsShuffler,
+        gameFactory = Game.GameFactory.forTest(new Deck.IdentityShuffler<>(),
                                                cardsFactory);
         gameStore = GameStore.createEmpty(gameFactory);
 
@@ -158,6 +156,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public GameScenarioBuilder memberJoinsAsOnlyPlayer() {
+        firstPlayerMemberId = new MemberId(42L);
         return memberJoinsAsPlayer(firstPlayerMemberId,
                                    "Default Member Nickname",
                                    firstPlayerAuthName,
@@ -178,6 +177,10 @@ public class GameScenarioBuilder implements NeedsActionCards {
                                                    String playerName) {
         if (memberStore.findById(memberId).isPresent()) {
             throw new IllegalArgumentException("Member already exists");
+        }
+        // assign only if this is the first member -- don't overwrite existing
+        if (firstPlayerMemberId == null) {
+            firstPlayerMemberId = memberId;
         }
         Member member = new Member(memberId, memberNickname, authName);
         memberStore.save(member);

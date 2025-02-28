@@ -84,14 +84,14 @@ public class Deck<CARD extends Card> {
 
     // -- EMBEDDED STUB for Nullable Shuffler --
 
-    public static class IdentityShuffler<CARD> implements Shuffler<CARD> {
+    public static final class IdentityShuffler<CARD> implements Shuffler<CARD> {
         @Override
         public List<CARD> shuffleCards(List<CARD> discardPile) {
             return new ArrayList<>(discardPile);
         }
     }
 
-    public static class RandomShuffler<CARD> implements Shuffler<CARD> {
+    public static final class RandomShuffler<CARD> implements Shuffler<CARD> {
         @Override
         public List<CARD> shuffleCards(List<CARD> discardPile) {
             List<CARD> toBeShuffled = new ArrayList<>(discardPile);
@@ -100,7 +100,8 @@ public class Deck<CARD extends Card> {
         }
     }
 
-    public interface Shuffler<CARD> {
+    public sealed interface Shuffler<CARD>
+            permits IdentityShuffler, RandomShuffler {
         List<CARD> shuffleCards(List<CARD> discardPile);
     }
 }

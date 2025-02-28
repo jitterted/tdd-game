@@ -280,7 +280,6 @@ WE ARE HERE ===>>
             [ ] upon button click, POST the card to be evaluated
             [ ] Workspace: evaluate the drawn Test Results card
 
-            [ ] Change the way we configure the Action Card deck so that instead of hacking the cards via the Shuffler, provide a way to specify the cards that go into the Discard Pile along with an "identity" shuffler that moves them to the Draw Pile in a predictable way
 
             [ ] Create Workspace Scoring+Risk display
                 [ ] Track Risk added when Player uses the "escape hatch"
