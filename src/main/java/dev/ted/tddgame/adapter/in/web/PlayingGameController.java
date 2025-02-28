@@ -103,7 +103,7 @@ public class PlayingGameController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void drawTestResultsCard(Principal principal,
                                     @PathVariable("gameHandle") String gameHandle) {
-//        gamePlay.drawTestResultsCard(gameHandle, memberIdFrom(principal));
+        gamePlay.drawTestResultsCard(gameHandle, memberIdFrom(principal));
     }
 
     private MemberId memberIdFrom(Principal principal) {

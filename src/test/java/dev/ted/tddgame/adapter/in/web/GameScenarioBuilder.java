@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -51,8 +52,31 @@ public class GameScenarioBuilder implements NeedsActionCards {
         return create("builder-created-game-handle");
     }
 
+    public static GameScenarioBuilder scenarioPlayerOnPredictTestWillFailToCompile(String gameHandle, TestResultsCard cardToBeDrawn, TestResultsCard testResultsCardRemainingInDrawPile) {
+        return create(gameHandle)
+                          .actionCards(
+                                   ActionCard.PREDICT,
+                                   ActionCard.PREDICT,
+                                   ActionCard.WRITE_CODE,
+                                   ActionCard.LESS_CODE,
+                                   ActionCard.LESS_CODE,
+                                   ActionCard.REFACTOR
+                           )
+                          .testResultsCards(cardToBeDrawn,
+                                             testResultsCardRemainingInDrawPile)
+                          .memberJoinsAsOnlyPlayer()
+                          .startGame()
+                          .playerOnlyActions(executor -> {
+                               executor.discardFirstCardInHand();
+                               executor.discardFirstCardInHand();
+                               executor.playCard(ActionCard.WRITE_CODE);
+                               executor.playCard(ActionCard.PREDICT);
+                           });
+    }
+
     public GameScenarioBuilder testResultsCards(TestResultsCard... testResultsCards) {
-        throw new UnsupportedOperationException("Awaiting support of putting cards in Discard Pile in desired order and using an IDENTITY SHUFFLER");
+        configuredTestResultsCardList = Arrays.asList(testResultsCards);
+        return this;
     }
 
     public GameScenarioBuilder actionCards(ActionCard... actionCards) {
@@ -278,6 +302,10 @@ public class GameScenarioBuilder implements NeedsActionCards {
         PlayingGameController playingGameController = new
                 PlayingGameController(gameStore, gamePlay, memberStore);
         return MockMvcTester.of(playingGameController);
+    }
+
+    public GameScenarioBuilder playerOnlyActions(Consumer<PlayerExecutor> actions) {
+        return playerActions(firstPlayerMemberId, actions);
     }
 
     public static class PlayerExecutor {

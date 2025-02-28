@@ -1,7 +1,7 @@
 package dev.ted.tddgame.domain;
 
 public sealed interface PlayerEvent extends GameEvent
-        permits PlayerDrewActionCard, PlayerDiscardedActionCard, PlayerPlayedActionCard, PlayerDrewTechNeglectCard {
+        permits PlayerDrewActionCard, PlayerDiscardedActionCard, PlayerPlayedActionCard, PlayerDrewTechNeglectCard, PlayerDrewTestResultsCard {
 
     MemberId memberId();
 }

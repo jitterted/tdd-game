@@ -152,13 +152,32 @@ class PlayingGameControllerTest {
     }
 
     @Test
-    @Disabled("PlayingGameControllerTest 2/28/25 13:54 — until we defer creation of CardsFactory in the GameScenarioBuilder")
+    @Disabled("PlayingGameControllerTest 2/28/25 14:54 — until Game.drawTestResultsCard works")
     void drawTestResultsCardMovesTopCardFromDrawPileToPlayerWorkspace() {
-        TestResultsCard cardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
+        TestResultsCard testResultsCardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
+        TestResultsCard testResultsCardRemainingInDrawPile = TestResultsCard.AS_PREDICTED;
         String gameHandle = "draw-test-results-card-scenario";
-        GameScenarioBuilder.create(gameHandle)
-                           .shuffledActionCards()
-                           .testResultsCards(cardToBeDrawn, TestResultsCard.AS_PREDICTED);
+        GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                .scenarioPlayerOnPredictTestWillFailToCompile(
+                        gameHandle,
+                        testResultsCardToBeDrawn,
+                        testResultsCardRemainingInDrawPile);
+
+        gameScenarioBuilder.playingGameController()
+                           .drawTestResultsCard(gameScenarioBuilder.firstPlayerPrincipal(),
+                                                gameHandle);
+
+        assertThat(gameScenarioBuilder.firstPlayer()
+                                      .workspace()
+                                      .drawnTestResultsCard())
+                .as("First player's Workspace should have the drawn Test Results card")
+                .isPresent()
+                .get()
+                .isEqualTo(testResultsCardToBeDrawn);
+
+        assertThat(gameScenarioBuilder.game().testResultsCardDeck().drawPile())
+                .as("After drawing a card, the remaining card in the Test Results draw pile must be AS_PREDICTED")
+                .containsExactly(testResultsCardRemainingInDrawPile);
     }
 
     // ---- FIXTURE

@@ -2,6 +2,7 @@ package dev.ted.tddgame.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Workspace {
@@ -54,6 +55,10 @@ public class Workspace {
 
     public Stream<ActionCard> techNeglectCards() {
         return techNeglectCards.stream();
+    }
+
+    public Optional<TestResultsCard> drawnTestResultsCard() {
+        return Optional.empty();
     }
 
     /**

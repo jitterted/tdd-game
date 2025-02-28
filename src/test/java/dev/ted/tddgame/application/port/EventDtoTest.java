@@ -16,6 +16,7 @@ import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.PlayerDiscardedActionCard;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerDrewTechNeglectCard;
+import dev.ted.tddgame.domain.PlayerDrewTestResultsCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 import dev.ted.tddgame.domain.TestResultsCard;
@@ -94,6 +95,22 @@ class EventDtoTest {
     }
 
     @Test
+    void showsPlayerDrewTestResultsCardJson() {
+        MemberId memberId = new MemberId(42L);
+        PlayerDrewTestResultsCard event = new PlayerDrewTestResultsCard(memberId, TestResultsCard.NEED_ONE_LESS_CODE);
+
+        EventDto eventDto = EventDto.from(1, 12, event);
+
+        assertThat(eventDto)
+                .isEqualTo(new EventDto(
+                        1,
+                        12,
+                        "PlayerDrewTestResultsCard",
+                        """
+                        {"memberId":{"id":42},"testResultsCard":["TestResultsCard","NEED_ONE_LESS_CODE"]}"""));
+    }
+
+    @Test
     void givenPlayerWonGameEventCreateEventDto() {
         GameCreated event = new GameCreated("game name", "lovely-dog-23");
 
@@ -160,6 +177,7 @@ class EventDtoTest {
                 , Arguments.of(new PlayerDiscardedActionCard(memberId, ActionCard.PREDICT))
                 , Arguments.of(new PlayerPlayedActionCard(memberId, ActionCard.PREDICT))
                 , Arguments.of(new PlayerDrewTechNeglectCard(memberId, ActionCard.CANT_ASSERT))
+                , Arguments.of(new PlayerDrewTestResultsCard(memberId, TestResultsCard.NEED_ONE_LESS_CODE))
         );
     }
 }

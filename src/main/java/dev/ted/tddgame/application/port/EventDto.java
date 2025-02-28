@@ -13,6 +13,7 @@ import dev.ted.tddgame.domain.GameStarted;
 import dev.ted.tddgame.domain.PlayerDiscardedActionCard;
 import dev.ted.tddgame.domain.PlayerDrewActionCard;
 import dev.ted.tddgame.domain.PlayerDrewTechNeglectCard;
+import dev.ted.tddgame.domain.PlayerDrewTestResultsCard;
 import dev.ted.tddgame.domain.PlayerJoined;
 import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 import dev.ted.tddgame.domain.TestResultsCardDeckCreated;
@@ -54,7 +55,8 @@ public class EventDto {
                     Map.entry("CardDrawn", CardDrawn.class),
                     Map.entry("CardDiscarded", CardDiscarded.class),
                     Map.entry("DeckReplenished", DeckReplenished.class),
-                    Map.entry("PlayerDrewTechNeglectCard", PlayerDrewTechNeglectCard.class)
+                    Map.entry("PlayerDrewTechNeglectCard", PlayerDrewTechNeglectCard.class),
+                    Map.entry("PlayerDrewTestResultsCard", PlayerDrewTestResultsCard.class)
             );
     private static final Map<Class<? extends GameEvent>, String> classToEventName =
             swapKeysValues(eventNameToClassMap);

@@ -60,6 +60,9 @@ public class Player {
         switch (event) {
             case PlayerDrewActionCard(_, ActionCard actionCard) -> hand.add(actionCard);
 
+            case PlayerDrewTestResultsCard(_, TestResultsCard testResultsCard) -> {
+            }
+
             case PlayerDiscardedActionCard(_, ActionCard actionCard) -> {
                 hand.remove(actionCard);
                 workspace.cardDiscarded();

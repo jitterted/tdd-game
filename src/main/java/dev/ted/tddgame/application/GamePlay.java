@@ -46,6 +46,11 @@ public class GamePlay {
                 game -> game.drawActionCard(memberId));
     }
 
+    public void drawTestResultsCard(String gameHandle, MemberId memberId) {
+        execute(gameHandle,
+                game -> game.drawTestResultsCard(memberId));
+    }
+
     private void execute(String gameHandle, Consumer<Game> command) {
         Game game = loadGameWith(gameHandle);
 

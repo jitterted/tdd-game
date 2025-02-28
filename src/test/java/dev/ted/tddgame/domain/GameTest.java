@@ -199,6 +199,30 @@ class GameTest {
                     );
         }
 
+        @Test
+        void drawTestResultsCard_PlayerDrewTestResultsCard() {
+            TestResultsCard cardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
+            TestResultsCard cardRemainingInDrawPile = TestResultsCard.AS_PREDICTED;
+            String gameHandle = "draw-test-results-card-scenario";
+            GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                    .scenarioPlayerOnPredictTestWillFailToCompile(
+                            gameHandle,
+                            cardToBeDrawn,
+                            cardRemainingInDrawPile);
+            Game game = gameScenarioBuilder.game();
+
+            MemberId memberId = gameScenarioBuilder.firstPlayer().memberId();
+            game.drawTestResultsCard(memberId);
+
+            assertThat(game.freshEvents())
+                    .containsExactly(
+                            new PlayerDrewTestResultsCard(memberId,
+                                                          cardToBeDrawn)
+                    );
+        }
+
+        // ---- FIXTURES ----
+
         private Game createStartedGameWithTwoPlayersAndPlayerOnThirdTile(MemberId firstPlayerMemberId) {
             GameStore gameStore = GameStore.createEmpty();
 

@@ -157,6 +157,10 @@ public class Game extends EventSourcedAggregate {
         playerFor(memberId).drawCardFrom(actionCardDeck);
     }
 
+    public void drawTestResultsCard(MemberId memberId) {
+
+    }
+
     public Player playerFor(MemberId memberId) {
         if (!playerMap.containsKey(memberId)) {
             throw new IllegalStateException("Member ID " + memberId + " is not in the '" + handle + "' game.");
