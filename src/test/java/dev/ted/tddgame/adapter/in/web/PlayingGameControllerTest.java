@@ -152,7 +152,7 @@ class PlayingGameControllerTest {
     }
 
     @Test
-    @Disabled("PlayingGameControllerTest 2/28/25 14:54 — until Game.drawTestResultsCard works")
+    @Disabled("PlayingGameControllerTest 2/28/25 14:54 — until Game.drawTestResultsCard has the Player's Workspace hold on to the drawn card")
     void drawTestResultsCardMovesTopCardFromDrawPileToPlayerWorkspace() {
         TestResultsCard testResultsCardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
         TestResultsCard testResultsCardRemainingInDrawPile = TestResultsCard.AS_PREDICTED;
