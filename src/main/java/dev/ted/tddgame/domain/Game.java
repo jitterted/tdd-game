@@ -87,6 +87,9 @@ public class Game extends EventSourcedAggregate {
                     );
 
             case ActionCardDeckEvent actionCardDeckEvent -> actionCardDeck.apply(actionCardDeckEvent);
+
+            case TestResultsCardDeckEvent testResultsCardDeckEvent -> {
+            }
         }
     }
 
