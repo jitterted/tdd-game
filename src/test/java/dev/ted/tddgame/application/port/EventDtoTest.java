@@ -5,10 +5,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
+import dev.ted.tddgame.domain.ActionCardDeckReplenished;
+import dev.ted.tddgame.domain.ActionCardDiscarded;
+import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.Card;
-import dev.ted.tddgame.domain.CardDiscarded;
-import dev.ted.tddgame.domain.CardDrawn;
-import dev.ted.tddgame.domain.DeckReplenished;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
@@ -47,18 +47,18 @@ class EventDtoTest {
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY
         );
-        CardDrawn actionCardDrawn = new CardDrawn(ActionCard.WRITE_CODE);
+        ActionCardDrawn actionCardDrawn = new ActionCardDrawn(ActionCard.WRITE_CODE);
 
         String json = objectMapper.writeValueAsString(actionCardDrawn);
 
-        assertThat(objectMapper.readValue(json, CardDrawn.class))
+        assertThat(objectMapper.readValue(json, ActionCardDrawn.class))
                 .isEqualTo(actionCardDrawn);
 
-        CardDrawn testResultsCardDrawn = new CardDrawn(TestResultsCard.NEED_ONE_LESS_CODE);
+        ActionCardDrawn testResultsCardDrawn = new ActionCardDrawn(TestResultsCard.NEED_ONE_LESS_CODE);
 
         json = objectMapper.writeValueAsString(testResultsCardDrawn);
 
-        assertThat(objectMapper.readValue(json, CardDrawn.class))
+        assertThat(objectMapper.readValue(json, ActionCardDrawn.class))
                 .isEqualTo(testResultsCardDrawn);
     }
 
@@ -167,9 +167,9 @@ class EventDtoTest {
                 , Arguments.of(new ActionCardDeckCreated(List.of(ActionCard.PREDICT)))
                 , Arguments.of(new TestResultsCardDeckCreated(Collections.emptyList()))
                 , Arguments.of(new PlayerDrewActionCard(memberId, ActionCard.REFACTOR))
-                , Arguments.of(new CardDrawn(ActionCard.PREDICT))
-                , Arguments.of(new CardDiscarded(ActionCard.LESS_CODE))
-                , Arguments.of(new DeckReplenished(
+                , Arguments.of(new ActionCardDrawn(ActionCard.PREDICT))
+                , Arguments.of(new ActionCardDiscarded(ActionCard.LESS_CODE))
+                , Arguments.of(new ActionCardDeckReplenished(
                         List.of(ActionCard.WRITE_CODE,
                                 ActionCard.LESS_CODE,
                                 ActionCard.CANT_ASSERT)

@@ -86,7 +86,7 @@ public class Game extends EventSourcedAggregate {
                             testResultsCardShuffler
                     );
 
-            case DeckEvent deckEvent -> actionCardDeck.apply(deckEvent);
+            case ActionCardDeckEvent actionCardDeckEvent -> actionCardDeck.apply(actionCardDeckEvent);
         }
     }
 

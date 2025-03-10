@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface DeckEvent
+interface ActionCardDeckEvent
+interface TestResultsCardDeckEvent
+interface CardDrawn {
+ card: Card
+}
+interface CardDiscarded {
+ card: Card
+}
+interface DeckReplenished {
+ cards: List<Card>
+}
+
+CardDrawn --|> ActionCardDrawn
+CardDrawn --|> TestResultsCardDrawn
+
+CardDiscarded --|> ActionCardDiscarded
+CardDiscarded --|> TestResultsCardDiscarded
+
+DeckReplenished --|> ActionCardDeckReplenished
+DeckReplenished --|> TestResultsCardDeckReplenished
+
+DeckEvent --|> ActionCardDeckEvent
+DeckEvent --|> TestResultsCardDeckEvent
+
+ActionCardDeckEvent --|> ActionCardDeckReplenished
+ActionCardDeckEvent --|> ActionCardDiscarded
+ActionCardDeckEvent --|> ActionCardDrawn
+
+TestResultsCardDeckEvent --|> TestResultsCardDeckReplenished
+TestResultsCardDeckEvent --|> TestResultsCardDiscarded
+TestResultsCardDeckEvent --|> TestResultsCardDrawn
+
+@enduml

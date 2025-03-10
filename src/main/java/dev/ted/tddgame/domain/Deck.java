@@ -34,14 +34,14 @@ public class Deck<CARD extends Card> {
         }
         CARD drawnCard = drawPile.peek();
         // TODO: if drawnCard is null, that means we ran out of cards!
-        eventEnqueuer.enqueue(new CardDrawn(drawnCard));
+        eventEnqueuer.enqueue(new ActionCardDrawn(drawnCard));
         return drawnCard;
     }
 
     private void replenishDrawPileFromDiscardPile() {
         // TODO - PRECONDITION: discardPile must NOT be empty
         List<Card> shuffledDiscardedCards = (List<Card>) shuffler.shuffleCards(discardPile);
-        eventEnqueuer.enqueue(new DeckReplenished(shuffledDiscardedCards));
+        eventEnqueuer.enqueue(new ActionCardDeckReplenished(shuffledDiscardedCards));
     }
 
     public boolean isDrawPileEmpty() {
@@ -79,7 +79,7 @@ public class Deck<CARD extends Card> {
     }
 
     void acceptDiscard(CARD discardedCard) {
-        eventEnqueuer.enqueue(new CardDiscarded(discardedCard));
+        eventEnqueuer.enqueue(new ActionCardDiscarded(discardedCard));
     }
 
     // -- EMBEDDED STUB for Nullable Shuffler --

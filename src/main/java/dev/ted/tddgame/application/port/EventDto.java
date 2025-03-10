@@ -3,10 +3,10 @@ package dev.ted.tddgame.application.port;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
+import dev.ted.tddgame.domain.ActionCardDeckReplenished;
+import dev.ted.tddgame.domain.ActionCardDiscarded;
+import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.Card;
-import dev.ted.tddgame.domain.CardDiscarded;
-import dev.ted.tddgame.domain.CardDrawn;
-import dev.ted.tddgame.domain.DeckReplenished;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.GameStarted;
@@ -52,9 +52,9 @@ public class EventDto {
                     Map.entry("PlayerDrewActionCard", PlayerDrewActionCard.class),
                     Map.entry("PlayerDiscardedActionCard", PlayerDiscardedActionCard.class),
                     Map.entry("PlayerPlayedActionCard", PlayerPlayedActionCard.class),
-                    Map.entry("CardDrawn", CardDrawn.class),
-                    Map.entry("CardDiscarded", CardDiscarded.class),
-                    Map.entry("DeckReplenished", DeckReplenished.class),
+                    Map.entry("ActionCardDrawn", ActionCardDrawn.class),
+                    Map.entry("ActionCardDiscarded", ActionCardDiscarded.class),
+                    Map.entry("ActionCardDeckReplenished", ActionCardDeckReplenished.class),
                     Map.entry("PlayerDrewTechNeglectCard", PlayerDrewTechNeglectCard.class),
                     Map.entry("PlayerDrewTestResultsCard", PlayerDrewTestResultsCard.class)
             );

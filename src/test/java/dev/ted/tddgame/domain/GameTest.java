@@ -117,12 +117,12 @@ class GameTest {
             assertThat(game.freshEvents())
                     .hasExactlyElementsOfTypes(
                             GameStarted.class,
-                            DeckReplenished.class,
-                            CardDrawn.class, PlayerDrewActionCard.class,
-                            CardDrawn.class, PlayerDrewActionCard.class,
-                            CardDrawn.class, PlayerDrewActionCard.class,
-                            CardDrawn.class, PlayerDrewActionCard.class,
-                            CardDrawn.class, PlayerDrewActionCard.class);
+                            ActionCardDeckReplenished.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class,
+                            ActionCardDrawn.class, PlayerDrewActionCard.class);
         }
 
         @Test
@@ -142,7 +142,7 @@ class GameTest {
             // don't reconstitute the game, we want to see the fresh events
             new EventsAssertion(game.freshEvents())
                     .hasExactly(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
-                    .hasExactly(CardDrawn.class, 2 * Player.PLAYER_HAND_FULL_SIZE);
+                    .hasExactly(ActionCardDrawn.class, 2 * Player.PLAYER_HAND_FULL_SIZE);
         }
 
         @Test
@@ -164,7 +164,7 @@ class GameTest {
             // don't reconstitute the game, we want to see the fresh events
             new EventsAssertion(game.freshEvents())
                     .as("12 cards needed to be drawn, as there are 2 Tech Neglect cards and 10 Regular Action Cards")
-                    .hasExactly(CardDrawn.class, 12)
+                    .hasExactly(ActionCardDrawn.class, 12)
                     .as("10 Action Cards should have been drawn")
                     .hasExactly(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
                     .as("2 Tech Neglect cards should have been drawn")
@@ -182,7 +182,7 @@ class GameTest {
                     .containsExactly(
                             new PlayerDiscardedActionCard(firstPlayerMemberId,
                                                           ActionCard.PREDICT)
-                            , new CardDiscarded(ActionCard.PREDICT)
+                            , new ActionCardDiscarded(ActionCard.PREDICT)
                     );
         }
 
