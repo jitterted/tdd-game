@@ -49,8 +49,10 @@ public abstract class Deck<CARD extends Card> {
     private void replenishDrawPileFromDiscardPile() {
         // TODO - PRECONDITION: discardPile must NOT be empty
         List<Card> shuffledDiscardedCards = (List<Card>) shuffler.shuffleCards(discardPile);
-        eventEnqueuer.enqueue(new ActionCardDeckReplenished(shuffledDiscardedCards));
+        eventEnqueuer.enqueue(createDeckReplenishedEvent(shuffledDiscardedCards));
     }
+
+    protected abstract DeckEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards);
 
     public boolean isDrawPileEmpty() {
         return drawPile.isEmpty();

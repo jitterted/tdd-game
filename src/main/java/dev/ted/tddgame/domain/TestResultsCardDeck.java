@@ -29,6 +29,11 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
         return new ActionCardDrawn(drawnCard);
     }
 
+    @Override
+    protected DeckEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards) {
+        return new ActionCardDeckReplenished(shuffledDiscardedCards);
+    }
+
     // -- FOR TESTS ONLY BELOW --
 
     static TestResultsCardDeck createForTest(List<@NotNull TestResultsCard> testResultsCards) {

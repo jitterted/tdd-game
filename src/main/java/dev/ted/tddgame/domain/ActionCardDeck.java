@@ -30,6 +30,11 @@ public class ActionCardDeck extends Deck<ActionCard> {
         return new ActionCardDrawn(drawnCard);
     }
 
+    @Override
+    protected DeckEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards) {
+        return new ActionCardDeckReplenished(shuffledDiscardedCards);
+    }
+
     // -- FOR TESTS ONLY BELOW --
 
     protected ActionCardDeck(List<ActionCard> cards,
