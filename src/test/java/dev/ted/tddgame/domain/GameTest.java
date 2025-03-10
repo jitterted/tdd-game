@@ -210,8 +210,8 @@ class GameTest {
                             cardToBeDrawn,
                             cardRemainingInDrawPile);
             Game game = gameScenarioBuilder.game();
-
             MemberId memberId = gameScenarioBuilder.firstPlayer().memberId();
+
             game.drawTestResultsCard(memberId);
 
             assertThat(game.freshEvents())
