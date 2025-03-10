@@ -21,6 +21,8 @@ import dev.ted.tddgame.domain.PlayerJoined;
 import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 import dev.ted.tddgame.domain.TestResultsCard;
 import dev.ted.tddgame.domain.TestResultsCardDeckCreated;
+import dev.ted.tddgame.domain.TestResultsCardDeckReplenished;
+import dev.ted.tddgame.domain.TestResultsCardDrawn;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -207,6 +209,11 @@ class EventDtoTest {
                 , Arguments.of(new PlayerPlayedActionCard(memberId, ActionCard.PREDICT))
                 , Arguments.of(new PlayerDrewTechNeglectCard(memberId, ActionCard.CANT_ASSERT))
                 , Arguments.of(new PlayerDrewTestResultsCard(memberId, TestResultsCard.NEED_ONE_LESS_CODE))
+                , Arguments.of(new TestResultsCardDeckReplenished(
+                        List.of(TestResultsCard.AS_PREDICTED,
+                                TestResultsCard.NEED_TWO_LESS_CODE)
+                ))
+                , Arguments.of(new TestResultsCardDrawn(TestResultsCard.NEED_ONE_LESS_CODE))
         );
     }
 }

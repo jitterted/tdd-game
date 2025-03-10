@@ -7,7 +7,6 @@ import dev.ted.tddgame.application.port.MemberStore;
 import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -109,7 +108,6 @@ class PlayingGameControllerMvcTest {
     }
 
     @Test
-    @Disabled("PlayingGameControllerMvcTest 3/10/25 11:50 — until GameTest drawTestResultsCard_PlayerDrewTestResultsCard passes")
     void postToDrawTestResultsCardEndpointReturns204NoContent() {
         String gameHandle = "game4drawTestResultsCard";
         GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
