@@ -27,8 +27,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -128,14 +128,7 @@ class EventDtoTest {
 
     @Test
     void allEventsAreTested() {
-        Set<String> allGameEventClasses =
-                Arrays.stream(GameEvent.class.getPermittedSubclasses())
-                      .flatMap(cls -> cls.isInterface() ?
-                              Arrays.stream(cls.getPermittedSubclasses()) :
-                              Stream.of(cls))
-                      .filter(cls -> !cls.isInterface() && !Modifier.isAbstract(cls.getModifiers()))
-                      .map(Class::getSimpleName)
-                      .collect(Collectors.toSet());
+        Set<String> allGameEventClasses = findAllConcreteGameEventClasses();
 
         Set<String> eventClassesCoveredByParameterizedTest = events()
                 .map(arg -> arg.get()[0].getClass())
@@ -145,6 +138,42 @@ class EventDtoTest {
         assertThat(eventClassesCoveredByParameterizedTest)
                 .as("Missing some GameEvents from the parameterized test")
                 .containsAll(allGameEventClasses);
+    }
+
+    private Set<String> findAllConcreteGameEventClasses() {
+        return findAllConcreteImplementations(GameEvent.class)
+                .stream()
+                .map(Class::getSimpleName)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Class<?>> findAllConcreteImplementations(Class<?> sealedInterface) {
+        Set<Class<?>> result = new HashSet<>();
+
+        if (!sealedInterface.isInterface() && !Modifier.isAbstract(sealedInterface.getModifiers())) {
+            // This is a concrete class, add it
+            result.add(sealedInterface);
+            return result;
+        }
+
+        // Get direct permitted subclasses/interfaces
+        Class<?>[] permittedSubclasses = sealedInterface.getPermittedSubclasses();
+        if (permittedSubclasses == null) {
+            return result;
+        }
+
+        // Recursively process each permitted subclass/interface
+        for (Class<?> subclass : permittedSubclasses) {
+            if (!subclass.isInterface() && !Modifier.isAbstract(subclass.getModifiers())) {
+                // This is a concrete class, add it
+                result.add(subclass);
+            } else {
+                // This is an interface or abstract class, recurse into it
+                result.addAll(findAllConcreteImplementations(subclass));
+            }
+        }
+
+        return result;
     }
 
     @ParameterizedTest
