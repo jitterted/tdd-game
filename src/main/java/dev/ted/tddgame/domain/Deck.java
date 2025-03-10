@@ -7,13 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class Deck<CARD extends Card> {
+public abstract class Deck<CARD extends Card> {
     private final Shuffler<CARD> shuffler;
     private final Queue<CARD> drawPile = new LinkedList<>();
     private final EventEnqueuer eventEnqueuer;
     private final List<CARD> discardPile;
 
-    public Deck(List<CARD> cards,
+    protected Deck(List<CARD> cards,
                 Shuffler<CARD> shuffler,
                 EventEnqueuer eventEnqueuer) {
         this.discardPile = new ArrayList<>(cards);
@@ -22,10 +22,14 @@ public class Deck<CARD extends Card> {
     }
 
     // -- FOR TESTS --
-    Deck(List<CARD> cards, Shuffler<CARD> shuffler, List<DeckEvent> deckEventsReceiver) {
+    protected Deck(List<CARD> cards, Shuffler<CARD> shuffler, List<DeckEvent> deckEventsReceiver) {
         this.discardPile = new ArrayList<>(cards);
         this.shuffler = shuffler;
         this.eventEnqueuer = new DeckEventEnqueuer<>(this, deckEventsReceiver);
+    }
+
+    void acceptDiscard(CARD discardedCard) {
+        eventEnqueuer.enqueue(new ActionCardDiscarded(discardedCard));
     }
 
     public CARD draw() {
@@ -76,10 +80,6 @@ public class Deck<CARD extends Card> {
                 discardPile.add((CARD) cardDiscarded.card());
             }
         }
-    }
-
-    void acceptDiscard(CARD discardedCard) {
-        eventEnqueuer.enqueue(new ActionCardDiscarded(discardedCard));
     }
 
     // -- EMBEDDED STUB for Nullable Shuffler --
