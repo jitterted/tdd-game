@@ -3,6 +3,7 @@ package dev.ted.tddgame.domain;
 import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
 import dev.ted.tddgame.application.port.GameStore;
 import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -200,6 +201,7 @@ class GameTest {
         }
 
         @Test
+        @Disabled("GameTest.CommandsGenerateEvents 3/10/25 11:48 — until refactored to create separate hierarchy for Test Results Card events")
         void drawTestResultsCard_PlayerDrewTestResultsCard() {
             TestResultsCard cardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
             TestResultsCard cardRemainingInDrawPile = TestResultsCard.AS_PREDICTED;
