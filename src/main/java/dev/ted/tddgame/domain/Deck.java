@@ -35,11 +35,13 @@ public abstract class Deck<CARD extends Card> {
     protected abstract DeckEvent createCardDiscardedEvent(CARD discardedCard);
 
     public CARD draw() {
-        if (drawPile.isEmpty()) {
+        if (isDrawPileEmpty()) {
             replenishDrawPileFromDiscardPile();
+            if (isDrawPileEmpty()) {
+                throw new IllegalStateException("Draw Pile must not be empty after Replenish");
+            }
         }
         CARD drawnCard = drawPile.peek();
-        // TODO: if drawnCard is null, that means we ran out of cards!
         eventEnqueuer.enqueue(createCardDrawnEvent(drawnCard));
         return drawnCard;
     }

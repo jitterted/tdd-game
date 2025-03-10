@@ -26,12 +26,12 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
 
     @Override
     protected DeckEvent createCardDrawnEvent(TestResultsCard drawnCard) {
-        return new ActionCardDrawn(drawnCard);
+        return new TestResultsCardDrawn(drawnCard);
     }
 
     @Override
     protected DeckEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards) {
-        return new ActionCardDeckReplenished(shuffledDiscardedCards);
+        return new TestResultsCardDeckReplenished(shuffledDiscardedCards);
     }
 
     // -- FOR TESTS ONLY BELOW --
