@@ -54,24 +54,24 @@ public class GameScenarioBuilder implements NeedsActionCards {
 
     public static GameScenarioBuilder scenarioPlayerOnPredictTestWillFailToCompile(String gameHandle, TestResultsCard cardToBeDrawn, TestResultsCard testResultsCardRemainingInDrawPile) {
         return create(gameHandle)
-                          .actionCards(
-                                   ActionCard.PREDICT,
-                                   ActionCard.PREDICT,
-                                   ActionCard.WRITE_CODE,
-                                   ActionCard.LESS_CODE,
-                                   ActionCard.LESS_CODE,
-                                   ActionCard.REFACTOR
-                           )
-                          .testResultsCards(cardToBeDrawn,
-                                             testResultsCardRemainingInDrawPile)
-                          .memberJoinsAsOnlyPlayer()
-                          .startGame()
-                          .playerOnlyActions(executor -> {
-                               executor.discardFirstCardInHand();
-                               executor.discardFirstCardInHand();
-                               executor.playCard(ActionCard.WRITE_CODE);
-                               executor.playCard(ActionCard.PREDICT);
-                           });
+                .actionCards(
+                        ActionCard.PREDICT,
+                        ActionCard.PREDICT,
+                        ActionCard.WRITE_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.LESS_CODE,
+                        ActionCard.REFACTOR
+                )
+                .testResultsCards(cardToBeDrawn,
+                                  testResultsCardRemainingInDrawPile)
+                .memberJoinsAsOnlyPlayer()
+                .startGame()
+                .playerOnlyActions(executor -> {
+                    executor.discardFirstCardInHand();
+                    executor.discardFirstCardInHand();
+                    executor.playCard(ActionCard.WRITE_CODE);
+                    executor.playCard(ActionCard.PREDICT);
+                });
     }
 
     public GameScenarioBuilder testResultsCards(TestResultsCard... testResultsCards) {
