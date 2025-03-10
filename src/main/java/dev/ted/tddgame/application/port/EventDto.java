@@ -52,11 +52,11 @@ public class EventDto {
                     Map.entry("PlayerDrewActionCard", PlayerDrewActionCard.class),
                     Map.entry("PlayerDiscardedActionCard", PlayerDiscardedActionCard.class),
                     Map.entry("PlayerPlayedActionCard", PlayerPlayedActionCard.class),
+                    Map.entry("PlayerDrewTechNeglectCard", PlayerDrewTechNeglectCard.class),
+                    Map.entry("PlayerDrewTestResultsCard", PlayerDrewTestResultsCard.class),
                     Map.entry("ActionCardDrawn", ActionCardDrawn.class),
                     Map.entry("ActionCardDiscarded", ActionCardDiscarded.class),
-                    Map.entry("ActionCardDeckReplenished", ActionCardDeckReplenished.class),
-                    Map.entry("PlayerDrewTechNeglectCard", PlayerDrewTechNeglectCard.class),
-                    Map.entry("PlayerDrewTestResultsCard", PlayerDrewTestResultsCard.class)
+                    Map.entry("ActionCardDeckReplenished", ActionCardDeckReplenished.class)
             );
     private static final Map<Class<? extends GameEvent>, String> classToEventName =
             swapKeysValues(eventNameToClassMap);
