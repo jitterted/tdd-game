@@ -29,8 +29,10 @@ public abstract class Deck<CARD extends Card> {
     }
 
     void acceptDiscard(CARD discardedCard) {
-        eventEnqueuer.enqueue(new ActionCardDiscarded(discardedCard));
+        eventEnqueuer.enqueue(createCardDiscardedEvent(discardedCard));
     }
+
+    protected abstract DeckEvent createCardDiscardedEvent(CARD discardedCard);
 
     public CARD draw() {
         if (drawPile.isEmpty()) {

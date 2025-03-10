@@ -20,6 +20,11 @@ public class ActionCardDeck extends Deck<ActionCard> {
         return new ActionCardDeck(cards, shuffler, eventEnqueuer);
     }
 
+    @Override
+    protected DeckEvent createCardDiscardedEvent(ActionCard discardedCard) {
+        return new ActionCardDiscarded(discardedCard);
+    }
+
     // -- FOR TESTS ONLY BELOW --
 
     protected ActionCardDeck(List<ActionCard> cards,
@@ -50,5 +55,4 @@ public class ActionCardDeck extends Deck<ActionCard> {
                                   new IdentityShuffler<>(),
                                   deckEventsReceiver);
     }
-
 }

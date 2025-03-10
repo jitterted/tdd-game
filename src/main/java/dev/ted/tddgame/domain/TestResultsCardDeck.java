@@ -19,6 +19,11 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
         return new TestResultsCardDeck(testResultsCards, shuffler, eventEnqueuer);
     }
 
+    @Override
+    protected DeckEvent createCardDiscardedEvent(TestResultsCard discardedCard) {
+        return new ActionCardDiscarded(discardedCard);
+    }
+
     // -- FOR TESTS ONLY BELOW --
 
     static TestResultsCardDeck createForTest(List<@NotNull TestResultsCard> testResultsCards) {
