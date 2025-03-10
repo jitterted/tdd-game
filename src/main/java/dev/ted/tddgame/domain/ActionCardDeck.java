@@ -25,6 +25,11 @@ public class ActionCardDeck extends Deck<ActionCard> {
         return new ActionCardDiscarded(discardedCard);
     }
 
+    @Override
+    protected DeckEvent createCardDrawnEvent(ActionCard drawnCard) {
+        return new ActionCardDrawn(drawnCard);
+    }
+
     // -- FOR TESTS ONLY BELOW --
 
     protected ActionCardDeck(List<ActionCard> cards,

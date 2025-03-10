@@ -24,6 +24,11 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
         return new ActionCardDiscarded(discardedCard);
     }
 
+    @Override
+    protected DeckEvent createCardDrawnEvent(TestResultsCard drawnCard) {
+        return new ActionCardDrawn(drawnCard);
+    }
+
     // -- FOR TESTS ONLY BELOW --
 
     static TestResultsCardDeck createForTest(List<@NotNull TestResultsCard> testResultsCards) {
