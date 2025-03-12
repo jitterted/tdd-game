@@ -82,10 +82,11 @@ public class Workspace {
         drawnTestResultsCard = Optional.of(testResultsCard);
     }
 
-// COMMAND
-//    processTestResultsCard()
-
-//    if "as expected", clean up workspace in-play (via discard) and discard TestResults Card
+    // COMMAND
+    //    if "as expected", clean up workspace in-play (via discard) and discard TestResults Card
+    public void processTestResultsCard() {
+        drawnTestResultsCard = Optional.empty();
+    }
 
     /**
      * Handler for Tech Neglect ActionCard that has been "played"

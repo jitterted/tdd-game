@@ -35,4 +35,16 @@ class WorkspaceTest {
                 .as("Must not be allowed to draw another Test Results card if the current one hasn't been processed.")
                 .isThrownBy(() -> workspace.testResultsCardDrawn(TestResultsCard.AS_PREDICTED));
     }
+
+    @Test
+    void noTestResultsCardDrawnAvailableAfterCardDrawnAndTestResultsCardProcessed() {
+        Workspace workspace = Workspace.createForTest(HexTile.PREDICT_TEST_WILL_FAIL_TO_COMPILE);
+        workspace.testResultsCardDrawn(TestResultsCard.NEED_TWO_LESS_CODE);
+
+        workspace.processTestResultsCard();
+
+        assertThat(workspace.drawnTestResultsCard())
+                .as("After processing the drawn card, the current drawn card should be empty.")
+                .isEmpty();
+    }
 }
