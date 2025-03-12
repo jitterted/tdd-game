@@ -13,8 +13,7 @@ public enum HexTile {
             String tileName = title();
             throw new CanNotPlayCardHereException("Can not play a " + cardName + " card on the " + tileName + " hex tile.");
         }
-    }
-    , HOW_WILL_YOU_KNOW_IT_DID_IT("How Will You Know It Did It?") {
+    }, HOW_WILL_YOU_KNOW_IT_DID_IT("How Will You Know It Did It?") {
         @Override
         public HexTile cardDiscarded() {
             return WRITE_CODE_FOR_TEST;
@@ -46,6 +45,11 @@ public enum HexTile {
         @Override
         public HexTile cardPlayed(ActionCard actionCard) {
             return this;
+        }
+    }, WRITE_CODE_SO_TEST_COMPILES("Write Code So Test Compiles") {
+        @Override
+        public HexTile cardDiscarded() {
+            throw new UnsupportedOperationException();
         }
     };
 

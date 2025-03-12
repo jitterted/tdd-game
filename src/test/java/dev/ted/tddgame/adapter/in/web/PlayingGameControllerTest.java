@@ -171,8 +171,6 @@ class PlayingGameControllerTest {
                                       .workspace()
                                       .drawnTestResultsCard())
                 .as("First player's Workspace should have the drawn Test Results card")
-                .isPresent()
-                .get()
                 .isEqualTo(testResultsCardToBeDrawn);
 
         assertThat(gameScenarioBuilder.game().testResultsCardDeck().drawPile())

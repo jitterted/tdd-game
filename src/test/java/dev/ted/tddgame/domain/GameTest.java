@@ -458,8 +458,6 @@ class GameTest {
                                           .workspace()
                                           .drawnTestResultsCard())
                     .as("First player's Workspace must have the drawn Test Results card")
-                    .isPresent()
-                    .get()
                     .isEqualTo(TestResultsCard.NEED_TWO_LESS_CODE);
 
             assertThat(gameScenarioBuilder.game().testResultsCardDeck().drawPile())

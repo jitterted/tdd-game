@@ -2,7 +2,6 @@ package dev.ted.tddgame.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Workspace {
@@ -10,7 +9,7 @@ public class Workspace {
     private HexTile currentHexTile;
     private final List<ActionCard> cardsInPlay = new ArrayList<>();
     private final List<ActionCard> techNeglectCards = new ArrayList<>();
-    private Optional<TestResultsCard> drawnTestResultsCard = Optional.empty();
+    private TestResultsCard drawnTestResultsCard = null;
 
     /**
      * Assign the Workspace ID from the Player's ID
@@ -29,6 +28,10 @@ public class Workspace {
 
     public static Workspace createForTest(HexTile currentHexTile) {
         return new Workspace(new PlayerId(42L), currentHexTile);
+    }
+
+    public static Workspace createForTest() {
+        return new Workspace(new PlayerId(42L));
     }
 
     public WorkspaceId id() {
@@ -67,7 +70,7 @@ public class Workspace {
         return techNeglectCards.stream();
     }
 
-    public Optional<TestResultsCard> drawnTestResultsCard() {
+    public TestResultsCard drawnTestResultsCard() {
         return drawnTestResultsCard;
     }
 
@@ -75,17 +78,17 @@ public class Workspace {
      * Handler for a Test Results Card having been drawn
      */
     public void testResultsCardDrawn(TestResultsCard testResultsCard) {
-        if (drawnTestResultsCard.isPresent()) {
+        if (drawnTestResultsCard != null) {
             throw new IllegalStateException();
         }
 
-        drawnTestResultsCard = Optional.of(testResultsCard);
+        drawnTestResultsCard = testResultsCard;
     }
 
     // COMMAND
     //    if "as expected", clean up workspace in-play (via discard) and discard TestResults Card
     public void processTestResultsCard() {
-        drawnTestResultsCard = Optional.empty();
+        drawnTestResultsCard = null;
     }
 
     /**

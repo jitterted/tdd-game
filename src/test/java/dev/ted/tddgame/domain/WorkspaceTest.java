@@ -1,5 +1,6 @@
 package dev.ted.tddgame.domain;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static dev.ted.tddgame.domain.TestResultsCard.AS_PREDICTED;
@@ -12,7 +13,7 @@ class WorkspaceTest {
         Workspace workspace = new Workspace(new PlayerId(37L));
 
         assertThat(workspace.drawnTestResultsCard())
-                .isEmpty();
+                .isNull();
     }
 
     @Test
@@ -23,7 +24,7 @@ class WorkspaceTest {
 
         assertThat(workspace.drawnTestResultsCard())
                 .as("Last Drawn Test Results Card should be known by the Workspace")
-                .contains(AS_PREDICTED);
+                .isEqualByComparingTo(AS_PREDICTED);
     }
 
     @Test
@@ -45,6 +46,37 @@ class WorkspaceTest {
 
         assertThat(workspace.drawnTestResultsCard())
                 .as("After processing the drawn card, the current drawn card should be empty.")
-                .isEmpty();
+                .isNull();
+    }
+
+    @Test
+    // parameterize:
+    // need 2, have 0
+    // need 2, have 1
+    // need 1, have 0
+    void hexTileUnchangedWhenHaveFewerLessCodeCardsThanTestResultsCardNeeds() {
+
+    }
+
+    @Test
+    // AS_EXPECTED, (doesn't matter how many LESS CODE cards you have)
+    // NEED 1, have 1
+    // NEED 1, have 2 <-
+    // NEED 2, have 2
+    @Disabled("dev.ted.tddgame.domain.WorkspaceTest 3/12/25 14:15 — until I've switched Optional to plain null")
+    void movesToNextHexTileWhenTestResultsCardAsExpected() {
+        Workspace workspace = Workspace.createForTest();
+        workspace.cardDiscarded();
+        workspace.cardDiscarded();
+        workspace.cardPlayed(ActionCard.WRITE_CODE);
+        workspace.cardPlayed(ActionCard.LESS_CODE);
+        workspace.cardPlayed(ActionCard.LESS_CODE);
+        workspace.cardPlayed(ActionCard.PREDICT);
+        workspace.testResultsCardDrawn(TestResultsCard.NEED_ONE_LESS_CODE);
+
+        workspace.processTestResultsCard();
+
+        assertThat(workspace.currentHexTile())
+                .isEqualByComparingTo(HexTile.WRITE_CODE_SO_TEST_COMPILES);
     }
 }
