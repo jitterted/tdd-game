@@ -58,9 +58,11 @@ public class Player {
 
     public void apply(PlayerEvent event) {
         switch (event) {
-            case PlayerDrewActionCard(_, ActionCard actionCard) -> hand.add(actionCard);
+            case PlayerDrewActionCard(_, ActionCard actionCard) ->
+                    hand.add(actionCard);
 
             case PlayerDrewTestResultsCard(_, TestResultsCard testResultsCard) -> {
+                    // workspace.testResultsCardDrawn(testResultsCard)
             }
 
             case PlayerDiscardedActionCard(_, ActionCard actionCard) -> {

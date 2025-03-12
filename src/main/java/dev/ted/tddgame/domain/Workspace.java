@@ -14,11 +14,20 @@ public class Workspace {
     /**
      * Assign the Workspace ID from the Player's ID
      * (This is temporary: it should have its own ID)
+     *
      * @param playerId the "owner" of this workspace
      */
     public Workspace(PlayerId playerId) {
+        this(playerId, HexTile.WHAT_SHOULD_IT_DO);
+    }
+
+    private Workspace(PlayerId playerId, HexTile currentHexTile) {
         id = new WorkspaceId(playerId.id());
-        currentHexTile = HexTile.WHAT_SHOULD_IT_DO;
+        this.currentHexTile = currentHexTile;
+    }
+
+    public static Workspace createForTest(HexTile currentHexTile) {
+        return new Workspace(new PlayerId(42L), currentHexTile);
     }
 
     public WorkspaceId id() {
@@ -60,6 +69,13 @@ public class Workspace {
     public Optional<TestResultsCard> drawnTestResultsCard() {
         return Optional.empty();
     }
+
+// HANDLER
+//    testResultsCardDrawn(testResultsCard)
+
+// COMMAND
+//    processTestResultsCard()
+//    if "as expected", clean up workspace in-play (via discard) and discard TestResults Card
 
     /**
      * Handler for Tech Neglect ActionCard that has been "played"

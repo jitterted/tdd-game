@@ -3,6 +3,7 @@ package dev.ted.tddgame.domain;
 import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
 import dev.ted.tddgame.application.port.GameStore;
 import org.assertj.core.api.Condition;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -434,6 +435,37 @@ class GameTest {
             assertThat(player.workspace().cardsInPlay())
                     .as("Workspace should now contain the played WRITE CODE card")
                     .containsExactly(ActionCard.WRITE_CODE);
+        }
+
+        @Test
+        @Disabled("dev.ted.tddgame.domain.GameTest.EventsProjectState 3/10/25 14:46 — until Workspace knows how to hold onto the most recent drawn Test Results Card")
+        void workspaceHasTestResultsCardWhenTestResultsCardDrawnByPlayer() {
+            GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
+                    .create()
+                    .shuffledActionCards()
+                    .testResultsCards(
+                            TestResultsCard.NEED_TWO_LESS_CODE,
+                            TestResultsCard.AS_PREDICTED,
+                            TestResultsCard.NEED_ONE_LESS_CODE
+                    )
+                    .memberJoinsAsOnlyPlayer()
+                    .startGame();
+            Game game = gameScenarioBuilder.game();
+
+            game.drawTestResultsCard(gameScenarioBuilder.firstPlayer().memberId());
+
+            assertThat(gameScenarioBuilder.firstPlayer()
+                                          .workspace()
+                                          .drawnTestResultsCard())
+                    .as("First player's Workspace must have the drawn Test Results card")
+                    .isPresent()
+                    .get()
+                    .isEqualTo(TestResultsCard.NEED_TWO_LESS_CODE);
+
+            assertThat(gameScenarioBuilder.game().testResultsCardDeck().drawPile())
+                    .as("After drawing a card, the remaining cards in the Test Results draw pile must be AS_PREDICTED and NEED_ONE_LESS_CODE")
+                    .containsExactly(TestResultsCard.AS_PREDICTED,
+                                     TestResultsCard.NEED_TWO_LESS_CODE);
         }
 
         //--
