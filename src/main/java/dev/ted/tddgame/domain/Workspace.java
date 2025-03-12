@@ -70,11 +70,16 @@ public class Workspace {
         return Optional.empty();
     }
 
-// HANDLER
-//    testResultsCardDrawn(testResultsCard)
+    /**
+     * Handler for a Test Results Card having been drawn
+     */
+    public void testResultsCardDrawn(TestResultsCard testResultsCard) {
+
+    }
 
 // COMMAND
 //    processTestResultsCard()
+
 //    if "as expected", clean up workspace in-play (via discard) and discard TestResults Card
 
     /**
