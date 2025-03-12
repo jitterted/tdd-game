@@ -10,6 +10,7 @@ public class Workspace {
     private HexTile currentHexTile;
     private final List<ActionCard> cardsInPlay = new ArrayList<>();
     private final List<ActionCard> techNeglectCards = new ArrayList<>();
+    private Optional<TestResultsCard> drawnTestResultsCard = Optional.empty();
 
     /**
      * Assign the Workspace ID from the Player's ID
@@ -67,14 +68,14 @@ public class Workspace {
     }
 
     public Optional<TestResultsCard> drawnTestResultsCard() {
-        return Optional.empty();
+        return drawnTestResultsCard;
     }
 
     /**
      * Handler for a Test Results Card having been drawn
      */
     public void testResultsCardDrawn(TestResultsCard testResultsCard) {
-
+        drawnTestResultsCard = Optional.of(testResultsCard);
     }
 
 // COMMAND

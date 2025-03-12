@@ -20,7 +20,8 @@ class WorkspaceTest {
 
         workspace.testResultsCardDrawn(TestResultsCard.AS_PREDICTED);
 
-//        assertThat(workspace.drawnTestResultsCard())
-//                .isEqualTo(TestResultsCard.AS_PREDICTED);
+        assertThat(workspace.drawnTestResultsCard())
+                .as("Last Drawn Test Results Card should be known by the Workspace")
+                .contains(TestResultsCard.AS_PREDICTED);
     }
 }
