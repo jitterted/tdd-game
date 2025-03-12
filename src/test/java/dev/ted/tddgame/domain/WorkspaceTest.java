@@ -1,11 +1,11 @@
 package dev.ted.tddgame.domain;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static dev.ted.tddgame.domain.TestResultsCard.AS_PREDICTED;
 import static org.assertj.core.api.Assertions.*;
 
+@SuppressWarnings("DataFlowIssue")
 class WorkspaceTest {
 
     @Test
@@ -63,7 +63,6 @@ class WorkspaceTest {
     // NEED 1, have 1
     // NEED 1, have 2 <-
     // NEED 2, have 2
-    @Disabled("dev.ted.tddgame.domain.WorkspaceTest 3/12/25 14:15 — until I've switched Optional to plain null")
     void movesToNextHexTileWhenTestResultsCardAsExpected() {
         Workspace workspace = Workspace.createForTest();
         workspace.cardDiscarded();
@@ -76,7 +75,14 @@ class WorkspaceTest {
 
         workspace.processTestResultsCard();
 
+        assertThat(workspace.drawnTestResultsCard())
+                .isNull();
         assertThat(workspace.currentHexTile())
                 .isEqualByComparingTo(HexTile.WRITE_CODE_SO_TEST_COMPILES);
+    }
+
+    @Test
+    void exceptionThrownWhenProcessTestResultsCardWithNoCurrentCardDrawn() {
+
     }
 }

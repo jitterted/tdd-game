@@ -403,6 +403,8 @@ WE ARE HERE ===>>
 
 ## Tooling
 
+[ ] Figure out which tool to use to enforce the JSpecify nullability annotations during the build/deploy (CI) process
+
 [ ] Add HexArchTest
     [ ] Add rule that Production code must not call nullable methods (createNull) and only call constructors
 

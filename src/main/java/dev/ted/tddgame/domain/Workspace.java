@@ -92,6 +92,7 @@ public class Workspace {
     // COMMAND
     //    if "as expected", clean up workspace in-play (via discard) and discard TestResults Card
     public void processTestResultsCard() {
+        currentHexTile = currentHexTile.processTestResultsCard(drawnTestResultsCard);
         drawnTestResultsCard = null;
     }
 

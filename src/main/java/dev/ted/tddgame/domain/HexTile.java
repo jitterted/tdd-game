@@ -1,5 +1,8 @@
 package dev.ted.tddgame.domain;
 
+import org.jspecify.annotations.NullMarked;
+
+@NullMarked
 public enum HexTile {
     WHAT_SHOULD_IT_DO("What Should It Do?") {
         @Override
@@ -46,6 +49,11 @@ public enum HexTile {
         public HexTile cardPlayed(ActionCard actionCard) {
             return this;
         }
+
+        @Override
+        public HexTile processTestResultsCard(TestResultsCard drawnTestResultsCard) {
+            return WRITE_CODE_SO_TEST_COMPILES;
+        }
     }, WRITE_CODE_SO_TEST_COMPILES("Write Code So Test Compiles") {
         @Override
         public HexTile cardDiscarded() {
@@ -66,6 +74,10 @@ public enum HexTile {
     public abstract HexTile cardDiscarded();
 
     public HexTile cardPlayed(ActionCard actionCard) {
+        throw new UnsupportedOperationException();
+    }
+
+    public HexTile processTestResultsCard(TestResultsCard drawnTestResultsCard) {
         throw new UnsupportedOperationException();
     }
 }
