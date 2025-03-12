@@ -1,15 +1,19 @@
 package dev.ted.tddgame.domain;
 
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+@NullMarked
 public class Workspace {
     private final WorkspaceId id;
     private HexTile currentHexTile;
     private final List<ActionCard> cardsInPlay = new ArrayList<>();
     private final List<ActionCard> techNeglectCards = new ArrayList<>();
-    private TestResultsCard drawnTestResultsCard = null;
+    private @Nullable TestResultsCard drawnTestResultsCard = null;
 
     /**
      * Assign the Workspace ID from the Player's ID
@@ -70,7 +74,7 @@ public class Workspace {
         return techNeglectCards.stream();
     }
 
-    public TestResultsCard drawnTestResultsCard() {
+    public @Nullable TestResultsCard drawnTestResultsCard() {
         return drawnTestResultsCard;
     }
 
