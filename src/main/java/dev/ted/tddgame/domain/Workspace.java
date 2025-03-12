@@ -75,6 +75,10 @@ public class Workspace {
      * Handler for a Test Results Card having been drawn
      */
     public void testResultsCardDrawn(TestResultsCard testResultsCard) {
+        if (drawnTestResultsCard.isPresent()) {
+            throw new IllegalStateException();
+        }
+
         drawnTestResultsCard = Optional.of(testResultsCard);
     }
 
