@@ -272,13 +272,18 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
 WE ARE HERE ===>>
 
         [ ] Draw Test Results Card
-            [ ] click to draw a card
+            [X] click to draw a card
                 [X] Add button to draw pile card (in game.html)
                 [X] Add POST endpoint
-                [ ] Call gamePlay.drawTestResultsCard to draw card and add it to player's workspace
+                [X] Call gamePlay.drawTestResultsCard to draw card and add it to player's workspace
             [ ] render the drawn card (via the Workspace) as a dialog with the image of the drawn card and a button [OK]
             [ ] upon button click, POST the card to be evaluated
-            [ ] Workspace: evaluate the drawn Test Results card
+                [ ] Workspace: evaluate the drawn Test Results card
+                    [ ] Discard the PREDICT card
+                    [ ] If "AS PREDICTED":
+                        [ ] Move to the next hex tile
+                        [ ] Discard any In-Play cards
+                [ ] Discard the Test Results card to the TR deck's discard pile
 
 
             [ ] Create Workspace Scoring+Risk display
