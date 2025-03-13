@@ -74,9 +74,9 @@ public class GamePlayTest {
 
         gameScenarioBuilder.gamePlay().start(gameHandle);
 
-        mockBroadcaster.verifyGameMatches(gameScenarioBuilder.game());
+        mockBroadcaster.verifyGameMatches(gameScenarioBuilder.reconstitutedGameFromStore());
 
-        assertThat(gameScenarioBuilder.game().actionCardDeck().drawPile())
+        assertThat(gameScenarioBuilder.reconstitutedGameFromStore().actionCardDeck().drawPile())
                 .hasSize(9 - 5);
     }
 
@@ -141,13 +141,13 @@ public class GamePlayTest {
                 .drawActionCard(gameHandle,
                                 gameScenarioBuilder.firstPlayer().memberId());
 
-        mockBroadcaster.verifyGameMatches(gameScenarioBuilder.game());
+        mockBroadcaster.verifyGameMatches(gameScenarioBuilder.reconstitutedGameFromStore());
 
-        assertThat(gameScenarioBuilder.game()
+        assertThat(gameScenarioBuilder.reconstitutedGameFromStore()
                                       .actionCardDeck().drawPile())
                 .as("Action Card Draw Pile should be empty after player draws the card")
                 .isEmpty();
-        assertThat(gameScenarioBuilder.game()
+        assertThat(gameScenarioBuilder.reconstitutedGameFromStore()
                            .playerFor(gameScenarioBuilder.firstPlayer().memberId())
                            .hand())
                 .as("Player's Hand should contain the card draw from the Action Card Deck's draw pile")

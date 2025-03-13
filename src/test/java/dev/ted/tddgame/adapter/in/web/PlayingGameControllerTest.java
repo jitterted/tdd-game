@@ -147,7 +147,7 @@ class PlayingGameControllerTest {
         assertThat(gameScenarioBuilder.firstPlayer().hand())
                 .as("Player's hand must have the card to be drawn")
                 .contains(cardToBeDrawn);
-        assertThat(gameScenarioBuilder.game().actionCardDeck().drawPile())
+        assertThat(gameScenarioBuilder.reconstitutedGameFromStore().actionCardDeck().drawPile())
                 .isEmpty();
     }
 
@@ -173,7 +173,7 @@ class PlayingGameControllerTest {
                 .as("First player's Workspace should have the drawn Test Results card")
                 .isEqualTo(testResultsCardToBeDrawn);
 
-        assertThat(gameScenarioBuilder.game().testResultsCardDeck().drawPile())
+        assertThat(gameScenarioBuilder.reconstitutedGameFromStore().testResultsCardDeck().drawPile())
                 .as("After drawing a card, the remaining card in the Test Results draw pile must be AS_PREDICTED")
                 .containsExactly(testResultsCardRemainingInDrawPile);
     }

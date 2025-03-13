@@ -79,7 +79,7 @@ class MessageBroadcasterTest {
         messageSendersForPlayers.add(messageSenderForSamantha, "gameHandle", samanthaPlayer.id());
         MessageBroadcaster broadcaster = new MessageBroadcaster(messageSendersForPlayers);
 
-        broadcaster.gameUpdate(builder.game());
+        broadcaster.gameUpdate(builder.reconstitutedGameFromStore());
 
         assertThat(messageSenderForOliver.sentMessages.size())
                 .as("Should have 7 messages sent to Oliver")

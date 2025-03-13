@@ -61,9 +61,8 @@ public class Player {
             case PlayerDrewActionCard(_, ActionCard actionCard) ->
                     hand.add(actionCard);
 
-            case PlayerDrewTestResultsCard(_, TestResultsCard testResultsCard) -> {
-                    // workspace.testResultsCardDrawn(testResultsCard)
-            }
+            case PlayerDrewTestResultsCard(_, TestResultsCard testResultsCard) ->
+                    workspace.testResultsCardDrawn(testResultsCard);
 
             case PlayerDiscardedActionCard(_, ActionCard actionCard) -> {
                 hand.remove(actionCard);

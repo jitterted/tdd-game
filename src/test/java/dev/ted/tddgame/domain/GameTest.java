@@ -3,7 +3,6 @@ package dev.ted.tddgame.domain;
 import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
 import dev.ted.tddgame.application.port.GameStore;
 import org.assertj.core.api.Condition;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -110,7 +109,7 @@ class GameTest {
             Game game = GameScenarioBuilder.create()
                                            .unshuffledActionCards()
                                            .memberJoinsAsPlayer(new MemberId(1L))
-                                           .game();
+                                           .reconstitutedGameFromStore();
 
             game.start();
 
@@ -136,7 +135,7 @@ class GameTest {
                     .memberJoinsAsPlayer(new MemberId(10L))
                     .memberJoinsAsPlayer(new MemberId(11L));
 
-            Game game = gameScenarioBuilder.game();
+            Game game = gameScenarioBuilder.reconstitutedGameFromStore();
             game.start();
 
             // don't reconstitute the game, we want to see the fresh events
@@ -158,7 +157,7 @@ class GameTest {
                     .memberJoinsAsPlayer(new MemberId(10L))
                     .memberJoinsAsPlayer(new MemberId(11L));
 
-            Game game = gameScenarioBuilder.game();
+            Game game = gameScenarioBuilder.reconstitutedGameFromStore();
             game.start();
 
             // don't reconstitute the game, we want to see the fresh events
@@ -210,7 +209,7 @@ class GameTest {
                             gameHandle,
                             cardToBeDrawn,
                             cardRemainingInDrawPile);
-            Game game = gameScenarioBuilder.game();
+            Game game = gameScenarioBuilder.reconstitutedGameFromStore();
             MemberId memberId = gameScenarioBuilder.firstPlayer().memberId();
 
             game.drawTestResultsCard(memberId);
@@ -261,6 +260,7 @@ class GameTest {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Nested
     class EventsProjectState {
 
@@ -352,7 +352,7 @@ class GameTest {
                                            .memberJoinsAsPlayer(firstPlayerMemberId)
                                            .memberJoinsAsPlayer(secondPlayerMemberId)
                                            .startGame()
-                                           .game();
+                                           .reconstitutedGameFromStore();
 
             Player firstPlayer = game.playerFor(firstPlayerMemberId);
             Player secondPlayer = game.playerFor(secondPlayerMemberId);
@@ -387,7 +387,7 @@ class GameTest {
                                                         ActionCard.LESS_CODE)
                                            .memberJoinsAsPlayer(firstPlayerMemberId)
                                            .startGame()
-                                           .game();
+                                           .reconstitutedGameFromStore();
 
             game.discard(firstPlayerMemberId, ActionCard.WRITE_CODE);
 
@@ -418,7 +418,7 @@ class GameTest {
                                            .startGame()
                                            .discard(ActionCard.PREDICT)
                                            .discard(ActionCard.REFACTOR)
-                                           .game();
+                                           .reconstitutedGameFromStore();
 
             game.playCard(firstPlayerMemberId, ActionCard.WRITE_CODE);
 
@@ -438,7 +438,6 @@ class GameTest {
         }
 
         @Test
-        @Disabled("dev.ted.tddgame.domain.GameTest.EventsProjectState 3/10/25 14:46 — until Workspace knows how to hold onto the most recent drawn Test Results Card")
         void workspaceHasTestResultsCardWhenTestResultsCardDrawnByPlayer() {
             GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
                     .create()
@@ -450,20 +449,20 @@ class GameTest {
                     )
                     .memberJoinsAsOnlyPlayer()
                     .startGame();
-            Game game = gameScenarioBuilder.game();
+            Game game = gameScenarioBuilder.reconstitutedGameFromStore();
+            Player firstPlayer = game.players().getFirst();
 
-            game.drawTestResultsCard(gameScenarioBuilder.firstPlayer().memberId());
+            game.drawTestResultsCard(firstPlayer.memberId());
 
-            assertThat(gameScenarioBuilder.firstPlayer()
-                                          .workspace()
-                                          .drawnTestResultsCard())
+            assertThat(firstPlayer.workspace()
+                                  .drawnTestResultsCard())
                     .as("First player's Workspace must have the drawn Test Results card")
                     .isEqualTo(TestResultsCard.NEED_TWO_LESS_CODE);
 
-            assertThat(gameScenarioBuilder.game().testResultsCardDeck().drawPile())
+            assertThat(game.testResultsCardDeck().drawPile())
                     .as("After drawing a card, the remaining cards in the Test Results draw pile must be AS_PREDICTED and NEED_ONE_LESS_CODE")
                     .containsExactly(TestResultsCard.AS_PREDICTED,
-                                     TestResultsCard.NEED_TWO_LESS_CODE);
+                                     TestResultsCard.NEED_ONE_LESS_CODE);
         }
 
         //--

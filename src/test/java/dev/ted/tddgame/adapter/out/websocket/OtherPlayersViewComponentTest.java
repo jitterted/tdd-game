@@ -59,7 +59,7 @@ class OtherPlayersViewComponentTest {
         Player oliverPlayer = gameScenarioBuilder.playerFor(oliverMemberId);
         Player samanthaPlayer = gameScenarioBuilder.playerFor(samanthaMemberId);
 
-        HtmlElement htmlElementActual = new OtherPlayersViewComponent(gameScenarioBuilder.game())
+        HtmlElement htmlElementActual = new OtherPlayersViewComponent(gameScenarioBuilder.reconstitutedGameFromStore())
                 .htmlForOtherPlayers();
         HtmlElement oliverSwap =
                 swapInnerHtml(

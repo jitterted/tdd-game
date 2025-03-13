@@ -204,7 +204,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
         }
         Member member = new Member(memberId, memberNickname, authName);
         memberStore.save(member);
-        Game game = game();
+        Game game = reconstitutedGameFromStore();
         if (game.players().isEmpty()) {
             firstPlayerAuthName = authName;
         }
@@ -234,7 +234,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
         return playingGameController;
     }
 
-    public Game game() {
+    public Game reconstitutedGameFromStore() {
         // at this point, if gameStore is null, it means we haven't actually created the Game, etc., so we do it now
         if (gameStore == null) {
             CardsFactory cardsFactory = new CardsFactory(configuredActionCardList,
@@ -252,7 +252,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public Player firstPlayer() {
-        return game().players().getFirst();
+        return reconstitutedGameFromStore().players().getFirst();
     }
 
     public Principal firstPlayerPrincipal() {
@@ -282,7 +282,7 @@ public class GameScenarioBuilder implements NeedsActionCards {
     }
 
     public Player playerFor(MemberId memberId) {
-        return game().playerFor(memberId);
+        return reconstitutedGameFromStore().playerFor(memberId);
     }
 
     public GameStore gameStore() {
