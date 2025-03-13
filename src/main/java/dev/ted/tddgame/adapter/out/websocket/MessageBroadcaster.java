@@ -44,6 +44,9 @@ public class MessageBroadcaster implements Broadcaster {
 
         // send Test Results deck update
         // send commit & risk tracking updates
+
+        // show Test Results card drawn as Modal (if any workspace has one)
+
     }
 
     private void sendYourWorkspaceInPlayCardsForEachPlayerOf(Game game) {

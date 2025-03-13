@@ -59,7 +59,8 @@ public class CardViewComponent<C extends Card> {
                                 attributes()
                                         .autofocus()
                                         .hxPost(playUrlPath)
-                                        .hxOn("before-request", "document.querySelector('dialog').close()"),
+                                        .hxOn("before-request",
+                                              "document.querySelector('dialog').close()"),
                                 text("Play Card into Workspace")
                         )
                 ),
@@ -68,7 +69,8 @@ public class CardViewComponent<C extends Card> {
                         HtmlElement.button(
                                 attributes()
                                         .hxPost(discardUrlPath)
-                                        .hxOn("before-request", "document.querySelector('dialog').close()"),
+                                        .hxOn("before-request",
+                                              "document.querySelector('dialog').close()"),
                                 text("Discard Card to Discard Pile")
                         )
                 )

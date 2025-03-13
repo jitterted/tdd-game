@@ -269,14 +269,16 @@ Skip: Tile has "canSkip()" query and throws exception if "skip()" for tile that 
         [X] Refactor: move away from using the "cheater" Shuffler to using a configured CardsFactory
             [X] Fix tests that violate our new constraint (in Game:28), which is that either we get an Identity Shuffler or a Random Shuffler. Any other shuffler should be replaced with a configured CardsFactory. Do this in GameScenarioBuilder's actionCards() methods and that should fix all of the failing tests.
 
-WE ARE HERE ===>>
-
         [ ] Draw Test Results Card
             [X] click to draw a card
                 [X] Add button to draw pile card (in game.html)
                 [X] Add POST endpoint
                 [X] Call gamePlay.drawTestResultsCard to draw card and add it to player's workspace
+
+WE ARE HERE ===>>
+
             [ ] render the drawn card (via the Workspace) as a dialog with the image of the drawn card and a button [OK]
+                [ ] Clicking the [OK] button does a POST with the player who clicked the button (we get that via the security Principal)
             [ ] upon button click, POST the card to be evaluated
                 [ ] Workspace: evaluate the drawn Test Results card
                     [ ] Discard the PREDICT card
@@ -285,6 +287,10 @@ WE ARE HERE ===>>
                         [ ] Discard any In-Play cards
                 [ ] Discard the Test Results card to the TR deck's discard pile
 
+            [ ] Implement Player Turns
+                [ ] Only need to look at current player's workspace for things like "is Test Results card drawn"
+                [ ] Highlight hex tile for current player
+                [ ] Notify players of who's turn it is
 
             [ ] Create Workspace Scoring+Risk display
                 [ ] Track Risk added when Player uses the "escape hatch"
