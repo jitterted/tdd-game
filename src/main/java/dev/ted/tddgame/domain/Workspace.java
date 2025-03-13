@@ -90,9 +90,9 @@ public class Workspace {
     }
 
     // COMMAND
-    //    if "as expected", clean up workspace in-play (via discard) and discard TestResults Card
+    //    if "as expected", clean up workspace in-play (via discard)
+    //    and discard TestResults Card (these might need to be handled outside the workspace)
     public void processTestResultsCard() {
-        currentHexTile = currentHexTile.processTestResultsCard(drawnTestResultsCard);
         drawnTestResultsCard = null;
     }
 
