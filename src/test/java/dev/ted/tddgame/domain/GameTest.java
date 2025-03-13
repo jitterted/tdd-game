@@ -260,7 +260,6 @@ class GameTest {
         }
     }
 
-    @SuppressWarnings("DataFlowIssue")
     @Nested
     class EventsProjectState {
 

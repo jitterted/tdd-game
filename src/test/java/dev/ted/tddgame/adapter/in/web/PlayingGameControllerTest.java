@@ -13,7 +13,6 @@ import dev.ted.tddgame.domain.Member;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
 import dev.ted.tddgame.domain.TestResultsCard;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
@@ -152,7 +151,6 @@ class PlayingGameControllerTest {
     }
 
     @Test
-    @Disabled("PlayingGameControllerTest 2/28/25 14:54 — until Game.drawTestResultsCard has the Player's Workspace hold on to the drawn card")
     void drawTestResultsCardMovesTopCardFromDrawPileToPlayerWorkspace() {
         TestResultsCard testResultsCardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
         TestResultsCard testResultsCardRemainingInDrawPile = TestResultsCard.AS_PREDICTED;
@@ -173,7 +171,9 @@ class PlayingGameControllerTest {
                 .as("First player's Workspace should have the drawn Test Results card")
                 .isEqualTo(testResultsCardToBeDrawn);
 
-        assertThat(gameScenarioBuilder.reconstitutedGameFromStore().testResultsCardDeck().drawPile())
+        assertThat(gameScenarioBuilder.reconstitutedGameFromStore()
+                                      .testResultsCardDeck()
+                                      .drawPile())
                 .as("After drawing a card, the remaining card in the Test Results draw pile must be AS_PREDICTED")
                 .containsExactly(testResultsCardRemainingInDrawPile);
     }
