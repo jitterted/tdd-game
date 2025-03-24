@@ -1,11 +1,14 @@
 package dev.ted.tddgame.domain;
 
+import org.jspecify.annotations.NullMarked;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicLong;
 
+@NullMarked
 public class Game extends EventSourcedAggregate {
     private static final int MAXIMUM_NUMBER_OF_PLAYERS = 4;
     private State state;

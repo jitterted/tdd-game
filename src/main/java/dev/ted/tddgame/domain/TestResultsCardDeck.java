@@ -1,11 +1,13 @@
 package dev.ted.tddgame.domain;
 
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@NullMarked
 public class TestResultsCardDeck extends Deck<TestResultsCard> {
     private TestResultsCardDeck(List<TestResultsCard> testResultsCards, Shuffler<TestResultsCard> shuffler, EventEnqueuer eventEnqueuer) {
         super(testResultsCards, shuffler, eventEnqueuer);

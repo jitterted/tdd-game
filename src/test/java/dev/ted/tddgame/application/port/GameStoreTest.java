@@ -4,6 +4,7 @@ import dev.ted.tddgame.domain.Game;
 import dev.ted.tddgame.domain.GameEvent;
 import dev.ted.tddgame.domain.MemberId;
 import dev.ted.tddgame.domain.Player;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -60,7 +61,7 @@ class GameStoreTest {
     void findUsesGameFactoryToReconstituteGame() {
         GameStore gameStore = GameStore.createEmpty(new Game.GameFactory() {
             @Override
-            public Game reconstitute(List<GameEvent> events) {
+            public @NonNull Game reconstitute(@NonNull List<GameEvent> events) {
                 return new Game.GameFactory().create("This Game Was Created by the GameFactory",
                                                 "game-as-saved");
             }
