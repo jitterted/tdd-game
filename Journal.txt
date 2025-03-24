@@ -1,6 +1,9 @@
 March 24, 2025 - Monday
 =======================
 
+[Event-Sourcing]
+* When I find myself doing an "invariant" check in the APPLY of the event, there must also be a check when the command ENQUEUED the event in the first place (it's fine to have both, but the command must do the invariant checking, while it's optional to check in the application of the event).
+
 * Fixed the switch issue in Deck when upgrading to JDK 24 (was not an issue with 23). Provide feedback to Oracle on my preference that it be allowed and internally throw an exception if a value comes in that doesn't match.
 
 
