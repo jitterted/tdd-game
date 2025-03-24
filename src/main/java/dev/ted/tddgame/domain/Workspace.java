@@ -83,7 +83,7 @@ public class Workspace {
      */
     public void testResultsCardDrawn(TestResultsCard testResultsCard) {
         if (drawnTestResultsCard != null) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Not allowed to draw another Test Results card if the current one in the workspace hasn't been processed (and discarded).");
         }
 
         drawnTestResultsCard = testResultsCard;

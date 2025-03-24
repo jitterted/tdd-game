@@ -37,7 +37,8 @@ class WorkspaceTest {
 
         assertThatIllegalStateException()
                 .as("Must not be allowed to draw another Test Results card if the current one hasn't been processed.")
-                .isThrownBy(() -> workspace.testResultsCardDrawn(TestResultsCard.AS_PREDICTED));
+                .isThrownBy(() -> workspace.testResultsCardDrawn(TestResultsCard.AS_PREDICTED))
+                .withMessage("Not allowed to draw another Test Results card if the current one in the workspace hasn't been processed (and discarded).");
     }
 
     @Test
