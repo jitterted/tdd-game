@@ -18,7 +18,7 @@ class WorkspaceViewComponentTest {
 
     @Test
     void emptyPlayAreaInWorkspaceRenderedAsEmpty() {
-        Player player = Player.createNull(22L, "Player no in-play cards");
+        Player player = Player.createForTestWithApplyingEnqueuer(22L, "Player no in-play cards");
 
         WorkspaceViewComponent workspaceViewComponent =
                 new WorkspaceViewComponent(List.of(player));
@@ -33,7 +33,7 @@ class WorkspaceViewComponentTest {
 
     @Test
     void playedCardShowsUpInWorkspaceInPlayArea() {
-        Player player = Player.createNull(64L, "Player played card");
+        Player player = Player.createForTestWithApplyingEnqueuer(64L, "Player played card");
         player.workspace().cardDiscarded(); // move to tile 2
         player.workspace().cardDiscarded(); // move to tile 3
         player.workspace().cardPlayed(ActionCard.WRITE_CODE);
@@ -57,7 +57,7 @@ class WorkspaceViewComponentTest {
 
     @Test
     void multiplePlayedCardsShowUpInWorkspaceInPlayArea() {
-        Player player = Player.createNull(64L, "Player played card");
+        Player player = Player.createForTestWithApplyingEnqueuer(64L, "Player played card");
         player.workspace().cardDiscarded(); // move to tile 2
         player.workspace().cardDiscarded(); // move to tile 3
 
@@ -91,7 +91,7 @@ class WorkspaceViewComponentTest {
 
     @Test
     void emptyTechNeglectAreaInWorkspaceRenderedAsEmpty() {
-        Player player = Player.createNull(23L, "Player no Tech Neglect cards");
+        Player player = Player.createForTestWithApplyingEnqueuer(23L, "Player no Tech Neglect cards");
 
         WorkspaceViewComponent workspaceViewComponent =
                 new WorkspaceViewComponent(List.of(player));
@@ -107,8 +107,8 @@ class WorkspaceViewComponentTest {
 
     @Test
     void twoCardsInTechNeglectAreaInWorkspaceRenderedAsTwoCardDivs() {
-        Player player = Player.createNull(IRRELEVANT_PLAYER_ID,
-                                          "Player with two Tech Neglect cards");
+        Player player = Player.createForTestWithApplyingEnqueuer(IRRELEVANT_PLAYER_ID,
+                                                                 "Player with two Tech Neglect cards");
         player.apply(new PlayerDrewTechNeglectCard(IRRELEVANT_MEMBER_ID,
                                                    ActionCard.CODE_BLOAT));
         player.apply(new PlayerDrewTechNeglectCard(IRRELEVANT_MEMBER_ID,

@@ -42,7 +42,7 @@ class PlayerTest {
 
         @Test
         void exceptionThrownWhenDrawCardAndHandHasFiveCards() {
-            Player player = Player.createNull(73L, "Player Name");
+            Player player = Player.createForTestWithApplyingEnqueuer();
             ActionCardDeck actionCardDeck = ActionCardDeck
                     .createForTest(new CardsFactory().allActionCards());
             for (int i = 0; i < 5; i++) {
@@ -100,14 +100,12 @@ class PlayerTest {
 
         @Test
         void exceptionThrownWhenDrawingTestResultsCardTwiceWithoutDiscarding() {
-            Player.PlayerAndEventAccumulator playerAndEventAccumulator = Player.createForTestWithEventAccumulator();
-            Player player = playerAndEventAccumulator.player();
+            Player player = Player.createForTestWithApplyingEnqueuer();
             TestResultsCardDeck testResultsCardDeck =
                     TestResultsCardDeck.createForTest(
                             TestResultsCard.AS_PREDICTED,
                             TestResultsCard.NEED_TWO_LESS_CODE);
             player.drawTestResultsCardFrom(testResultsCardDeck);
-            player.apply((PlayerEvent) playerAndEventAccumulator.accumulatingEventEnqueuer().events().getFirst());
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> player.drawTestResultsCardFrom(testResultsCardDeck));

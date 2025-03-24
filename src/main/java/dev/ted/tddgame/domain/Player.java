@@ -26,14 +26,20 @@ public class Player {
         this.workspace = workspace;
     }
 
-    public static Player createNull(long id, String playerName) {
+    public static Player createForTestWithApplyingEnqueuer(long id, String playerName) {
         PlayerId playerId = new PlayerId(id);
         Player player = new Player(playerId, new MemberId(42L), playerName,
                                    DUMMY_EVENT_ENQUEUER,
                                    new Workspace(playerId));
         // ensure that player events (from commands) get applied
+        // need to do this here: can't do this as a constructor parameter,
+        //   because player doesn't yet exist, but we need it in order to apply the event
         player.eventEnqueuer = gameEvent -> player.apply((PlayerEvent) gameEvent);
         return player;
+    }
+
+    static Player createForTestWithApplyingEnqueuer() {
+        return createForTestWithApplyingEnqueuer(1L, "default player name");
     }
 
     static PlayerAndEventAccumulator createForTestWithEventAccumulator() {
