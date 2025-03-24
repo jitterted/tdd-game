@@ -138,8 +138,9 @@ public class Player {
     }
 
     void drawTestResultsCardFrom(Deck<TestResultsCard> testResultsCardDeck) {
-        // check constraint: Player's Workspace must NOT have a drawnTestResultsCard
-        // (i.e., workspace.drawnTestResultsCard() it must be null)
+        if (workspace.drawnTestResultsCard() != null) {
+            throw new IllegalStateException();
+        }
         TestResultsCard drawnCard = testResultsCardDeck.draw();
 
         PlayerEvent event = new PlayerDrewTestResultsCard(memberId(), drawnCard);
@@ -175,7 +176,7 @@ public class Player {
                 .toString();
     }
 
-    // -- embedded enqueuer for testing
+    // -- embedded enqueuer for testing, so we can (indirectly) get the generated events without the events being applied
 
     static class AccumulatingEventEnqueuer implements EventEnqueuer {
         private final List<GameEvent> events = new ArrayList<>();
