@@ -165,11 +165,7 @@ public class Game extends EventSourcedAggregate {
     }
 
     public void drawTestResultsCard(MemberId memberId) {
-        TestResultsCard drawnCard = testResultsCardDeck.draw();
-
-        PlayerEvent event = new PlayerDrewTestResultsCard(memberId, drawnCard);
-
-        enqueue(event);
+        playerFor(memberId).drawTestResultsCardFrom(testResultsCardDeck);
     }
 
     public Player playerFor(MemberId memberId) {

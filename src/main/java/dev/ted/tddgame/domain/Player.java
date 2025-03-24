@@ -125,6 +125,14 @@ public class Player {
         eventEnqueuer.enqueue(playerEvent);
     }
 
+    void drawTestResultsCardFrom(Deck<TestResultsCard> testResultsCardDeck) {
+        TestResultsCard drawnCard = testResultsCardDeck.draw();
+
+        PlayerEvent event = new PlayerDrewTestResultsCard(memberId(), drawnCard);
+
+        eventEnqueuer.enqueue(event);
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) {
