@@ -200,7 +200,7 @@ class GameTest {
         }
 
         @Test
-        void drawTestResultsCard_PlayerDrewTestResultsCard() {
+        void drawTestResultsCard_PlayerDrewTestResultsCard_and_DeckEvents() {
             TestResultsCard cardToBeDrawn = TestResultsCard.NEED_ONE_LESS_CODE;
             TestResultsCard cardRemainingInDrawPile = TestResultsCard.AS_PREDICTED;
             String gameHandle = "draw-test-results-card-scenario";
