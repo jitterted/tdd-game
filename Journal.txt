@@ -1,3 +1,9 @@
+March 24, 2025 - Monday
+=======================
+
+* Fixed the switch issue in Deck when upgrading to JDK 24 (was not an issue with 23). Provide feedback to Oracle on my preference that it be allowed and internally throw an exception if a value comes in that doesn't match.
+
+
 March 13, 2025 - Thursday
 ==========================
 
