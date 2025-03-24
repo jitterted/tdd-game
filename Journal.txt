@@ -1,8 +1,18 @@
 March 24, 2025 - Monday
 =======================
 
+[IntelliJ IDEA Bug]
+* When autocompleting AccumulatingEventEnqueuer as a parameter, it generated `accumulatingEventEnqueueer` which has too many 'e's!
+
+[Refactor Tests]
+* Moving tests as the result of a code refactor (vs. purely refactoring test code), e.g., moving the "player drew test results card" from Game into Player, and then moving (re-targeting) the test from GameTest to PlayerTest
+
 [Event-Sourcing]
 * When I find myself doing an "invariant" check in the APPLY of the event, there must also be a check when the command ENQUEUED the event in the first place (it's fine to have both, but the command must do the invariant checking, while it's optional to check in the application of the event).
+
+[Event-Sourcing]
+* If we move to a structure where the Event-Generating methods (currently "command" methods) return the events generated (vs. enqueuing them to somewhere else), how would we handle an "action" like "Player.drawTestResultsCardFrom()", where Player itself generates 1 event, but calls a method on Deck, which generates its own events (1 or 2 events)? Do we concatenate the Deck Events to the Player Events when the drawTestResultsCardFrom() returns events? Do we change Deck so that `draw()` only generates events? I'm not sure how to handle that situation, since `draw()` generates events, but very much changes the state of Deck in order to replenish (when the deck's draw pile is empty).
+
 
 * Fixed the switch issue in Deck when upgrading to JDK 24 (was not an issue with 23). Provide feedback to Oracle on my preference that it be allowed and internally throw an exception if a value comes in that doesn't match.
 
