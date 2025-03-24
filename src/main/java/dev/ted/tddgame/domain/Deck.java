@@ -87,6 +87,8 @@ public abstract class Deck<CARD extends Card> {
             case CardDiscarded cardDiscarded -> {
                 discardPile.add((CARD) cardDiscarded.card());
             }
+
+            default -> throw new IllegalStateException("Unexpected DeckEvent value: " + deckEvent);
         }
     }
 
