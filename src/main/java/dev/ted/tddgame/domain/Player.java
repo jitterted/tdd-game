@@ -36,6 +36,18 @@ public class Player {
         return player;
     }
 
+    static PlayerAndEventAccumulator createForTestWithEventAccumulator() {
+        AccumulatingEventEnqueuer accumulatingEventEnqueuer = new AccumulatingEventEnqueuer();
+        PlayerId playerId = new PlayerId(1L);
+        Player player = new Player(playerId,
+                          new MemberId(42L),
+                          "default player name",
+                          accumulatingEventEnqueuer,
+                          new Workspace(playerId)
+                          );
+        return new PlayerAndEventAccumulator(player, accumulatingEventEnqueuer);
+    }
+
     public PlayerId id() {
         return playerId;
     }
@@ -126,6 +138,8 @@ public class Player {
     }
 
     void drawTestResultsCardFrom(Deck<TestResultsCard> testResultsCardDeck) {
+        // check constraint: Player's Workspace must NOT have a drawnTestResultsCard
+        // (i.e., workspace.drawnTestResultsCard() it must be null)
         TestResultsCard drawnCard = testResultsCardDeck.draw();
 
         PlayerEvent event = new PlayerDrewTestResultsCard(memberId(), drawnCard);
@@ -160,4 +174,21 @@ public class Player {
                 .add("id=" + playerId.id())
                 .toString();
     }
+
+    // -- embedded enqueuer for testing
+
+    static class AccumulatingEventEnqueuer implements EventEnqueuer {
+        private final List<GameEvent> events = new ArrayList<>();
+
+        public List<GameEvent> events() {
+            return events;
+        }
+
+        @Override
+        public void enqueue(GameEvent gameEvent) {
+            events.add(gameEvent);
+        }
+    }
+
+    record PlayerAndEventAccumulator(Player player, AccumulatingEventEnqueuer accumulatingEventEnqueuer) {}
 }

@@ -3,7 +3,6 @@ package dev.ted.tddgame.domain;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -76,9 +75,35 @@ class PlayerTest {
                                     ActionCard.CODE_BLOAT));
         }
 
+        @Test
+        void drawTestResultsCard_PlayerDrewTestResultsCard() {
+            Player.PlayerAndEventAccumulator playerAndEventAccumulator =
+                    Player.createForTestWithEventAccumulator();
+            TestResultsCardDeck testResultsCardDeck =
+                    TestResultsCardDeck.createForTest(
+                            TestResultsCard.NEED_ONE_LESS_CODE,
+                            TestResultsCard.AS_PREDICTED);
+            Player player = playerAndEventAccumulator.player();
+
+            player.drawTestResultsCardFrom(testResultsCardDeck);
+
+            assertThat(playerAndEventAccumulator
+                               .accumulatingEventEnqueuer()
+                               .events())
+                    .containsExactly(
+                            new PlayerDrewTestResultsCard(
+                                    player.memberId(),
+                                    TestResultsCard.NEED_ONE_LESS_CODE
+                            )
+                    );
+        }
+
+
+        // -- FIXTURE
+
         private Fixture createPlayerWithEventAccumulator(ActionCardDeck actionCardDeck) {
             final PlayerId playerId = new PlayerId(IRRELEVANT_PLAYER_ID);
-            AccumulatingEventEnqueuer eventEnqueuer = new AccumulatingEventEnqueuer();
+            Player.AccumulatingEventEnqueuer eventEnqueuer = new Player.AccumulatingEventEnqueuer();
             Player player = new Player(playerId,
                                        new MemberId(IRRELEVANT_MEMBER_ID),
                                        "Player 1",
@@ -87,21 +112,9 @@ class PlayerTest {
             return new Fixture(eventEnqueuer, player, actionCardDeck);
         }
 
-        private record Fixture(AccumulatingEventEnqueuer eventEnqueuer, Player player,
+        private record Fixture(Player.AccumulatingEventEnqueuer eventEnqueuer, Player player,
                                ActionCardDeck actionCardDeck) {}
 
-        private static class AccumulatingEventEnqueuer implements EventEnqueuer {
-            private final List<GameEvent> events = new ArrayList<>();
-
-            public List<GameEvent> events() {
-                return events;
-            }
-
-            @Override
-            public void enqueue(GameEvent gameEvent) {
-                events.add(gameEvent);
-            }
-        }
     }
 
     @Nested
