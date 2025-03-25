@@ -54,6 +54,29 @@ public class Player {
         return new PlayerAndEventAccumulator(player, accumulatingEventEnqueuer);
     }
 
+    public void apply(PlayerEvent event) {
+        switch (event) {
+            case PlayerDrewActionCard(_, ActionCard actionCard) ->
+                    hand.add(actionCard);
+
+            case PlayerDrewTechNeglectCard(_, ActionCard actionCard) ->
+                    workspace.techNeglectCardPlayed(actionCard);
+
+            case PlayerDrewTestResultsCard(_, TestResultsCard testResultsCard) ->
+                    workspace.testResultsCardDrawn(testResultsCard);
+
+            case PlayerDiscardedActionCard(_, ActionCard actionCard) -> {
+                hand.remove(actionCard);
+                workspace.cardDiscarded();
+            }
+
+            case PlayerPlayedActionCard(_, ActionCard actionCard) -> {
+                hand.remove(actionCard);
+                workspace.cardPlayed(actionCard);
+            }
+        }
+    }
+
     public PlayerId id() {
         return playerId;
     }
@@ -72,30 +95,6 @@ public class Player {
 
     public Stream<ActionCard> hand() {
         return hand.stream();
-    }
-
-    public void apply(PlayerEvent event) {
-        switch (event) {
-            case PlayerDrewActionCard(_, ActionCard actionCard) ->
-                    hand.add(actionCard);
-
-            case PlayerDrewTestResultsCard(_, TestResultsCard testResultsCard) ->
-                    workspace.testResultsCardDrawn(testResultsCard);
-
-            case PlayerDiscardedActionCard(_, ActionCard actionCard) -> {
-                hand.remove(actionCard);
-                workspace.cardDiscarded();
-            }
-
-            case PlayerPlayedActionCard(_, ActionCard actionCard) -> {
-                hand.remove(actionCard);
-                workspace.cardPlayed(actionCard);
-            }
-
-            case PlayerDrewTechNeglectCard(_, ActionCard actionCard) -> {
-                workspace.techNeglectCardPlayed(actionCard);
-            }
-        }
     }
 
 
