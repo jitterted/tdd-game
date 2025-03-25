@@ -1,3 +1,35 @@
+March 25, 2025 - Tuesday
+========================
+
+[IntelliJ IDEA Suggestion]
+* When using Move Statement on a `case` label inside a `switch`, it should "jump" over other `case` labels (see Player.apply).
+
+[Event-Sourcing]
+* If I move away from event-sourced entities applying events as they are enqueued (current behavior), to something else, these are the options at the use case level (GamePlay.execute):
+
+        ```
+        private void execute(String gameHandle, Consumer<Game> command) {
+            Game game = loadGameWith(gameHandle);
+
+            command.accept(game);
+
+            // 1. Apply events in the save (and return game from save with those events applied)
+            // game = gameStore.save(game); <- returns game with the fresh events applied
+            gameStore.save(game);
+
+            // 2. Manually apply the events here: game.freshEvents().forEach(gameEvent -> game.apply(gameEvent));
+
+            // need game to have APPLIED the events generated in command.accept (i.e., state is up-to-date), if I want to broadcast everything at once
+            broadcaster.gameUpdate(game);
+
+            // OR: the broadcast of the game update happens elsewhere (some observer that listens for events)
+            // this would be a much more granular way of updating the UI, i.e., on a per-event basis
+
+            // OR#2: use a Command/Action stack to group the UI updates on a per-Action basis instead of a lower-level generated-event basis
+        }
+        ```
+
+
 March 24, 2025 - Monday
 =======================
 
