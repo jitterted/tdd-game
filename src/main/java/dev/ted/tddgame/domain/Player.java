@@ -134,12 +134,13 @@ public class Player {
         actionCardDeck.acceptDiscard(actionCardToDiscard);
     }
 
-    public void playCard(ActionCard actionCardToPlay) {
+    List<GameEvent> playCard(ActionCard actionCardToPlay) {
         // check constraint: actionCardToPlay MUST be in the Player's Hand
         // check constraint: must check with Workspace to decide if this is allowed
         PlayerEvent playerEvent =
                 new PlayerPlayedActionCard(memberId, actionCardToPlay);
-        eventEnqueuer.enqueue(playerEvent);
+//        eventEnqueuer.enqueue(playerEvent);
+        return List.of(playerEvent);
     }
 
     void drawTestResultsCardFrom(Deck<TestResultsCard> testResultsCardDeck) {

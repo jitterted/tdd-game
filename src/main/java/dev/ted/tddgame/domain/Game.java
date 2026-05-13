@@ -157,7 +157,8 @@ public class Game extends EventSourcedAggregate {
     }
 
     public void playCard(MemberId memberId, ActionCard actionCardToPlay) {
-        playerFor(memberId).playCard(actionCardToPlay);
+        List<GameEvent> freshEvents = playerFor(memberId).playCard(actionCardToPlay);
+        addEvents(freshEvents);
     }
 
     public void drawActionCard(MemberId memberId) {

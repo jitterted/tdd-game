@@ -1,3 +1,17 @@
+May 13, 2026 - Wednesday
+========================
+
+Notes on what's missing from the game:
+
+1. Missing notation associating player to their pawn (mockup has this)
+1a. Also missing some header indicating who "You" are
+2. Missing the risk tracker: split/separate the "Code Risk" from the "Cycle Risk" ("Workspace" risk?)
+3. When a player plays or discards their 3rd card (i.e., their hand goes from 3 cards to 2 cards), indicate that their turn is over.
+4. Check why the page is not updating after playing WRITE CODE
+5. Hook up clicking on the ACTION CARDS deck to reload the player's hand
+6. Upgrade Spring Boot to 4.x, and newer HTMX
+7. Why is there a ~3 second delay between Websocket connection and Websocket sending the "join game" message? Is it on the browser/htmx side of things?
+
 March 25, 2025 - Tuesday
 ========================
 

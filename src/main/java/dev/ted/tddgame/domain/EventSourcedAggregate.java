@@ -9,8 +9,19 @@ public abstract class EventSourcedAggregate {
     private final List<GameEvent> freshEvents = new ArrayList<>();
 
     protected void enqueue(GameEvent event) {
-        freshEvents.add(event);
+        addEvent(event);
         apply(event);
+    }
+
+    /**
+     * Adds an event to the Fresh (uncommitted) Events list without applying it
+     */
+    protected void addEvent(GameEvent event) {
+        freshEvents.add(event);
+    }
+
+    protected void addEvents(List<GameEvent> events) {
+        freshEvents.addAll(events);
     }
 
     protected abstract void apply(GameEvent event);

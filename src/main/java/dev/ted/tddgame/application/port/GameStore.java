@@ -37,7 +37,7 @@ public class GameStore {
                 .toList();
     }
 
-    public void save(Game game) {
+    public Game save(Game game) {
         List<EventDto> existingEventDtos = handleToEventDtoMap
                 .computeIfAbsent(game.handle(),
                                  _ -> new ArrayList<>());
@@ -51,6 +51,11 @@ public class GameStore {
         existingEventDtos.addAll(freshEventDtos);
 
         handleToEventDtoMap.put(game.handle(), existingEventDtos);
+
+        return gameFactory.reconstitute(existingEventDtos
+                                                .stream()
+                                                .map(EventDto::toDomain)
+                                                .toList());
     }
 
     public List<GameEvent> allEventsFor(String gameHandle) {

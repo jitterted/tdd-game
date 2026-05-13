@@ -58,6 +58,22 @@ class GameStoreTest {
     }
 
     @Test
+    void saveReturnsUpdatedGameWithFreshEventsApplied() {
+        GameStore gameStore = GameStore.createEmpty();
+        Game game = new Game.GameFactory().create("Game Name", "sleepy-mouse-33");
+        gameStore.save(game);
+        Game loadedGame = gameStore.findByHandle("sleepy-mouse-33").orElseThrow();
+
+        loadedGame.join(new MemberId(12L), "Alice");
+        Game updatedGame = gameStore.save(loadedGame);
+
+        assertThat(updatedGame)
+                .isNotSameAs(loadedGame);
+        assertThat(updatedGame.players())
+                .hasSize(1);
+    }
+
+    @Test
     void findUsesGameFactoryToReconstituteGame() {
         GameStore gameStore = GameStore.createEmpty(new Game.GameFactory() {
             @Override

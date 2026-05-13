@@ -288,15 +288,18 @@ WE ARE HERE ===>>
                 [ ] Discard the Test Results card to the TR deck's discard pile
 
             [ ] Implement Player Turns
-                [ ] Only need to look at current player's workspace for things like "is Test Results card drawn"
+                [ ] Only need to look at the current player's workspace for things like "is Test Results card drawn"
                 [ ] Highlight hex tile for current player
-                [ ] Notify players of who's turn it is
+                [ ] Notify players of whose turn it is
+                    [ ] Highlight player in some way: for other players, change the other player area background color and scale their pawn and add a "thinking emoji" (h/t basebleem)
+                [ ] For your turn, show a dismissible modal "Your Turn"
 
             [ ] Create Workspace Scoring+Risk display
                 [ ] Track Risk added when Player uses the "escape hatch"
                     [ ] How does Player indicate they want to skip and take on risk? Probably click on your pawn and choose option.
                 [ ] Evaluate risk level, die roll, etc., to determine if the player's commit succeeded
                 [ ] Increment Commit counter once past last tile
+
 
             [ ] Remove Tailwind
 
@@ -330,10 +333,6 @@ WE ARE HERE ===>>
 
     [ ] Draw pile card button displays message if Player can't draw a card because their hand is already full
         [ ] Nice to have: it's not the player's turn, or the player isn't at the end of their turn
-
-    [ ] Show Player Turn indicators
-        [ ] Highlight player in some way: for other players, change the other player area background color and scale their pawn and add a "thinking emoji" (h/t basebleem)
-        [ ] For your turn, show a dismissible modal "Your Turn"
 
 
 # Refactoring/Design Changes

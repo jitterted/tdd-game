@@ -203,7 +203,7 @@
                 <button id="action-card-draw-pile"
                         class="draw-pile"
                         hx-swap="none"
-                        th:hx-post="@{/game/{gameHandle}/draw-card(gameHandle=${gameView.handle})}"
+                        th:hx-post="@{/game/{gameHandle}/action-card-deck/draw-card(gameHandle=${gameView.handle})}"
                 >
                     <img src="/static/action-card-back.png"
                     th:src="@{'/action-card-back.png'}">
