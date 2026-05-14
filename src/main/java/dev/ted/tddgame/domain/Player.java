@@ -54,7 +54,7 @@ public class Player {
         return new PlayerAndEventAccumulator(player, accumulatingEventEnqueuer);
     }
 
-    public void apply(PlayerEvent event) {
+    public void apply(GameEvent event) {
         switch (event) {
             case PlayerDrewActionCard(_, ActionCard actionCard) ->
                     hand.add(actionCard);
@@ -74,11 +74,13 @@ public class Player {
                 hand.remove(actionCard);
                 workspace.cardPlayed(actionCard);
             }
+
+            default -> throw new IllegalStateException("Unexpected Event: " + event);
         }
     }
 
     //region Commands
-    void drawCardFrom(Deck<ActionCard> actionCardDeck) {
+    List<GameEvent> drawCardFrom(Deck<ActionCard> actionCardDeck) {
         ensureHandNotFull();
 
         ActionCard drawnCard = actionCardDeck.draw();
@@ -88,6 +90,8 @@ public class Player {
         eventEnqueuer.enqueue(event);
 
         assert hand.size() <= PLAYER_HAND_FULL_SIZE; // post-condition
+
+        return List.of(event);
     }
 
     void drawToFull(Deck<ActionCard> actionCardDeck) {

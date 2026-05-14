@@ -2,6 +2,8 @@ package dev.ted.tddgame.domain;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
@@ -9,8 +11,8 @@ import static org.assertj.core.api.Assertions.*;
 
 class PlayerTest {
 
-    private static final long IRRELEVANT_PLAYER_ID = 1L;
-    private static final long IRRELEVANT_MEMBER_ID = 213L;
+    private static final PlayerId IRRELEVANT_PLAYER_ID = new PlayerId(1L);
+    private static final MemberId IRRELEVANT_MEMBER_ID = new MemberId(213L);
 
     @Test
     void newPlayerHasEmptyHand() {
@@ -23,33 +25,33 @@ class PlayerTest {
     @Nested
     class CommandsGenerateEvents {
 
-        @Test
-        void canDrawCardWhenHandHasFewerThanFiveCards() {
+        @ParameterizedTest
+        @ValueSource(ints = {1, 2, 3, 4, 5})
+        void canDrawCardWhenHandHasFewerThanNCards(int drawCount) {
+            Player player = createNewPlayer();
             ActionCardDeck actionCardDeck = ActionCardDeck.createForTest(
                     new CardsFactory().allActionCards());
-            Fixture fixture = createPlayerWithEventAccumulator(actionCardDeck);
-            Player player = fixture.player();
+            for (int i = 0; i < drawCount - 1; i++) {
+                player.apply(new PlayerDrewActionCard(player.memberId(), actionCardDeck.draw()));
+            }
 
-            player.drawCardFrom(actionCardDeck);
-            player.drawCardFrom(actionCardDeck);
-            player.drawCardFrom(actionCardDeck);
-            player.drawCardFrom(actionCardDeck);
-            player.drawCardFrom(actionCardDeck);
+            List<GameEvent> gameEvents = player.drawCardFrom(actionCardDeck);
 
-            new EventsAssertion(fixture.eventEnqueuer().events())
-                    .hasExactly(PlayerDrewActionCard.class, 5);
+            new EventsAssertion(gameEvents)
+                    .hasExactly(PlayerDrewActionCard.class, 1);
         }
 
         @Test
         void exceptionThrownWhenDrawCardAndHandHasFiveCards() {
-            Player player = Player.createForTestWithApplyingEnqueuer();
+            Player player = createNewPlayer();
             ActionCardDeck actionCardDeck = ActionCardDeck
                     .createForTest(new CardsFactory().allActionCards());
             for (int i = 0; i < 5; i++) {
-                player.drawCardFrom(actionCardDeck);
+                player.apply(new PlayerDrewActionCard(player.memberId(), actionCardDeck.draw()));
             }
 
             assertThatExceptionOfType(HandAlreadyFull.class)
+                    .as("Expected 'HandAlreadyFull' exception to have been thrown.")
                     .isThrownBy(() -> player.drawCardFrom(actionCardDeck))
                     .withMessage("Can't draw any more cards, the Hand is full with five cards");
         }
@@ -60,30 +62,24 @@ class PlayerTest {
                     ActionCard.CANT_ASSERT,
                     ActionCard.CODE_BLOAT
             );
-            Fixture fixture = createPlayerWithEventAccumulator(actionCardDeck);
+            Player player = createNewPlayer();
 
-            fixture.player().drawCardFrom(actionCardDeck);
-            fixture.player().drawCardFrom(actionCardDeck);
-
-            assertThat(fixture.eventEnqueuer().events())
+            assertThat(player.drawCardFrom(actionCardDeck))
                     .containsExactly(
                             new PlayerDrewTechNeglectCard(
-                                    fixture.player().memberId(),
-                                    ActionCard.CANT_ASSERT),
-                            new PlayerDrewTechNeglectCard(
-                                    fixture.player().memberId(),
-                                    ActionCard.CODE_BLOAT));
+                                    player.memberId(),
+                                    ActionCard.CANT_ASSERT));
         }
 
         @Test
         void drawTestResultsCard_PlayerDrewTestResultsCard() {
             Player.PlayerAndEventAccumulator playerAndEventAccumulator =
                     Player.createForTestWithEventAccumulator();
+            Player player = playerAndEventAccumulator.player();
             TestResultsCardDeck testResultsCardDeck =
                     TestResultsCardDeck.createForTest(
                             TestResultsCard.NEED_ONE_LESS_CODE,
                             TestResultsCard.AS_PREDICTED);
-            Player player = playerAndEventAccumulator.player();
 
             player.drawTestResultsCardFrom(testResultsCardDeck);
 
@@ -114,10 +110,10 @@ class PlayerTest {
         // -- FIXTURE
 
         private Fixture createPlayerWithEventAccumulator(ActionCardDeck actionCardDeck) {
-            final PlayerId playerId = new PlayerId(IRRELEVANT_PLAYER_ID);
+            final PlayerId playerId = IRRELEVANT_PLAYER_ID;
             Player.AccumulatingEventEnqueuer eventEnqueuer = new Player.AccumulatingEventEnqueuer();
             Player player = new Player(playerId,
-                                       new MemberId(IRRELEVANT_MEMBER_ID),
+                                       IRRELEVANT_MEMBER_ID,
                                        "Player 1",
                                        eventEnqueuer,
                                        new Workspace(playerId));
@@ -129,13 +125,21 @@ class PlayerTest {
 
     }
 
+    private static Player createNewPlayer() {
+        return new Player(IRRELEVANT_PLAYER_ID,
+                          IRRELEVANT_MEMBER_ID,
+                          "Player 1",
+                          _ -> {},
+                          new Workspace(IRRELEVANT_PLAYER_ID));
+    }
+
     @Nested
     class EventsProjectState {
 
         @Test
         void drewActionCardTwiceResultsInTwoCardsInHand() {
             MemberId memberId = new MemberId(37L);
-            Player player = createPlayer(memberId.id());
+            Player player = createPlayer(new MemberId(memberId.id()));
             List<PlayerEvent> events = List.of(
                     new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE),
                     new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE));
@@ -149,7 +153,7 @@ class PlayerTest {
         @Test
         void playerHasTwoActionCardsInHandAfterDrawingSameTypeOfActionCardTwice() {
             MemberId memberId = new MemberId(37L);
-            Player player = createPlayer(memberId.id());
+            Player player = createPlayer(new MemberId(memberId.id()));
             List<PlayerEvent> events = List.of(
                     new PlayerDrewActionCard(memberId, ActionCard.PREDICT),
                     new PlayerDrewActionCard(memberId, ActionCard.PREDICT));
@@ -164,7 +168,7 @@ class PlayerTest {
         @Test
         void drawTechNeglectCardsGoDirectlyIntoWorkspace() {
             MemberId memberId = new MemberId(82L);
-            Player player = createPlayer(memberId.id());
+            Player player = createPlayer(new MemberId(memberId.id()));
             List<PlayerEvent> events = List.of(
                     new PlayerDrewTechNeglectCard(memberId, ActionCard.CANT_ASSERT),
                     new PlayerDrewTechNeglectCard(memberId, ActionCard.CODE_BLOAT)
@@ -181,10 +185,10 @@ class PlayerTest {
     }
 
 
-    private static Player createPlayer(long memberId) {
-        final PlayerId playerId = new PlayerId(IRRELEVANT_PLAYER_ID);
+    private static Player createPlayer(MemberId memberId) {
+        final PlayerId playerId = IRRELEVANT_PLAYER_ID;
         return new Player(playerId,
-                          new MemberId(memberId),
+                          memberId,
                           "Player 1",
                           null,
                           new Workspace(playerId));

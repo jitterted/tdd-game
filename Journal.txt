@@ -6,6 +6,21 @@ It does mean that the AR command method that does the delegation to the sub-enti
 That means a Command Object pattern might help, so we always have one way of delegating command method invocation: enqueue(entity.command()).
 
 
+_HEURISTICS_
+
+* [Candidate for being a Rule]
+  In tests, the SETUP (or GIVEN) portion must NOT used command method invocation to push the subject into a specific state
+    instead of:
+      player.drawCardFrom(actionCardDeck).forEach(player::apply);
+
+    do:
+      player.apply(new PlayerDrewActionCard(player.memberId(), actionCardDeck.draw()));
+
+  that is: test setup MUST only use application of events to get to a specific state
+
+* In the EXECUTE (or WHEN) part of a test, a loop is a smell
+
+
 May 13, 2026 - Wednesday
 ========================
 
