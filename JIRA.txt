@@ -323,6 +323,10 @@ WE ARE HERE ===>>
 
     [ ] (Temporary) Constraint: players can't join once game is started
 
+==>> REDESIGN-REFACTOR (14-May-2026) ==>
+
+    [ ] Move away from passing an Enqueuer to Player and instead always returning a list of generated events
+
 # Nice-To-Have (Not Required for Minimum-Lovable Game)
 
     [ ] Card menu should reflect current legal actions

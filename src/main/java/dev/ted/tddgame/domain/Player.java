@@ -77,27 +77,7 @@ public class Player {
         }
     }
 
-    public PlayerId id() {
-        return playerId;
-    }
-
-    public MemberId memberId() {
-        return memberId;
-    }
-
-    public Workspace workspace() {
-        return workspace;
-    }
-
-    public String playerName() {
-        return playerName;
-    }
-
-    public Stream<ActionCard> hand() {
-        return hand.stream();
-    }
-
-
+    //region Commands
     void drawCardFrom(Deck<ActionCard> actionCardDeck) {
         ensureHandNotFull();
 
@@ -108,16 +88,6 @@ public class Player {
         eventEnqueuer.enqueue(event);
 
         assert hand.size() <= PLAYER_HAND_FULL_SIZE; // post-condition
-    }
-
-    private void ensureHandNotFull() {
-        if (handIsFull()) {
-            throw new HandAlreadyFull("Can't draw any more cards, the Hand is full with five cards");
-        }
-    }
-
-    private boolean handIsFull() {
-        return hand.size() == PLAYER_HAND_FULL_SIZE;
     }
 
     void drawToFull(Deck<ActionCard> actionCardDeck) {
@@ -139,7 +109,6 @@ public class Player {
         // check constraint: must check with Workspace to decide if this is allowed
         PlayerEvent playerEvent =
                 new PlayerPlayedActionCard(memberId, actionCardToPlay);
-//        eventEnqueuer.enqueue(playerEvent);
         return List.of(playerEvent);
     }
 
@@ -147,12 +116,47 @@ public class Player {
         if (workspace.drawnTestResultsCard() != null) {
             throw new IllegalStateException();
         }
+        // check constraint: PREDICT card MUST be in-play (in the workspace) in order for this draw() to be allowed
         TestResultsCard drawnCard = testResultsCardDeck.draw();
 
         PlayerEvent event = new PlayerDrewTestResultsCard(memberId(), drawnCard);
 
         eventEnqueuer.enqueue(event);
     }
+    //endregion
+
+    //region Queries
+    public PlayerId id() {
+        return playerId;
+    }
+
+    public MemberId memberId() {
+        return memberId;
+    }
+
+    public Workspace workspace() {
+        return workspace;
+    }
+
+    public String playerName() {
+        return playerName;
+    }
+
+    public Stream<ActionCard> hand() {
+        return hand.stream();
+    }
+
+    private void ensureHandNotFull() {
+        if (handIsFull()) {
+            throw new HandAlreadyFull("Can't draw any more cards, the Hand is full with five cards");
+        }
+    }
+
+    private boolean handIsFull() {
+        return hand.size() == PLAYER_HAND_FULL_SIZE;
+    }
+    //endregion
+
 
     @Override
     public final boolean equals(Object o) {

@@ -1,16 +1,28 @@
+May 14, 2026 - Thursday
+=======================
+
+Picking up the design idea from 2025-03-25: non-Aggregate-Root (AR) entities always return a list of Events generated from a Command, vs. putting them in some "enqueuer", which makes testing more awkward, and not obvious from the outside where those events are going.
+It does mean that the AR command method that does the delegation to the sub-entity's command must enqueue the list of events that are returned.
+That means a Command Object pattern might help, so we always have one way of delegating command method invocation: enqueue(entity.command()).
+
+
 May 13, 2026 - Wednesday
 ========================
 
 Notes on what's missing from the game:
 
-1. Missing notation associating player to their pawn (mockup has this)
-1a. Also missing some header indicating who "You" are
-2. Missing the risk tracker: split/separate the "Code Risk" from the "Cycle Risk" ("Workspace" risk?)
-3. When a player plays or discards their 3rd card (i.e., their hand goes from 3 cards to 2 cards), indicate that their turn is over.
-4. Check why the page is not updating after playing WRITE CODE
-5. Hook up clicking on the ACTION CARDS deck to reload the player's hand
-6. Upgrade Spring Boot to 4.x, and newer HTMX
-7. Why is there a ~3 second delay between Websocket connection and Websocket sending the "join game" message? Is it on the browser/htmx side of things?
+🔲 1. Missing notation associating player to their pawn (mockup has this)
+🔲 1a. Also missing some header indicating who "You" are
+🔲 2. Missing the risk tracker: split/separate the "Code Risk" from the "Cycle Risk" ("Workspace" risk?)
+🔲 3. When a player plays or discards their 3rd card (i.e., their hand goes from 3 cards to 2 cards), indicate that their turn is over.
+✅ 4. Check why the page is not updating after playing WRITE CODE
+🔲 5. Hook up clicking on the ACTION CARDS deck to reload the player's hand
+🔲 6. Upgrade Spring Boot to 4.x, and newer HTMX
+🔲 7. Why is there a ~3 second delay between Websocket connection and Websocket sending the "join game" message? Is it on the browser/htmx side of things?
+🔲 8. Fix layout when there's more than 3 Red Cards in the workspace
+🔲 9. Display an empty rectangle to represent when the empty discard pile
+🔲 10. Rename Workspace methods that *look* like commands, but are Event Handlers to make it clear they're handlers
+🔲 11. Change UI action: when player clicks on the Action Deck, it does a DRAW TO FULL instead of drawing a single card (which I don't believe is ever needed, i.e., a player only draws back to full and never draws just a single card)
 
 March 25, 2025 - Tuesday
 ========================

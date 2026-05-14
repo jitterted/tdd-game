@@ -404,7 +404,7 @@ class GameTest {
         }
 
         @Test
-        void playerPlayedCardResultsInCardMovedFromPlayerHandToWorkspace() {
+        void playerPlayedWriteCodeCardResultsInCardMovedFromPlayerHandToWorkspace() {
             MemberId firstPlayerMemberId = new MemberId(82L);
             Game game = GameScenarioBuilder.create()
                                            .actionCards(
@@ -423,7 +423,7 @@ class GameTest {
 
             Player player = game.playerFor(firstPlayerMemberId);
             assertThat(player.hand())
-                    .as("Hand should have PLAYed the WRITE_CODE card")
+                    .as("PLAYed the WRITE_CODE card, so must no longer be in player's HAND")
                     .containsExactly(ActionCard.LESS_CODE, ActionCard.LESS_CODE);
             assertThat(game.actionCardDeck().discardPile())
                     .as("Action Deck Discard pile should have 2 cards")
