@@ -4,5 +4,5 @@ import java.util.List;
 
 public sealed interface DeckReplenished
         permits ActionCardDeckReplenished, TestResultsCardDeckReplenished {
-    List<Card> cardsInDrawPile();
+    List<? extends Card> cardsInDrawPile();
 }

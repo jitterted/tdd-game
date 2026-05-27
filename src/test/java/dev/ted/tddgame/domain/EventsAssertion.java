@@ -21,7 +21,7 @@ class EventsAssertion {
         this.actualEvents = List.copyOf(events);
     }
 
-    public EventsAssertion hasExactly(Class<?> clazz, int expectedCount) {
+    public EventsAssertion hasOccurrences(Class<?> clazz, int expectedCount) {
         Condition<Object> condition = new Condition<>(gameEvent -> gameEvent.getClass() == clazz,
                                                       "GameEvent is " + clazz.getSimpleName());
         int actualCount = Math.toIntExact(
@@ -62,6 +62,12 @@ class EventsAssertion {
         assertThat(gameEvent)
                 .is(assertionCondition);
 
+        return this;
+    }
+
+    public EventsAssertion hasSize(int expectedSize) {
+        assertThat(actualEvents)
+                .hasSize(expectedSize);
         return this;
     }
 }

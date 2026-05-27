@@ -34,25 +34,24 @@ public abstract class Deck<CARD extends Card> {
 
     protected abstract DeckEvent createCardDiscardedEvent(CARD discardedCard);
 
-    public CARD draw() {
+    public List<GameEvent> drawFor(MemberId memberId) {
+        List<GameEvent> gameEvents = new ArrayList<>();
+        CARD drawnCard;
         if (isDrawPileEmpty()) {
-            replenishDrawPileFromDiscardPile();
-            if (isDrawPileEmpty()) {
-                throw new IllegalStateException("Draw Pile must not be empty after Replenish");
-            }
+            // TODO - PRECONDITION: discardPile must NOT be empty
+            List<Card> shuffledDiscardedCards = (List<Card>) shuffler.shuffleCards(discardPile);
+            DeckEvent deckReplenishedEvent = createDeckReplenishedEvent(shuffledDiscardedCards);
+            gameEvents.add(deckReplenishedEvent);
+            // when we do a drawPile.addAll(replenishedCards), queue.peek() returns the first item in the list
+            drawnCard = (CARD) shuffledDiscardedCards.getFirst();
+        } else {
+            drawnCard = drawPile.peek();
         }
-        CARD drawnCard = drawPile.peek();
-        eventEnqueuer.enqueue(createCardDrawnEvent(drawnCard));
-        return drawnCard;
+        gameEvents.add(createPlayerDrewCard(memberId, drawnCard));
+        return gameEvents;
     }
 
-    protected abstract DeckEvent createCardDrawnEvent(CARD drawnCard);
-
-    private void replenishDrawPileFromDiscardPile() {
-        // TODO - PRECONDITION: discardPile must NOT be empty
-        List<Card> shuffledDiscardedCards = (List<Card>) shuffler.shuffleCards(discardPile);
-        eventEnqueuer.enqueue(createDeckReplenishedEvent(shuffledDiscardedCards));
-    }
+    protected abstract GameEvent createPlayerDrewCard(MemberId memberId, CARD drawnCard);
 
     protected abstract DeckEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards);
 
@@ -65,30 +64,44 @@ public abstract class Deck<CARD extends Card> {
                               List.copyOf(discardPile));
     }
 
-    public void apply(DeckEvent deckEvent) {
-        switch (deckEvent) {
+    public void apply(GameEvent gameEvent) {
+        switch (gameEvent) {
             case DeckReplenished deckReplenished -> {
                 drawPile.addAll((Collection<? extends CARD>) deckReplenished.cardsInDrawPile());
                 discardPile.clear();
             }
 
-            case CardDrawn cardDrawn -> {
-                if (drawPile.isEmpty()) {
-                    throw new IllegalStateException("DrawPile must not be empty when applying event: " + cardDrawn);
-                }
-                CARD removedCard = drawPile.remove();
-                if (!cardDrawn.card()
-                              .equals(removedCard)) {
-                    throw new IllegalStateException("Card drawn from DrawPile did not match card in event = %s, card drawn = %s"
-                                                            .formatted(cardDrawn, removedCard));
-                }
+            case PlayerDrewTechNeglectCard playerDrewTechNeglectCard -> {
+                handleDrawnCard(playerDrewTechNeglectCard,
+                                playerDrewTechNeglectCard.techNeglectActionCard());
+            }
+
+            case PlayerDrewActionCard playerDrewActionCard -> {
+                handleDrawnCard(playerDrewActionCard,
+                                playerDrewActionCard.actionCard());
+            }
+
+            case PlayerDrewTestResultsCard playerDrewTestResultsCard -> {
+                handleDrawnCard(playerDrewTestResultsCard,
+                                playerDrewTestResultsCard.testResultsCard());
             }
 
             case CardDiscarded cardDiscarded -> {
                 discardPile.add((CARD) cardDiscarded.card());
             }
 
-            default -> throw new IllegalStateException("Unexpected DeckEvent value: " + deckEvent);
+            default -> throw new IllegalStateException("Unexpected DeckEvent value: " + gameEvent);
+        }
+    }
+
+    private void handleDrawnCard(GameEvent gameEvent, Card drawnCard) {
+        if (drawPile.isEmpty()) {
+            throw new IllegalStateException("DrawPile must not be empty when applying event: " + gameEvent);
+        }
+        CARD removedCard = drawPile.remove();
+        if (!drawnCard.equals(removedCard)) {
+            throw new IllegalStateException("Card drawn from DrawPile did not match card in event = %s, card drawn = %s"
+                                                    .formatted(gameEvent, removedCard));
         }
     }
 

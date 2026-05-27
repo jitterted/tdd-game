@@ -1,14 +1,17 @@
 package dev.ted.tddgame.domain;
 
+import dev.ted.tddgame.adapter.in.web.GameScenarioBuilder;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 class ActionCardDeckTest {
+
+    private static final MemberId IRRELEVANT_MEMBER_ID = new MemberId(42L);
 
     @Nested
     class newActionCardDeck {
@@ -26,52 +29,42 @@ class ActionCardDeckTest {
         }
 
         @Test
-        void canDrawFullSetOfCardsAfterReplenishTriggeredByDraw()  {
-            ActionCardDeck deck = ActionCardDeck.createForTest(
-                    ActionCard.PREDICT,
-                    ActionCard.WRITE_CODE,
-                    ActionCard.REFACTOR,
-                    ActionCard.LESS_CODE
-            );
+        void drawnCardsAreShuffledFromDiscardPileWhenDrawPileIsEmpty() {
+            MemberId memberId = new MemberId(123L);
+            Game game = GameScenarioBuilder.create()
+                                           .unshuffledActionCards()
+                                           .memberJoinsAsPlayer(memberId)
+                                           .reconstitutedGameFromStore();
 
-            List<ActionCard> drawnCards = drawCards(deck, 4);
+            game.drawActionCard(memberId);
 
-            assertThat(drawnCards)
-                    .containsExactly(ActionCard.PREDICT,
-                                     ActionCard.WRITE_CODE,
-                                     ActionCard.REFACTOR,
-                                     ActionCard.LESS_CODE);
-
-            assertThat(deck.isDrawPileEmpty())
-                    .isTrue();
-        }
-
-        @Test
-        void drawnCardsAreShuffledFromDiscardPile() {
-            List<ActionCard> allStandardActionCards = createStandardActionCards();
-            ActionCardDeck deck = ActionCardDeck.createForRandomTest(allStandardActionCards);
-
-            List<ActionCard> drawnCards = new ArrayList<>();
-            do {
-                drawnCards.add(deck.draw());
-            } while (!deck.isDrawPileEmpty());
-
-            assertThat(drawnCards)
-                    .doesNotContainSequence(allStandardActionCards);
-
+            new EventsAssertion(game.freshEvents())
+                    .hasSize(2)
+                    .hasEventMatching(new Condition<>(
+                                              gameEvent -> gameEvent.getClass() ==
+                                                           ActionCardDeckReplenished.class,
+                                              "ActionCardDeckReplenished event not found")
+                            , new Condition<>(gameEvent -> (
+                                                                   (ActionCardDeckReplenished) gameEvent).cardsInDrawPile().size() == 63,
+                                              "Must be 63 cards in the ActionCardDeckReplenished event")
+                    )
+                    .hasOccurrences(PlayerDrewActionCard.class, 1);
         }
 
         @Test
         void viewHasNonEmptyDrawAndDiscardPiles() {
-            ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.WRITE_CODE,
-                                                               ActionCard.LESS_CODE,
-                                                               ActionCard.PREDICT);
+            ActionCardDeck deck = ActionCardDeck.createForTest();
 
-            deck.draw(); // force replenish by drawing the WRITE_CODE
+            deck.apply(new ActionCardDeckReplenished(List.of(
+                    ActionCard.WRITE_CODE,
+                    ActionCard.LESS_CODE,
+                    ActionCard.PREDICT)));
 
             assertThat(deck.view().drawPile())
-                    .containsExactly(ActionCard.LESS_CODE,
-                                     ActionCard.PREDICT);
+                    .containsExactly(
+                            ActionCard.WRITE_CODE,
+                            ActionCard.LESS_CODE,
+                            ActionCard.PREDICT);
         }
     }
 
@@ -79,33 +72,29 @@ class ActionCardDeckTest {
     class CommandGeneratesEvents {
         @Test
         void emptyDrawPileDrawOneCardGeneratesReplenishAndCardDrawnEvents() {
-            List<DeckEvent> deckEventsReceiver = new ArrayList<>();
-            ActionCardDeck deck = ActionCardDeck.createForTest(deckEventsReceiver,
-                                                               ActionCard.PREDICT);
+            ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.PREDICT);
 
-            deck.draw();
+            MemberId memberId = new MemberId(42L);
+            List<GameEvent> gameEvents = deck.drawFor(memberId);
 
-            assertThat(deckEventsReceiver)
+            assertThat(gameEvents)
                     .containsExactly(
                             new ActionCardDeckReplenished(List.of(ActionCard.PREDICT)),
-                            new ActionCardDrawn(ActionCard.PREDICT));
+                            new PlayerDrewActionCard(memberId, ActionCard.PREDICT));
         }
 
         @Test
-        void drawPileWithTwoCardsDrawTwoCardsGeneratesReplenishAndTwoCardDrawnEvents() {
-            List<DeckEvent> deckEventsReceiver = new ArrayList<>();
-            ActionCardDeck deck = ActionCardDeck.createForTest(deckEventsReceiver,
-                                                               ActionCard.LESS_CODE,
-                                                               ActionCard.WRITE_CODE);
-            deck.draw();
-            deck.draw();
+        void drawSecondCardDrawsSecondCardInDeckAfterReplenishAndCardDrawn() {
+            MemberId memberId = new MemberId(42L);
+            ActionCardDeck deck = ActionCardDeck.createForTest();
+            deck.apply(new ActionCardDeckReplenished(List.of(ActionCard.LESS_CODE, ActionCard.WRITE_CODE)));
+            deck.apply(new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE));
 
-            assertThat(deckEventsReceiver)
+            List<GameEvent> gameEvents = deck.drawFor(memberId);
+
+            assertThat(gameEvents)
                     .containsExactly(
-                            new ActionCardDeckReplenished(List.of(ActionCard.LESS_CODE,
-                                                                  ActionCard.WRITE_CODE)),
-                            new ActionCardDrawn(ActionCard.LESS_CODE),
-                            new ActionCardDrawn(ActionCard.WRITE_CODE)
+                            new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE)
                     );
         }
 
@@ -135,13 +124,15 @@ class ActionCardDeckTest {
         }
 
         @Test
-        void deckCardDrawnEventRemovesCardFromDeck() {
+        void cardDrawnEventRemovesCardFromDeck() {
             ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.REFACTOR,
                                                                ActionCard.CODE_BLOAT);
-            deck.apply(new ActionCardDeckReplenished(List.of(ActionCard.REFACTOR,
-                                                             ActionCard.CODE_BLOAT)));
+            deck.apply(new ActionCardDeckReplenished(
+                    List.of(ActionCard.REFACTOR,
+                            ActionCard.CODE_BLOAT)));
 
-            deck.apply(new ActionCardDrawn(ActionCard.REFACTOR));
+            deck.apply(new PlayerDrewActionCard(IRRELEVANT_MEMBER_ID,
+                                                ActionCard.REFACTOR));
 
             assertThat(deck.view().drawPile())
                     .as("Draw Pile contents not as expected")
@@ -155,13 +146,15 @@ class ActionCardDeckTest {
         void exceptionWhenDeckCardDrawnHasDifferentCardThanDrawnFromDrawPile() {
             ActionCardDeck deck = ActionCardDeck.createForTest(ActionCard.REFACTOR,
                                                                ActionCard.CODE_BLOAT);
-            deck.apply(new ActionCardDeckReplenished(List.of(ActionCard.REFACTOR,
-                                                             ActionCard.CODE_BLOAT)));
+            deck.apply(new ActionCardDeckReplenished(
+                    List.of(ActionCard.REFACTOR,
+                            ActionCard.CODE_BLOAT)));
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> deck.apply(
-                            new ActionCardDrawn(ActionCard.PREDICT)))
-                    .withMessage("Card drawn from DrawPile did not match card in event = ActionCardDrawn[card=PREDICT], card drawn = REFACTOR");
+                            new PlayerDrewActionCard(IRRELEVANT_MEMBER_ID,
+                                                     ActionCard.PREDICT)))
+                    .withMessage("Card drawn from DrawPile did not match card in event = PlayerDrewActionCard[memberId=MemberId[id=42], actionCard=PREDICT], card drawn = REFACTOR");
         }
 
         @Test
@@ -173,37 +166,10 @@ class ActionCardDeckTest {
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> deck.apply(
-                            new ActionCardDrawn(ActionCard.REFACTOR)))
-                    .withMessage("DrawPile must not be empty when applying event: ActionCardDrawn[card=REFACTOR]");
+                            new PlayerDrewActionCard(IRRELEVANT_MEMBER_ID,
+                                                     ActionCard.REFACTOR)))
+                    .withMessage("DrawPile must not be empty when applying event: PlayerDrewActionCard[memberId=MemberId[id=42], actionCard=REFACTOR]");
         }
-    }
-
-
-    // HELPER METHODS
-
-    private List<ActionCard> createStandardActionCards() {
-        List<ActionCard> allActionCards = new ArrayList<>();
-        addActionCards(18, ActionCard.WRITE_CODE, allActionCards);
-        addActionCards(18, ActionCard.LESS_CODE, allActionCards);
-        addActionCards(18, ActionCard.PREDICT, allActionCards);
-        addActionCards(2, ActionCard.CANT_ASSERT, allActionCards);
-        addActionCards(3, ActionCard.CODE_BLOAT, allActionCards);
-        addActionCards(4, ActionCard.REFACTOR, allActionCards);
-        return allActionCards;
-    }
-
-    private void addActionCards(int count, ActionCard actionCard, List<ActionCard> allActionCards) {
-        for (int i = 0; i < count; i++) {
-            allActionCards.add(actionCard);
-        }
-    }
-
-    private List<ActionCard> drawCards(ActionCardDeck deck, int numberOfCards) {
-        List<ActionCard> drawnCards = new ArrayList<>();
-        for (int i = 0; i < numberOfCards; i++) {
-            drawnCards.add(deck.draw());
-        }
-        return drawnCards;
     }
 
 }

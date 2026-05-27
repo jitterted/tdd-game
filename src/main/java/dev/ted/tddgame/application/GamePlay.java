@@ -56,7 +56,7 @@ public class GamePlay {
 
         command.accept(game);
 
-        // 1. Apply events in the save (and return game from save with those events applied)
+        // save method reconstitutes a new Game with the fresh events applied
         // game = gameStore.save(game); <- returns game with the fresh events applied
         gameStore.save(game);
 

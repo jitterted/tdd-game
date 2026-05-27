@@ -72,6 +72,24 @@ public class Game extends EventSourcedAggregate {
 
             case GameStarted _ -> this.state = State.IN_PROGRESS;
 
+            case PlayerDrewTechNeglectCard playerDrewTechNeglectCard -> {
+                actionCardDeck.apply(playerDrewTechNeglectCard);
+                playerFor(playerDrewTechNeglectCard.memberId())
+                        .apply(playerDrewTechNeglectCard);
+            }
+
+            case PlayerDrewActionCard playerDrewActionCard -> {
+                actionCardDeck.apply(playerDrewActionCard);
+                playerFor(playerDrewActionCard.memberId())
+                        .apply(playerDrewActionCard);
+            }
+
+            case PlayerDrewTestResultsCard playerDrewTestResultsCard -> {
+                testResultsCardDeck.apply(playerDrewTestResultsCard);
+                playerFor(playerDrewTestResultsCard.memberId())
+                        .apply(playerDrewTestResultsCard);
+            }
+
             case PlayerEvent playerEvent -> playerFor(playerEvent.memberId())
                     .apply(playerEvent);
 
@@ -89,11 +107,13 @@ public class Game extends EventSourcedAggregate {
                             testResultsCardShuffler
                     );
 
-            case ActionCardDeckEvent actionCardDeckEvent ->
-                    actionCardDeck.apply(actionCardDeckEvent);
+            case ActionCardDeckEvent actionCardDeckEvent -> {
+                actionCardDeck.apply(actionCardDeckEvent);
+            }
 
-            case TestResultsCardDeckEvent testResultsCardDeckEvent ->
-                    testResultsCardDeck.apply(testResultsCardDeckEvent);
+            case TestResultsCardDeckEvent testResultsCardDeckEvent -> {
+                testResultsCardDeck.apply(testResultsCardDeckEvent);
+            }
         }
     }
 
@@ -149,7 +169,13 @@ public class Game extends EventSourcedAggregate {
     }
 
     private void initialDealCardsToAllPlayers() {
-        players().forEach(player -> player.drawToFull(actionCardDeck));
+        players().forEach(player -> drawToFullFor(player.memberId()));
+    }
+
+    public void drawToFullFor(MemberId memberId) {
+        while (!playerFor(memberId).handIsFull()) {
+            drawActionCard(memberId); // once this is method returns, the entire Game aggregate is up to date (including all Players), which allows us to use the Player query methods
+        }
     }
 
     public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
@@ -157,16 +183,22 @@ public class Game extends EventSourcedAggregate {
     }
 
     public void playCard(MemberId memberId, ActionCard actionCardToPlay) {
-        List<GameEvent> freshEvents = playerFor(memberId).playCard(actionCardToPlay);
-        freshEvents.forEach(this::enqueue);
+        List<GameEvent> playCardEvents = playerFor(memberId).playCard(actionCardToPlay);
+        playCardEvents.forEach(this::enqueue);
     }
 
     public void drawActionCard(MemberId memberId) {
-        playerFor(memberId).drawCardFrom(actionCardDeck);
+        // if actionCardDeck.drawPile().isEmpty ->
+        //     actionCardDeck.shuffleFromDiscardPile()
+        playerFor(memberId)
+                .drawCardFrom(actionCardDeck)
+                .forEach(this::enqueue);
     }
 
     public void drawTestResultsCard(MemberId memberId) {
-        playerFor(memberId).drawTestResultsCardFrom(testResultsCardDeck);
+        playerFor(memberId)
+                .drawTestResultsCardFrom(testResultsCardDeck)
+                .forEach(this::enqueue);
     }
 
     public Player playerFor(MemberId memberId) {

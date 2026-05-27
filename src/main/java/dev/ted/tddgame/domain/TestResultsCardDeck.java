@@ -1,6 +1,5 @@
 package dev.ted.tddgame.domain;
 
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
@@ -27,8 +26,8 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
     }
 
     @Override
-    protected DeckEvent createCardDrawnEvent(TestResultsCard drawnCard) {
-        return new TestResultsCardDrawn(drawnCard);
+    protected GameEvent createPlayerDrewCard(MemberId memberId, TestResultsCard drawnCard) {
+        return new PlayerDrewTestResultsCard(memberId, drawnCard);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
 
     // -- FOR TESTS ONLY BELOW --
 
-    static TestResultsCardDeck createForTest(List<@NotNull TestResultsCard> testResultsCards) {
+    static TestResultsCardDeck createForTest(List<TestResultsCard> testResultsCards) {
         return new TestResultsCardDeck(
                 testResultsCards,
                 new IdentityShuffler<>(),

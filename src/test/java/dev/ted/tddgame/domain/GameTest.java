@@ -56,7 +56,37 @@ class GameTest {
     }
 
     @Nested
-    class CommandsGenerateEvents {
+    class CommandGeneratesEvents {
+
+        @Test
+        void drawToFullForPlayerWorks() {
+            // create the Game via events
+            GameEvent gameCreated = new GameCreated("Draw to Full Game", "draw-to-full-test");
+            CardsFactory cardsFactory = new CardsFactory();
+
+            GameEvent actionCardDeckCreated = new ActionCardDeckCreated(cardsFactory.allActionCards());
+            GameEvent testResultsCardDeckCreated = new TestResultsCardDeckCreated(cardsFactory.allTestResultsCards());
+            GameEvent gameStarted = new GameStarted();
+            MemberId memberId = new MemberId(42L);
+            GameEvent playerJoined = new PlayerJoined(memberId, "First Player");
+            List<GameEvent> gameEvents = List.of(gameCreated,
+                                                 actionCardDeckCreated,
+                                                 testResultsCardDeckCreated,
+                                                 gameStarted,
+                                                 playerJoined);
+            Game game = new Game.GameFactory(new Deck.RandomShuffler<>(), cardsFactory)
+                    .reconstitute(gameEvents);
+
+            game.drawToFullFor(memberId);
+
+            // first player's hand has 5 non-red action cards
+            Player player = game.playerFor(memberId);
+            assertThat(player.hand())
+                    .hasSize(5)
+                    .allMatch(card -> card instanceof RegularCard);
+            assertThat(player.handIsFull())
+                    .isTrue();
+        }
 
         @Test
         void creatingGameEmits_GameCreated_BothDeckCreated_Events() {
@@ -105,7 +135,7 @@ class GameTest {
         }
 
         @Test
-        void startGameEmits_GameStarted_PlayerDrewActionCards_Events() {
+        void startGame_Emits_GameStarted_And_PlayerDrewActionCards_Events() {
             Game game = GameScenarioBuilder.create()
                                            .unshuffledActionCards()
                                            .memberJoinsAsPlayer(new MemberId(1L))
@@ -117,11 +147,11 @@ class GameTest {
                     .hasExactlyElementsOfTypes(
                             GameStarted.class,
                             ActionCardDeckReplenished.class,
-                            ActionCardDrawn.class, PlayerDrewActionCard.class,
-                            ActionCardDrawn.class, PlayerDrewActionCard.class,
-                            ActionCardDrawn.class, PlayerDrewActionCard.class,
-                            ActionCardDrawn.class, PlayerDrewActionCard.class,
-                            ActionCardDrawn.class, PlayerDrewActionCard.class);
+                            PlayerDrewActionCard.class,
+                            PlayerDrewActionCard.class,
+                            PlayerDrewActionCard.class,
+                            PlayerDrewActionCard.class,
+                            PlayerDrewActionCard.class);
         }
 
         @Test
@@ -140,8 +170,7 @@ class GameTest {
 
             // don't reconstitute the game, we want to see the fresh events
             new EventsAssertion(game.freshEvents())
-                    .hasExactly(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
-                    .hasExactly(ActionCardDrawn.class, 2 * Player.PLAYER_HAND_FULL_SIZE);
+                    .hasOccurrences(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE);
         }
 
         @Test
@@ -162,16 +191,14 @@ class GameTest {
 
             // don't reconstitute the game, we want to see the fresh events
             new EventsAssertion(game.freshEvents())
-                    .as("12 cards needed to be drawn, as there are 2 Tech Neglect cards and 10 Regular Action Cards")
-                    .hasExactly(ActionCardDrawn.class, 12)
                     .as("10 Action Cards should have been drawn")
-                    .hasExactly(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
+                    .hasOccurrences(PlayerDrewActionCard.class, 2 * Player.PLAYER_HAND_FULL_SIZE)
                     .as("2 Tech Neglect cards should have been drawn")
-                    .hasExactly(PlayerDrewTechNeglectCard.class, 2);
+                    .hasOccurrences(PlayerDrewTechNeglectCard.class, 2);
         }
 
         @Test
-        void playerDiscardsActionCard_PlayerCardDiscarded_ActionCardDiscarded() {
+        void playerDiscardsActionCard_PlayerCardDiscarded() {
             MemberId firstPlayerMemberId = new MemberId(88L);
             Game game = createFreshGameWithTwoPlayersAndStart(firstPlayerMemberId);
 
@@ -219,7 +246,6 @@ class GameTest {
                             new TestResultsCardDeckReplenished(
                                     List.of(cardToBeDrawn,
                                             cardRemainingInDrawPile)),
-                            new TestResultsCardDrawn(cardToBeDrawn),
                             new PlayerDrewTestResultsCard(memberId,
                                                           cardToBeDrawn)
                     );
@@ -437,7 +463,7 @@ class GameTest {
         }
 
         @Test
-        void workspaceHasTestResultsCardWhenTestResultsCardDrawnByPlayer() {
+        void testResultsCardDrawnByPlayer_Projects_DrawnCardMovesFromDeckToPlayerWorkspace() {
             GameScenarioBuilder gameScenarioBuilder = GameScenarioBuilder
                     .create()
                     .shuffledActionCards()
@@ -453,15 +479,15 @@ class GameTest {
 
             game.drawTestResultsCard(firstPlayer.memberId());
 
-            assertThat(firstPlayer.workspace()
-                                  .drawnTestResultsCard())
-                    .as("First player's Workspace must have the drawn Test Results card")
-                    .isEqualTo(TestResultsCard.NEED_TWO_LESS_CODE);
-
             assertThat(game.testResultsCardDeck().drawPile())
                     .as("After drawing a card, the remaining cards in the Test Results draw pile must be AS_PREDICTED and NEED_ONE_LESS_CODE")
                     .containsExactly(TestResultsCard.AS_PREDICTED,
                                      TestResultsCard.NEED_ONE_LESS_CODE);
+
+            assertThat(firstPlayer.workspace()
+                                  .drawnTestResultsCard())
+                    .as("First player's Workspace must have the drawn Test Results card")
+                    .isEqualTo(TestResultsCard.NEED_TWO_LESS_CODE);
         }
 
         //--

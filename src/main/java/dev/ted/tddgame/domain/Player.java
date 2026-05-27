@@ -83,18 +83,14 @@ public class Player {
     List<GameEvent> drawCardFrom(Deck<ActionCard> actionCardDeck) {
         ensureHandNotFull();
 
-        ActionCard drawnCard = actionCardDeck.draw();
-
-        PlayerEvent event = drawnCard.drawnCardEventFor(memberId);
-
-        eventEnqueuer.enqueue(event);
-
-        assert hand.size() <= PLAYER_HAND_FULL_SIZE; // post-condition
-
-        return List.of(event);
+        return actionCardDeck.drawFor(memberId);
     }
 
     void drawToFull(Deck<ActionCard> actionCardDeck) {
+        // do
+        //  events.addAll(drawCardFrom(actionCardDeck))
+        // until (events.filter(PlayerDrewActionCard).count == 3)
+
         while (!handIsFull()) {
             drawCardFrom(actionCardDeck);
         }
@@ -116,16 +112,13 @@ public class Player {
         return List.of(playerEvent);
     }
 
-    void drawTestResultsCardFrom(Deck<TestResultsCard> testResultsCardDeck) {
+    List<GameEvent> drawTestResultsCardFrom(Deck<TestResultsCard> testResultsCardDeck) {
         if (workspace.drawnTestResultsCard() != null) {
             throw new IllegalStateException();
         }
         // check constraint: PREDICT card MUST be in-play (in the workspace) in order for this draw() to be allowed
-        TestResultsCard drawnCard = testResultsCardDeck.draw();
 
-        PlayerEvent event = new PlayerDrewTestResultsCard(memberId(), drawnCard);
-
-        eventEnqueuer.enqueue(event);
+        return testResultsCardDeck.drawFor(memberId);
     }
     //endregion
 
@@ -156,7 +149,7 @@ public class Player {
         }
     }
 
-    private boolean handIsFull() {
+    public boolean handIsFull() {
         return hand.size() == PLAYER_HAND_FULL_SIZE;
     }
     //endregion

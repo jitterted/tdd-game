@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -23,46 +24,39 @@ class PlayerTest {
     }
 
     @Nested
-    class CommandsGenerateEvents {
+    class CommandGeneratesEvent {
 
         @ParameterizedTest
-        @ValueSource(ints = {1, 2, 3, 4, 5})
-        void canDrawCardWhenHandHasFewerThanNCards(int drawCount) {
-            Player player = createNewPlayer();
-            ActionCardDeck actionCardDeck = ActionCardDeck.createForTest(
-                    new CardsFactory().allActionCards());
-            for (int i = 0; i < drawCount - 1; i++) {
-                player.apply(new PlayerDrewActionCard(player.memberId(), actionCardDeck.draw()));
-            }
+        @ValueSource(ints = {0, 1, 2, 3, 4})
+        void handHasRoomForCardDrawnFromDeckWhenHandHasNCards(int startingHandSize) {
+            PlayerAndCardFixture fixture =
+                    createPlayerDealtCardsOfQuantity(startingHandSize);
 
-            List<GameEvent> gameEvents = player.drawCardFrom(actionCardDeck);
+            List<GameEvent> gameEvents =
+                    fixture.player().drawCardFrom(fixture.actionCardDeck());
 
-            new EventsAssertion(gameEvents)
-                    .hasExactly(PlayerDrewActionCard.class, 1);
+            assertThat(gameEvents)
+                    .hasExactlyElementsOfTypes(PlayerDrewActionCard.class);
         }
+
 
         @Test
         void exceptionThrownWhenDrawCardAndHandHasFiveCards() {
-            Player player = createNewPlayer();
-            ActionCardDeck actionCardDeck = ActionCardDeck
-                    .createForTest(new CardsFactory().allActionCards());
-            for (int i = 0; i < 5; i++) {
-                player.apply(new PlayerDrewActionCard(player.memberId(), actionCardDeck.draw()));
-            }
+            PlayerAndCardFixture fixture = createPlayerDealtCardsOfQuantity(5);
 
             assertThatExceptionOfType(HandAlreadyFull.class)
                     .as("Expected 'HandAlreadyFull' exception to have been thrown.")
-                    .isThrownBy(() -> player.drawCardFrom(actionCardDeck))
+                    .isThrownBy(() -> fixture.player().drawCardFrom(fixture.actionCardDeck()))
                     .withMessage("Can't draw any more cards, the Hand is full with five cards");
         }
 
         @Test
-        void techNeglectCardDrawnEventsWhenPlayerDrawsTechNeglectCards() {
-            ActionCardDeck actionCardDeck = ActionCardDeck.createForTest(
-                    ActionCard.CANT_ASSERT,
-                    ActionCard.CODE_BLOAT
-            );
+        void techNeglectCardDrawnEventGeneratedWhenPlayerDrawsTechNeglectCard() {
             Player player = createNewPlayer();
+            ActionCardDeck actionCardDeck = ActionCardDeck.createForTest();
+            actionCardDeck.apply(new ActionCardDeckReplenished(
+                    List.of(ActionCard.CANT_ASSERT,
+                            ActionCard.CODE_BLOAT)));
 
             assertThat(player.drawCardFrom(actionCardDeck))
                     .containsExactly(
@@ -73,19 +67,17 @@ class PlayerTest {
 
         @Test
         void drawTestResultsCard_PlayerDrewTestResultsCard() {
-            Player.PlayerAndEventAccumulator playerAndEventAccumulator =
-                    Player.createForTestWithEventAccumulator();
-            Player player = playerAndEventAccumulator.player();
+            Player player = createNewPlayer();
             TestResultsCardDeck testResultsCardDeck =
-                    TestResultsCardDeck.createForTest(
+                    TestResultsCardDeck.createForTest(Collections.emptyList());
+            testResultsCardDeck.apply(
+                    new TestResultsCardDeckReplenished(List.of(
                             TestResultsCard.NEED_ONE_LESS_CODE,
-                            TestResultsCard.AS_PREDICTED);
+                            TestResultsCard.AS_PREDICTED)));
 
-            player.drawTestResultsCardFrom(testResultsCardDeck);
+            List<GameEvent> gameEvents = player.drawTestResultsCardFrom(testResultsCardDeck);
 
-            assertThat(playerAndEventAccumulator
-                               .accumulatingEventEnqueuer()
-                               .events())
+            assertThat(gameEvents)
                     .containsExactly(
                             new PlayerDrewTestResultsCard(
                                     player.memberId(),
@@ -96,34 +88,37 @@ class PlayerTest {
 
         @Test
         void exceptionThrownWhenDrawingTestResultsCardTwiceWithoutDiscarding() {
-            Player player = Player.createForTestWithApplyingEnqueuer();
-            TestResultsCardDeck testResultsCardDeck =
-                    TestResultsCardDeck.createForTest(
-                            TestResultsCard.AS_PREDICTED,
-                            TestResultsCard.NEED_TWO_LESS_CODE);
-            player.drawTestResultsCardFrom(testResultsCardDeck);
+            Player player = createNewPlayer();
+            TestResultsCardDeck testResultsCardDeck = TestResultsCardDeck.createForTest();
+            testResultsCardDeck.apply(new TestResultsCardDeckReplenished(
+                    List.of(TestResultsCard.NEED_TWO_LESS_CODE)));
+            player.apply(new PlayerDrewTestResultsCard(player.memberId(),
+                                                       TestResultsCard.AS_PREDICTED));
 
             assertThatIllegalStateException()
                     .isThrownBy(() -> player.drawTestResultsCardFrom(testResultsCardDeck));
         }
 
-        // -- FIXTURE
-
-        private Fixture createPlayerWithEventAccumulator(ActionCardDeck actionCardDeck) {
-            final PlayerId playerId = IRRELEVANT_PLAYER_ID;
-            Player.AccumulatingEventEnqueuer eventEnqueuer = new Player.AccumulatingEventEnqueuer();
-            Player player = new Player(playerId,
-                                       IRRELEVANT_MEMBER_ID,
-                                       "Player 1",
-                                       eventEnqueuer,
-                                       new Workspace(playerId));
-            return new Fixture(eventEnqueuer, player, actionCardDeck);
-        }
-
-        private record Fixture(Player.AccumulatingEventEnqueuer eventEnqueuer, Player player,
-                               ActionCardDeck actionCardDeck) {}
-
     }
+
+    private PlayerAndCardFixture createPlayerDealtCardsOfQuantity(int startingHandSize) {
+        List<RegularCard> cards = List.of(ActionCard.WRITE_CODE,
+                                          ActionCard.LESS_CODE,
+                                          ActionCard.LESS_CODE,
+                                          ActionCard.PREDICT,
+                                          ActionCard.WRITE_CODE);
+        Player player = createNewPlayer();
+        for (int i = 0; i < startingHandSize; i++) {
+            player.apply(new PlayerDrewActionCard(player.memberId(),
+                                                  cards.get(i)));
+        }
+        ActionCardDeck actionCardDeck = ActionCardDeck.createForTest();
+        actionCardDeck.apply(new ActionCardDeckReplenished(
+                List.of(ActionCard.PREDICT)));
+        return new PlayerAndCardFixture(player, actionCardDeck);
+    }
+
+    private record PlayerAndCardFixture(Player player, ActionCardDeck actionCardDeck) {}
 
     private static Player createNewPlayer() {
         return new Player(IRRELEVANT_PLAYER_ID,

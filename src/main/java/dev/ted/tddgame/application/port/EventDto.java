@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
 import dev.ted.tddgame.domain.ActionCardDeckReplenished;
 import dev.ted.tddgame.domain.ActionCardDiscarded;
-import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.Card;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
@@ -18,7 +17,6 @@ import dev.ted.tddgame.domain.PlayerJoined;
 import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 import dev.ted.tddgame.domain.TestResultsCardDeckCreated;
 import dev.ted.tddgame.domain.TestResultsCardDeckReplenished;
-import dev.ted.tddgame.domain.TestResultsCardDrawn;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,10 +55,8 @@ public class EventDto {
                     Map.entry("PlayerDrewTechNeglectCard", PlayerDrewTechNeglectCard.class),
                     Map.entry("PlayerDrewTestResultsCard", PlayerDrewTestResultsCard.class),
                     Map.entry("ActionCardDeckReplenished", ActionCardDeckReplenished.class),
-                    Map.entry("ActionCardDrawn", ActionCardDrawn.class),
                     Map.entry("ActionCardDiscarded", ActionCardDiscarded.class),
-                    Map.entry("TestResultsCardDeckReplenished", TestResultsCardDeckReplenished.class),
-                    Map.entry("TestResultsCardDrawn", TestResultsCardDrawn.class)
+                    Map.entry("TestResultsCardDeckReplenished", TestResultsCardDeckReplenished.class)
             );
     private static final Map<Class<? extends GameEvent>, String> classToEventName =
             swapKeysValues(eventNameToClassMap);

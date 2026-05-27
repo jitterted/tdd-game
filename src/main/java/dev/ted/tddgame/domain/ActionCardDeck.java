@@ -25,9 +25,10 @@ public class ActionCardDeck extends Deck<ActionCard> {
         return new ActionCardDiscarded(discardedCard);
     }
 
+    // TODO: ensure this is tested more directly
     @Override
-    protected DeckEvent createCardDrawnEvent(ActionCard drawnCard) {
-        return new ActionCardDrawn(drawnCard);
+    protected GameEvent createPlayerDrewCard(MemberId memberId, ActionCard drawnCard) {
+        return drawnCard.drawnCardEventFor(memberId);
     }
 
     @Override
@@ -59,10 +60,4 @@ public class ActionCardDeck extends Deck<ActionCard> {
                                   new ArrayList<>());
     }
 
-    public static ActionCardDeck createForTest(List<DeckEvent> deckEventsReceiver,
-                                               ActionCard... actionCards) {
-        return new ActionCardDeck(Arrays.asList(actionCards),
-                                  new IdentityShuffler<>(),
-                                  deckEventsReceiver);
-    }
 }

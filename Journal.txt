@@ -1,3 +1,27 @@
+May 21, 2026 - Thursday
+=======================
+
+[Design Decision]
+For implementing UNDO, there are two ways to go:
+  1. Implementing "compensating" or "reversing" Actions (Commands), and then associated Event(s)
+     * This gets very difficult when the command caused random things to happen, such as Deck Shuffled (how to undo that?)
+  2. Copy everything to just before the last Command executed into a copy of the "stream" of events and assign it a new ID and start playing from there
+     * Probably want to tack on the UNDO Command and an Undone Event as a marker that we did the undo. The Undone Event points back to the previous Game ID.
+     * Makes it easy to support other uses, such as "let's start playing from here" for a saved scenario
+
+GAME ID = ABC123
+1 - discard
+2 - discard
+3 - play WRITE CODE
+UNDO
+4 - Unplay WRITE CODE (compensating Command) -> CardUnplayed event
+5 - discard
+
+GAME ID = ABC124
+1 - discard
+2 - discard
+-- now start from here --
+
 May 14, 2026 - Thursday
 =======================
 

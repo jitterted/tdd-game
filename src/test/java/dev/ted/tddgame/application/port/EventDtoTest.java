@@ -7,7 +7,6 @@ import dev.ted.tddgame.domain.ActionCard;
 import dev.ted.tddgame.domain.ActionCardDeckCreated;
 import dev.ted.tddgame.domain.ActionCardDeckReplenished;
 import dev.ted.tddgame.domain.ActionCardDiscarded;
-import dev.ted.tddgame.domain.ActionCardDrawn;
 import dev.ted.tddgame.domain.Card;
 import dev.ted.tddgame.domain.GameCreated;
 import dev.ted.tddgame.domain.GameEvent;
@@ -22,7 +21,6 @@ import dev.ted.tddgame.domain.PlayerPlayedActionCard;
 import dev.ted.tddgame.domain.TestResultsCard;
 import dev.ted.tddgame.domain.TestResultsCardDeckCreated;
 import dev.ted.tddgame.domain.TestResultsCardDeckReplenished;
-import dev.ted.tddgame.domain.TestResultsCardDrawn;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -41,7 +39,7 @@ import static org.assertj.core.api.Assertions.*;
 class EventDtoTest {
 
     @Test
-    void ensureTwoWayMappingOfCardDrawnForActionAndTestResultsCards() throws JsonProcessingException {
+    void ensureTwoWayMappingOfPlayerDrewCardForActionAndTestResultsCards() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.addMixIn(Card.class, CardMixIn.class);
         objectMapper.activateDefaultTyping(
@@ -49,18 +47,19 @@ class EventDtoTest {
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY
         );
-        ActionCardDrawn actionCardDrawn = new ActionCardDrawn(ActionCard.WRITE_CODE);
+        MemberId memberId = new MemberId(123L);
+        PlayerDrewActionCard actionCardDrawn = new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE);
 
         String json = objectMapper.writeValueAsString(actionCardDrawn);
 
-        assertThat(objectMapper.readValue(json, ActionCardDrawn.class))
+        assertThat(objectMapper.readValue(json, PlayerDrewActionCard.class))
                 .isEqualTo(actionCardDrawn);
 
-        ActionCardDrawn testResultsCardDrawn = new ActionCardDrawn(TestResultsCard.NEED_ONE_LESS_CODE);
+        PlayerDrewTestResultsCard testResultsCardDrawn = new PlayerDrewTestResultsCard(memberId, TestResultsCard.NEED_ONE_LESS_CODE);
 
         json = objectMapper.writeValueAsString(testResultsCardDrawn);
 
-        assertThat(objectMapper.readValue(json, ActionCardDrawn.class))
+        assertThat(objectMapper.readValue(json, PlayerDrewTestResultsCard.class))
                 .isEqualTo(testResultsCardDrawn);
     }
 
@@ -198,7 +197,6 @@ class EventDtoTest {
                 , Arguments.of(new ActionCardDeckCreated(List.of(ActionCard.PREDICT)))
                 , Arguments.of(new TestResultsCardDeckCreated(Collections.emptyList()))
                 , Arguments.of(new PlayerDrewActionCard(memberId, ActionCard.REFACTOR))
-                , Arguments.of(new ActionCardDrawn(ActionCard.PREDICT))
                 , Arguments.of(new ActionCardDiscarded(ActionCard.LESS_CODE))
                 , Arguments.of(new ActionCardDeckReplenished(
                         List.of(ActionCard.WRITE_CODE,
@@ -213,7 +211,6 @@ class EventDtoTest {
                         List.of(TestResultsCard.AS_PREDICTED,
                                 TestResultsCard.NEED_TWO_LESS_CODE)
                 ))
-                , Arguments.of(new TestResultsCardDrawn(TestResultsCard.NEED_ONE_LESS_CODE))
         );
     }
 }
