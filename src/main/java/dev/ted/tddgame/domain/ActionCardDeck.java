@@ -20,11 +20,6 @@ public class ActionCardDeck extends Deck<ActionCard> {
         return new ActionCardDeck(cards, shuffler, eventEnqueuer);
     }
 
-    @Override
-    protected DeckEvent createCardDiscardedEvent(ActionCard discardedCard) {
-        return new ActionCardDiscarded(discardedCard);
-    }
-
     // TODO: ensure this is tested more directly
     @Override
     protected GameEvent createPlayerDrewCard(MemberId memberId, ActionCard drawnCard) {
@@ -32,7 +27,7 @@ public class ActionCardDeck extends Deck<ActionCard> {
     }
 
     @Override
-    protected DeckEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards) {
+    protected GameEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards) {
         return new ActionCardDeckReplenished(shuffledDiscardedCards);
     }
 
@@ -51,12 +46,6 @@ public class ActionCardDeck extends Deck<ActionCard> {
     public static ActionCardDeck createForTest(List<ActionCard> actionCards) {
         return new ActionCardDeck(actionCards,
                                   new IdentityShuffler<>(),
-                                  new ArrayList<>());
-    }
-
-    public static ActionCardDeck createForRandomTest(List<ActionCard> actionCards) {
-        return new ActionCardDeck(actionCards,
-                                  new RandomShuffler<>(),
                                   new ArrayList<>());
     }
 

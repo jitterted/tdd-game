@@ -198,7 +198,7 @@ class GameTest {
         }
 
         @Test
-        void playerDiscardsActionCard_PlayerCardDiscarded() {
+        void playerDiscardsActionCard_Emits_PlayerDiscardedActionCard() {
             MemberId firstPlayerMemberId = new MemberId(88L);
             Game game = createFreshGameWithTwoPlayersAndStart(firstPlayerMemberId);
 
@@ -208,7 +208,6 @@ class GameTest {
                     .containsExactly(
                             new PlayerDiscardedActionCard(firstPlayerMemberId,
                                                           ActionCard.PREDICT)
-                            , new ActionCardDiscarded(ActionCard.PREDICT)
                     );
         }
 

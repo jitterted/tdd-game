@@ -34,24 +34,8 @@ public class Player {
         // ensure that player events (from commands) get applied
         // need to do this here: can't do this as a constructor parameter,
         //   because player doesn't yet exist, but we need it in order to apply the event
-        player.eventEnqueuer = gameEvent -> player.apply((PlayerEvent) gameEvent);
+        player.eventEnqueuer = gameEvent -> player.apply(gameEvent);
         return player;
-    }
-
-    static Player createForTestWithApplyingEnqueuer() {
-        return createForTestWithApplyingEnqueuer(1L, "default player name");
-    }
-
-    static PlayerAndEventAccumulator createForTestWithEventAccumulator() {
-        AccumulatingEventEnqueuer accumulatingEventEnqueuer = new AccumulatingEventEnqueuer();
-        PlayerId playerId = new PlayerId(1L);
-        Player player = new Player(playerId,
-                          new MemberId(42L),
-                          "default player name",
-                          accumulatingEventEnqueuer,
-                          new Workspace(playerId)
-                          );
-        return new PlayerAndEventAccumulator(player, accumulatingEventEnqueuer);
     }
 
     public void apply(GameEvent event) {
@@ -101,7 +85,6 @@ public class Player {
         PlayerEvent playerEvent =
                 new PlayerDiscardedActionCard(memberId, actionCardToDiscard);
         eventEnqueuer.enqueue(playerEvent);
-        actionCardDeck.acceptDiscard(actionCardToDiscard);
     }
 
     List<GameEvent> playCard(ActionCard actionCardToPlay) {
@@ -198,5 +181,4 @@ public class Player {
         }
     }
 
-    record PlayerAndEventAccumulator(Player player, AccumulatingEventEnqueuer accumulatingEventEnqueuer) {}
 }

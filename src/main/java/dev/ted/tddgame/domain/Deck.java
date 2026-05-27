@@ -10,7 +10,6 @@ import java.util.Queue;
 public abstract class Deck<CARD extends Card> {
     private final Shuffler<CARD> shuffler;
     private final Queue<CARD> drawPile = new LinkedList<>();
-    private final EventEnqueuer eventEnqueuer;
     private final List<CARD> discardPile;
 
     protected Deck(List<CARD> cards,
@@ -18,21 +17,13 @@ public abstract class Deck<CARD extends Card> {
                 EventEnqueuer eventEnqueuer) {
         this.discardPile = new ArrayList<>(cards);
         this.shuffler = shuffler;
-        this.eventEnqueuer = eventEnqueuer;
     }
 
     // -- FOR TESTS --
     protected Deck(List<CARD> cards, Shuffler<CARD> shuffler, List<DeckEvent> deckEventsReceiver) {
         this.discardPile = new ArrayList<>(cards);
         this.shuffler = shuffler;
-        this.eventEnqueuer = new DeckEventEnqueuer<>(this, deckEventsReceiver);
     }
-
-    void acceptDiscard(CARD discardedCard) {
-        eventEnqueuer.enqueue(createCardDiscardedEvent(discardedCard));
-    }
-
-    protected abstract DeckEvent createCardDiscardedEvent(CARD discardedCard);
 
     public List<GameEvent> drawFor(MemberId memberId) {
         List<GameEvent> gameEvents = new ArrayList<>();
@@ -40,7 +31,7 @@ public abstract class Deck<CARD extends Card> {
         if (isDrawPileEmpty()) {
             // TODO - PRECONDITION: discardPile must NOT be empty
             List<Card> shuffledDiscardedCards = (List<Card>) shuffler.shuffleCards(discardPile);
-            DeckEvent deckReplenishedEvent = createDeckReplenishedEvent(shuffledDiscardedCards);
+            GameEvent deckReplenishedEvent = createDeckReplenishedEvent(shuffledDiscardedCards);
             gameEvents.add(deckReplenishedEvent);
             // when we do a drawPile.addAll(replenishedCards), queue.peek() returns the first item in the list
             drawnCard = (CARD) shuffledDiscardedCards.getFirst();
@@ -53,7 +44,7 @@ public abstract class Deck<CARD extends Card> {
 
     protected abstract GameEvent createPlayerDrewCard(MemberId memberId, CARD drawnCard);
 
-    protected abstract DeckEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards);
+    protected abstract GameEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards);
 
     public boolean isDrawPileEmpty() {
         return drawPile.isEmpty();
@@ -86,8 +77,8 @@ public abstract class Deck<CARD extends Card> {
                                 playerDrewTestResultsCard.testResultsCard());
             }
 
-            case CardDiscarded cardDiscarded -> {
-                discardPile.add((CARD) cardDiscarded.card());
+            case PlayerDiscardedActionCard playerDiscardedActionCard -> {
+                discardPile.add((CARD) playerDiscardedActionCard.actionCard());
             }
 
             default -> throw new IllegalStateException("Unexpected DeckEvent value: " + gameEvent);
@@ -126,23 +117,5 @@ public abstract class Deck<CARD extends Card> {
     public sealed interface Shuffler<CARD>
             permits IdentityShuffler, RandomShuffler {
         List<CARD> shuffleCards(List<CARD> discardPile);
-    }
-}
-
-class DeckEventEnqueuer<CARD extends Card> implements EventEnqueuer {
-    private final Deck<CARD> deck;
-    private final List<DeckEvent> deckEvents;
-
-    public DeckEventEnqueuer(Deck<CARD> deck, List<DeckEvent> deckEvents) {
-        this.deck = deck;
-        this.deckEvents = deckEvents;
-    }
-
-    @Override
-    public void enqueue(GameEvent gameEvent) {
-        if (gameEvent instanceof DeckEvent deckEvent) {
-            deck.apply(deckEvent);
-            deckEvents.add(deckEvent);
-        }
     }
 }

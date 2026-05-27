@@ -90,8 +90,16 @@ public class Game extends EventSourcedAggregate {
                         .apply(playerDrewTestResultsCard);
             }
 
-            case PlayerEvent playerEvent -> playerFor(playerEvent.memberId())
-                    .apply(playerEvent);
+            case PlayerDiscardedActionCard playerDiscardedActionCard -> {
+                actionCardDeck.apply(playerDiscardedActionCard);
+                playerFor(playerDiscardedActionCard.memberId())
+                        .apply(playerDiscardedActionCard);
+            }
+
+            case PlayerPlayedActionCard playerEvent -> {
+                playerFor(playerEvent.memberId())
+                        .apply(playerEvent);
+            }
 
             case ActionCardDeckCreated(List<ActionCard> actionCards) ->
                     actionCardDeck = ActionCardDeck.create(
@@ -107,12 +115,12 @@ public class Game extends EventSourcedAggregate {
                             testResultsCardShuffler
                     );
 
-            case ActionCardDeckEvent actionCardDeckEvent -> {
-                actionCardDeck.apply(actionCardDeckEvent);
+            case ActionCardDeckReplenished actionCardDeckReplenished -> {
+                actionCardDeck.apply(actionCardDeckReplenished);
             }
 
-            case TestResultsCardDeckEvent testResultsCardDeckEvent -> {
-                testResultsCardDeck.apply(testResultsCardDeckEvent);
+            case TestResultsCardDeckReplenished testResultsCardDeckReplenished -> {
+                testResultsCardDeck.apply(testResultsCardDeckReplenished);
             }
         }
     }

@@ -21,17 +21,12 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
     }
 
     @Override
-    protected DeckEvent createCardDiscardedEvent(TestResultsCard discardedCard) {
-        return new ActionCardDiscarded(discardedCard);
-    }
-
-    @Override
     protected GameEvent createPlayerDrewCard(MemberId memberId, TestResultsCard drawnCard) {
         return new PlayerDrewTestResultsCard(memberId, drawnCard);
     }
 
     @Override
-    protected DeckEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards) {
+    protected GameEvent createDeckReplenishedEvent(List<Card> shuffledDiscardedCards) {
         return new TestResultsCardDeckReplenished(shuffledDiscardedCards);
     }
 
