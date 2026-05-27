@@ -1,23 +1,20 @@
 package dev.ted.tddgame.domain;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ActionCardDeck extends Deck<ActionCard> {
     // intended for Production only
     protected ActionCardDeck(List<ActionCard> cards,
-                             Deck.Shuffler<ActionCard> shuffler,
-                             EventEnqueuer eventEnqueuer) {
-        super(cards, shuffler, eventEnqueuer);
+                             Deck.Shuffler<ActionCard> shuffler) {
+        super(cards, shuffler);
     }
 
     // TODO: for production usage, uses random shuffler
     // TODO: must never accept a list of cards that is empty
     public static Deck<ActionCard> create(List<ActionCard> cards,
-                                        EventEnqueuer eventEnqueuer,
-                                        Shuffler<ActionCard> shuffler) {
-        return new ActionCardDeck(cards, shuffler, eventEnqueuer);
+                                          Shuffler<ActionCard> shuffler) {
+        return new ActionCardDeck(cards, shuffler);
     }
 
     // TODO: ensure this is tested more directly
@@ -33,20 +30,14 @@ public class ActionCardDeck extends Deck<ActionCard> {
 
     // -- FOR TESTS ONLY BELOW --
 
-    protected ActionCardDeck(List<ActionCard> cards,
-                             Shuffler<ActionCard> shuffler,
-                             List<DeckEvent> deckEventsReceiver) {
-        super(cards, shuffler, deckEventsReceiver);
-    }
-
     public static ActionCardDeck createForTest(ActionCard... actionCards) {
         return createForTest(Arrays.asList(actionCards));
     }
 
     public static ActionCardDeck createForTest(List<ActionCard> actionCards) {
         return new ActionCardDeck(actionCards,
-                                  new IdentityShuffler<>(),
-                                  new ArrayList<>());
+                                  new IdentityShuffler<>()
+        );
     }
 
 }

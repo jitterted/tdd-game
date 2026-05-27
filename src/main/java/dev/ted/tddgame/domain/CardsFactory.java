@@ -4,32 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CardsFactory {
-
-    private final List<ActionCard> allActionCards;
-    private final List<TestResultsCard> allTestResultsCards;
+public record CardsFactory(List<ActionCard> allActionCards, List<TestResultsCard> allTestResultsCards) {
 
     public CardsFactory() {
         this(createAllActionCards(), createAllTestResultsCards());
     }
 
-    public CardsFactory(List<ActionCard> allActionCards,
-                        List<TestResultsCard> allTestResultsCards) {
-        this.allActionCards = allActionCards;
-        this.allTestResultsCards = allTestResultsCards;
-    }
-
     public static CardsFactory forTest(List<ActionCard> actionCardList) {
         return new CardsFactory(actionCardList, createAllTestResultsCards());
-    }
-
-    // 63 cards in this standard action card deck
-    public List<ActionCard> allActionCards() {
-        return allActionCards;
-    }
-
-    public List<TestResultsCard> allTestResultsCards() {
-        return allTestResultsCards;
     }
 
     private static List<ActionCard> createAllActionCards() {

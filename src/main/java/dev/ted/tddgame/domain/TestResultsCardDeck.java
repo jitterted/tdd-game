@@ -2,18 +2,17 @@ package dev.ted.tddgame.domain;
 
 import org.jspecify.annotations.NullMarked;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @NullMarked
 public class TestResultsCardDeck extends Deck<TestResultsCard> {
     private TestResultsCardDeck(List<TestResultsCard> testResultsCards, Shuffler<TestResultsCard> shuffler, EventEnqueuer eventEnqueuer) {
-        super(testResultsCards, shuffler, eventEnqueuer);
+        super(testResultsCards, shuffler);
     }
 
-    private TestResultsCardDeck(List<TestResultsCard> testResultsCards, Shuffler<TestResultsCard> shuffler, List<DeckEvent> deckEventsReceiver) {
-        super(testResultsCards, shuffler, deckEventsReceiver);
+    private TestResultsCardDeck(List<TestResultsCard> testResultsCards, Shuffler<TestResultsCard> shuffler) {
+        super(testResultsCards, shuffler);
     }
 
     public static TestResultsCardDeck create(List<TestResultsCard> testResultsCards, EventEnqueuer eventEnqueuer, Shuffler<TestResultsCard> shuffler) {
@@ -35,8 +34,7 @@ public class TestResultsCardDeck extends Deck<TestResultsCard> {
     static TestResultsCardDeck createForTest(List<TestResultsCard> testResultsCards) {
         return new TestResultsCardDeck(
                 testResultsCards,
-                new IdentityShuffler<>(),
-                new ArrayList<>()
+                new IdentityShuffler<>()
         );
     }
 

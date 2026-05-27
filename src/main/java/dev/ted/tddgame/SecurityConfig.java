@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static AtomicLong idGenerator = new AtomicLong(1L);
+    private static final AtomicLong idGenerator = new AtomicLong(1L);
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

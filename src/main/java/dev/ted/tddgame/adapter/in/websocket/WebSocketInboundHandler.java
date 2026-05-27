@@ -56,42 +56,35 @@ public class WebSocketInboundHandler extends TextWebSocketHandler {
         playerConnector.disconnect(messageSender);
     }
 
-    private static class WebSocketMessageSender implements MessageSender {
-        private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketMessageSender.class);
+    private record WebSocketMessageSender(WebSocketSession webSocketSession) implements MessageSender {
+            private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketMessageSender.class);
 
-        private final WebSocketSession webSocketSession;
-
-        public WebSocketMessageSender(WebSocketSession webSocketSession) {
+        private WebSocketMessageSender {
             Objects.requireNonNull(webSocketSession);
-            this.webSocketSession = webSocketSession;
         }
 
-        @Override
-        public void sendMessage(String message) {
-            try {
-                if (webSocketSession.isOpen()) {
-                    webSocketSession.sendMessage(new TextMessage(message));
-                } else {
-                    // disconnect webSocketSession if it's not open (for whatever reason) 
+            @Override
+            public void sendMessage(String message) {
+                try {
+                    if (webSocketSession.isOpen()) {
+                        webSocketSession.sendMessage(new TextMessage(message));
+                    } else {
+                        // disconnect webSocketSession if it's not open (for whatever reason)
+                    }
+                } catch (IOException e) {
+                    LOGGER.warn("Unable to send message to webSocketSession: " + webSocketSession.getId(), e);
                 }
-            } catch (IOException e) {
-                LOGGER.warn("Unable to send message to webSocketSession: " + webSocketSession.getId(), e);
-            }
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) {
-                return false;
             }
 
-            WebSocketMessageSender that = (WebSocketMessageSender) o;
-            return webSocketSession.equals(that.webSocketSession);
-        }
+            @Override
+            public boolean equals(Object o) {
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
 
-        @Override
-        public int hashCode() {
-            return webSocketSession.hashCode();
-        }
+                WebSocketMessageSender that = (WebSocketMessageSender) o;
+                return webSocketSession.equals(that.webSocketSession);
+            }
+
     }
 }

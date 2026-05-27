@@ -13,14 +13,7 @@ public abstract class Deck<CARD extends Card> {
     private final List<CARD> discardPile;
 
     protected Deck(List<CARD> cards,
-                Shuffler<CARD> shuffler,
-                EventEnqueuer eventEnqueuer) {
-        this.discardPile = new ArrayList<>(cards);
-        this.shuffler = shuffler;
-    }
-
-    // -- FOR TESTS --
-    protected Deck(List<CARD> cards, Shuffler<CARD> shuffler, List<DeckEvent> deckEventsReceiver) {
+                   Shuffler<CARD> shuffler) {
         this.discardPile = new ArrayList<>(cards);
         this.shuffler = shuffler;
     }
@@ -57,9 +50,12 @@ public abstract class Deck<CARD extends Card> {
 
     public void apply(GameEvent gameEvent) {
         switch (gameEvent) {
-            case DeckReplenished deckReplenished -> {
-                drawPile.addAll((Collection<? extends CARD>) deckReplenished.cardsInDrawPile());
-                discardPile.clear();
+            case ActionCardDeckReplenished(List<? extends Card> cards) -> {
+                replenishDrawPileWith((Collection<? extends CARD>) cards);
+            }
+
+            case TestResultsCardDeckReplenished(List<? extends Card> cards) -> {
+                replenishDrawPileWith((Collection<? extends CARD>) cards);
             }
 
             case PlayerDrewTechNeglectCard playerDrewTechNeglectCard -> {
@@ -83,6 +79,11 @@ public abstract class Deck<CARD extends Card> {
 
             default -> throw new IllegalStateException("Unexpected DeckEvent value: " + gameEvent);
         }
+    }
+
+    private void replenishDrawPileWith(Collection<? extends CARD> cards) {
+        drawPile.addAll(cards);
+        discardPile.clear();
     }
 
     private void handleDrawnCard(GameEvent gameEvent, Card drawnCard) {

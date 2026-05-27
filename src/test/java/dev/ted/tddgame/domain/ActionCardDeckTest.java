@@ -21,7 +21,7 @@ class ActionCardDeckTest {
             List<ActionCard> actionCards = List.of(
                     ActionCard.PREDICT,
                     ActionCard.WRITE_CODE);
-            Deck<ActionCard> deck = ActionCardDeck.create(actionCards, null, new Deck.RandomShuffler<>());
+            Deck<ActionCard> deck = ActionCardDeck.create(actionCards, new Deck.RandomShuffler<>());
 
             assertThat(deck.isDrawPileEmpty())
                     .as("Draw Pile should be empty when Deck is created")
@@ -44,8 +44,8 @@ class ActionCardDeckTest {
                                               gameEvent -> gameEvent.getClass() ==
                                                            ActionCardDeckReplenished.class,
                                               "ActionCardDeckReplenished event not found")
-                            , new Condition<>(gameEvent -> (
-                                                                   (ActionCardDeckReplenished) gameEvent).cardsInDrawPile().size() == 63,
+                            , new Condition<>(gameEvent ->
+                                                      ((ActionCardDeckReplenished) gameEvent).cardsInDrawPile().size() == 63,
                                               "Must be 63 cards in the ActionCardDeckReplenished event")
                     )
                     .hasOccurrences(PlayerDrewActionCard.class, 1);

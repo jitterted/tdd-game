@@ -335,10 +335,12 @@ WE ARE HERE ===>>
             [X] Remove ActionCardDiscarded
                 [X] Remove CardDiscarded interface
                 [X] Remove create discarded event method
-        [ ] Remove the interfaces ActionCardDeckEvent and DeckEvent since the only deck events left would be for replenishing the Action and Test Results decks
-            [ ] Remove DeckReplenished, replacing with concrete events for Action and Test Results decks
+        [X] Remove the interfaces ActionCardDeckEvent and DeckEvent since the only deck events left would be for replenishing the Action and Test Results decks
+            [X] Remove DeckReplenished, replacing with concrete events for Action and Test Results decks
 
-        [ ] Implement invariant in Deck.drawFor(): discardPile must NOT be empty
+        [ ] Game.discard needs to collect events from Player.discard instead of enqueuing
+
+    [ ] Implement invariant in Deck.drawFor(): discardPile must NOT be empty
 
     [ ] Rewrite the GameScenarioBuilder to use Events to generate the desired Game state
 

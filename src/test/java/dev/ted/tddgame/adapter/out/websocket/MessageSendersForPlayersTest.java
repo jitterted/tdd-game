@@ -54,17 +54,12 @@ class MessageSendersForPlayersTest {
         messageSender2.verifyMessageSent();
     }
 
-    private static class CrashDummyMessageSender implements MessageSender {
-        private final String playerName;
-
-        public CrashDummyMessageSender(String playerName) {
-            this.playerName = playerName;
-        }
+    private record CrashDummyMessageSender(String playerName) implements MessageSender {
 
         @Override
-        public void sendMessage(String message) {
-            throw new IllegalStateException("Should not have called sendMessage(\"" + message + "\") for player: " + playerName);
+            public void sendMessage(String message) {
+                throw new IllegalStateException("Should not have called sendMessage(\"" + message + "\") for player: " + playerName);
+            }
         }
-    }
 
 }
