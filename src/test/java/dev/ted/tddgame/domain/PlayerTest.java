@@ -135,7 +135,7 @@ class PlayerTest {
         void drewActionCardTwiceResultsInTwoCardsInHand() {
             MemberId memberId = new MemberId(37L);
             Player player = createPlayer(new MemberId(memberId.id()));
-            List<PlayerEvent> events = List.of(
+            List<GameEvent> events = List.of(
                     new PlayerDrewActionCard(memberId, ActionCard.LESS_CODE),
                     new PlayerDrewActionCard(memberId, ActionCard.WRITE_CODE));
 
@@ -149,7 +149,7 @@ class PlayerTest {
         void playerHasTwoActionCardsInHandAfterDrawingSameTypeOfActionCardTwice() {
             MemberId memberId = new MemberId(37L);
             Player player = createPlayer(new MemberId(memberId.id()));
-            List<PlayerEvent> events = List.of(
+            List<GameEvent> events = List.of(
                     new PlayerDrewActionCard(memberId, ActionCard.PREDICT),
                     new PlayerDrewActionCard(memberId, ActionCard.PREDICT));
 
@@ -164,7 +164,7 @@ class PlayerTest {
         void drawTechNeglectCardsGoDirectlyIntoWorkspace() {
             MemberId memberId = new MemberId(82L);
             Player player = createPlayer(new MemberId(memberId.id()));
-            List<PlayerEvent> events = List.of(
+            List<GameEvent> events = List.of(
                     new PlayerDrewTechNeglectCard(memberId, ActionCard.CANT_ASSERT),
                     new PlayerDrewTechNeglectCard(memberId, ActionCard.CODE_BLOAT)
             );

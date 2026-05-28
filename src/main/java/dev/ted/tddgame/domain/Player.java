@@ -82,7 +82,7 @@ public class Player {
 
     void discard(ActionCard actionCardToDiscard, Deck<ActionCard> actionCardDeck) {
         // check constraint: actionCardToDiscard MUST be in the Player's Hand
-        PlayerEvent playerEvent =
+        PlayerDiscardedActionCard playerEvent =
                 new PlayerDiscardedActionCard(memberId, actionCardToDiscard);
         eventEnqueuer.enqueue(playerEvent);
     }
@@ -90,7 +90,7 @@ public class Player {
     List<GameEvent> playCard(ActionCard actionCardToPlay) {
         // check constraint: actionCardToPlay MUST be in the Player's Hand
         // check constraint: must check with Workspace to decide if this is allowed
-        PlayerEvent playerEvent =
+        PlayerPlayedActionCard playerEvent =
                 new PlayerPlayedActionCard(memberId, actionCardToPlay);
         return List.of(playerEvent);
     }

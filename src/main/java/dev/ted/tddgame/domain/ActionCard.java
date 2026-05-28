@@ -56,5 +56,5 @@ public sealed abstract class ActionCard implements Card
         return name();
     }
 
-    abstract PlayerEvent drawnCardEventFor(MemberId memberId);
+    abstract GameEvent drawnCardEventFor(MemberId memberId);
 }

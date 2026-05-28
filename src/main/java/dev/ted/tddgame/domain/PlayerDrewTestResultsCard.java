@@ -7,7 +7,7 @@ import java.util.Objects;
 @NullMarked
 public record PlayerDrewTestResultsCard(MemberId memberId,
                                         TestResultsCard testResultsCard)
-        implements PlayerEvent {
+        implements GameEvent {
     public PlayerDrewTestResultsCard {
         Objects.requireNonNull(memberId);
         Objects.requireNonNull(testResultsCard);

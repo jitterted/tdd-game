@@ -1,12 +1,18 @@
 package dev.ted.tddgame.domain;
 
-public sealed interface GameEvent
-        permits ActionCardDeckCreated,
-                ActionCardDeckReplenished,
-                GameCreated,
-                GameStarted,
-                PlayerEvent,
-                PlayerJoined,
-                TestResultsCardDeckCreated,
-                TestResultsCardDeckReplenished {
-}
+// @formatter:off
+public sealed interface GameEvent permits
+        ActionCardDeckCreated,
+        ActionCardDeckReplenished,
+        GameCreated,
+        GameStarted,
+        PlayerDiscardedActionCard,
+        PlayerDrewActionCard,
+        PlayerDrewTechNeglectCard,
+        PlayerDrewTestResultsCard,
+        PlayerJoined,
+        PlayerPlayedActionCard,
+        TestResultsCardDeckCreated,
+        TestResultsCardDeckReplenished
+{}
+// @formatter:on

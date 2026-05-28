@@ -344,7 +344,7 @@ WE ARE HERE ===>>
 
     [ ] Rewrite the GameScenarioBuilder to use Events to generate the desired Game state
 
-    [ ] Remove event hierarchy structure, i.e., flatten them out so they all simply extend Event
+    [X] Remove event hierarchy structure, i.e., flatten them out so they all simply extend Event
 
     [ ] Make it easy to implement "follow on/event-triggered" processors, e.g., instead of Game.start() doing the initial deal, it should just emit "GameStarted" and the "GameStartedProcessor" should then execute the "dealCardsToAllPlayers" command against Game. That would then emit the expected ActionCardDeckDrawPileReplenished event, followed by a number of PlayerDrewActionCard events (at least 5 for each player)
 
