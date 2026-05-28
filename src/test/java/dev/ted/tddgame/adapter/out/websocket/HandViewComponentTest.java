@@ -21,7 +21,7 @@ class HandViewComponentTest {
 
     @Test
     void htmlForPlayerWithFiveCardsGeneratesCorrectDiv() {
-        Player player = new Player(IRRELEVANT_PLAYER_ID, IRRELEVANT_MEMBER_ID, "IRRELEVANT PLAYER NAME", _ -> {}, new Workspace(IRRELEVANT_PLAYER_ID));
+        Player player = new Player(IRRELEVANT_PLAYER_ID, IRRELEVANT_MEMBER_ID, "IRRELEVANT PLAYER NAME", new Workspace(IRRELEVANT_PLAYER_ID));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.CANT_ASSERT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.LESS_CODE));

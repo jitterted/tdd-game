@@ -17,7 +17,7 @@ class PlayerViewComponentTest {
 
     @Test
     void generateHtmlWithSwapIdTargetForPlayerWithNoCards() {
-        Player player = Player.createForTestWithApplyingEnqueuer(79L, "Player with no cards");
+        Player player = Player.createForTest(79L, "Player with no cards");
 
         HtmlElement htmlElement =
                 new PlayerViewComponent("ZZZ-game-handle", player).htmlForYou();
@@ -36,7 +36,7 @@ class PlayerViewComponentTest {
 
     @Test
     void generateHtmlWithOneDivForPlayerWithOneCards() {
-        Player player = Player.createForTestWithApplyingEnqueuer(34L, "Player with one LESS CODE card");
+        Player player = Player.createForTest(34L, "Player with one LESS CODE card");
         player.apply(new PlayerDrewActionCard(player.memberId(),
                                               ActionCard.LESS_CODE));
         String gameHandle = "test-game-handle";
@@ -58,7 +58,7 @@ class PlayerViewComponentTest {
 
     @Test
     void generateHtmlForPlayerWithFiveCards() {
-        Player player = Player.createForTestWithApplyingEnqueuer(56L, "Player Name");
+        Player player = Player.createForTest(56L, "Player Name");
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.PREDICT));
         player.apply(new PlayerDrewActionCard(player.memberId(), ActionCard.LESS_CODE));
@@ -83,10 +83,10 @@ class PlayerViewComponentTest {
 
     @Test
     void createsPlaceholderDivForOnlyOtherPlayers() {
-        Player you = Player.createForTestWithApplyingEnqueuer(99L, "You as Player 99");
-        List<Player> players = List.of(Player.createForTestWithApplyingEnqueuer(3L, "Name of Player 3"),
+        Player you = Player.createForTest(99L, "You as Player 99");
+        List<Player> players = List.of(Player.createForTest(3L, "Name of Player 3"),
                                        you,
-                                       Player.createForTestWithApplyingEnqueuer(5L, "Name of Player 5"));
+                                       Player.createForTest(5L, "Name of Player 5"));
 
         HtmlElement htmlElement = new PlayerViewComponent("ZZZ-game-handle", you)
                 .htmlPlaceholdersForOtherPlayers(players);

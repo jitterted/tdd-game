@@ -110,7 +110,6 @@ public class Game extends EventSourcedAggregate {
             case TestResultsCardDeckCreated(List<TestResultsCard> testResultsCards) ->
                     testResultsCardDeck = TestResultsCardDeck.create(
                             testResultsCards,
-                            this::enqueue,
                             testResultsCardShuffler
                     );
 
@@ -130,7 +129,6 @@ public class Game extends EventSourcedAggregate {
                 playerId,
                 memberId,
                 playerName,
-                this::enqueue,
                 new Workspace(playerId));
     }
 
@@ -185,9 +183,10 @@ public class Game extends EventSourcedAggregate {
         }
     }
 
-    // TODO: needs Player.discard() to return the event instead of enqueuing
     public void discard(MemberId memberId, ActionCard actionCardToDiscard) {
-        playerFor(memberId).discard(actionCardToDiscard, actionCardDeck);
+        playerFor(memberId)
+                .discard(actionCardToDiscard, actionCardDeck)
+                .forEach(this::enqueue);
     }
 
     public void playCard(MemberId memberId, ActionCard actionCardToPlay) {

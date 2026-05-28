@@ -7,16 +7,13 @@ import java.util.List;
 
 @NullMarked
 public class TestResultsCardDeck extends Deck<TestResultsCard> {
-    private TestResultsCardDeck(List<TestResultsCard> testResultsCards, Shuffler<TestResultsCard> shuffler, EventEnqueuer eventEnqueuer) {
-        super(testResultsCards, shuffler);
-    }
 
     private TestResultsCardDeck(List<TestResultsCard> testResultsCards, Shuffler<TestResultsCard> shuffler) {
         super(testResultsCards, shuffler);
     }
 
-    public static TestResultsCardDeck create(List<TestResultsCard> testResultsCards, EventEnqueuer eventEnqueuer, Shuffler<TestResultsCard> shuffler) {
-        return new TestResultsCardDeck(testResultsCards, shuffler, eventEnqueuer);
+    public static TestResultsCardDeck create(List<TestResultsCard> testResultsCards, Shuffler<TestResultsCard> shuffler) {
+        return new TestResultsCardDeck(testResultsCards, shuffler);
     }
 
     @Override

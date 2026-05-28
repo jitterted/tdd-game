@@ -124,7 +124,6 @@ class PlayerTest {
         return new Player(IRRELEVANT_PLAYER_ID,
                           IRRELEVANT_MEMBER_ID,
                           "Player 1",
-                          _ -> {},
                           new Workspace(IRRELEVANT_PLAYER_ID));
     }
 
@@ -185,7 +184,6 @@ class PlayerTest {
         return new Player(playerId,
                           memberId,
                           "Player 1",
-                          null,
                           new Workspace(playerId));
     }
 }

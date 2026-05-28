@@ -7,35 +7,29 @@ import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 public class Player {
-    private static final EventEnqueuer DUMMY_EVENT_ENQUEUER = _ -> {};
     static final int PLAYER_HAND_FULL_SIZE = 5;
     private final PlayerId playerId;
     private final MemberId memberId;
     private final String playerName;
     private final List<ActionCard> hand = new ArrayList<>();
-    private EventEnqueuer eventEnqueuer;
     private final Workspace workspace;
 
-    public Player(PlayerId playerId, MemberId memberId,
-                  String playerName, EventEnqueuer eventEnqueuer,
+    public Player(PlayerId playerId,
+                  MemberId memberId,
+                  String playerName,
                   Workspace workspace) {
         this.playerId = playerId;
         this.memberId = memberId;
         this.playerName = playerName;
-        this.eventEnqueuer = eventEnqueuer;
         this.workspace = workspace;
     }
 
-    public static Player createForTestWithApplyingEnqueuer(long id, String playerName) {
+    public static Player createForTest(long id, String playerName) {
         PlayerId playerId = new PlayerId(id);
-        Player player = new Player(playerId, new MemberId(42L), playerName,
-                                   DUMMY_EVENT_ENQUEUER,
-                                   new Workspace(playerId));
-        // ensure that player events (from commands) get applied
-        // need to do this here: can't do this as a constructor parameter,
-        //   because player doesn't yet exist, but we need it in order to apply the event
-        player.eventEnqueuer = gameEvent -> player.apply(gameEvent);
-        return player;
+        return new Player(playerId,
+                          new MemberId(42L),
+                          playerName,
+                          new Workspace(playerId));
     }
 
     public void apply(GameEvent event) {
@@ -70,21 +64,11 @@ public class Player {
         return actionCardDeck.drawFor(memberId);
     }
 
-    void drawToFull(Deck<ActionCard> actionCardDeck) {
-        // do
-        //  events.addAll(drawCardFrom(actionCardDeck))
-        // until (events.filter(PlayerDrewActionCard).count == 3)
-
-        while (!handIsFull()) {
-            drawCardFrom(actionCardDeck);
-        }
-    }
-
-    void discard(ActionCard actionCardToDiscard, Deck<ActionCard> actionCardDeck) {
+    List<GameEvent> discard(ActionCard actionCardToDiscard, Deck<ActionCard> actionCardDeck) {
         // check constraint: actionCardToDiscard MUST be in the Player's Hand
         PlayerDiscardedActionCard playerEvent =
                 new PlayerDiscardedActionCard(memberId, actionCardToDiscard);
-        eventEnqueuer.enqueue(playerEvent);
+        return List.of(playerEvent);
     }
 
     List<GameEvent> playCard(ActionCard actionCardToPlay) {
@@ -164,21 +148,6 @@ public class Player {
         return new StringJoiner(", ", Player.class.getSimpleName() + "[", "]")
                 .add("id=" + playerId.id())
                 .toString();
-    }
-
-    // -- embedded enqueuer for testing, so we can (indirectly) get the generated events without the events being applied
-
-    static class AccumulatingEventEnqueuer implements EventEnqueuer {
-        private final List<GameEvent> events = new ArrayList<>();
-
-        public List<GameEvent> events() {
-            return events;
-        }
-
-        @Override
-        public void enqueue(GameEvent gameEvent) {
-            events.add(gameEvent);
-        }
     }
 
 }
